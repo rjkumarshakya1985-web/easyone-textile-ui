@@ -1,0 +1,82 @@
+<p-toolbar class="page-header">
+  <div class="p-toolbar-group-left">
+    <p-breadcrumb [model]="breadcrumbItems" homeIcon="pi pi-home"></p-breadcrumb>
+  </div>
+
+  <div class="p-toolbar-group-right">
+    <p-button label="Add SaleVoucher" class="p-button-sm mr-2" (click)="add()"  variant="text" [raised]="true" icon="pi pi-plus"/>
+    <p-button label="Export" variant="text" icon="pi pi-file-export" [raised]="true" severity="secondary" />
+  </div>
+</p-toolbar>
+
+<p-card>
+    <div class="d-flex justify-content-between mb-3">
+
+      <div class="flex-grow-1" style="max-width:300px">
+        <p-floatlabel variant="on">
+          <input pInputText id="on_label" [formControl]="searchControl" autocomplete="off" />
+          <label for="on_label">Search keyword</label>
+        </p-floatlabel>
+      </div>
+
+      <ng-container *ngIf="isLoading()">
+        <p-buttonGroup>
+          <p-button label="{{pageSize}}" outlined severity="secondary"></p-button>
+          <p-button label="Total ({{tblResult().totalRows}})" disabled outlined></p-button>
+
+          <p-button icon="pi pi-angle-left"
+            outlined (click)="onPrevious()"></p-button>
+
+          <p-button label="{{ pageindex() + 1 }}/{{ numberofPage() }}"
+            disabled outlined></p-button>
+
+          <p-button icon="pi pi-angle-right"
+            outlined (click)="onNext()"></p-button>
+        </p-buttonGroup>
+      </ng-container>
+
+    </div>
+
+    <!-- TABLE -->
+    <ng-container *ngIf="isLoading()">
+      <p-table [value]="tblResult().result" size="small" showGridlines class="p-datatable-sm">
+
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Parcel Number</th>
+            <th>Date</th>
+            <th>Transport</th>
+            <th>Number of Parcel</th>
+            <th>My Bill Number</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-row>
+          <tr>
+            <td>{{ row.id }}</td>
+            <td>{{row.date | date:'dd, MMMM, yyyy'}}</td>
+            <td>{{row.tranportName}}</td>
+            <td>{{row.numberOfParcel}}</td>
+            <td>{{row.billNumber}}</td>
+            <td>
+              <p-chip label="{{getStatusText(row.parcelStatus)}}" />
+            </td>
+            <td>
+              <span class="px-2 py-1 rounded bg-blue-50 text-blue-600 cursor-pointer hover:bg-blue-100"
+                 (click)="openMenu($event, row)">
+                  <i class="pi pi-ellipsis-v"></i>
+               </span>
+            </td>
+          </tr>
+        </ng-template>
+
+      </p-table>
+    </ng-container>
+
+</p-card>
+
+<p-menu #menu [model]="items" [popup]="true"></p-menu>
+
+

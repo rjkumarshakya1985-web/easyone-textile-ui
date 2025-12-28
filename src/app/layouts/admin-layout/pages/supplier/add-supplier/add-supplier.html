@@ -1,0 +1,363 @@
+<div class="container mt-4">
+  <form [formGroup]="supplierForm" (ngSubmit)="submit()">
+
+    <div class="card">
+     <div class="card-header flex items-center">
+     <span class="text-lg font-semibold" style="margin-top: 16px;">Supplier Information</span>
+       <p-button type="submit"
+        label="Save Supplier" 
+        class="p-button-sm ml-auto"  
+        variant="text" 
+        [raised]="true">
+      </p-button>
+    </div>
+      <div class="card-body">
+
+         <div class="row g-3">
+
+          <div class="col-md-3">
+            <p-floatlabel class="w-full md:w-56" variant="on">
+                <p-select formControlName="departmentId" inputId="department"
+                 [options]="(department$ | async) ?? []" optionLabel="name" optionValue="id" class="w-full"
+                 (onChange)="onDepartmentChange($event)" 
+                  [ngClass]="{ 'ng-invalid ng-dirty': supplierForm.get('departmentId')?.invalid && supplierForm.get('departmentId')?.touched }" ></p-select>
+                <label for="department">Select Department</label>
+             </p-floatlabel>
+          </div>
+
+          <div class="col-md-3">
+            <p-floatlabel class="w-full md:w-56" variant="on">
+                <p-select formControlName="subDepartmentId"  inputId="subDepartment" [options]="(subDepartment$ | async) ?? []" optionLabel="name" optionValue="id" class="w-full" 
+                            [ngClass]="{ 'ng-invalid ng-dirty': supplierForm.get('subDepartmentId')?.invalid && supplierForm.get('subDepartmentId')?.touched }"  ></p-select>
+                <label for="subDepartment">Select Sup Department</label>
+             </p-floatlabel>
+          </div>
+
+          <div class="col-md-3">
+            <p-floatlabel variant="on">
+              <input pInputText  class="form-control" id="on_Supplier_userName" formControlName="userName"  autocomplete="off"
+               [ngClass]="{ 'ng-invalid ng-dirty': supplierForm.get('userName')?.invalid && supplierForm.get('userName')?.touched }"  />
+              <label for="on_Supplier_userName">User Name</label>
+            </p-floatlabel>
+          </div>
+
+           <div class="col-md-3">
+            <p-floatlabel variant="on">
+              <input pInputText class="form-control"  id="on_Supplier_code" formControlName="code"  autocomplete="off"
+              [ngClass]="{ 'ng-invalid ng-dirty': supplierForm.get('code')?.invalid && supplierForm.get('code')?.touched }"  />
+              <label for="on_Supplier_code">Code</label>
+            </p-floatlabel>
+          </div>
+
+          <!-- Name -->
+          <div class="col-md-3">
+            <p-floatlabel variant="on">
+              <input pInputText class="form-control" id="on_Supplier_name" formControlName="name"  autocomplete="off"
+               [ngClass]="{ 'ng-invalid ng-dirty': supplierForm.get('name')?.invalid && supplierForm.get('name')?.touched }"  />
+              <label for="on_Supplier_name">Name</label>
+            </p-floatlabel>
+          </div>
+
+          <!-- Alias -->
+          <div class="col-md-3">
+             <p-floatlabel variant="on">
+              <input pInputText class="form-control" id="on_Supplier_alias" formControlName="alias" autocomplete="off" />
+              <label for="on_Supplier_alias">Alias</label>
+            </p-floatlabel>
+           
+          </div>
+
+          <!-- PAN -->
+          <div class="col-md-3">
+             <p-floatlabel variant="on">
+              <input pInputText class="form-control" id="on_Supplier_pan" formControlName="pan" autocomplete="off" />
+              <label for="on_Supplier_pan">PAN</label>
+            </p-floatlabel>
+          </div>
+
+          <!-- Registration Type -->
+          <div class="col-md-3">
+            <p-floatlabel class="w-full md:w-56" variant="on">
+             <p-select
+                 formControlName="regType"
+                 inputId="on_Supplier_registrationTypes"
+                 [options]="registrationTypes"
+                 optionLabel="name"
+                class="w-full" optionValue="value">
+              </p-select>
+             <label for="on_Supplier_registrationTypes">Registration type</label>
+          </p-floatlabel>
+         </div>
+
+          <!-- City, State, Pin -->
+          <div class="col-md-3">
+             <p-floatlabel class="w-full md:w-56" variant="on">
+                <p-select formControlName="stateId" inputId="state" [options]="(states$ | async) ?? []" optionLabel="name" optionValue="id" (onChange)="onStateChange($event)" class="w-full" />
+                <label for="state">Select State</label>
+             </p-floatlabel>
+          </div>
+
+          <div class="col-md-3">
+            <p-floatlabel class="w-full md:w-56" variant="on">
+                <p-select formControlName="cityId" inputId="city" [options]="(cities$ | async) ?? []" optionLabel="name" optionValue="id"  class="w-full" />
+                <label for="city">Select City</label>
+             </p-floatlabel>
+          </div>
+          
+          <div class="col-md-3">
+             <p-floatlabel variant="on">
+              <input pInputText class="form-control" id="on_Supplier_contactPerson" formControlName="contactPerson" autocomplete="off" />
+              <label for="on_Supplier_contactPerson">Contact Person</label>
+            </p-floatlabel>
+          </div>
+
+          <div class="col-md-3">
+             <p-floatlabel variant="on">
+              <input pInputText class="form-control" id="on_Supplier_mobile" formControlName="mobile" autocomplete="off" />
+              <label for="on_Supplier_mobile">Mobile</label>
+            </p-floatlabel>
+          </div>
+
+           <div class="col-md-3">
+             <p-floatlabel variant="on">
+              <input pInputText class="form-control" id="on_Supplier_email" formControlName="email" autocomplete="off" />
+              <label for="on_Supplier_email">Email</label>
+            </p-floatlabel>
+          </div>
+
+           <!-- Price Type -->
+          <div class="col-md-3">
+            <p-floatlabel class="w-full md:w-56" variant="on">
+                <p-select formControlName="discountType" inputId="dtype" [options]="discountTypes" optionValue="value" optionLabel="name" class="w-full" 
+                 [ngClass]="{ 'ng-invalid ng-dirty': supplierForm.get('discountType')?.invalid && supplierForm.get('discountType')?.touched }"/>
+                <label for="dtype">Discount Type</label>
+             </p-floatlabel>
+          </div>
+
+             <div class="col-md-3">
+              <p-floatlabel variant="on">
+               <p-inputNumber
+                inputId="on_Supplier_wholesaleMargin"
+                formControlName="wholeSalesMargin"
+                mode="decimal"
+               [minFractionDigits]="0"
+               [maxFractionDigits]="0"
+                   [ngClass]="{ 'ng-invalid ng-dirty': supplierForm.get('wholeSalesMargin')?.invalid && supplierForm.get('wholeSalesMargin')?.touched }">
+              </p-inputNumber>
+              <label for="on_Supplier_wholesaleMargin">Wholesale Margin</label>
+          </p-floatlabel>
+        </div>
+
+        <div class="col-md-3">
+              <p-floatlabel variant="on">
+                 <p-inputNumber
+                   inputId="on_Supplier_retailMargin"
+                   formControlName="retailMargin"
+                   mode="decimal"
+                   [minFractionDigits]="0"
+                   [maxFractionDigits]="0"
+                   autocomplete="off"
+                   class="w-full"
+                         [ngClass]="{ 'ng-invalid ng-dirty': supplierForm.get('retailMargin')?.invalid && supplierForm.get('retailMargin')?.touched }">
+                </p-inputNumber>
+             <label for="on_Supplier_retailMargin">Retail Margin</label>
+           </p-floatlabel>
+        </div>
+
+         <div class="col-md-3">
+              <p-floatlabel variant="on">
+                 <p-inputNumber
+                   inputId="on_Supplier_mrpMargin"
+                   formControlName="mrpMargin"
+                   mode="decimal"
+                   [minFractionDigits]="0"
+                   [maxFractionDigits]="0"
+                   autocomplete="off"
+                   class="w-full"
+                         [ngClass]="{ 'ng-invalid ng-dirty': supplierForm.get('mrpMargin')?.invalid && supplierForm.get('mrpMargin')?.touched }">
+                </p-inputNumber>
+             <label for="on_Supplier_mrpMargin">MRP Margin</label>
+           </p-floatlabel>
+        </div>
+
+          <div class="col-md-3">
+              <p-floatlabel variant="on">
+                <p-inputNumber
+                    inputId="on_Supplier_billDiscount"
+                    formControlName="billDiscount"
+                    mode="currency"
+                    currency="INR"
+                    locale="en-IN"
+                    [minFractionDigits]="0"
+                    [maxFractionDigits]="2"
+                    autocomplete="off"
+                    class="w-full">
+                </p-inputNumber>
+                <label for="on_Supplier_billDiscount">Bill Discount</label>
+              </p-floatlabel>
+        </div>
+
+       <div class="col-md-3">
+           <p-floatlabel variant="on">
+              <p-inputNumber
+                 inputId="on_Supplier_paymentDiscount"
+                 formControlName="paymentDiscount"
+                 mode="currency"
+                 currency="INR"
+                 locale="en-IN"
+                 [minFractionDigits]="0"
+                 [maxFractionDigits]="2"
+                 autocomplete="off"
+                 class="w-full">
+              </p-inputNumber>
+             <label for="on_Supplier_paymentDiscount">Payment Discount</label>
+           </p-floatlabel>
+        </div>
+
+       <div class="col-md-3">
+         <p-floatlabel variant="on">
+            <p-inputNumber
+              inputId="on_Supplier_annualIncentive"
+              formControlName="annualIncentive"
+              mode="currency"
+              currency="INR"
+              locale="en-IN"
+              [minFractionDigits]="0"
+              [maxFractionDigits]="2"
+              autocomplete="off"
+              class="w-full">
+           </p-inputNumber>
+           <label for="on_Supplier_annualIncentive">Annual Incentive</label>
+         </p-floatlabel>
+       </div>
+
+          <!-- Address -->
+          <div class="col-md-12">
+             <p-floatlabel variant="on">
+              <textarea class="form-control"  pTextarea id="on_address" fluid formControlName="address" rows="3" cols="30" style="resize: none" class="h-full"></textarea>
+              <label for="on_address">Address</label>
+            </p-floatlabel>
+          </div>
+
+           <!-- Transaction Type -->
+          <div class="col-md-3">
+              <p-floatlabel class="w-full md:w-56" variant="on">
+                <p-select formControlName="transactionType" inputId="dtype" [options]="transactionTypes" optionLabel="name" optionValue="value" class="w-full" />
+                <label for="dtype">Transaction Type</label>
+             </p-floatlabel>
+          </div> 
+
+         
+          <!-- Bank Info -->
+          <div class="col-md-3">
+            <p-floatlabel variant="on">
+              <input pInputText class="form-control" id="on_Supplier_bankName" formControlName="bankName" autocomplete="off" />
+              <label for="on_Supplier_bankName">Bank Name</label>
+            </p-floatlabel>
+          </div>
+
+          <div class="col-md-3">
+            <p-floatlabel variant="on">
+              <input pInputText class="form-control" id="on_Supplier_branch" formControlName="branch" autocomplete="off" />
+              <label for="on_Supplier_branch">Branch Name</label>
+            </p-floatlabel>
+          </div>
+
+          <div class="col-md-3">
+             <p-floatlabel variant="on">
+              <input pInputText class="form-control" id="on_Supplier_accountNumber" formControlName="accountNumber" autocomplete="off" />
+              <label for="on_Supplier_accountNumber">Account Number</label>
+            </p-floatlabel>
+          </div>
+
+          <div class="col-md-3">
+             <p-floatlabel variant="on">
+              <input pInputText class="form-control" id="on_Supplier_ifsc" formControlName="ifsc" autocomplete="off" />
+              <label for="on_Supplier_ifsc">IFSC</label>
+            </p-floatlabel>
+          </div>
+
+           <div class="col-md-3">
+             <p-floatlabel variant="on">
+              <input pInputText class="form-control" id="on_Supplier_upiId" formControlName="UPID" autocomplete="off" />
+              <label for="on_Supplier_upiId">UPID</label>
+            </p-floatlabel>
+          </div>
+
+          <div class="col-md-3">
+            <p-floatlabel variant="on">
+                 <p-inputNumber
+                   inputId="on_Supplier_creditDays"
+                   formControlName="creditDays"
+                   mode="decimal"
+                   [minFractionDigits]="0"
+                   [maxFractionDigits]="0"
+                   autocomplete="off"
+                   class="w-full">
+                 </p-inputNumber>
+               <label for="on_Supplier_creditDays">Credit Days</label>
+            </p-floatlabel>
+         </div>
+
+          <div class="col-md-3">
+            <p-floatlabel variant="on">
+              <p-inputNumber
+               inputId="on_Supplier_creditLimit"
+               formControlName="creditLimit"
+               mode="currency"
+               currency="INR"
+               locale="en-IN"
+               [minFractionDigits]="0"
+               [maxFractionDigits]="2"
+               autocomplete="off"
+               class="w-full">
+            </p-inputNumber>
+           <label for="on_Supplier_creditLimit">Credit Limits</label>
+         </p-floatlabel>
+          </div>
+
+
+          <div class="col-md-3">
+             <p-floatlabel variant="on">
+              <input pInputText class="form-control" id="on_Supplier_msmeNumber" formControlName="MSMENumber" autocomplete="off" />
+              <label for="on_Supplier_msmeNumber">MSME Number</label>
+            </p-floatlabel>
+          </div>
+
+          <div class="col-md-3">
+             <p-floatlabel variant="on">
+              <input pInputText class="form-control" id="on_Supplier_eccNumber" formControlName="eccNumber" autocomplete="off" />
+              <label for="on_Supplier_eccNumber">ECC Number</label>
+            </p-floatlabel>
+          </div>
+
+         
+
+          <!-- Margins -->
+          <!-- GSTIN -->
+          <div class="col-md-3">
+            <p-floatlabel variant="on">
+              <input pInputText class="form-control" id="on_Supplier_gstIn" formControlName="gstIn" autocomplete="off" />
+              <label for="on_Supplier_gstIn">GSTIN</label>
+            </p-floatlabel>
+          </div>
+
+           <div class="col-md-3">
+            <p-floatlabel variant="on">
+                <p-datepicker  inputId="on_Supplier_gstRegistrationDate"  formControlName="gstRegistrationDate" showIcon iconDisplay="input" />
+                <label for="on_Supplier_gstRegistrationDate">Gst Registration Date</label>
+            </p-floatlabel>
+          </div>
+          <div class="col-md-12">
+            <p-floatlabel variant="on">
+              <textarea class="form-control"  pTextarea id="on_label" fluid formControlName="address" rows="3" cols="30" style="resize: none" class="h-full"></textarea>
+              <label for="on_label">Remark</label>
+            </p-floatlabel>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<p-toast></p-toast>

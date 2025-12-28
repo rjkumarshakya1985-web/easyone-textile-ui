@@ -1,0 +1,89 @@
+.login-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Roboto', sans-serif;
+}
+
+.login-card {
+  width: 400px;
+  padding: 2.5rem;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.login-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 18px 30px rgba(0, 0, 0, 0.2);
+}
+
+.login-card h2 {
+  margin: 0;
+  color: #333;
+  font-weight: 700;
+  text-align: center;
+}
+
+/* Inline label + input */
+.inline-field {
+  display: flex;
+  align-items: center;
+  gap: 1rem; /* space between label and input */
+}
+
+.inline-field label {
+  width: 100px; /* fixed label width */
+  font-weight: 500;
+  color: #555;
+}
+
+/* Input styling */
+.inline-field input[pInputText],
+.inline-field input[pPassword] {
+  flex: 1; /* fill remaining space */
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  transition: border-color 0.3s;
+}
+
+.inline-field input[pInputText]:focus,
+.inline-field input[pPassword]:focus {
+  border-color: #4e73df;
+  box-shadow: 0 0 0 2px rgba(78, 115, 223, 0.2);
+}
+
+/* Checkbox */
+.p-field-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+/* Button */
+.login-button {
+  width: 100%;
+  border: none;
+  border-radius: 6px;
+  padding: 0.7rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.title-gold {
+  background: linear-gradient(90deg, #d4af37, #f7e88b);
+  -webkit-background-clip: text;
+  color: transparent;
+  text-align: center;
+  text-shadow: 0 0 6px rgba(255, 215, 0, 0.5);
+}
+

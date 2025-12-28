@@ -1,0 +1,99 @@
+<p-toolbar class="page-header">
+  <div class="p-toolbar-group-left">
+    <p-breadcrumb [model]="breadcrumbItems" homeIcon="pi pi-home"></p-breadcrumb>
+  </div>
+
+  <div class="p-toolbar-group-right">
+    
+    <p-button label="Add Hsn Code" class="p-button-sm mr-2"  variant="text" [raised]="true" icon="pi pi-plus" (click)="showDialog()"/>
+   <p-button label="Export" variant="text" icon="pi pi-file-export" [raised]="true" severity="secondary" />
+  </div>
+</p-toolbar>
+
+<p-card>
+    <div class="d-flex justify-content-between mb-3">
+
+      <div class="flex-grow-1" style="max-width:300px">
+         <p-floatlabel variant="on">
+          <input pInputText id="on_label" [formControl]="searchControl" autocomplete="off" />
+          <label for="on_label">Search keyword</label>
+        </p-floatlabel>
+      </div>
+
+      <ng-container *ngIf="isLoading()">
+        <p-buttonGroup>
+          <p-button label="{{pageSize}}" outlined severity="secondary"></p-button>
+          <p-button label="Total ({{tblResult().totalRows}})" severity="secondary" disabled outlined></p-button>
+
+          <p-button icon="pi pi-angle-left"
+            outlined (click)="onPrevious()" severity="secondary"></p-button>
+
+          <p-button label="{{ pageIndex() + 1 }}/{{ numberOfPages() }}"
+            disabled outlined severity="secondary"></p-button>
+
+          <p-button icon="pi pi-angle-right"
+            outlined (click)="onNext()" severity="secondary"></p-button>
+        </p-buttonGroup>
+      </ng-container>
+
+    </div>
+
+    <!-- TABLE -->
+    <ng-container *ngIf="isLoading()">
+      <p-table [value]="tblResult().result" showGridlines class="p-datatable-sm">
+
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Actions</th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-row>
+          <tr>
+            <td>{{ row.name }}</td>
+            <td>{{row.description || '-'}}</td>
+            <td> 
+               <span class="px-2 py-1 rounded bg-red-50 text-red-600 cursor-pointer hover:bg-red-100 ml-2"
+                 pTooltip="Delete" (click)="deleteHsnCode(row.id)">
+                 <i class="pi pi-trash"></i>
+               </span>
+            </td>
+          </tr>
+        </ng-template>
+
+      </p-table>
+    </ng-container>
+
+</p-card>
+
+<p-dialog [(visible)]="visible" [modal]="true" [style]="{ width: '25rem' }">
+    <ng-template pTemplate="header">
+        <div class="inline-flex items-center justify-center gap-2">
+            <span class="font-bold whitespace-nowrap">Department</span>
+        </div>
+    </ng-template>
+
+    <form [formGroup]="hsnCodeForm">
+
+        <div class="flex items-center gap-4 mb-4">
+            <label for="name" class="font-semibold w-24 form-label">Name</label>
+            <input pInputText id="name" class="flex-auto" formControlName="name" />
+
+        </div>
+
+        <div class="flex items-center gap-4 mb-2">
+            <label for="description" class="font-semibold w-24 form-label">Description</label>
+            <input pInputText id="description" class="flex-auto" formControlName="description" />
+        </div>
+
+    </form>
+
+    <ng-template pTemplate="footer">
+        <p-button label="Cancel" [raised]="true" (click)="visible = false" severity="secondary" />
+        <p-button label="Save" [raised]="true" severity="info" (click)="saveHsnCode()" />
+    </ng-template>
+</p-dialog>
+
+<p-confirmDialog></p-confirmDialog>

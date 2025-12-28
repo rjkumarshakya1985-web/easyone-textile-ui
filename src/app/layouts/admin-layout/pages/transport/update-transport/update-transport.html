@@ -1,0 +1,109 @@
+<div class="card">
+  <div class="card-header">
+    Update Transport
+  </div>
+  <div class="card-body">
+    <form [formGroup]="transportForm" (ngSubmit)="submit()">
+
+      <!-- Row 1: Name, City, State -->
+      <div class="row mb-3">
+       
+        <div class="col-md-4 mb-3">
+          <label for="name" class="form-label">Name*</label>
+          <input type="text" class="form-control" id="name" formControlName="name" placeholder="Transport Name" />
+          <div *ngIf="transportForm.get('name')?.touched && transportForm.get('name')?.invalid" class="text-danger">
+            Name is required
+          </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <label for="transportType" class="form-label">Transport Type*</label>
+            <select class="form-select" id="transportType" formControlName="transportType">
+              <option value="" disabled selected>Select Type</option>
+              <option *ngFor="let type of transportTypes" [value]="type.value">{{ type.label }}</option>
+            </select>
+            <div *ngIf="transportForm.get('transportType')?.touched && transportForm.get('transportType')?.invalid" class="text-danger">
+              Transport Type is required
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+          <label for="registrationType" class="form-label">Registration Type*</label>
+          <select class="form-select" id="registrationType" formControlName="registrationType">
+            <option value="" disabled selected>Select Type</option>
+            <option *ngFor="let type of registrationTypes" [value]="type.value">{{ type.label }}</option>
+          </select>
+          <div *ngIf="transportForm.get('registrationType')?.touched && transportForm.get('registrationType')?.invalid" class="text-danger">
+            Registration Type is required
+          </div>
+       </div>
+    </div>
+
+      <!-- Row 2: GSTIN, Registration Type, Address -->
+      <div class="row mb-3">
+        
+        <div class="col-md-4 mb-3">
+          <label for="stateId" class="form-label">State*</label>
+          <select class="form-select" id="stateId" formControlName="stateId" 
+             (change)="onStateChange($event)">
+            <option value="" selected disabled>Select State</option>
+            <option *ngFor="let s of states$ | async" [value]="s.id">{{ s.name }}</option>
+         </select>
+          <div *ngIf="transportForm.get('stateId')?.touched && transportForm.get('stateId')?.invalid" class="text-danger">
+           State is required
+         </div>
+       </div>
+
+       <div class="col-md-4 mb-3">
+           <label for="cityId" class="form-label">City*</label>
+           <select class="form-select" id="cityId" formControlName="cityId">
+              <option value="" selected disabled>Select City</option>
+              <option *ngFor="let c of cities$ | async" [value]="c.id">{{ c.name }}</option>
+           </select>
+           <div *ngIf="transportForm.get('cityId')?.touched && transportForm.get('cityId')?.invalid" class="text-danger">
+              City is required
+           </div>
+       </div>
+     
+       <div class="col-md-4 mb-3">
+          <label for="gstin" class="form-label">GSTIN</label>
+          <input type="text" class="form-control" id="gstin" formControlName="gstin" placeholder="GSTIN" />
+          <div *ngIf="transportForm.get('gstin')?.touched && transportForm.get('gstin')?.invalid" class="text-danger">
+            Invalid GSTIN
+          </div>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+       <div class="col-md-12 mb-3">
+          <label for="address" class="form-label">Address*</label>
+          <input type="text" class="form-control" id="address" formControlName="address" placeholder="Address" />
+        </div>
+    </div>
+      <!-- Row 3: Pincode, Mobile, Email -->
+      <div class="row mb-3">
+        <div class="col-md-4 mb-3">
+          <label for="pincode" class="form-label">Pincode*</label>
+          <input type="text" class="form-control" id="pincode" formControlName="pincode" placeholder="Pincode" />
+        </div>
+
+        <div class="col-md-4 mb-3">
+          <label for="mobile" class="form-label">Mobile*</label>
+          <input type="text" class="form-control" id="mobile" formControlName="mobile" placeholder="Mobile Number" />
+        </div>
+
+        <div class="col-md-4 mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" class="form-control" id="email" formControlName="email" placeholder="Email" />
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="d-flex justify-content-end mt-3">
+        <button type="button" class="btn btn-secondary me-2" (click)="cancel()">Cancel</button>
+        <button type="submit" class="btn btn-success">Save</button>
+      </div>
+
+    </form>
+  </div>
+</div>

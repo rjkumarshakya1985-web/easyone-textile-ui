@@ -1,0 +1,41 @@
+.sidebar-menu {
+  border: none;
+  background: #ffffff;
+  border-radius: 0;
+  min-height: 100vh;
+   box-shadow: 4px 0 10px -2px rgba(0, 0, 0, 0.1);
+  padding: 0.5rem;
+}
+
+.p-panelmenu .p-panelmenu-header {
+  background: transparent;
+  border: none;
+}
+
+.p-panelmenu .p-menuitem-link {
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  color: #444;
+  transition: background 0.3s;
+}
+
+.p-panelmenu .p-menuitem-link:hover {
+  background: #e3f2fd;
+  color: #1976d2;
+}
+
+.p-panelmenu-icon {
+  margin-right: 0.5rem;
+}
+
+.p-panelmenu {
+    gap:0;
+}
+
+.sidebar-menu
+{
+  font-size: 13px;
+  border: 1px solid #dcdcdc;
+}
+
+

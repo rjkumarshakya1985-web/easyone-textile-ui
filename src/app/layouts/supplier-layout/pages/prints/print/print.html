@@ -1,0 +1,217 @@
+
+<div class="card" *ngIf="printData()">
+    <p-tabs [value]="value">
+        <p-tablist>
+            <p-tab [value]="0">Parcel Sticker</p-tab>
+            <p-tab [value]="1">SaleVoucher</p-tab>
+            <p-tab [value]="2">Product Sticker</p-tab>
+        </p-tablist>
+        <p-tabpanels>
+        <p-tabpanel [value]="0">
+          <div>
+            <div class="panel panel-default">
+                <div class="panel-heading d-flex justify-content-between align-items-center">
+                  <div>
+                   <p-button label="Cancel" [raised]="true" icon="pi pi-times" severity="secondary" (click)="cancel()"></p-button>
+                   <p-button label="Print" [raised]="true" icon="pi pi-print" severity="success" class="ml-2" (click)="printPage('print-section')"></p-button>
+                 </div>
+                </div>
+                <hr>
+                <div class="panel-body" id="print-section">
+                <!-- Title -->
+                <div class="text-center mb-3">
+                   <h2 style="font-size:40px;">
+                     <b>{{ printData()?.saleVoucherPrint?.companyName }}</b>
+                  </h2>
+                </div>
+                <div class="well">
+                    <div class="row">
+                        <!-- Left Section -->
+                        <div class="col-md-7">
+                           <div class="row mb-2">
+                             <div class="col-md-4">
+                                <h4 class="pull-left">Dispatch No :</h4>
+                             </div>
+                             <div class="col-md-8">
+                                <h4><b>{{ printData()?.saleVoucherPrint?.id }}</b></h4>
+                             </div>
+                          </div>
+                          <div class="row mb-2">
+                              <div class="col-md-4">
+                               <h4 class="pull-left">Invoice No :</h4>
+                              </div>
+                              <div class="col-md-8">
+                               <h4><b>{{ printData()?.saleVoucherPrint?.inVoiceNo }}</b></h4>
+                              </div>
+                         </div>
+                         <div class="row mb-2">
+                            <div class="col-md-4">
+                              <h4 class="pull-left">Supplier :</h4>
+                            </div>
+                           <div class="col-md-8">
+                             <h4><b>{{ printData()?.supplierPrint?.name }}</b></h4>
+                           </div>
+                         </div>
+                         <div class="row mb-2">
+                            <div class="col-md-4">
+                              <h4 class="pull-left">Transport :</h4>
+                           </div>
+                           <div class="col-md-8">
+                               <h4><b>{{ printData()?.saleVoucherPrint?.transportName }}</b></h4>
+                          </div>
+                       </div>
+            </div>
+
+            <!-- Right Section - Barcode -->
+            <div class="col-md-5 text-center">
+
+            <ngx-barcode6
+  [bc-value]="printData()?.saleVoucherPrint?.id?.toString() ?? ''"
+  [bc-display-value]="true"
+  [bc-width]="4">
+</ngx-barcode6>
+
+
+            </div>
+
+                   </div>
+                </div>
+             <div class="pull-right">
+              <b>Date :{{ printData()?.saleVoucherPrint?.date | date:'dd-MMM-yyyy' }}</b>
+            </div>
+               </div>
+            </div>
+         </div>
+       </p-tabpanel>
+            <p-tabpanel [value]="1">
+                <p-button label="Cancel" [raised]="true" icon="pi pi-times" severity="secondary" (click)="cancel()"></p-button>
+                <p-button label="Print" [raised]="true" icon="pi pi-print" severity="success" class="ml-2" (click)="printPage('parcel-salevoucher')"></p-button>
+                   <hr>
+              <div id="parcel-salevoucher">
+                    <div style="text-align: center;" > <h4><b><u>DISPATCH VOUCHER</u></b></h4></div>
+                    <hr>
+                    <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+                                 <h2>{{ printData()?.saleVoucherPrint?.companyName }}</h2>
+                                 <strong style="text-align: center;">{{ printData()?.saleVoucherPrint?.address }}</strong>
+                            </div>
+                     </div>  
+                    <hr style="border: 1px solid">
+                    <div class="row">
+                            <div class="col-xs-6 col-sm-6 col-md-6">
+                                    <h6><b><u>{{printData()?.saleVoucherPrint?.companyName}}</u></b></h6>
+                                    <strong>DISPATCH NO :</strong>{{printData()?.saleVoucherPrint?.id}}<br>
+                                    <strong>DISPATCH DATE :</strong>{{printData()?.saleVoucherPrint?.date | date}}<br>
+                                    <strong>GSTIN NO :</strong> {{printData()?.saleVoucherPrint?.gstIn}}  
+                                 
+                            </div>
+                            <div class="col-xs-6 col-sm-6 col-md-6 text-right">
+                                    <h6><b><u>Supplier Detail</u></b></h6>
+                                    <strong>M/S :</strong>{{ printData()?.supplierPrint?.name }}<br>
+                                    <strong>INVOICE NO :</strong>{{ printData()?.saleVoucherPrint?.inVoiceNo || '-' }}<br>
+                                    <strong>GSTIN NO :</strong>{{ printData()?.supplierPrint?.gstIn }}<br>
+                                    <strong>TRANSPORT :</strong>{{ printData()?.saleVoucherPrint?.transportName}}<br>
+                            </div>
+                    </div>  
+                    <hr style="border: 1px solid">
+                <table class="table table-bordered"> 
+                     <thead>
+                         <tr>
+                           <th>S.No.</th>
+                           <th>Product</th>
+                           <th>HSNCode</th>
+                           <th>Qty</th>
+                           <th>Purchase Rate</th>
+                           <th>Total</th>
+                        </tr>
+                   </thead>
+                   <tbody>
+                         <tr *ngFor="let p of (printData()?.billingDetailPrints || []); let idx = index">
+                             <td>{{idx+1}}</td>
+                             <td>{{p.productName}}</td>
+                             <td>{{p.hsnCode}}</td>
+                             <td>{{p.qty}}</td>
+                             <td>{{p.purchasePrice}}</td>
+                             <td>{{p.total}}</td>
+                         </tr>
+                 </tbody>
+                </table>
+                <div class="row">
+                        <div class="col-xs-8 col-sm-8 col-md-8">
+                            <br>
+                          {{printData()?.saleVoucherPrint?.companyName}}                            
+                        </div>
+                        <div class="col-xs-4 col-sm-4 col-md-4 ">
+                            <div class="text-right">
+                            <ngx-barcode6 [bc-value]="printData()?.saleVoucherPrint?.id?.toString() ?? ''"  [bc-display-value]="false" [bc-font-size]="5" [bc-height]="40" [bc-display-value]="true" ></ngx-barcode6>   
+                            </div>
+                        </div>
+                </div>  
+              </div>
+            </p-tabpanel>
+            <p-tabpanel [value]="2">
+                <p-button label="Cancel" [raised]="true" icon="pi pi-times" severity="secondary" (click)="cancel()"></p-button>
+                <p-button label="Print" [raised]="true" icon="pi pi-print" severity="success" class="ml-2" (click)="printPage('sticker-print-section')"></p-button>
+                   <hr>
+               <div id="sticker-print-section">
+               <div *ngFor="let sticker of printData()?.stickerPrints">
+                <br>
+                <div style="
+  width: 260px;
+  height: auto;
+  background: #fff;
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-family: Arial, serif;
+  color: #000;
+  box-sizing: border-box;
+  border: 1px solid #e0e0e0;
+">
+
+  <!-- Header -->
+  <div style="font-size: 14px; font-weight: bold;">
+    SSBD
+  </div>
+
+  <!-- Product + Supplier -->
+  <div style="font-size: 11px;">
+    {{sticker.productName}}/{{sticker.supplierCode}}
+  </div>
+
+  <!-- MRP -->
+  <div style="font-size: 14px; font-weight: bold;">
+    MRP Rs. {{sticker.mrpRate}}/-
+  </div>
+
+  <!-- Rates -->
+  <div style="
+    font-size: 11px;
+    text-align: center;
+    margin-bottom: 4px;
+  ">
+    {{sticker.wholeSaleRate}} &nbsp;&nbsp; {{sticker.retailRate}}
+  </div>
+
+  <!-- Barcode -->
+  <div style="text-align: center;">
+    <ngx-barcode6
+      [bc-value]="sticker.barcode"
+      [bc-format]="'CODE128'"
+      [bc-width]="1"
+      [bc-height]="32"
+      [bc-margin]="0"
+      [bc-font-size]="11"
+      [bc-display-value]="true"
+      [bc-margin-top]="2"
+      [bc-margin-bottom]="2">
+    </ngx-barcode6>
+  </div>
+
+</div>
+
+             </div>
+           </div>
+            </p-tabpanel>
+        </p-tabpanels>
+    </p-tabs>
+</div>

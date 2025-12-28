@@ -1,0 +1,44 @@
+<p-toolbar class="page-header">
+  <div class="p-toolbar-group-left">
+    <p-breadcrumb [model]="breadcrumbItems" homeIcon="pi pi-home"></p-breadcrumb>
+  </div>
+
+  <div class="p-toolbar-group-right">
+    <button pButton type="button" label="Add Customer" icon="pi pi-plus" class="p-button-sm p-mr-2" (click)="goToAddCustomer()"></button>
+    <button pButton type="button" label="Export" icon="pi pi-file-export" class="p-button-sm p-button-secondary"></button>
+  </div>
+</p-toolbar>
+<p-card>
+   <p-table class="transport-table" 
+  [value]="customers" 
+  [paginator]="true" 
+  [rows]="5" 
+  [rowsPerPageOptions]="[5, 10, 20]"
+  class="p-datatable-sm">
+
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Name</th>
+      <th>GST No.</th>
+      <th>Mobile</th>
+      <th>Register Type</th>
+      <th>Actions</th>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body" let-row>
+    <tr>
+      <td>{{ row.customerName }}</td>
+      <td>{{row.gstin}}</td>
+      <td>{{row.mobile}}</td>
+      <td>{{row.registrationType}}</td>
+      <td>
+        <button pButton icon="pi pi-pencil" class="p-button-text p-button-sm" (click)="goToEditCustomer(row.id)"></button>
+        <button pButton icon="pi pi-trash"  class="p-button-text p-button-sm p-button-danger"></button>
+      </td>
+    </tr>
+  </ng-template>
+
+</p-table>
+</p-card>
+

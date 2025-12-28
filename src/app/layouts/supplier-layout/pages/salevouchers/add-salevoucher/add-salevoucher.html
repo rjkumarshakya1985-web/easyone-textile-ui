@@ -1,0 +1,288 @@
+<form [formGroup]="voucherForm" (ngSubmit)="submit()">
+<p-toolbar class="mb-3">
+  <div class="p-toolbar-group-left">
+    <h3 class="page-title">Parcel</h3>
+  </div>
+
+  <div class="p-toolbar-group-right">
+     <button
+        pButton
+        type="submit"
+        label="{{isEdit?'Update':'Create'}}"
+        icon="pi pi-check"
+        class="p-button-primary me-2">
+     </button>
+      <button
+        pButton
+        type="button"
+        label="Cancel"
+        icon="pi pi-times"
+        class="p-button-danger">
+      </button>
+  </div>
+</p-toolbar>
+
+<p-card class="p-mb-3">
+    <div class="row g-3">
+
+      <!-- Date -->
+      <div class="col-md-3">
+        <p-floatlabel variant="on" class="w-full">
+           <p-datepicker  formControlName="date"inputId="on_date" showIcon iconDisplay="input" 
+            [ngClass]="{
+              'ng-invalid ng-dirty':
+              voucherForm.get('date')?.invalid &&
+              voucherForm.get('date')?.touched
+            }"/>
+           <label for="on_date">Choose a date</label>
+        </p-floatlabel>
+      </div>
+
+      <!-- Transport -->
+      <div class="col-md-3">
+        <p-floatlabel class="w-full md:w-56" variant="on">
+                <p-select formControlName="transportId" inputId="transport" [options]="(transports$ | async) ?? []" optionLabel="name" optionValue="id" class="w-full" 
+                  [ngClass]="{
+              'ng-invalid ng-dirty':
+              voucherForm.get('transportId')?.invalid &&
+              voucherForm.get('transportId')?.touched
+            }" />
+                <label for="transport">Select Transport</label>
+        </p-floatlabel>
+      </div>
+
+      <!-- Status -->
+      <div class="col-md-3">
+       <p-floatLabel variant="on" class="w-full">
+         <p-select
+           formControlName="status"
+           inputId="status"
+           [options]="statuses"
+           optionLabel="label"
+           optionValue="value"
+           class="w-full" [ngClass]="{
+              'ng-invalid ng-dirty':
+              voucherForm.get('status')?.invalid &&
+              voucherForm.get('status')?.touched
+            }">
+         </p-select>
+         <label for="status">Status</label>
+       </p-floatLabel>
+      </div>
+
+      <!-- Number of Packets -->
+      <div class="col-md-3">
+        <p-floatLabel variant="on" class="w-full">
+           <p-inputNumber
+             formControlName="numberOfPacket"
+             inputId="on_Product_numberOfPacket"
+             [min]="1"
+             [max]="10"
+             [step]="1"
+             mode="decimal"
+             [showButtons]="true"
+             class="w-full" [ngClass]="{
+              'ng-invalid ng-dirty':
+              voucherForm.get('numberOfPacket')?.invalid &&
+              voucherForm.get('numberOfPacket')?.touched
+            }">
+          </p-inputNumber>
+             <label for="on_Product_numberOfPacket">Number of Packet</label>
+       </p-floatLabel>
+      </div>
+
+      <!-- Supplier Bill Number -->
+      <div class="col-md-3">
+         
+            <input pInputText id="supplierBillNumber" class="form-control"   formControlName="supplierBillNumber" autocomplete="off" 
+           [ngClass]="{
+              'ng-invalid ng-dirty':
+              voucherForm.get('supplierBillNumber')?.invalid &&
+              voucherForm.get('supplierBillNumber')?.touched
+            }"  placeholder="My Bill Number"/>
+      </div>
+
+
+      <!-- Description -->
+      
+    </div>
+</p-card>
+</form>
+
+
+
+  <div class="tab-content" class="myTabContent">
+
+    <!-- Products Tab -->
+    <div class="tab-pane fade show active" id="products" role="tabpanel" aria-labelledby="products-tab">
+
+      <div class="d-flex justify-content-end mb-3">
+        <button class="btn btn-outline-secondary me-2" (click)="showDialog()">
+          <i class="bi bi-cart3"></i> Choose Product
+        </button>
+        <!-- <button class="btn btn-primary">
+          <i class="bi bi-plus-lg"></i> Create New Product
+        </button> -->
+      </div>
+
+      <div class="table-responsive">
+       <p-table [value]="saleVouherDetail()" responsiveLayout="scroll">
+  <ng-template pTemplate="header">
+    <tr>
+      <th>S.No</th>
+      <th>Category</th>
+      <th>Product</th>
+      <th>Quantity</th>
+      <th>Purchase Price</th>
+      <th>WholeSale Price</th>
+      <th>Retail Price</th>
+      <th>MRP Price</th>
+      <th>Total</th>
+      <th>Action</th>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body" let-item let-i="rowIndex">
+    <tr>
+      <td>{{ i + 1 }}</td>
+      <td>{{ item.stockGroupName }}</td>
+      <td>{{ item.productName }}</td>
+      <td>{{ item.qty }}</td>
+      <td>{{ item.purchasePrice | number:'1.2-2' }}</td>
+      <td>{{ item.wholeSalePrice | number:'1.2-2' }}</td>
+      <td>{{ item.retailPrice | number:'1.2-2' }}</td>
+      <td>{{ item.mrpPrice | number:'1.2-2' }}</td>
+      <td>{{ (item.purchasePrice * item.qty) | number:'1.2-2' }}</td>
+      <td>
+        <button pButton icon="pi pi-trash" class="p-button-text p-button-danger"
+                (click)="removeItem(i)"></button>
+      </td>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="10" class="text-center text-muted">No products added</td>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <tr class="footer-bold">
+      <td colspan="3" class="text-right">TOTAL</td>
+      <td>{{ getTotalQty() }}</td>
+      <td colspan="3"></td>
+      <td>SUM</td>
+      <td>{{ getTotalWholeSaleAmount() | number:'1.2-2' }}</td>
+      <td></td>
+    </tr>
+  </ng-template>
+</p-table>
+
+      </div>
+
+    </div>
+
+    <!-- Steppers Tab -->
+    <div class="tab-pane fade" id="steppers" role="tabpanel" aria-labelledby="steppers-tab">
+      <h5>Stepper Section (coming soon)</h5>
+    </div>
+
+    <!-- Add LR Tab -->
+    <div class="tab-pane fade" id="addlr" role="tabpanel" aria-labelledby="addlr-tab">
+      <h5>LR Details section (coming soon)</h5>
+    </div>
+
+  </div>
+
+
+
+
+
+<!-- Tabs -->
+
+<p-dialog  header="SaleVoucher - Products" [modal]="true" position="top" [(visible)]="visible"
+  [style]="{ width: '70rem' }">
+  <form [formGroup]="productForm" style="margin-top:5px;">
+    <div class="row mb-4">
+      <div class="col-md-3">  
+        <p-floatlabel class="w-full" variant="on">
+          <p-select
+            formControlName="stockGroupId"
+            inputId="on_Product_stockGroup"
+            [options]="stockGroups()"
+            optionLabel="name"
+            optionValue="id"
+             appendTo="body"
+            class="w-full"
+            [ngClass]="{
+              'ng-invalid ng-dirty':
+              productForm.get('stockGroupId')?.invalid &&
+              productForm.get('stockGroupId')?.touched
+            }">
+          </p-select>
+          <label for="on_Product_stockGroup">Select Item Category</label>
+        </p-floatlabel>
+      </div>
+
+      <div class="col-md-3">
+       <p-floatlabel variant="on">
+         <p-autocomplete
+           formControlName="selectproduct"
+           [suggestions]="filteredProducts()"
+           (completeMethod)="searchProduct($event)"
+           optionLabel="name"
+           inputId="selectproduct"
+           placeholder=" "
+           appendTo="body"
+           [forceSelection]="true"
+           styleClass="w-full"
+           inputStyleClass="w-full"
+           [ngClass]="{
+            'ng-invalid ng-dirty':
+             productForm.get('selectproduct')?.invalid &&
+             productForm.get('selectproduct')?.touched
+           }"
+         >
+       <ng-template let-product pTemplate="item">
+         <div style="display: flex; flex-direction: column;">
+    <span style="font-weight: 500;">{{ product.name }}</span>
+    <span style="font-size: 0.85rem; color: gray; display: block;">
+      {{ product.hsnCode }} - {{ product.barcode }}
+    </span>
+  </div>
+       </ng-template>
+       <ng-template pTemplate="header">
+          <div class="font-medium px-3 py-2">Select Product</div>
+       </ng-template>
+       </p-autocomplete>
+         <label for="selectproduct">Select Product</label>
+       </p-floatlabel>
+   </div>
+    
+    <div class="col-md-3">
+       <p-floatlabel variant="on">
+         <p-inputnumber
+           inputId="quantity"
+           formControlName="quantity"
+           [useGrouping]="false"
+           [min]="1"
+           class="w-full"
+           inputStyleClass="w-full" 
+           [ngClass]="{
+            'ng-invalid ng-dirty':
+             productForm.get('quantity')?.invalid &&
+             productForm.get('quantity')?.touched
+           }">
+         </p-inputnumber>
+        <label for="quantity">Quantity</label>
+      </p-floatlabel>
+     </div>
+     
+     <div class="col-md-3">
+        <p-button label="Add Item"  (click)="addProductToSaleVoucher()"/>
+      </div>
+    </div>
+  </form>
+</p-dialog>
+
+<p-confirmDialog></p-confirmDialog>

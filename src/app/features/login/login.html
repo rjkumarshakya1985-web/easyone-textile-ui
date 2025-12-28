@@ -1,0 +1,28 @@
+<div class="login-container"
+             style="background-image: radial-gradient(circle at left top, var(--p-primary-50), var(--p-primary-50))">
+  <div class="login-card p-shadow-5 p-d-flex p-flex-column">
+    <h3 class="title-gold">Shiv Sahai Bhagwan Das</h3>
+
+    <div class="p-field inline-field">
+      <label for="username">Username</label>
+      <input id="username" type="text" pInputText [(ngModel)]="username" placeholder="Enter username" />
+    </div>
+
+    <div class="p-field inline-field">
+      <label for="password">Password</label>
+      <input id="password" type="password" pPassword [(ngModel)]="password" feedback="false" placeholder="Enter password" />
+    </div>
+
+    <div class="p-field-checkbox">
+      <p-checkbox [(ngModel)]="rememberMe" inputId="rememberMe"></p-checkbox>
+      <label for="rememberMe">Remember Me</label>
+    </div>
+
+    <div>
+      <button pButton type="button" label="Login" class="p-button-success login-button" (click)="login()"></button>
+    </div>
+  </div>
+</div>
+
+<p-toast></p-toast>
+
