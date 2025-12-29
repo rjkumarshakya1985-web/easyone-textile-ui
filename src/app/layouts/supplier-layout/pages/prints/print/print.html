@@ -49,7 +49,7 @@
                               <h4 class="pull-left">Supplier :</h4>
                             </div>
                            <div class="col-md-8">
-                             <h4><b>{{ printData()?.supplierPrint?.name }}</b></h4>
+                             <h4><b>{{ printData()?.supplierPrint?.supplierCode }}</b></h4>
                            </div>
                          </div>
                          <div class="row mb-2">
@@ -153,51 +153,60 @@
                 <p-button label="Cancel" [raised]="true" icon="pi pi-times" severity="secondary" (click)="cancel()"></p-button>
                 <p-button label="Print" [raised]="true" icon="pi pi-print" severity="success" class="ml-2" (click)="printPage('sticker-print-section')"></p-button>
                    <hr>
-               <div id="sticker-print-section">
-               <div *ngFor="let sticker of printData()?.stickerPrints">
+            <div id="sticker-print-section">
+              <div *ngFor="let sticker of printData()?.stickerPrints">
                 <br>
-                <div style="
-  width: 260px;
-  height: auto;
-  background: #fff;
-  border-radius: 12px;
-  padding: 10px 12px;
-  font-family: Arial, serif;
-  color: #000;
-  box-sizing: border-box;
-  border: 1px solid #e0e0e0;
-">
+                <div style="width: 260px;
+                            height: auto;
+                            background: #fff;
+                            border-radius: 12px;
+                            padding: 10px 12px;
+                            font-family: Arial, serif;
+                            color: #000;
+                            box-sizing: border-box;
+                            border: 1px solid #e0e0e0;">
 
-  <!-- Header -->
-  <div style="font-size: 14px; font-weight: bold;">
-    SSBD
-  </div>
+               <!-- Header -->
+            <div style="font-size: 14px; font-weight: bold;">
+                   SSBD
+            </div>
 
-  <!-- Product + Supplier -->
-  <div style="font-size: 11px;">
-    {{sticker.productName}}/{{sticker.supplierCode}}
-  </div>
+            <!-- Product + Supplier -->
+            <div style="font-size: 11px;">
+              {{sticker.productName}}/{{sticker.supplierCode}}
+            </div>
 
-  <!-- MRP -->
-  <div style="font-size: 14px; font-weight: bold;">
-    MRP Rs. {{sticker.mrpRate}}/-
-  </div>
+            <!-- MRP -->
+            <div style="font-size: 14px; font-weight: bold;">
+             MRP Rs. {{sticker.mrpRate}}/-
+            </div>
 
-  <!-- Rates -->
-  <div style="
-    font-size: 11px;
-    text-align: center;
-    margin-bottom: 4px;
-  ">
-    {{sticker.wholeSaleRate}} &nbsp;&nbsp; {{sticker.retailRate}}
-  </div>
+            <!-- Rates -->
+            
 
-  <!-- Barcode -->
-  <div style="text-align: center;">
+            <!-- Barcode -->
+           <div style="text-align:center;">
+  
+  <div style="display:inline-block;">
+    
+    <!-- Top Row -->
+    <div style="
+        font-size:11px;
+        margin-bottom:3px;
+        margin-left: 9px;
+        display:flex;
+        justify-content:space-between;
+        width:90%;
+    ">
+      <span>{{ sticker.wholeSaleRate }}</span>
+      <span>{{ sticker.retailRate }}</span>
+    </div>
+
+    <!-- Barcode -->
     <ngx-barcode6
       [bc-value]="sticker.barcode"
       [bc-format]="'CODE128'"
-      [bc-width]="1"
+      [bc-width]="3"
       [bc-height]="32"
       [bc-margin]="0"
       [bc-font-size]="11"
@@ -205,10 +214,13 @@
       [bc-margin-top]="2"
       [bc-margin-bottom]="2">
     </ngx-barcode6>
+
   </div>
 
 </div>
 
+
+               </div>
              </div>
            </div>
             </p-tabpanel>

@@ -18,6 +18,7 @@ export interface SaleVoucherPrint {
 
 export interface SupplierPrint {
   name: string;
+  supplierCode:string;
   gstIn:string;
 }
 

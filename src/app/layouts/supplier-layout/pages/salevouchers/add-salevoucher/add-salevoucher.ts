@@ -352,17 +352,17 @@ submit():void
   
   //  update when edit
  if (this.isEdit) {
-  this.saleVoucherService.update(request).subscribe(status => {
-    if (status) {
+  this.saleVoucherService.update(request).subscribe(id => {
+    if (id) {
       this.messageService.add({ severity: 'success', summary: 'Updated', detail: 'Sale voucher updated successfully' });
-      this.router.navigate(['supplier/salevouchers']);
+      this.router.navigate(['supplier/print', id]);  
     }
   });
 } else {
-  this.saleVoucherService.create(request).subscribe(status => {
-    if (status) {
+  this.saleVoucherService.create(request).subscribe(id => {
+    if (id) {
       this.messageService.add({ severity: 'success', summary: 'Saved', detail: 'Sale voucher created successfully' });
-      this.router.navigate(['supplier/salevouchers']);
+      this.router.navigate(['supplier/print', id]);  
     }
   });
 }
