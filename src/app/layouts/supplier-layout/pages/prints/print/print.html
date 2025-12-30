@@ -121,8 +121,6 @@
                            <th>Product</th>
                            <th>HSNCode</th>
                            <th>Qty</th>
-                           <th>Purchase Rate</th>
-                           <th>Total</th>
                         </tr>
                    </thead>
                    <tbody>
@@ -131,10 +129,14 @@
                              <td>{{p.productName}}</td>
                              <td>{{p.hsnCode}}</td>
                              <td>{{p.qty}}</td>
-                             <td>{{p.purchasePrice}}</td>
-                             <td>{{p.total}}</td>
                          </tr>
                  </tbody>
+                  <tfoot>
+                      <tr>
+                        <th colspan="3" class="text-end">Total</th>
+                        <th>{{ getTotalQty() }}</th>
+                      </tr>
+                  </tfoot>
                 </table>
                 <div class="row">
                         <div class="col-xs-8 col-sm-8 col-md-8">
@@ -167,9 +169,11 @@
                             border: 1px solid #e0e0e0;">
 
                <!-- Header -->
-            <div style="font-size: 14px; font-weight: bold;">
-                   SSBD
-            </div>
+           
+             <div style="font-size:14px;margin-bottom:3px;display:flex;justify-content:space-between;width:98%;">
+                <b>SSBD</b>
+                <small>{{ sticker.printDateString }}</small>
+             </div>
 
             <!-- Product + Supplier -->
             <div style="font-size: 11px;">
@@ -181,26 +185,17 @@
              MRP Rs. {{sticker.mrpRate}}/-
             </div>
 
-            <!-- Rates -->
             
 
             <!-- Barcode -->
            <div style="text-align:center;">
-  
-  <div style="display:inline-block;">
-    
-    <!-- Top Row -->
-    <div style="
-        font-size:11px;
-        margin-bottom:3px;
-        margin-left: 9px;
-        display:flex;
-        justify-content:space-between;
-        width:90%;
-    ">
-      <span>{{ sticker.wholeSaleRate }}</span>
-      <span>{{ sticker.retailRate }}</span>
-    </div>
+                   <div style="display:inline-block;">
+                    <!-- Top Row -->
+                     <div style="font-size:11px;margin-bottom:3px;margin-left: 9px;
+                                 display:flex;justify-content:space-between;width:90%;">
+                            <span>{{ sticker.wholeSaleRate }}</span>
+                            <span>{{ sticker.retailRate }}</span>
+                    </div>
 
     <!-- Barcode -->
     <ngx-barcode6

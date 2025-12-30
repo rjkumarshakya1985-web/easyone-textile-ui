@@ -31,8 +31,8 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./print.css'],
 })
 export class Print {
-  value:number=2;
-  code = '123456789012';
+  value:number=0;
+
 
   // ✅ Correct Signal Declaration
   printData = signal<SaleVoucherPrintResponse | null>(null);
@@ -88,5 +88,11 @@ export class Print {
   cancel()
   {
     this.router.navigate(['supplier/salevouchers']);
+  }
+
+  getTotalQty(): number 
+  {   
+      return (this.printData()?.billingDetailPrints || [])
+     .reduce((sum, item) => sum + (Number(item.qty) || 0), 0);
   }
 }

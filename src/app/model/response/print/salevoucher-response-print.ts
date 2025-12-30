@@ -41,6 +41,7 @@ export interface StickerPrint {
   supplierCode: string;
   name?: string | null;
   productName:string;
+  printDateString:string;
 }
 
 
