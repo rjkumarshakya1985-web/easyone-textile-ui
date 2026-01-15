@@ -66,7 +66,7 @@ export class SalevoucherList {
 
   breadcrumbItems: MenuItem[] = [
     { label: 'Dashboard', routerLink: '/supplier' },
-    { label: 'Products' }
+    { label: 'SaleVoucher' }
   ];
 
   constructor(

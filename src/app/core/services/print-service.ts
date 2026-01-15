@@ -23,4 +23,6 @@ export class PrintService {
    supplierStickerSaleVoucherParcelPrint(saleVoucherId:number): Observable<SaleVoucherPrintResponse> {
         return this.http.get<SaleVoucherPrintResponse>(`${this.baseUrl}/${saleVoucherId}`);
       }
+
+    
 }

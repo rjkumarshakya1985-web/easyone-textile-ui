@@ -71,6 +71,11 @@ export class Nav {
         routerLink: ['/admin/dashboard']
       },
       {
+        label: 'Gst Rule',
+        icon: 'pi pi-fw pi-book',
+        routerLink: ['/admin/gstrule']
+      },
+      {
         label: 'Master Data',
         icon: 'pi pi-fw pi-cog',
         items: [

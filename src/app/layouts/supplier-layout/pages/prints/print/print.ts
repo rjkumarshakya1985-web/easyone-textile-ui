@@ -31,7 +31,8 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./print.css'],
 })
 export class Print {
-  value:number=0;
+  
+  value:number = 0;
 
 
   // ✅ Correct Signal Declaration

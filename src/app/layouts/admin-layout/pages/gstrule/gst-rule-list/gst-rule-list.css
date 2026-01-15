@@ -1,0 +1,35 @@
+    
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 10px;
+}
+
+/* Right side action buttons container */
+.header-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Optional: adjust button size */
+.header-actions .p-button-sm {
+  font-size: 0.85rem;
+}
+
+.p-toolbar
+{
+ padding: 1px 11px 0px 1px;
+}
+
+.mr-2 {
+  margin-right: 0.5rem; /* Adjust space as needed */
+}
+
+.form-label {
+  width: 90px; /* set any width you want */
+  font-weight: 600;
+  display: inline-block;
+}
+
