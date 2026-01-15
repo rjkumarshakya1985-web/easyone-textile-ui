@@ -1,0 +1,83 @@
+<p-toolbar class="page-header">
+  <div class="p-toolbar-group-left">
+    <p-breadcrumb [model]="breadcrumbItems" homeIcon="pi pi-home"></p-breadcrumb>
+  </div>
+
+  <div class="p-toolbar-group-right">
+   <p-button label="Create Gst Rule" class="p-button-sm mr-2"  variant="text" [raised]="true" icon="pi pi-plus" (click)="showDialog()"/>
+  </div>
+</p-toolbar>
+
+<p-card>
+    <!-- TABLE -->
+    <ng-container *ngIf="isLoading()">
+        <p-table [value]="tableData()" showGridlines class="p-datatable-sm">
+            <ng-template pTemplate="header">
+              <tr>
+                 <th>Stock Group</th>
+                 <th>Value</th>
+                 <th>Start</th>
+                 <th>End</th>
+                 <th class="text-center">Actions</th>
+              </tr>
+           </ng-template>
+           <ng-template pTemplate="body" let-row>
+              <tr>
+                 <td>{{ row.stockGroupName }}</td>
+                 <td>{{ row.gstValue}}</td>
+                 <td>{{ row.startRange}}</td>
+                 <td>{{ row.endRange}}</td>
+                 <td class="text-center">
+                      <span class="px-2 py-1 rounded bg-blue-50 text-blue-600 cursor-pointer hover:bg-blue-100"
+                         pTooltip="Edit"><i class="pi pi-pencil" (click)="edit(row)"></i></span>
+                </td>
+              </tr>
+           </ng-template>
+      </p-table>
+    </ng-container>
+</p-card>
+
+<p-dialog [(visible)]="visible" [modal]="true" [style]="{ width: '30rem' }">
+    <ng-template pTemplate="header">
+        <div class="inline-flex items-center justify-center gap-2">
+            <span class="font-bold whitespace-nowrap">Gst Rules</span>
+        </div>
+    </ng-template>
+
+    <form [formGroup]="gstRuleForm">
+
+        <div class="flex items-center gap-4 mb-4">
+            <label for="name" class="font-semibold w-24 form-label">Name</label>
+           <p-select
+                  formControlName="stockGroupId"
+                  inputId="on_Product_stockGroup"
+                  [options]="(stockGroup$ | async) ?? []"
+                  optionLabel="name"
+                  optionValue="id"
+                  class="w-full"
+                  [ngClass]="{ 'ng-invalid ng-dirty': gstRuleForm.get('stockGroupId')?.invalid && gstRuleForm.get('stockGroupId')?.touched }">
+          </p-select>
+        </div>
+          <div class="flex items-center gap-4 mb-4">
+            <label for="name" class="font-semibold w-24 form-label">Value</label>
+           <p-inputnumber class="w-full" inputId="integeronly" formControlName="gstValue"
+            [ngClass]="{ 'ng-invalid ng-dirty': gstRuleForm.get('gstValue')?.invalid && gstRuleForm.get('gstValue')?.touched }" />
+        </div>
+          <div class="flex items-center gap-4 mb-4">
+            <label for="name" class="font-semibold w-30 form-label">Start</label>
+            <p-inputnumber class="w-full" inputId="integeronly" formControlName="startRange" 
+             [ngClass]="{ 'ng-invalid ng-dirty': gstRuleForm.get('startRange')?.invalid && gstRuleForm.get('startRange')?.touched }" />
+        </div>
+          <div class="flex items-center gap-4 mb-4">
+            <label for="name" class="font-semibold w-24 form-label">End</label>
+            <p-inputnumber class="w-full" inputId="integeronly" formControlName="endRange" 
+               [ngClass]="{ 'ng-invalid ng-dirty': gstRuleForm.get('endRange')?.invalid && gstRuleForm.get('endRange')?.touched }"/>
+        </div>
+
+    </form>
+
+    <ng-template pTemplate="footer">
+        <p-button label="Cancel" [raised]="true" (click)="visible = false" severity="secondary" />
+        <p-button label="Save" [raised]="true" severity="info" (click)="saveGstRule()" />
+    </ng-template>
+</p-dialog>

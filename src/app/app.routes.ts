@@ -44,10 +44,14 @@ export const routes: Routes = [
         path: 'salevoucher/edit/:id',
         loadComponent: () => import('./layouts/supplier-layout/pages/salevouchers/add-salevoucher/add-salevoucher').then(c => c.AddSalevoucher)
       },
-     {
+       {
         path: 'print/:id',
         loadComponent: () => import('./layouts/supplier-layout/pages/prints/print/print').then(c => c.Print)
       },
+       {
+        path:'sticker-print/:id',
+        loadComponent:() => import('./layouts/supplier-layout/pages/prints/sticker-print/sticker-print').then(x=>x.StickerPrint)
+       },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   },
@@ -66,6 +70,11 @@ export const routes: Routes = [
         path: 'dashboard',
         canActivate: [roleGuard('SuperAdmin')],
         loadComponent: () => import('./layouts/admin-layout/pages/dashboard/dashboard').then(c => c.Dashboard)
+      },
+      {
+        path: 'gstrule',
+        canActivate: [roleGuard('SuperAdmin')],
+        loadComponent: () => import('./layouts/admin-layout/pages/gstrule/gst-rule-list/gst-rule-list').then(c => c.GstRuleList)
       },
       {
         path: 'hsncodes',

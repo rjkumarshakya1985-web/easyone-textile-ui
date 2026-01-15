@@ -143,29 +143,29 @@ export class ProductList {
   
    toggleActive(product: SupplierProductDto) {
 
-  this.confirmationService.confirm({
-    header: 'Change Status',
-    message: `Are you sure you want to ${product.isActive ? 'deactivate' : 'activate'} this product?`,
-    icon: 'pi pi-exclamation-triangle',
-    acceptLabel: 'Yes',
-    rejectLabel: 'No',
-    acceptButtonStyleClass: 'p-button-warning',
-    rejectButtonStyleClass: 'p-button-secondary',
+      this.confirmationService.confirm({
+       header: 'Change Status',
+       message: `Are you sure you want to ${product.isActive ? 'deactivate' : 'activate'} this product?`,
+       icon: 'pi pi-exclamation-triangle',
+       acceptLabel: 'Yes',
+       rejectLabel: 'No',
+       acceptButtonStyleClass: 'p-button-warning',
+       rejectButtonStyleClass: 'p-button-secondary',
+        accept: () => {
+            this.supplierProductService.toggleActive(product.id)
+           .subscribe({
+             next: (status) => {
+                 
+               if (status) {
+                 this.loadTableData(this.searchControl.value || '');
 
-    accept: () => {
-      this.supplierProductService.toggleActive(product.id)
-        .subscribe({
-          next: (status) => {
-            if (status) {
-              this.loadTableData(this.searchControl.value || '');
-
-              this.messageService.add({
-                severity: 'success',
-                summary: 'Success',
-                detail: product.isActive
-                  ? 'Product deactivated successfully'
-                  : 'Product activated successfully'
-              });
+                 this.messageService.add({
+                      severity: 'success',
+                      summary: 'Success',
+                      detail: product.isActive
+                             ? 'Product deactivated successfully'
+                             : 'Product activated successfully'
+                       });
             }
           }
         });
@@ -179,10 +179,16 @@ export class ProductList {
 
   }
 
+  printProduct(id:string)
+  {
+    this.router.navigate(['supplier/sticker-print', id]);
+  }
+
   openMenu(event: Event, row: SupplierProductDto) {
      this.items = [{
       label:'Print',
-      icon:'pi pi-print'
+      icon:'pi pi-print',
+      command:()=>this.printProduct(row.id)
      },
        ...(row.isActive ? [{
         label: 'Edit',
