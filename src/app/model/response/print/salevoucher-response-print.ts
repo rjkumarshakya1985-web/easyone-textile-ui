@@ -12,6 +12,7 @@ export interface SaleVoucherPrint {
   inVoiceNo: string;
   transportName: string;
   supplierBillNumber:string;
+  discount:number;
   date: string; // ISO Date from API
   gstIn:string;
 }
@@ -29,6 +30,7 @@ export interface BillingDetailPrint
     hsnCode:string;
     qty:number;
     purchasePrice:number;
+    gst:number;
     total:number;
 }
 

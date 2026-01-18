@@ -11,6 +11,7 @@ import { TableDataRequest } from '../../model/request/table-datafilter-request.m
 import { TableResult } from '../../model/table-result';
 import { ProductHsnCode } from '../../model/response/hsn-code.model';
 import { ProductHsnCodeRequest } from '../../model/request/hsn-code-request.model';
+import { Gsts } from '../../model/views/gsts-view.model';
 
 @Injectable({
   providedIn: 'root'
@@ -66,4 +67,8 @@ export class MasterDataService {
     return this.http.delete<boolean>(`${this.apiUrl}master/delete-hsncode/${id}`);
   }
   
+  getGsts(): Observable<Gsts[]> {
+      return this.http.get<Gsts[]>(`${this.apiUrl}master/gsts`);
+  }
+
 }

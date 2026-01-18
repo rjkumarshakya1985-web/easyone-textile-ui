@@ -161,24 +161,24 @@
         class="w-full"  [ngClass]="{ 'ng-invalid ng-dirty': productForm.get('purchaseRate')?.invalid && productForm.get('purchaseRate')?.touched }"  >
       </p-inputNumber>
       <label for="on_Product_purchaseRate">
-        Purchase Rate <small class="text-muted">(inclusive of discount)</small>
+        Purchase Rate 
       </label>
     </p-floatlabel>
   </div>
 
   <div class="col-md-4">
-    <p-floatlabel variant="on">
-      <p-inputNumber 
-        formControlName="discount" 
-        inputId="on_Product_discount" 
-        mode="decimal"
-        [minFractionDigits]="0" 
-        [maxFractionDigits]="0" 
-        class="w-full"
-        [ngClass]="{ 'ng-invalid ng-dirty': productForm.get('discount')?.invalid && productForm.get('discount')?.touched }" >
-      </p-inputNumber>
-      <label for="on_Product_discount">Discount (%)</label>
-    </p-floatlabel>
+        <p-floatlabel class="w-full md:w-56" variant="on">
+                <p-select
+                  formControlName="discount"
+                  inputId="on_Product_stockGroup"
+                  [options]="(gst$ | async) ?? []"
+                  optionLabel="gstValue"
+                  optionValue="gstValue"
+                  class="w-full"
+                  [ngClass]="{ 'ng-invalid ng-dirty': productForm.get('discount')?.invalid && productForm.get('discount')?.touched }">
+                 </p-select>
+                 <label for="on_Product_gst">Select Gst %</label>
+        </p-floatlabel>
    </div>
    </div>
   </div>

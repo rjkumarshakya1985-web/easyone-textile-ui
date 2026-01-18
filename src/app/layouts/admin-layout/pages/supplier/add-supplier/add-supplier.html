@@ -126,15 +126,9 @@
           </div>
 
            <!-- Price Type -->
-          <div class="col-md-3">
-            <p-floatlabel class="w-full md:w-56" variant="on">
-                <p-select formControlName="discountType" inputId="dtype" [options]="discountTypes" optionValue="value" optionLabel="name" class="w-full" 
-                 [ngClass]="{ 'ng-invalid ng-dirty': supplierForm.get('discountType')?.invalid && supplierForm.get('discountType')?.touched }"/>
-                <label for="dtype">Discount Type</label>
-             </p-floatlabel>
-          </div>
+          
 
-             <div class="col-md-3">
+        <div class="col-md-3">
               <p-floatlabel variant="on">
                <p-inputNumber
                 inputId="on_Supplier_wholesaleMargin"
@@ -180,22 +174,30 @@
            </p-floatlabel>
         </div>
 
+        <div class="col-md-3">
+            <p-floatlabel class="w-full md:w-56" variant="on">
+                <p-select formControlName="discountType" inputId="dtype" [options]="discountTypes" optionValue="value" optionLabel="name" class="w-full" 
+                 [ngClass]="{ 'ng-invalid ng-dirty': supplierForm.get('discountType')?.invalid && supplierForm.get('discountType')?.touched }"/>
+                <label for="dtype">Discount Type</label>
+             </p-floatlabel>
+        </div>
+
           <div class="col-md-3">
               <p-floatlabel variant="on">
                 <p-inputNumber
                     inputId="on_Supplier_billDiscount"
                     formControlName="billDiscount"
-                    mode="currency"
-                    currency="INR"
-                    locale="en-IN"
+                   
                     [minFractionDigits]="0"
                     [maxFractionDigits]="2"
                     autocomplete="off"
                     class="w-full">
                 </p-inputNumber>
-                <label for="on_Supplier_billDiscount">Bill Discount</label>
+                <label for="on_Supplier_billDiscount">Discount</label>
               </p-floatlabel>
         </div>
+
+      
 
        <div class="col-md-3">
            <p-floatlabel variant="on">

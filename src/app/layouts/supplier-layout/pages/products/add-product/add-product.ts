@@ -21,6 +21,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ProductHsnCode } from '../../../../../model/response/hsn-code.model';
 import { AutoCompleteService } from '../../../../../core/services/auto-complete-service';
 import { AutoCompleteModule } from 'primeng/autocomplete';
+import { Gsts } from '../../../../../model/views/gsts-view.model';
+import { MasterDataService } from '../../../../../core/services/master-data-service';
 
 @Component({
   selector: 'app-add-product',
@@ -42,6 +44,7 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 export class AddProduct implements OnInit {
   isEdit = false;
   stockGroup$!: Observable<StockGroup[]>;
+  gst$!:Observable<Gsts[]>;
   productForm!: FormGroup;
   productId!: string;
   selectedHsnCode: any = null;
@@ -76,7 +79,8 @@ export class AddProduct implements OnInit {
     private supplierProductService: SupplierProductService,
     private stockGroupService:StockGroupService,
     private loader: LoaderService,
-    private autocompleteService:AutoCompleteService) {}
+    private autocompleteService:AutoCompleteService,
+    private masterDataService:MasterDataService) {}
 
   ngOnInit(): void {
     
@@ -108,6 +112,7 @@ export class AddProduct implements OnInit {
 
   loadDropdowns() {
     this.stockGroup$ = this.stockGroupService.getAll();
+    this.gst$ = this.masterDataService.getGsts();
   }
 
   checkEditMode() {

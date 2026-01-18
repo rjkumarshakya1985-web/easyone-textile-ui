@@ -5,9 +5,10 @@
             <p-tab [value]="0">Parcel Sticker</p-tab>
             <p-tab [value]="1">SaleVoucher</p-tab>
             <p-tab [value]="2">Product Sticker</p-tab>
+            <p-tab [value]="3">Supplier Bill</p-tab>
         </p-tablist>
         <p-tabpanels>
-        <p-tabpanel [value]="0">
+          <p-tabpanel [value]="0">
           <div>
             <div class="panel panel-default">
                 <div class="panel-heading d-flex justify-content-between align-items-center">
@@ -82,7 +83,7 @@
                </div>
             </div>
          </div>
-       </p-tabpanel>
+          </p-tabpanel>
             <p-tabpanel [value]="1">
                 <p-button label="Cancel" [raised]="true" icon="pi pi-times" severity="secondary" (click)="cancel()"></p-button>
                 <p-button label="Print" [raised]="true" icon="pi pi-print" severity="success" class="ml-2" (click)="printPage('parcel-salevoucher')"></p-button>
@@ -218,6 +219,71 @@
                </div>
              </div>
            </div>
+            </p-tabpanel>
+            <p-tabpanel [value]="3">
+                <p-button label="Cancel" [raised]="true" icon="pi pi-times" severity="secondary" (click)="cancel()"></p-button>
+                <p-button label="Print" [raised]="true" icon="pi pi-print" severity="success" class="ml-2" (click)="printPage('supplier-bill')"></p-button>
+                   <hr>
+                   <div id="supplier-bill">
+                    <div style="text-align: center;" > <h4>Purchase invoice</h4></div>
+                    <hr>
+                    <div class="row">
+                            <div class="col-xs-6 col-sm-6 col-md-6">
+                                    <h6><b><u>{{printData()?.saleVoucherPrint?.companyName}}</u></b></h6>
+                                    <strong>DISPATCH NO :</strong>{{printData()?.saleVoucherPrint?.id}}<br>
+                                    <strong>DISPATCH DATE :</strong>{{printData()?.saleVoucherPrint?.date | date}}<br>
+                                    <strong>GSTIN NO :</strong> {{printData()?.saleVoucherPrint?.gstIn}}  
+                            </div>
+                            <div class="col-xs-6 col-sm-6 col-md-6 text-right">
+                                    <h6><b><u>Supplier Detail</u></b></h6>
+                                    <strong>M/S :</strong>{{ printData()?.supplierPrint?.name }}<br>
+                                    <strong>INVOICE NO :</strong>{{ printData()?.saleVoucherPrint?.inVoiceNo || '-' }}<br>
+                                    <strong>GSTIN NO :</strong>{{ printData()?.supplierPrint?.gstIn }}<br>
+                                    <strong>TRANSPORT :</strong>{{ printData()?.saleVoucherPrint?.transportName}}<br>
+                            </div>
+                    </div>  
+                    <hr style="border: 1px solid">
+                <table class="table table-bordered"> 
+                     <thead>
+                         <tr>
+                           <th>S.No.</th>
+                           <th>Description of Goods</th>
+                           <th>HSN</th>
+                           <th>Gst Rate</th>
+                           <th>Quantity</th>
+                           <th>Rate</th>
+                           <th>Disc (%)</th>
+                           <th>Amount</th>
+                        </tr>
+                   </thead>
+                   <tbody>
+                         <tr *ngFor="let p of (printData()?.billingDetailPrints || []); let idx = index">
+                             <td>{{idx+1}}</td>
+                             <td>{{p.productName}}</td>
+                             <td>{{p.hsnCode}}</td>
+                             <td>{{p.gst}}</td>
+                             <td>{{p.qty}} Pcs</td>
+                             <td>{{p.purchasePrice}}</td>
+                             <td>{{printData()?.saleVoucherPrint?.discount }}</td>
+                             <td>{{p.qty*p.purchasePrice}}</td>
+                         </tr>
+                 </tbody>
+                  <tfoot>
+                      <tr>
+                        <th colspan="4" class="text-end">Total</th>
+                        <th>{{ getTotalQty() }} Pcs</th>
+                        <th colspan="2" class="text-end">Total Amount</th>
+                        <th>{{ getTotalAmount() }}</th>
+                      </tr>
+                  </tfoot>
+                </table>
+                <div class="row">
+                        <div class="col-xs-8 col-sm-8 col-md-8">
+                            <br>
+                          {{printData()?.saleVoucherPrint?.companyName}}                            
+                        </div>
+                </div>  
+              </div>
             </p-tabpanel>
         </p-tabpanels>
     </p-tabs>

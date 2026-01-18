@@ -85,6 +85,11 @@ export class Nav {
           { label: 'Product Category',icon: 'pi pi-tags', routerLink: ['/admin/item-categories'] }
         ]
       },
+       {
+        label: 'Users',
+        icon: 'pi pi-fw pi-user-plus',
+        routerLink: ['/admin/users']
+      },
       {
         label: 'Supplier',
         icon: 'pi pi-fw pi-users',

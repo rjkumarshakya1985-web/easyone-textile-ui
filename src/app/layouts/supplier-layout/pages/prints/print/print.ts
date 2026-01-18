@@ -96,4 +96,14 @@ export class Print {
       return (this.printData()?.billingDetailPrints || [])
      .reduce((sum, item) => sum + (Number(item.qty) || 0), 0);
   }
+  getTotalAmount():number
+  {
+    //purchasePrice
+    return (this.printData()?.billingDetailPrints || [])
+    .reduce(
+      (sum, item) =>
+        sum + (Number(item.qty) || 0) * (Number(item.purchasePrice) || 0),
+      0
+    );
+  }
 }
