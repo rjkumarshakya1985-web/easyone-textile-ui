@@ -152,6 +152,21 @@ export const routes: Routes = [
         canActivate: [roleGuard('SuperAdmin')],
         loadComponent: () => import('./layouts/admin-layout/pages/supplier-transport/supplier-transport-list/supplier-transport-list').then(c => c.SupplierTransportList)
       },
+      {
+        path: 'supplier-products',
+        canActivate: [roleGuard('SuperAdmin')],
+        loadComponent: () => import('./layouts/admin-layout/pages/products/product-list/product-list').then(c => c.ProductList)
+      },
+       {
+        path: 'add-supplier-product/:id',
+        canActivate: [roleGuard('SuperAdmin')],
+        loadComponent: () => import('./layouts/admin-layout/pages/products/add-product/add-product').then(c => c.AddProduct)
+      },
+      {
+        path: 'show-supplier-product/:id',
+        canActivate: [roleGuard('SuperAdmin')],
+        loadComponent: () => import('./layouts/admin-layout/pages/products/show-product/show-product').then(c => c.ShowProduct)
+      },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   },

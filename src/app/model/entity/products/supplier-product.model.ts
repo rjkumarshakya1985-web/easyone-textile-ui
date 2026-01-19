@@ -3,7 +3,9 @@ import { ProductHsnCode } from "../../response/hsn-code.model";
 export interface SupplierProductDto {
   id: string;                 // Guid → string
   supplierId: string;         // Guid → string
+  supplierName:string;
   stockGroupId: number;
+  stockGroupName:string;
 
   name: string;
   alias: string;

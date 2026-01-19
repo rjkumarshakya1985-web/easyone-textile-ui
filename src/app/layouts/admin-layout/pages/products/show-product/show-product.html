@@ -1,0 +1,60 @@
+<div class="container mt-4">
+    <div class="card">
+         <div class="card-body" *ngIf="supplierProduct() as product">
+            <div class="row g-3">
+               <div class="col-md-2">
+                  <div><b>Supplier name</b></div>
+                  {{product.supplierName}}
+              </div>
+              <div class="col-md-2">
+                 <div><b>Product Category</b></div>
+                 {{product.stockGroupName}}
+               </div>
+              <div class="col-md-2">
+                  <div><b>Product name</b></div>
+                  {{product.name}}
+              </div>
+               <div class="col-md-2">
+                  <div><b>Alias</b></div>
+                  {{product.alias}}
+              </div>
+              <div class="col-md-2">
+                  <div><b>Print Name</b></div>
+                  {{product.printName}}
+              </div>
+                <div class="col-md-2">
+                  <div><b>Hsn Code</b></div>
+                  {{product.hsnCode}}
+              </div>
+               
+            </div>
+             <div class="row g-3" style="margin-top: 20px;">
+               <div class="col-md-2">
+                  <div><b>Barcode</b></div>
+                  {{product.barcode}}
+              </div>
+              <div class="col-md-2">
+                 <div><b>GST Applicable</b></div>
+                 {{product.gstApplicable?'Yes':'No'}}
+               </div>
+              <div class="col-md-2">
+                  <div><b>GST Nature</b></div>
+                  {{product.gstNature==1?'Goods':'Services'}}
+              </div>
+               <div class="col-md-2">
+                  <div><b>GST Taxability</b></div>
+                  {{getGstTaxabilityLabel(product.gstTaxability)}}
+              </div>
+              <div class="col-md-2">
+                  <div><b>Purchase Rate</b></div>
+                  {{product.purchaseRate}}
+              </div>
+                <div class="col-md-2">
+                  <div><b>Gst % </b></div>
+                  {{product.discount}}
+              </div>
+               
+            </div>
+         </div>
+    </div>
+</div>
