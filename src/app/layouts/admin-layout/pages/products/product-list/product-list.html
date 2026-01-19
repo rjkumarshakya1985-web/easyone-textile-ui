@@ -43,6 +43,8 @@
 
         <ng-template pTemplate="header">
           <tr>
+            <th>Supplier</th>
+            <th>Category name</th>
             <th>Product Name</th>
             <th>Print Name</th>
             <th>Barcode</th>
@@ -55,6 +57,8 @@
 
         <ng-template pTemplate="body" let-row>
           <tr [ngClass]="{ 'inactive-row': !row.isActive }">
+            <td>{{row.supplierName}}</td>
+            <td>{{row.stockGroupName}}</td>
             <td>{{ row.name }}</td>
             <td>{{row.printName}}</td>
             <td>{{row.barcode}}</td>
