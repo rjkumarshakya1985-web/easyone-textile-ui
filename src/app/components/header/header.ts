@@ -30,10 +30,14 @@ export class Header {
         label: 'Options',
         items: [
           {
+            label: 'Change Password',
+            icon: 'pi pi-key',
+            command: () => this.showDailog()
+          }, {
             label: 'Logout',
             icon: 'pi pi-sign-out',
             command: () => this.logout()
-          }
+          },
         ]
       }
     ];
@@ -54,6 +58,10 @@ export class Header {
     this.storage.clearAll();
     window.location.reload();  
   }
+   showDailog():void
+   {
+
+   }
   toggleSidebar() {
     // emit an event if you want to control sidebar visibility from parent
   }

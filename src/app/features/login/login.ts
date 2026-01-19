@@ -71,7 +71,7 @@ export class Login {
            this.messageService.add({
             severity: 'error',
             summary: 'Login Failed',
-            detail: 'Invalid username or password',
+            detail: user.message,
              life: 5000
             });
             return; 

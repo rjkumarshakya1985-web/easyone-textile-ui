@@ -110,6 +110,10 @@ export const routes: Routes = [
         loadComponent: () => import('./layouts/admin-layout/pages/transport/update-transport/update-transport').then(c => c.UpdateTransport)
       },
       {
+        path: 'users',
+        loadComponent: () => import('./layouts/admin-layout/pages/users/user-list/user-list').then(c => c.UserList)
+      },
+      {
         path: 'suppliers',
         loadComponent: () => import('./layouts/admin-layout/pages/supplier/supplier-list/supplier-list').then(c => c.SupplierList)
       },
