@@ -2,7 +2,7 @@ import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { API_CONFIG } from '../../config/api.config';
 import { Observable } from 'rxjs';
-import { SaleVoucherPrintResponse } from '../../model/response/print/salevoucher-response-print';
+import { SaleVoucherPrintResponse, StickerPrint } from '../../model/response/print/salevoucher-response-print';
 
 
 @Injectable({
@@ -24,5 +24,8 @@ export class PrintService {
         return this.http.get<SaleVoucherPrintResponse>(`${this.baseUrl}/${saleVoucherId}`);
       }
 
+   productBarcodeSticker(id:string): Observable<StickerPrint> {
+        return this.http.get<StickerPrint>(`${this.baseUrl}/product-barcode-sticker/${id}`);
+      }
     
 }

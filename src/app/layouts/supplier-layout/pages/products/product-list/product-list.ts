@@ -181,7 +181,7 @@ export class ProductList {
 
   printProduct(id:string)
   {
-    this.router.navigate(['supplier/sticker-print', id]);
+    
   }
 
   openMenu(event: Event, row: SupplierProductDto) {
