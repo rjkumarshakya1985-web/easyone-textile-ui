@@ -3,6 +3,7 @@ export interface GstRuleDto {
   stockGroupId: number;
   stockGroupName:string;
   gstValue: number;
+  applyOrder:number;
   startRange: number;
   endRange?: number | null;
   isDeleted: boolean;
