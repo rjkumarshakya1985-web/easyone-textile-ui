@@ -66,4 +66,9 @@ export class ProductStickerPrint {
   );
   popupWin!.document.close();
   }
+
+  back()
+  {
+   window.history.back();
+  }
 }
