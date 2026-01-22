@@ -11,6 +11,7 @@ export interface SaleVoucherResponse {
 }
 
 export interface SaleVoucherDetailResponse {
+  id:string;
   categoryId:number;
   categoryName: string;
   productId: string;           // Guid → string

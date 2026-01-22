@@ -1,7 +1,7 @@
-<div class="dashboard-container">
+<div class="dashboard-container" *ngIf="data() as parcel">
 
 <div class="row g-3" style="margin-bottom: 20px;">
-  <div class="col-md-3" *ngFor="let c of cards">
+  <div class="col-md-3" *ngFor="let c of cards()">
 
     <div class="card shadow-sm h-100">
 
@@ -26,7 +26,7 @@
 
       <!-- Footer -->
       <div class="card-body py-2">
-        <a href="#" class="text-primary" style="font-size: 14px;">
+        <a [routerLink]="c.url" class="text-primary" style="font-size: 14px;">
           <i class="bi bi-send"></i> Go to List
         </a>
       </div>
@@ -38,9 +38,9 @@
 
   <div class="tables">
     <div class="table-card purple">
-      <h4>Enter Parcel</h4>
-      <p>New parcel entered on {{ date | date:'longDate' }}</p>
-      <p-table [value]="readyParcels" responsiveLayout="scroll" style="font-size:11px;">
+      <h4>InTransit Parcel</h4>
+      <p>New parcel inTransit report on {{ date | date:'longDate' }}</p>
+      <p-table [value]="parcel.inTransitLatestSaleVouchers" responsiveLayout="scroll">
         <ng-template pTemplate="header">
           <tr>
             <th>Parcel no.</th>
@@ -51,10 +51,10 @@
         </ng-template>
         <ng-template pTemplate="body" let-row>
           <tr>
-            <td>{{ row.no }}</td>
-            <td>{{ row.date }}</td>
-            <td>{{ row.transport }}</td>
-            <td>{{ row.qty }}</td>
+            <td>{{ row.saleVoucherId }}</td>
+            <td>{{ row.date | date:'mediumDate'}}</td>
+            <td>{{ row.transportName }}</td>
+            <td>{{ row.productQuantity }}</td>
           </tr>
         </ng-template>
       </p-table>

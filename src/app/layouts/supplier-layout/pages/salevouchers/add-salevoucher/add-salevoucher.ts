@@ -168,6 +168,7 @@ export class AddSalevoucher {
 
         // ✅ Map details
         const list: SaleVoucherDetail[] = salevoucher.details.map(detail => ({
+          id:detail.id,
           stockGroupId: detail.categoryId,
           stockGroupName: detail.categoryName,
           productId: detail.productId,
@@ -178,10 +179,6 @@ export class AddSalevoucher {
           retailPrice: detail.retailPrice,
           mrpPrice: detail.mrpPrice
         }));
-
-        console.log(list);
-
-        // ✅ SET signal value
         this.saleVouherDetail.set(list);
       },
       error: err => {
@@ -302,8 +299,13 @@ export class AddSalevoucher {
       // Optional: do nothing
     }
   });
-}
+ }
 
+ printItem(index:number)
+ {
+   const item = this.saleVouherDetail()[index];
+   this.router.navigate(['supplier/sticker-print', item.id]);
+ }
      
  getTotalQty(): number {
   return this.saleVouherDetail()

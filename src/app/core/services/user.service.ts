@@ -6,6 +6,7 @@ import { TableDataRequest } from '../../model/request/table-datafilter-request.m
 import { TableResult } from '../../model/table-result';
 import { UserResponse } from '../../model/response/users/user-response.model';
 import { UserRequest } from '../../model/request/users/user-request.model';
+import { ChangePasswordRequest } from '../../model/request/users/change-password-request.model';
 
 
 @Injectable({
@@ -26,10 +27,14 @@ export class UserService {
   getUser(id:string):Observable<UserResponse>{
      return this.http.get<UserResponse>(`${this.apiUrl}users/table/${id}`);
   }
+
   saveUsers(request: UserRequest): Observable<string> {
     return this.http.post<string>(`${this.apiUrl}users`, request);
   }
  
+  changePassword(request: ChangePasswordRequest): Observable<boolean> {
+    return this.http.post<boolean>(`${this.apiUrl}users/change-password`, request);
+  }
   
    
 }

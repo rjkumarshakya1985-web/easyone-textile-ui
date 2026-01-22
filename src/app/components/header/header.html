@@ -8,4 +8,38 @@
         <button pButton icon="pi pi-user" label="Profile" (click)="menu.toggle($event)" class="p-button-text"></button>
         <p-menu #menu [model]="items" [popup]="true" />
       </ng-template>
-    </p-menubar>
+</p-menubar>
+
+<p-dialog [(visible)]="visible" [modal]="true" [style]="{ width: '35rem' }">
+    <ng-template pTemplate="header">
+        <div class="inline-flex items-center justify-center gap-2">
+            <span class="font-bold whitespace-nowrap">Change Password</span>
+           
+        </div>
+    </ng-template>
+
+      <p class="mb-4 text-sm text-gray-600">
+        For security reasons, you will be logged out after changing your password.
+        Please sign in again using your new password.
+     </p>
+
+    <form [formGroup]="credentialForm">
+
+        <div class="flex items-center gap-4 mb-4">
+            <label for="oldPassword" class="font-semibold w-24 form-label">Old Password &nbsp;</label>
+            <input pInputText id="oldPassword" class="flex-auto" formControlName="oldPassword" />
+
+        </div>
+
+        <div class="flex items-center gap-4 mb-2">
+            <label for="newPassword" class="font-semibold w-24 form-label">New Password</label>
+            <input pInputText id="newPassword" class="flex-auto" formControlName="newPassword" />
+        </div>
+
+    </form>
+
+    <ng-template pTemplate="footer">
+        <p-button label="Cancel" [raised]="true" (click)="visible = false" severity="secondary" />
+        <p-button label="Save" [raised]="true" severity="info" (click)="changePassword()" />
+    </ng-template>
+</p-dialog>

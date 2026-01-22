@@ -50,7 +50,7 @@ export const routes: Routes = [
       },
        {
         path:'sticker-print/:id',
-        loadComponent:() => import('./layouts/supplier-layout/pages/prints/sticker-print/sticker-print').then(x=>x.StickerPrint)
+        loadComponent:() => import('./layouts/supplier-layout/pages/prints/sticker-print/sticker-print').then(x=>x.ProductStickerPrint)
        },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
