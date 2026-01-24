@@ -133,6 +133,7 @@
                <p-inputNumber
                 inputId="on_Supplier_wholesaleMargin"
                 formControlName="wholeSalesMargin"
+                [min]="1"
                 mode="decimal"
                [minFractionDigits]="0"
                [maxFractionDigits]="0"
@@ -147,6 +148,7 @@
                  <p-inputNumber
                    inputId="on_Supplier_retailMargin"
                    formControlName="retailMargin"
+                   [min]="1"
                    mode="decimal"
                    [minFractionDigits]="0"
                    [maxFractionDigits]="0"
@@ -163,6 +165,7 @@
                  <p-inputNumber
                    inputId="on_Supplier_mrpMargin"
                    formControlName="mrpMargin"
+                   [min]="1"
                    mode="decimal"
                    [minFractionDigits]="0"
                    [maxFractionDigits]="0"
@@ -187,7 +190,8 @@
                 <p-inputNumber
                     inputId="on_Supplier_billDiscount"
                     formControlName="billDiscount"
-                   
+                    [min]="1"
+                    [ngClass]="{ 'ng-invalid ng-dirty': supplierForm.get('billDiscount')?.invalid && supplierForm.get('billDiscount')?.touched }"
                     [minFractionDigits]="0"
                     [maxFractionDigits]="2"
                     autocomplete="off"

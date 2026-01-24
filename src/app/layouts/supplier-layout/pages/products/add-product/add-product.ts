@@ -108,6 +108,10 @@ export class AddProduct implements OnInit {
       purchaseRate:[null,Validators.required],
       supId: ['']
     });
+
+    this.productForm.get('name')?.valueChanges.subscribe(value => {
+    this.productForm.get('printName')?.setValue(value, { emitEvent: false });
+  });
   }
 
   loadDropdowns() {

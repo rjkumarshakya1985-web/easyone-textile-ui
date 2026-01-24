@@ -114,7 +114,7 @@ export class AddSupplier implements OnInit {
      retailMargin: [null, Validators.required],
      mrpMargin:[null,Validators.required],
 
-     billDiscount:[null],
+     billDiscount:[null,Validators.required],
      paymentDiscount:[null],
      annualIncentive:[null],
 
