@@ -27,6 +27,7 @@ import { SaleVoucherService } from '../../../../../core/services/salevoucher.ser
 import { SaleVoucherRequest } from '../../../../../model/request/salevouchers/salevoucher-request.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoaderService } from '../../../../../core/services/loader.service';
+import { AddProduct } from '../../products/add-product/add-product';
 
 
 @Component({
@@ -44,7 +45,9 @@ import { LoaderService } from '../../../../../core/services/loader.service';
     CardModule,
     TableModule,
     ToolbarModule,
-    DialogModule,FloatLabelModule,AutoCompleteModule,ConfirmDialogModule],
+    DialogModule,FloatLabelModule,AutoCompleteModule,ConfirmDialogModule,
+    AddProduct
+  ],
   templateUrl: './add-salevoucher.html',
   styleUrl: './add-salevoucher.css',
 })
@@ -116,26 +119,13 @@ export class AddSalevoucher {
     });
     
     this.productForm = this.fb.group({
-      stockGroupId: [null, Validators.required],
-      selectproduct: [{ value: null, disabled: true }, Validators.required],
+      selectproduct: [null, Validators.required],
       quantity: [null, Validators.required],
       productId: [null]
     });
 
   // Reset selectproduct and productId when stockGroupId changes
-   this.productForm.get('stockGroupId')?.valueChanges.subscribe(groupId => {
-        if (!groupId) {
-        // Disable autocomplete if no group selected
-        this.productForm.get('selectproduct')?.disable();
-        this.productForm.patchValue({ selectproduct: null, productId: null });
-        this.filteredProducts.set([]);
-      } else {
-        // Enable autocomplete when group is selected
-        this.productForm.get('selectproduct')?.enable();
-        this.productForm.patchValue({ selectproduct: null, productId: null });
-        this.filteredProducts.set([]);
-      }
-    });
+ 
    }
 
   checkEditMode() {
@@ -149,7 +139,7 @@ export class AddSalevoucher {
   }
 
    loadSaleVoucherForEdit() {
-  this.loader.show();
+    this.loader.show();
 
   this.saleVoucherService.get(this.saleVoucherId)
     .pipe(finalize(() => this.loader.hide()))
@@ -200,20 +190,20 @@ export class AddSalevoucher {
 
    showDialog(): void {
     this.visible = true;
-    this.productForm.reset();
+
   }
 
   searchProduct(event: AutoCompleteCompleteEvent) {
     const query = event.query;
-    const groupId = this.productForm.get('stockGroupId')?.value;
+   
 
-    if (!groupId || !query || query.length < 2) {
+    if (!query || query.length < 2) {
      this.filteredProducts.set([]);
      return;
     }
 
     this.autoCompleteService
-     .searchSupplierProduct(groupId, query)
+     .searchSupplierProduct( query)
      .subscribe(res => {
       this.filteredProducts.set(res);
     });
@@ -226,19 +216,17 @@ export class AddSalevoucher {
     return;
   }
 
-  const stockGroupId = this.productForm.get('stockGroupId')?.value as number;
   const quantity = this.productForm.get('quantity')?.value as number;
   const addProduct = this.productForm.get('selectproduct')?.value as SupplierProductView;
 
-  const stockGroup = this.stockGroups()
-    .find(x => x.id === stockGroupId);
+ 
 
   let isUpdated = false;
 
   this.saleVouherDetail.update(items => {
 
     const index = items.findIndex(
-      x => x.stockGroupId === stockGroupId && x.productId === addProduct.id
+      x =>  x.productId === addProduct.id
     );
 
     if (index > -1) {
@@ -251,10 +239,11 @@ export class AddSalevoucher {
       };
       return updatedItems;
     }
-
+    
+    
     const detail: SaleVoucherDetail = {
-      stockGroupId: stockGroupId,
-      stockGroupName: stockGroup?.name ?? '',
+      stockGroupId: addProduct.stockGroupId,
+      stockGroupName: addProduct?.stockGroupName ?? '',
       productId: addProduct.id,
       productName: addProduct.name,
       purchasePrice: addProduct.purchaseRate,
