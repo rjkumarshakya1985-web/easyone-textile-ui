@@ -31,6 +31,7 @@ export interface BillingDetailPrint
     qty:number;
     purchasePrice:number;
     gst:number;
+    discountAmount:number;
     total:number;
 }
 

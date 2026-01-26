@@ -254,6 +254,7 @@
                            <th>Rate</th>
                            <th>Disc (%)</th>
                            <th>Amount</th>
+                           <th>Discounted Amount</th>
                         </tr>
                    </thead>
                    <tbody>
@@ -263,9 +264,10 @@
                              <td>{{p.hsnCode}}</td>
                              <td>{{p.gst}}</td>
                              <td>{{p.qty}} Pcs</td>
-                             <td>{{p.purchasePrice}}</td>
+                             <td>{{p.purchasePrice  | currency:'INR':'symbol':'1.2-2'}}</td>
                              <td>{{printData()?.saleVoucherPrint?.discount }}</td>
-                             <td>{{p.qty*p.purchasePrice}}</td>
+                             <td>{{p.total  | currency:'INR':'symbol':'1.2-2'}}</td>
+                             <td>{{p.discountAmount  | currency:'INR':'symbol':'1.2-2'}}</td>
                          </tr>
                  </tbody>
                   <tfoot>
@@ -273,7 +275,12 @@
                         <th colspan="4" class="text-end">Total</th>
                         <th>{{ getTotalQty() }} Pcs</th>
                         <th colspan="2" class="text-end">Total Amount</th>
-                        <th>{{ getTotalAmount() }}</th>
+                        <th>{{ getTotalAmount() | currency:'INR':'symbol':'1.2-2' }}</th>
+                        <th>{{ getTotalDiscAmount() | currency:'INR':'symbol':'1.2-2' }}</th>
+                      </tr>
+                       <tr>
+                        <th colspan="8" class="text-end">Total Discount</th>
+                        <th>{{ getTotalAmount() - getTotalDiscAmount() | currency:'INR':'symbol':'1.2-2' }}</th>
                       </tr>
                   </tfoot>
                 </table>

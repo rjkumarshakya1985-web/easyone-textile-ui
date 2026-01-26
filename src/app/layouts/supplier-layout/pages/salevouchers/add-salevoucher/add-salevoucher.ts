@@ -176,7 +176,7 @@ export class AddSalevoucher {
         this.router.navigate(['admin/not-found']);
       }
     });
-}
+ }
 
 
 
@@ -203,7 +203,7 @@ export class AddSalevoucher {
     }
 
     this.autoCompleteService
-     .searchSupplierProduct( query)
+     .searchSupplierProduct(query)
      .subscribe(res => {
       this.filteredProducts.set(res);
     });
