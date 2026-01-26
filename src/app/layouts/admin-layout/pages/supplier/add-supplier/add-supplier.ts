@@ -35,8 +35,6 @@ export class AddSupplier implements OnInit {
 
   isEdit = false;
   supplierId!: string;
-
-  value1 = true;
   states$!: Observable<State[]>;
   cities$!: Observable<City[]>;
   department$!: Observable<DepartmentResponse[]>;

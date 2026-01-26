@@ -63,55 +63,57 @@ export class Nav {
   //---------------------------------------
   // Admin Menu
   //---------------------------------------
-  private setAdminMenu() {
-    this.items = [
-      {
-        label: 'Dashboard',
-        icon: 'pi pi-fw pi-home',
-        routerLink: ['/admin/dashboard']
-      },
-      {
-        label: 'Gst Rule',
-        icon: 'pi pi-fw pi-book',
-        routerLink: ['/admin/gstrule']
-      },
-      {
-        label: 'Master Data',
-        icon: 'pi pi-fw pi-cog',
-        items: [
-          { label: 'Hsn Code',icon: 'pi pi-hashtag', routerLink: ['/admin/hsncodes'] },
-          { label: 'Transport',icon: 'pi pi-truck', routerLink: ['/admin/transports'] },
-          { label: 'Department',icon: 'pi pi-building', routerLink: ['/admin/departments'] },
-          { label: 'Product Category',icon: 'pi pi-tags', routerLink: ['/admin/item-categories'] }
-        ]
-      },
-       {
-        label: 'Users',
-        icon: 'pi pi-fw pi-user-plus',
-        routerLink: ['/admin/users']
-      },
-      {
-        label: 'Supplier',
-        icon: 'pi pi-fw pi-users',
-        items: [
-          { label: 'Suppliers', routerLink: ['/admin/suppliers'] },
-          { label: 'Supplier Transports', routerLink: ['/admin/supplier-transports'] },
-          { label: 'Supplier Products', routerLink: ['/admin/supplier-products'] }
-        ]
-      },
-      {
-        label: 'Customer',
-        icon: 'pi pi-fw pi-users',
-        routerLink: ['/admin/customers']
-      },
-      {
-        label: 'Reports',
-        icon: 'pi pi-fw pi-chart-bar',
-        items: [
-          { label: 'Sale History', routerLink: ['/admin/sale-history'] },
-          { label: 'Purchase History', routerLink: ['/admin/purchase-history'] }
-        ]
-      }
-    ];
-  }
+ private setAdminMenu() {
+  this.items = [
+    {
+      label: 'Dashboard',
+      icon: 'pi pi-fw pi-home',
+      routerLink: ['/admin/dashboard']
+    },
+    {
+      label: 'GST Rules',
+      icon: 'pi pi-fw pi-book',
+      routerLink: ['/admin/gstrule']
+    },
+    {
+      label: 'Masters',
+      icon: 'pi pi-fw pi-cog',
+      items: [
+        { label: 'HSN Codes', icon: 'pi pi-hashtag', routerLink: ['/admin/hsncodes'] },
+        { label: 'Transports', icon: 'pi pi-truck', routerLink: ['/admin/transports'] },
+        { label: 'Departments', icon: 'pi pi-building', routerLink: ['/admin/departments'] },
+        { label: 'Product Categories', icon: 'pi pi-tags', routerLink: ['/admin/item-categories'] }
+      ]
+    },
+    {
+      label: 'Users',
+      icon: 'pi pi-fw pi-user-plus',
+      routerLink: ['/admin/users']
+    },
+    {
+      label: 'Suppliers',
+      icon: 'pi pi-fw pi-users',
+      items: [
+        { label: 'Supplier List', icon: 'pi pi-user', routerLink: ['/admin/suppliers'] },
+        { label: 'Supplier Transports', icon: 'pi pi-truck', routerLink: ['/admin/supplier-transports'] },
+        { label: 'Supplier Categories', icon: 'pi pi-tags', routerLink: ['/admin/supplier-stockgroups'] },
+        { label: 'Supplier Products', icon: 'pi pi-box', routerLink: ['/admin/supplier-products'] }
+      ]
+    },
+    {
+      label: 'Customers',
+      icon: 'pi pi-fw pi-users',
+      routerLink: ['/admin/customers']
+    },
+    {
+      label: 'Reports',
+      icon: 'pi pi-fw pi-chart-bar',
+      items: [
+        { label: 'Sales Report', icon: 'pi pi-chart-line', routerLink: ['/admin/sale-history'] },
+        { label: 'Purchase Report', icon: 'pi pi-chart-pie', routerLink: ['/admin/purchase-history'] }
+      ]
+    }
+  ];
+}
+
 }

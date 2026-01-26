@@ -1,0 +1,39 @@
+    
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 10px;
+}
+
+/* Right side action buttons container */
+.header-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Optional: adjust button size */
+.header-actions .p-button-sm {
+  font-size: 0.85rem;
+}
+
+.p-toolbar
+{
+ padding: 1px 11px 0px 1px;
+}
+
+.mr-2 {
+  margin-right: 0.5rem; /* Adjust space as needed */
+}
+
+.chip-space {
+    margin-right: 8px;   /* space between chips */
+    margin-bottom: 6px;  /* optional: row spacing */
+    padding: 2px 2px 2px 5px;
+    font-size: 11px;
+}
+
+.ui-autocomplete-panel {
+    z-index: 2000 !important; /* dialog z-index is usually 1100 */
+}
