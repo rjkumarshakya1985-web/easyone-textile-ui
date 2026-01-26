@@ -9,7 +9,7 @@ import { CardModule } from 'primeng/card';
 import { TextareaModule  } from 'primeng/textarea';
 import { CommonModule } from '@angular/common';
 import { StockGroup } from '../../../../../model/stock-group.model';
-import { finalize, Observable } from 'rxjs';
+import { finalize, Observable, tap } from 'rxjs';
 import { StockGroupService } from '../../../../../core/services/stock-group.service';
 import { FloatLabel, FloatLabelModule } from 'primeng/floatlabel';
 import { InputNumberModule } from 'primeng/inputnumber';
@@ -23,6 +23,7 @@ import { AutoCompleteService } from '../../../../../core/services/auto-complete-
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { Gsts } from '../../../../../model/views/gsts-view.model';
 import { MasterDataService } from '../../../../../core/services/master-data-service';
+import { SupplierService } from '../../../../../core/services/supplier-service';
 
 @Component({
   selector: 'app-add-product',
@@ -76,6 +77,7 @@ export class AddProduct implements OnInit {
   constructor(private fb: FormBuilder,private router: Router,
     private route: ActivatedRoute,
     private messageService: MessageService,
+    private supplierService :SupplierService,
     private supplierProductService: SupplierProductService,
     private stockGroupService:StockGroupService,
     private loader: LoaderService,
@@ -104,18 +106,30 @@ export class AddProduct implements OnInit {
       gstApplicable: [true],
       gstNature: [1],
       gstTaxability: [1],
-      discount:[0,Validators.required],
+      discount:[null,Validators.required],
       purchaseRate:[null,Validators.required],
       supId: ['']
     });
 
     this.productForm.get('name')?.valueChanges.subscribe(value => {
     this.productForm.get('printName')?.setValue(value, { emitEvent: false });
-  });
+    this.productForm.get('alias')?.setValue(value, { emitEvent: false });
+   });
   }
 
   loadDropdowns() {
-    this.stockGroup$ = this.stockGroupService.getAll();
+     
+    this.stockGroup$ = this.supplierService.getGetSupplierStockGroups()
+    .pipe(tap(list => {
+      const control = this.productForm.get('stockGroupId');
+
+      
+      if (list.length == 1 && !control?.value) {
+        control?.setValue(list[0].id);
+      }
+    })
+  );
+
     this.gst$ = this.masterDataService.getGsts();
   }
 

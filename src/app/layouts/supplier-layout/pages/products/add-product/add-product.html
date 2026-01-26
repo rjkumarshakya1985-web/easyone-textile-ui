@@ -158,6 +158,7 @@
         currency="INR"
         [minFractionDigits]="0" 
         [maxFractionDigits]="2" 
+        [min]="10"
         class="w-full"  [ngClass]="{ 'ng-invalid ng-dirty': productForm.get('purchaseRate')?.invalid && productForm.get('purchaseRate')?.touched }"  >
       </p-inputNumber>
       <label for="on_Product_purchaseRate">
