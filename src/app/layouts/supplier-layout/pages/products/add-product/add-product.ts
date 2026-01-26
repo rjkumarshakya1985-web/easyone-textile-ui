@@ -136,7 +136,7 @@ export class AddProduct implements OnInit {
   checkEditMode() {
     this.productId = this.route.snapshot.paramMap.get('id')!;
 
-    if (this.productId) {
+    if (this.productId && isNaN(Number(this.productId))) {
       this.isEdit = true;
       this.loadProductForEdit();
     }
