@@ -187,7 +187,8 @@
                 <p-inputNumber
                     inputId="on_Supplier_billDiscount"
                     formControlName="billDiscount"
-                   
+                    [min]="0"
+                    [ngClass]="{ 'ng-invalid ng-dirty': supplierForm.get('billDiscount')?.invalid && supplierForm.get('billDiscount')?.touched }"
                     [minFractionDigits]="0"
                     [maxFractionDigits]="2"
                     autocomplete="off"

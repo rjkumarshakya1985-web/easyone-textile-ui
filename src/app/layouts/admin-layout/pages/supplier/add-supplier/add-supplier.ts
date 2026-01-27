@@ -35,8 +35,6 @@ export class AddSupplier implements OnInit {
 
   isEdit = false;
   supplierId!: string;
-
-  value1 = true;
   states$!: Observable<State[]>;
   cities$!: Observable<City[]>;
   department$!: Observable<DepartmentResponse[]>;
@@ -114,7 +112,7 @@ export class AddSupplier implements OnInit {
      retailMargin: [null, Validators.required],
      mrpMargin:[null,Validators.required],
 
-     billDiscount:[null],
+     billDiscount:[null,Validators.required],
      paymentDiscount:[null],
      annualIncentive:[null],
 

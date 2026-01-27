@@ -106,4 +106,13 @@ export class Print {
       0
     );
   }
+  getTotalDiscAmount():number
+  {
+   return (this.printData()?.billingDetailPrints || [])
+    .reduce(
+      (sum, item) =>
+        sum + (Number(item.discountAmount) || 0),
+      0
+    );
+  }
 }

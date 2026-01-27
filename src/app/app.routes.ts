@@ -153,6 +153,11 @@ export const routes: Routes = [
         loadComponent: () => import('./layouts/admin-layout/pages/supplier-transport/supplier-transport-list/supplier-transport-list').then(c => c.SupplierTransportList)
       },
       {
+        path: 'supplier-stockgroups',
+        canActivate: [roleGuard('SuperAdmin')],
+        loadComponent: () => import('./layouts/admin-layout/pages/supplier-category/supplier-category-list').then(c => c.SupplierCategoryList)
+      },
+      {
         path: 'supplier-products',
         canActivate: [roleGuard('SuperAdmin')],
         loadComponent: () => import('./layouts/admin-layout/pages/products/product-list/product-list').then(c => c.ProductList)

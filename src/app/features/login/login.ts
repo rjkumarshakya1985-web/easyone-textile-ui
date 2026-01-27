@@ -57,7 +57,8 @@ export class Login {
 
     const data: LoginRequest = {
       userName: this.username,
-      password: this.password
+      password: this.password,
+      clientType :0
     };
 
     this.loader.show();

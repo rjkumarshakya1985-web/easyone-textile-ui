@@ -44,9 +44,9 @@ export class AutoCompleteService {
   }
 
   // ---------------- Supplier Products ----------------
-  searchSupplierProduct(groupId: number, search: string) {
+  searchSupplierProduct(search: string) {
     return this.http.get<SupplierProductView[]>(
-      `${this.baseUrl}supplier-product-search/${encodeURIComponent(search)}/${groupId}`
+      `${this.baseUrl}supplier-product-search/${encodeURIComponent(search)}`
     );
   }
 }

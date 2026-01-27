@@ -90,10 +90,8 @@
              <label for="on_Product_numberOfPacket">Number of Packet</label>
        </p-floatLabel>
       </div>
-
       <!-- Supplier Bill Number -->
-      <div class="col-md-3">
-         
+      <div class="col-md-3"> 
             <input pInputText id="supplierBillNumber" class="form-control"   formControlName="supplierBillNumber" autocomplete="off" 
            [ngClass]="{
               'ng-invalid ng-dirty':
@@ -101,10 +99,7 @@
               voucherForm.get('supplierBillNumber')?.touched
             }"  placeholder="My Bill Number"/>
       </div>
-
-
       <!-- Description -->
-      
     </div>
 </p-card>
 </form>
@@ -112,17 +107,74 @@
 
 
   <div class="tab-content" class="myTabContent">
-
     <!-- Products Tab -->
     <div class="tab-pane fade show active" id="products" role="tabpanel" aria-labelledby="products-tab">
-
-      <div class="d-flex justify-content-end mb-3">
-        <button class="btn btn-outline-secondary me-2" (click)="showDialog()">
-          <i class="bi bi-cart3"></i> Choose Product
-        </button>
-        <!-- <button class="btn btn-primary">
-          <i class="bi bi-plus-lg"></i> Create New Product
-        </button> -->
+      <div class="d-flex  mb-3">
+        <form [formGroup]="productForm" style="margin-top:5px;">
+           <div class="row mb-12">
+                <div class="col-md-5">
+                   <p-floatlabel variant="on">
+                       <p-autocomplete
+                            formControlName="selectproduct"
+                            [suggestions]="filteredProducts()"
+                            (completeMethod)="searchProduct($event)"
+                            optionLabel="name"
+                            inputId="selectproduct"
+                            placeholder=" "
+                            appendTo="body"
+                            [forceSelection]="true"
+                            styleClass="w-full"
+                            inputStyleClass="w-full"
+                            [ngClass]="{
+                              'ng-invalid ng-dirty':
+                               productForm.get('selectproduct')?.invalid &&
+                               productForm.get('selectproduct')?.touched
+                              }">
+                             <ng-template let-product pTemplate="item">
+                                <div style="display: flex; flex-direction: column;">
+                                  <span style="font-weight: 500;"><i>{{ product.name }}</i></span>
+                                  <span style="font-size: 0.85rem; color: gray; display: block;">
+                                    <i>{{product.stockGroupName}} - {{ product.hsnCode }}</i>
+                                 </span>
+                                </div>
+                            </ng-template>
+                           <ng-template pTemplate="header">
+                               <div class="font-medium px-3 py-2">Available Product</div>
+                            </ng-template>
+                            <ng-template #footer>
+                               <div class="px-3 py-3">
+                                    <p-button label="Add New" fluid severity="secondary" text size="small" icon="pi pi-plus" (click)="showDialog()" />
+                                </div>
+                           </ng-template>
+                         </p-autocomplete>
+                               <label for="selectproduct">Pick Product</label>
+                      </p-floatlabel>
+                </div>
+    
+                <div class="col-md-4">
+                   <p-floatlabel variant="on">
+                       <p-inputnumber
+                          inputId="quantity"
+                          formControlName="quantity"
+                          [useGrouping]="false"
+                          [min]="1"
+                          class="w-full"
+                          inputStyleClass="w-full" 
+                          [ngClass]="{
+                          'ng-invalid ng-dirty':
+                          productForm.get('quantity')?.invalid &&
+                          productForm.get('quantity')?.touched
+                        }">
+                        </p-inputnumber>
+                          <label for="quantity">Quantity</label>
+                     </p-floatlabel>
+                 </div>
+     
+                 <div class="col-md-3">
+                   <p-button label="Add Item"  (click)="addProductToSaleVoucher()"/>
+                 </div>
+           </div>
+        </form>
       </div>
 
       <div class="table-responsive">
@@ -178,7 +230,7 @@
       <td></td>
     </tr>
   </ng-template>
-</p-table>
+  </p-table>
 
       </div>
 
@@ -202,89 +254,21 @@
 
 <!-- Tabs -->
 
-<p-dialog  header="SaleVoucher - Products" [modal]="true" position="top" [(visible)]="visible"
-  [style]="{ width: '70rem' }">
-  <form [formGroup]="productForm" style="margin-top:5px;">
-    <div class="row mb-4">
-      <div class="col-md-3">  
-        <p-floatlabel class="w-full" variant="on">
-          <p-select
-            formControlName="stockGroupId"
-            inputId="on_Product_stockGroup"
-            [options]="stockGroups()"
-            optionLabel="name"
-            optionValue="id"
-             appendTo="body"
-            class="w-full"
-            [ngClass]="{
-              'ng-invalid ng-dirty':
-              productForm.get('stockGroupId')?.invalid &&
-              productForm.get('stockGroupId')?.touched
-            }">
-          </p-select>
-          <label for="on_Product_stockGroup">Select Item Category</label>
-        </p-floatlabel>
-      </div>
-
-      <div class="col-md-3">
-       <p-floatlabel variant="on">
-         <p-autocomplete
-           formControlName="selectproduct"
-           [suggestions]="filteredProducts()"
-           (completeMethod)="searchProduct($event)"
-           optionLabel="name"
-           inputId="selectproduct"
-           placeholder=" "
-           appendTo="body"
-           [forceSelection]="true"
-           styleClass="w-full"
-           inputStyleClass="w-full"
-           [ngClass]="{
-            'ng-invalid ng-dirty':
-             productForm.get('selectproduct')?.invalid &&
-             productForm.get('selectproduct')?.touched
-           }"
-         >
-       <ng-template let-product pTemplate="item">
-         <div style="display: flex; flex-direction: column;">
-            <span style="font-weight: 500;">{{ product.name }}</span>
-             <span style="font-size: 0.85rem; color: gray; display: block;">
-               {{ product.hsnCode }} - {{ product.barcode }}
-          </span>
-         </div>
-       </ng-template>
-       <ng-template pTemplate="header">
-          <div class="font-medium px-3 py-2">Select Product</div>
-       </ng-template>
-       </p-autocomplete>
-         <label for="selectproduct">Select Product</label>
-       </p-floatlabel>
-   </div>
-    
-    <div class="col-md-3">
-       <p-floatlabel variant="on">
-         <p-inputnumber
-           inputId="quantity"
-           formControlName="quantity"
-           [useGrouping]="false"
-           [min]="1"
-           class="w-full"
-           inputStyleClass="w-full" 
-           [ngClass]="{
-            'ng-invalid ng-dirty':
-             productForm.get('quantity')?.invalid &&
-             productForm.get('quantity')?.touched
-           }">
-         </p-inputnumber>
-        <label for="quantity">Quantity</label>
-      </p-floatlabel>
+<p-dialog  [modal]="true" position="top" [(visible)]="visible"
+  [style]="{ width: '70rem' }" [showHeader]="false">
+  <app-add-product></app-add-product>
+   <ng-template pTemplate="footer">
+     <div class="flex align-items-center gap-2 text-sm text-color-secondary">
+      You can now search and select the added product.
      </div>
-     
-     <div class="col-md-3">
-        <p-button label="Add Item"  (click)="addProductToSaleVoucher()"/>
-      </div>
-    </div>
-  </form>
+     <button
+        pButton
+        type="button"
+        label="Cancel"
+        class="p-button-text"
+        (click)="visible = false">
+      </button>
+  </ng-template>
 </p-dialog>
 
-<p-confirmDialog></p-confirmDialog>
+<p-confirmDialog *ngIf="!visible"></p-confirmDialog>

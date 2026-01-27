@@ -8,9 +8,11 @@ import { Transport } from '../../model/transporter.model';
 import { TableResult } from '../../model/table-result';
 import { SupplierTableResponse } from '../../model/response/supplier/supplier-table-response.model';
 import { SupplierTransportResponse } from '../../model/response/supplier-transport/supplier-trasnport-table-response.model';
-import { SupplierTransportDeleteRequest } from '../../model/request/supplier/supplier-transport-delete-request.model';
+import { SupplierStockGroupDeleteRequest, SupplierTransportDeleteRequest } from '../../model/request/supplier/supplier-transport-delete-request.model';
 import { SupplierRequest } from '../../model/request/supplier/supplier-request.model';
 import { Supplier } from '../../model/supplier.model';
+import { SupplierStockGroupResponse } from '../../model/response/supplier-stock-group/supplier-stockgroup.response';
+import { StockGroup } from '../../model/stock-group.model';
 
 
 @Injectable({
@@ -69,4 +71,29 @@ export class SupplierService {
        return this.http.get<Transport[]>(`${this.apiUrl}supplier/supplier-transports`);
   }
   
+  /// Stock Group //
+    getSupplierStockGroupTableData(request: TableDataRequest): Observable<TableResult<SupplierStockGroupResponse>> {
+    return this.http.post<TableResult<SupplierStockGroupResponse>>(`${this.apiUrl}supplier/supplier-stockgroup-mapping-table`, request);
+   }
+  
+   getGetOprhanStockGroup(supplierId:string):Observable<StockGroup[]>
+   {
+     return this.http.get<StockGroup[]>(`${this.apiUrl}supplier/orphan-stockgroup/${supplierId}`);
+   }
+
+   assignSupplierStockGroup(supplierId:string,stockGroupId:number):Observable<boolean> {
+    let request = {SupplierId:supplierId,StockGroupId:stockGroupId};
+    return this.http.post<boolean>(`${this.apiUrl}supplier/assign-supplier-stockgroup`, request);
+  }
+
+   deleteSupplierStockGroup(request:SupplierStockGroupDeleteRequest):Observable<boolean> {
+    return this.http.post<boolean>(`${this.apiUrl}supplier/supplier-stockgroup-delete`, request);
+  }
+   
+   getGetSupplierStockGroups():Observable<StockGroup[]>
+   {
+     return this.http.get<StockGroup[]>(`${this.apiUrl}supplier/supplier-stockgroups`);
+   }
+
+
 }
