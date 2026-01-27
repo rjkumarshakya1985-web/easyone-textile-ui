@@ -36,7 +36,7 @@ export const appConfig: ApplicationConfig = {
     // API Base URL
     {
       provide: API_CONFIG,
-      useValue: 'https://localhost:7121/api/'
+      useValue: 'https://api.ssbdagra.in/api/'
     }
   ]
 };
