@@ -7,6 +7,7 @@ import { TableDataRequest } from '../../model/request/table-datafilter-request.m
 import { SaleVoucherTableResponse } from '../../model/response/salevouchers/salevoucher-table-response.model';
 import { SaleVoucherRequest } from '../../model/request/salevouchers/salevoucher-request.model';
 import { SaleVoucherResponse } from '../../model/response/salevouchers/salevoucher-response.model';
+import { SaleVoucherStatusView } from '../../model/response/salevouchers/salevoucher-status-response.model';
 
 
 @Injectable({
@@ -43,4 +44,8 @@ export class SaleVoucherService {
         return this.http.post<boolean>(`${this.baseUrl}/update`, request);
     }
 
+  getAllSaleVoucherStatus(saleVoucher:number):Observable<SaleVoucherStatusView[]>
+  {
+     return this.http.get<SaleVoucherStatusView[]>(`${this.apiUrl}salevoucherstatus/${saleVoucher}`);
+  }
 }

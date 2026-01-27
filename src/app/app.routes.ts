@@ -47,7 +47,7 @@ export const routes: Routes = [
        {
         path: 'print/:id',
         loadComponent: () => import('./layouts/supplier-layout/pages/prints/print/print').then(c => c.Print)
-      },
+       },
        {
         path:'sticker-print/:id',
         loadComponent:() => import('./layouts/supplier-layout/pages/prints/sticker-print/sticker-print').then(x=>x.ProductStickerPrint)
@@ -162,6 +162,16 @@ export const routes: Routes = [
         canActivate: [roleGuard('SuperAdmin')],
         loadComponent: () => import('./layouts/admin-layout/pages/products/product-list/product-list').then(c => c.ProductList)
       },
+      {
+        path: 'supplier-salevoucher',
+        canActivate: [roleGuard('SuperAdmin')],
+        loadComponent: () => import('./layouts/admin-layout/pages/supplier-salevoucher/supplier-salevoucher-list/supplier-salevoucher-list').then(c => c.SupplierSalevoucherList)
+      },
+      {
+        path: 'supplier-salevoucher-detail/:id',
+        canActivate: [roleGuard('SuperAdmin')],
+        loadComponent: () => import('./layouts/admin-layout/pages/supplier-salevoucher/supplier-salevoucher-detail/supplier-salevoucher-detail').then(c => c.SupplierSalevoucherDetail)
+      },
        {
         path: 'add-supplier-product/:id',
         canActivate: [roleGuard('SuperAdmin')],
@@ -172,10 +182,14 @@ export const routes: Routes = [
         canActivate: [roleGuard('SuperAdmin')],
         loadComponent: () => import('./layouts/admin-layout/pages/products/show-product/show-product').then(c => c.ShowProduct)
       },
+      {
+        path: 'print/:id',
+        loadComponent: () => import('./layouts/supplier-layout/pages/prints/print/print').then(c => c.Print)
+       },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   },
-   { path: 'not-found', component: NotFoundRecord },
+  { path: 'not-found', component: NotFoundRecord },
   { path: '**', redirectTo: '/login' }
  ,
 ];

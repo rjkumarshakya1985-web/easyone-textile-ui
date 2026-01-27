@@ -1,0 +1,123 @@
+<div class="container mt-4">
+    <div class="card">
+         <div class="card-body" *ngIf="saleVoucher() as voucher">
+            <div class="row g-3">
+                <div class="col-md-3">
+                  <div><b>Date</b></div>
+                  {{ voucher?.date | date:'dd/MM/yyyy' }} 
+               </div>
+               <div class="col-md-3">
+                  <div><b>Supplier name</b></div>
+                  {{voucher.supplierName}}
+               </div>
+             <div class="col-md-3">
+                  <div><b>Transport name</b></div>
+                  {{voucher.transportName}}
+              </div>
+              <div class="col-md-3">
+                  <div><b>Status</b></div>
+                  {{voucher.status}}
+              </div>
+              <div class="col-md-3">
+                  <div><b>Number of Packet</b></div>
+                  {{voucher.numberOfParcel}}
+              </div>
+               <div class="col-md-3">
+                  <div><b>Supplier Bill Number</b></div>
+                  {{voucher.supplierBillNumber}}
+              </div>
+               <div class="col-md-3">
+                  <div><b>Remark</b></div>
+                  {{voucher.remarks}}
+              </div>
+            </div>
+            
+             <div style="margin-top: 10px;">
+               <p-tabs [value]="value">
+                  <p-tablist>
+                     <p-tab [value]="0">Sale Voucher Products</p-tab>
+                     <!-- <p-tab [value]="1">Sale Voucher Status History</p-tab> -->
+                  </p-tablist>
+                  <p-tabpanels>
+                    <p-tabpanel [value]="0">
+                        <p-table [value]="voucher.details" responsiveLayout="scroll">
+                          <ng-template pTemplate="header">
+                            <tr>
+                               <th>S.No</th>
+                               <th>Category</th>
+                               <th>Product</th>
+                               <th>Quantity</th>
+                               <th>Purchase Price</th>
+                               <th>WholeSale Price</th>
+                               <th>Retail Price</th>
+                               <th>MRP Price</th>
+                             </tr>
+                          </ng-template>
+                          <ng-template pTemplate="body" let-item let-i="rowIndex">
+                             <tr>
+                                <td>{{ i + 1 }}</td>
+                                <td>{{ item.categoryName }}</td>
+                                <td>{{ item.productName }}</td>
+                                <td>{{ item.quantity }}</td>
+                                <td>{{ item.purchasePrice | number:'1.2-2' }}</td>
+                                <td>{{ item.wholeSalePrice | number:'1.2-2' }}</td>
+                                <td>{{ item.retailPrice | number:'1.2-2' }}</td>
+                                <td>{{ item.mrpPrice | number:'1.2-2' }}</td>
+                             </tr>
+                           </ng-template>
+
+                           <ng-template pTemplate="emptymessage">
+                              <tr>
+                                 <td colspan="10" class="text-center text-muted">No products added</td>
+                              </tr>
+                           </ng-template>
+                         </p-table>
+                    </p-tabpanel>
+                    <p-tabpanel [value]="1">
+                       <div class="card flex justify-center">
+           <p-stepper [(value)]="stepValue" class="basis-[50rem]">
+
+        <p-step-list>
+            <p-step [value]="1">Design
+            </p-step>
+            <p-step [value]="2">Development</p-step>
+            <p-step [value]="3">QA</p-step>
+        </p-step-list>
+        <p-step-panels>
+
+            <p-step-panel [value]="1">
+                <ng-template pTemplate="content">
+                     <div class="flex justify-content-center align-items-center h-48">
+                       asf Design
+                    </div>
+                </ng-template>
+            </p-step-panel>
+
+            <p-step-panel [value]="2">
+                <ng-template pTemplate="content">
+                    <div class="flex justify-content-center align-items-center h-48">
+                        asf Q
+                    </div>
+                </ng-template>
+            </p-step-panel>
+
+            <p-step-panel [value]="3">
+                <ng-template pTemplate="content">
+                   <div class="flex justify-content-center align-items-center h-48">
+                        asf R
+                    </div>
+                </ng-template>
+            </p-step-panel>
+
+        </p-step-panels>
+    </p-stepper>
+</div>
+
+                    </p-tabpanel>
+                  </p-tabpanels>
+                </p-tabs>                
+             </div>
+
+         </div>
+    </div>
+</div>

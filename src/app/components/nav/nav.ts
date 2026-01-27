@@ -97,7 +97,8 @@ export class Nav {
         { label: 'Supplier List', icon: 'pi pi-user', routerLink: ['/admin/suppliers'] },
         { label: 'Supplier Transports', icon: 'pi pi-truck', routerLink: ['/admin/supplier-transports'] },
         { label: 'Supplier Categories', icon: 'pi pi-tags', routerLink: ['/admin/supplier-stockgroups'] },
-        { label: 'Supplier Products', icon: 'pi pi-box', routerLink: ['/admin/supplier-products'] }
+        { label: 'Supplier Products', icon: 'pi pi-box', routerLink: ['/admin/supplier-products'] },
+        { label: 'Supplier SaleVoucher', icon: 'pi pi-receipt', routerLink: ['/admin/supplier-salevoucher'] }
       ]
     },
     {
