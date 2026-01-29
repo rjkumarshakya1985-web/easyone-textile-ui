@@ -1,5 +1,5 @@
-import { Component, OnInit, signal } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Component, OnInit, signal, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 // PrimeNG Modules
 import { DatePickerModule  } from 'primeng/datepicker';
@@ -12,7 +12,7 @@ import { DialogModule } from 'primeng/dialog';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { Transport } from '../../../../../model/transporter.model';
-import { finalize, Observable } from 'rxjs';
+import { finalize, Observable, tap } from 'rxjs';
 import { SupplierService } from '../../../../../core/services/supplier-service';
 import { StockGroup } from '../../../../../model/stock-group.model';
 import { StockGroupService } from '../../../../../core/services/stock-group.service';;
@@ -21,13 +21,14 @@ import { AutoCompleteCompleteEvent, AutoCompleteModule } from 'primeng/autocompl
 import { Supplier } from '../../../../../model/supplier.model';
 import { SaleVoucherDetail } from '../../../../../model/salevoucher-detail.model';
 import { SupplierProductView } from '../../../../../model/views/supplier-product-view.model';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { SaleVoucherService } from '../../../../../core/services/salevoucher.service';
 import { SaleVoucherRequest } from '../../../../../model/request/salevouchers/salevoucher-request.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoaderService } from '../../../../../core/services/loader.service';
 import { AddProduct } from '../../products/add-product/add-product';
+import { Menu, MenuModule } from 'primeng/menu';
 
 
 @Component({
@@ -36,7 +37,7 @@ import { AddProduct } from '../../products/add-product/add-product';
   providers: [ConfirmationService],  
   imports: [ CommonModule,
     ReactiveFormsModule,
-    
+    FormsModule,
     // PrimeNG modules
     InputNumberModule, 
     DatePickerModule,
@@ -46,15 +47,20 @@ import { AddProduct } from '../../products/add-product/add-product';
     TableModule,
     ToolbarModule,
     DialogModule,FloatLabelModule,AutoCompleteModule,ConfirmDialogModule,
-    AddProduct
+    AddProduct,MenuModule
   ],
   templateUrl: './add-salevoucher.html',
   styleUrl: './add-salevoucher.css',
 })
 export class AddSalevoucher {
+  @ViewChild('menu') menu!: Menu;
+  items: MenuItem[] = [];
+  editQty:number=0
+  editVoucherDetail?: SaleVoucherDetail;
   isEdit = false;
   saleVoucherId!:number;
   visible = false;
+  isSaleVoucherQtyPopupVisible =false;
   voucherForm!: FormGroup;
   productForm!: FormGroup;
   transports$!: Observable<Transport[]>;
@@ -95,7 +101,18 @@ export class AddSalevoucher {
 
   loadDropDowns()
   {
-     this.transports$ = this.supplierService.getSupplierTransport();
+   this.transports$ = this.supplierService.getSupplierTransport()
+    .pipe(tap(list => {
+      const control = this.voucherForm.get('transportId');
+
+      
+      if (list.length >0 && !control?.value) {
+        control?.setValue(list[0].id);
+      }
+    })
+    );
+   
+    
      this.stockGroupService.getAll().subscribe(res => {
      this.stockGroups.set(res);
      });
@@ -180,18 +197,14 @@ export class AddSalevoucher {
 
 
 
-  editProduct(row: any) {
-    console.log('Edit:', row);
-  }
-
+  
   removeProduct(row: any) {
     this.products = this.products.filter(p => p !== row);
   }
 
    showDialog(): void {
     this.visible = true;
-
-  }
+   }
 
   searchProduct(event: AutoCompleteCompleteEvent) {
     const query = event.query;
@@ -218,8 +231,6 @@ export class AddSalevoucher {
 
   const quantity = this.productForm.get('quantity')?.value as number;
   const addProduct = this.productForm.get('selectproduct')?.value as SupplierProductView;
-
- 
 
   let isUpdated = false;
 
@@ -261,7 +272,11 @@ export class AddSalevoucher {
     selectproduct: null,
     quantity: null
   });
-
+   
+  const input = document.getElementById('selectproduct') as HTMLInputElement;
+  if (input) {
+    input.focus(); // Focus the input
+  }
   // ✅ Success message
   
 }
@@ -360,4 +375,44 @@ submit():void
 
 
  }
+
+ openQtyPopup(row: SaleVoucherDetail)
+ {
+   this.editVoucherDetail = row;
+   this.editQty= row.qty;
+   this.isSaleVoucherQtyPopupVisible = true;
+ }
+
+ saveQuantityChange()
+ {
+   if(this.editVoucherDetail){
+    this.editVoucherDetail.qty = this.editQty;
+    this.isSaleVoucherQtyPopupVisible =false;
+
+   }
+ }
+
+openMenu(event: Event, row: SaleVoucherDetail, index: number) {
+
+  this.items = [
+      ...(row.id ? [{
+        label: 'Print',
+        icon: 'pi pi-print',
+        command: () => this.printItem(index)
+      }] : []),
+    {
+      label: 'Edit',
+      icon: 'pi pi-pencil',
+      command: () => this.openQtyPopup(row)
+    },
+    {
+      label: 'Delete',
+      icon: 'pi pi-trash',
+      command: () => this.removeItem(index)
+    }
+  ];
+
+  this.menu.toggle(event); // ✅ Always defined
+}
+
 }

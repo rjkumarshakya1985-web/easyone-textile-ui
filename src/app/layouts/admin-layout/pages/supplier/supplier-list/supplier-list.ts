@@ -122,19 +122,19 @@ export class SupplierList {
     return Math.ceil(this.tblResult().totalRows / this.pageSize);
   }
 
-  onNext() {
-    if (this.pageindex() < this.numberofPage() - 1) {
-      this.pageindex.set(this.pageindex() + 1);
-      this.loadTableData(this.searchControl.value || '');
+    onNext() {
+      if (this.pageindex() < this.numberofPage() - 1) {
+        this.pageindex.set(this.pageindex() + 1);
+        this.loadTableData(this.searchControl.value || '');
+      }
     }
-  }
 
-  onPrevious() {
-    if (this.pageindex() > 0) {
-      this.pageindex.set(this.pageindex() - 1);
-      this.loadTableData(this.searchControl.value || '');
+    onPrevious() {
+      if (this.pageindex() > 0) {
+        this.pageindex.set(this.pageindex() - 1);
+        this.loadTableData(this.searchControl.value || '');
+      }
     }
-  }
 
   // -----------------------------
   // ROUTING

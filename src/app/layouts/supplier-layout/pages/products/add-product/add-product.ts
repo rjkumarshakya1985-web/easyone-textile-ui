@@ -124,11 +124,11 @@ export class AddProduct implements OnInit {
       const control = this.productForm.get('stockGroupId');
 
       
-      if (list.length == 1 && !control?.value) {
+      if (list.length > 0 && !control?.value) {
         control?.setValue(list[0].id);
       }
     })
-  );
+    );
 
     this.gst$ = this.masterDataService.getGsts();
   }

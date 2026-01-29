@@ -56,7 +56,7 @@ export class AddSupplier implements OnInit {
     { name: 'e-Fund Transfer', value: 1 },
     { name: 'Cheque', value: 2 },
     { name: 'Others', value: 3 }
-  ];; // Dynamic table (replace with service)
+  ]; // Dynamic table (replace with service)
 
   constructor(private fb: FormBuilder,
     private router: Router,
@@ -215,7 +215,7 @@ submit() {
   }
 
   onStateChange(event: any) {
-    console.log(event);
+    
     const stateId = event.value;
     this.cities$ = this.masterService.getCitiesByStateId(stateId);
     this.supplierForm.patchValue({ cityId: '' });

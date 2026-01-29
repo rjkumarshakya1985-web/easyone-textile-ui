@@ -1,1 +1,238 @@
-<p>add-customer works!</p>
+<div class="container mt-4">
+  <form [formGroup]="customerForm" (ngSubmit)="submit()">
+
+    <div class="card">
+     <div class="card-header flex items-center">
+     <span class="text-lg font-semibold" style="margin-top: 16px;">Customer Information</span>
+       <p-button type="submit"
+        label="Save Customer" 
+        class="p-button-sm ml-auto"  
+        variant="text" 
+        [raised]="true">
+      </p-button>
+    </div>
+      <div class="card-body">
+
+         <div class="row g-3">
+        
+         <div class="col-md-3">
+             <p-floatlabel class="w-full md:w-56" variant="on">
+               <p-select
+                 formControlName="customerType"
+                 inputId="on_Customer_customerType"
+                 [options]="customerTypes"
+                 optionLabel="name"
+                class="w-full" optionValue="value"
+                [ngClass]="{ 'ng-invalid ng-dirty': customerForm.get('customerType')?.invalid && customerForm.get('customerType')?.touched }">
+               </p-select>
+              <label for="on_Customer_customerType">Select Customer Type</label>
+            </p-floatlabel>
+           </div>
+
+          <!-- Name -->
+          <div class="col-md-3">
+            <p-floatlabel variant="on">
+              <input pInputText class="form-control" id="on_Customer_name" formControlName="name"  autocomplete="off"
+               [ngClass]="{ 'ng-invalid ng-dirty': customerForm.get('name')?.invalid && customerForm.get('name')?.touched }"  />
+              <label for="on_Customer_name">Name</label>
+            </p-floatlabel>
+          </div>
+
+             <!-- Print Name -->
+          <div class="col-md-3">
+             <p-floatlabel variant="on">
+              <input pInputText class="form-control" id="on_Customer_printName" formControlName="printName" autocomplete="off" 
+              [ngClass]="{ 'ng-invalid ng-dirty': customerForm.get('printName')?.invalid && customerForm.get('printName')?.touched }"/>
+              <label for="on_Customer_printName">Print Name</label>
+            </p-floatlabel>   
+          </div>
+
+          <!-- Alias -->
+          <div class="col-md-3">
+             <p-floatlabel variant="on">
+              <input pInputText class="form-control" id="on_Customer_alias" formControlName="alias" autocomplete="off" />
+              <label for="on_Customer_alias">Alias</label>
+            </p-floatlabel>   
+          </div>
+
+           <!-- Ledger Name -->
+          <div class="col-md-3">
+             <p-floatlabel variant="on">
+              <input pInputText class="form-control" id="on_Customer_ledgerName" formControlName="ledgerName" autocomplete="off" />
+              <label for="on_Customer_ledgerName">Ledger Name</label>
+            </p-floatlabel>   
+          </div>
+
+         
+
+           <!-- Group Name -->
+          <div class="col-md-3">
+             <p-floatlabel variant="on">
+              <input pInputText class="form-control" id="on_Customer_groupName" formControlName="groupName" autocomplete="off" />
+              <label for="on_Customer_groupName">Group Name</label>
+            </p-floatlabel>   
+          </div>
+
+           <!-- Gst -->
+          <div class="col-md-3">
+             <p-floatlabel variant="on">
+              <input pInputText class="form-control" id="on_Customer_gstIn" formControlName="gstIn" autocomplete="off" 
+               [ngClass]="{ 'ng-invalid ng-dirty': customerForm.get('gstIn')?.invalid && customerForm.get('gstIn')?.touched }" />
+              <label for="on_Customer_gstIn">GSTIN</label>
+            </p-floatlabel>   
+          </div>
+
+           <!-- Pan -->
+          <div class="col-md-3">
+             <p-floatlabel variant="on">
+              <input pInputText class="form-control" id="on_Customer_pan" formControlName="pan" autocomplete="off"
+                [ngClass]="{ 'ng-invalid ng-dirty': customerForm.get('pan')?.invalid && customerForm.get('pan')?.touched }" />
+              <label for="on_Customer_pan">Pan</label>
+            </p-floatlabel>   
+          </div>
+
+            <!-- Registration Type -->
+            <div class="col-md-3">
+             <p-floatlabel class="w-full md:w-56" variant="on">
+               <p-select
+                 formControlName="regType"
+                 inputId="on_Customer_registrationTypes"
+                 [options]="registrationTypes"
+                 optionLabel="name"
+                 [ngClass]="{ 'ng-invalid ng-dirty': customerForm.get('regType')?.invalid && customerForm.get('regType')?.touched }"
+                class="w-full" optionValue="value">
+               </p-select>
+              <label for="on_Customer_registrationTypes">Registration type</label>
+           </p-floatlabel>
+           </div>
+          
+            <div class="col-md-3">
+             <p-floatlabel variant="on">
+              <input pInputText class="form-control" id="on_Supplier_email" formControlName="email" autocomplete="off" />
+              <label for="on_Supplier_email">Email</label>
+            </p-floatlabel>
+          </div>
+
+          <div class="col-md-3">
+             <p-floatlabel variant="on">
+              <input pInputText class="form-control" id="on_Supplier_phone" formControlName="phone" autocomplete="off" />
+              <label for="on_Supplier_phone">Phone no</label>
+            </p-floatlabel>
+          </div>
+
+          <div class="col-md-3">
+             <p-floatlabel variant="on">
+              <input pInputText class="form-control" id="on_Supplier_mobile" formControlName="mobile" autocomplete="off" 
+                              [ngClass]="{ 'ng-invalid ng-dirty': customerForm.get('mobile')?.invalid && customerForm.get('mobile')?.touched }"/>
+              <label for="on_Supplier_mobile">Mobile no</label>
+            </p-floatlabel>
+          </div>
+
+            <div class="col-md-12">
+             <p-floatlabel variant="on">
+              <textarea class="form-control"  pTextarea id="on_billingAddress" fluid formControlName="billingAddress" rows="3" cols="30" style="resize: none" class="h-full"></textarea>
+              <label for="on_billingAddress">Billing Address</label>
+            </p-floatlabel>
+          </div>
+
+           <div class="col-md-12">
+             <p-floatlabel variant="on">
+              <textarea class="form-control"  pTextarea id="on_shippingAddress" fluid formControlName="shippingAddress" rows="3" cols="30" style="resize: none" class="h-full"></textarea>
+              <label for="on_shippingAddress">Shipping Address</label>
+            </p-floatlabel>
+          </div>
+
+           <!-- City, State, Pin -->
+          <div class="col-md-3">
+             <p-floatlabel class="w-full md:w-56" variant="on">
+                <p-select formControlName="stateId" inputId="state" [options]="(states$ | async) ?? []" optionLabel="name" optionValue="id" (onChange)="onStateChange($event)" class="w-full" 
+                [ngClass]="{ 'ng-invalid ng-dirty': customerForm.get('stateId')?.invalid && customerForm.get('stateId')?.touched }"/>
+                <label for="state">Select State</label>
+             </p-floatlabel>
+          </div>
+
+          <div class="col-md-3">
+            <p-floatlabel class="w-full md:w-56" variant="on">
+                <p-select formControlName="cityId" inputId="city" [options]="(cities$ | async) ?? []" optionLabel="name" optionValue="id"  class="w-full" 
+                [ngClass]="{ 'ng-invalid ng-dirty': customerForm.get('cityId')?.invalid && customerForm.get('cityId')?.touched }"/>
+                <label for="city">Select City</label>
+             </p-floatlabel>
+          </div>
+
+          <div class="col-md-3">
+             <p-floatlabel variant="on">
+              <input pInputText class="form-control" id="on_Customer_pinCode" formControlName="pinCode" autocomplete="off" 
+              [ngClass]="{ 'ng-invalid ng-dirty': customerForm.get('pinCode')?.invalid && customerForm.get('pinCode')?.touched }"/>
+              <label for="on_Customer_pinCode">Pin Code</label>
+            </p-floatlabel>
+          </div> 
+
+           <div class="col-md-3">
+             <p-floatlabel variant="on">
+              <input pInputText class="form-control" id="on_Supplier_contactpersion" formControlName="contactPerson" autocomplete="off" />
+              <label for="on_Supplier_contactPerson">Contact Person</label>
+            </p-floatlabel>
+          </div>
+
+          
+          <div class="col-md-3">
+              <p-floatlabel variant="on">
+                <p-inputNumber
+                    inputId="on_Supplier_openingBalance"
+                    formControlName="openingBalance"
+                    [min]="0"
+                    [minFractionDigits]="0"
+                    [maxFractionDigits]="2"
+                    autocomplete="off"
+                    class="w-full">
+                </p-inputNumber>
+                <label for="on_Customer_openingBalance">Opening Balance</label>
+              </p-floatlabel>
+         </div>
+
+           <div class="col-md-3">
+              <p-floatlabel variant="on">
+                <p-inputNumber
+                    inputId="on_Customer_creditDays"
+                    formControlName="creditDays"
+                    [min]="0"
+                    [minFractionDigits]="0"
+                    [maxFractionDigits]="0"
+                    autocomplete="off"
+                    class="w-full"
+                    [ngClass]="{ 'ng-invalid ng-dirty': customerForm.get('creditDays')?.invalid && customerForm.get('creditDays')?.touched }">
+                </p-inputNumber>
+                <label for="on_Customer_creditDays">Credit Days</label>
+              </p-floatlabel>
+          </div>
+
+           <div class="col-md-3">
+              <p-floatlabel variant="on">
+                <p-inputNumber
+                    inputId="on_Supplier_creditLimit"
+                    formControlName="creditLimit"
+                    [min]="0"
+                    [minFractionDigits]="0"
+                    [maxFractionDigits]="2"
+                    autocomplete="off"
+                    class="w-full"
+                    [ngClass]="{ 'ng-invalid ng-dirty': customerForm.get('creditLimit')?.invalid && customerForm.get('creditLimit')?.touched }">
+                </p-inputNumber>
+                <label for="on_Customer_creditLimit">Credit Limit</label>
+              </p-floatlabel>
+          </div>
+
+           <div class="col-md-12">
+             <p-floatlabel variant="on">
+              <textarea class="form-control"  pTextarea id="on_remarks" fluid formControlName="remarks" rows="3" cols="30" style="resize: none" class="h-full"></textarea>
+              <label for="on_remarks">Remarks</label>
+            </p-floatlabel>
+          </div>
+
+
+      </div>
+      </div>
+    </div>
+  </form>
+</div>
+<p-toast></p-toast>

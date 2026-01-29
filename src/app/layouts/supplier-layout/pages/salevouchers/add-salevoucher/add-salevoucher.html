@@ -179,20 +179,20 @@
 
       <div class="table-responsive">
        <p-table [value]="saleVouherDetail()" responsiveLayout="scroll">
-  <ng-template pTemplate="header">
-    <tr>
-      <th>S.No</th>
-      <th>Category</th>
-      <th>Product</th>
-      <th>Quantity</th>
-      <th>Purchase Price</th>
-      <th>WholeSale Price</th>
-      <th>Retail Price</th>
-      <th>MRP Price</th>
-      <th>Total</th>
-      <th>Action</th>
-    </tr>
-  </ng-template>
+         <ng-template pTemplate="header">
+           <tr>
+             <th>S.No</th>
+             <th>Category</th>
+             <th>Product</th>
+             <th>Quantity</th>
+             <th>Purchase Price</th>
+             <th>WholeSale Price</th>
+             <th>Retail Price</th>
+             <th>MRP Price</th>
+             <th>Total</th>
+             <th>Action</th>
+         </tr>
+        </ng-template>
 
   <ng-template pTemplate="body" let-item let-i="rowIndex">
     <tr>
@@ -205,12 +205,19 @@
       <td>{{ item.retailPrice | number:'1.2-2' }}</td>
       <td>{{ item.mrpPrice | number:'1.2-2' }}</td>
       <td>{{ (item.purchasePrice * item.qty) | number:'1.2-2' }}</td>
-      <td>
-        <button pButton icon="pi pi-trash" class="p-button-text p-button-danger"
-                (click)="removeItem(i)"></button>
-         <button pButton icon="pi pi-print" class="p-button-text"
-                (click)="printItem(i)" *ngIf="item.id"></button>
-      </td>
+      <td class="text-center">
+          <p-menu #menu
+             [model]="items"
+             [popup]="true"
+             appendTo="body">
+          </p-menu>
+
+          <button pButton
+           icon="pi pi-ellipsis-v"
+           class="p-button-text"
+            (click)="openMenu($event, item, i)">
+        </button>
+     </td>
     </tr>
   </ng-template>
 
@@ -230,8 +237,8 @@
       <td></td>
     </tr>
   </ng-template>
-  </p-table>
-
+       </p-table>
+       <p-menu #menu [model]="items" [popup]="true"></p-menu>
       </div>
 
     </div>
@@ -259,7 +266,7 @@
   <app-add-product></app-add-product>
    <ng-template pTemplate="footer">
      <div class="flex align-items-center gap-2 text-sm text-color-secondary">
-      You can now search and select the added product.
+       You can now search for the added product.
      </div>
      <button
         pButton
@@ -271,4 +278,22 @@
   </ng-template>
 </p-dialog>
 
-<p-confirmDialog *ngIf="!visible"></p-confirmDialog>
+<p-dialog [(visible)]="isSaleVoucherQtyPopupVisible" position="top" [modal]="true" [style]="{ width: '20rem' }">
+    <ng-template pTemplate="header">
+        <div class="inline-flex items-center justify-center gap-2">
+            <span class="font-bold whitespace-nowrap">Change Quantity</span>
+        </div>
+    </ng-template>
+     <input
+      id="qtyInput"
+      type="number"
+      pInputText
+      [(ngModel)]="editQty"
+      min="1"/>
+    <ng-template pTemplate="footer">
+        <p-button label="Save" [raised]="true" severity="info" (click)="saveQuantityChange()" />
+        <p-button label="Cancel" [raised]="true" (click)="isSaleVoucherQtyPopupVisible = false" severity="secondary" />
+    </ng-template>
+</p-dialog>
+
+

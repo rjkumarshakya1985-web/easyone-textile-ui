@@ -9,15 +9,37 @@
   </div>
 </p-toolbar>
 <p-card>
-   <p-table class="transport-table" 
-  [value]="customers" 
-  [paginator]="true" 
-  [rows]="5" 
-  [rowsPerPageOptions]="[5, 10, 20]"
-  class="p-datatable-sm">
+   <div class="d-flex justify-content-between mb-3">
+
+      <div class="flex-grow-1" style="max-width:300px">
+        <p-floatlabel variant="on">
+          <input pInputText id="on_label" [formControl]="searchControl" autocomplete="off" />
+          <label for="on_label">Search keyword</label>
+        </p-floatlabel>
+      </div>
+
+      <ng-container *ngIf="isLoading()">
+        <p-buttonGroup>
+          <p-button label="{{pageSize}}" outlined severity="secondary"></p-button>
+          <p-button label="Total ({{tblResult().totalRows}})" disabled outlined></p-button>
+
+          <p-button icon="pi pi-angle-left"
+            outlined (click)="onPrevious()"></p-button>
+
+          <p-button label="{{ pageindex() + 1 }}/{{ numberofPage() }}"
+            disabled outlined></p-button>
+
+          <p-button icon="pi pi-angle-right"
+            outlined (click)="onNext()"></p-button>
+        </p-buttonGroup>
+      </ng-container>
+
+    </div>
+   <p-table [value]="tblResult().result" size="small" showGridlines class="p-datatable-sm">
 
   <ng-template pTemplate="header">
     <tr>
+      <th>Customer Type</th>
       <th>Name</th>
       <th>GST No.</th>
       <th>Mobile</th>
@@ -28,10 +50,11 @@
 
   <ng-template pTemplate="body" let-row>
     <tr>
-      <td>{{ row.customerName }}</td>
-      <td>{{row.gstin}}</td>
+      <td>{{customerType(row.customerType)}}</td>
+      <td>{{ row.name }}</td>
+      <td>{{row.gstIn}}</td>
       <td>{{row.mobile}}</td>
-      <td>{{row.registrationType}}</td>
+      <td>{{getTransactionTypeName(row.regType)}}</td>
       <td>
         <button pButton icon="pi pi-pencil" class="p-button-text p-button-sm" (click)="goToEditCustomer(row.id)"></button>
         <button pButton icon="pi pi-trash"  class="p-button-text p-button-sm p-button-danger"></button>
