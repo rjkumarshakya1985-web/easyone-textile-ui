@@ -7,12 +7,39 @@
                label="Save Product" 
                class="p-button-sm ml-auto"  
                variant="text" 
-               [raised]="true">
+               [raised]="true" tabindex="3">
             </p-button>
         </div>
       <div class="card-body">
 <!-- Stock Group / Category -->
         <div class="row mb-4">
+          <div class="col-md-4">
+               <p-floatlabel variant="on">
+                 <input pInputText #productNameInput class="form-control" id="on_Product_name" formControlName="name" autocomplete="off"
+                  [ngClass]="{ 'ng-invalid ng-dirty': productForm.get('name')?.invalid && productForm.get('name')?.touched }"  tabindex="1" />
+                 <label for="on_Product_name">Product Name</label>
+               </p-floatlabel>
+             </div>
+
+              <div class="col-md-4">
+     <p-floatlabel variant="on">
+      <p-inputNumber 
+        formControlName="purchaseRate" 
+        inputId="on_Product_purchaseRate" 
+        mode="currency" 
+        currency="INR"
+        [minFractionDigits]="0" 
+        [maxFractionDigits]="2" 
+        [min]="10"
+        tabindex="2"
+        class="w-full"  [ngClass]="{ 'ng-invalid ng-dirty': productForm.get('purchaseRate')?.invalid && productForm.get('purchaseRate')?.touched }"  >
+      </p-inputNumber>
+      <label for="on_Product_purchaseRate">
+        Purchase Rate 
+      </label>
+    </p-floatlabel>
+  </div>
+
             <div class="col-md-4">
                <p-floatlabel class="w-full md:w-56" variant="on">
                 <p-select
@@ -22,30 +49,25 @@
                   optionLabel="name"
                   optionValue="id"
                   class="w-full"
+                  (onChange)="onStockGroupSelect($event)"
                   [ngClass]="{ 'ng-invalid ng-dirty': productForm.get('stockGroupId')?.invalid && productForm.get('stockGroupId')?.touched }">
                  </p-select>
                  <label for="on_Product_stockGroup">Select Item Category</label>
                 </p-floatlabel>
              </div>
 
-             <div class="col-md-4">
-               <p-floatlabel variant="on">
-                 <input pInputText class="form-control" id="on_Product_name" formControlName="name" autocomplete="off"
-                  [ngClass]="{ 'ng-invalid ng-dirty': productForm.get('name')?.invalid && productForm.get('name')?.touched }" />
-                 <label for="on_Product_name">Product Name</label>
-               </p-floatlabel>
-             </div>
-
-            <div class="col-md-4">
-              <p-floatlabel variant="on">
-               <input pInputText class="form-control" id="on_Product_alias" formControlName="alias" autocomplete="off" />
-               <label for="on_Product_alias">Alias</label>
-             </p-floatlabel>
-          </div>
+            
         </div>
 
     <!-- Print Name, HSN, Barcode -->
     <div class="row mb-4">
+
+      <div class="col-md-4">
+              <p-floatlabel variant="on">
+               <input pInputText class="form-control" id="on_Product_alias" formControlName="alias" autocomplete="off" />
+               <label for="on_Product_alias">Alias</label>
+             </p-floatlabel>
+           </div>
       <div class="col-md-4">
         <p-floatlabel variant="on">
           <input pInputText class="form-control" id="on_Product_printName" formControlName="printName" autocomplete="off" 
@@ -91,19 +113,21 @@
     HSN Code is required
   </small>
   </div>
-  </div>
+    </div>
 
-      <div class="col-md-4">
+     
+    </div>
+
+    <!-- GST Details -->
+    <div class="row mb-4">
+
+       <div class="col-md-4">
         <p-floatlabel variant="on">
           <input pInputText class="form-control" id="on_Product_barcode" formControlName="barcode" autocomplete="off" 
           [ngClass]="{ 'ng-invalid ng-dirty': productForm.get('barcode')?.invalid && productForm.get('barcode')?.touched }" readonly />
           <label for="on_Product_barcode">Barcode</label>
         </p-floatlabel>
       </div>
-    </div>
-
-    <!-- GST Details -->
-    <div class="row mb-4">
       <div class="col-md-4">
         <p-floatlabel class="w-full md:w-56" variant="on">
           <p-select
@@ -132,7 +156,13 @@
         </p-floatlabel>
       </div>
 
-      <div class="col-md-4">
+     
+    </div>
+
+    <!-- Purchase Rate & Discount -->
+   <div class="row mb-4">
+
+     <div class="col-md-4">
        <p-floatlabel variant="on">
           <p-select
             formControlName="gstTaxability"
@@ -145,42 +175,22 @@
           <label for="on_Product_gstTaxability">GST Taxability</label>
         </p-floatlabel>
       </div>
-    </div>
+   
 
-    <!-- Purchase Rate & Discount -->
-   <div class="row mb-4">
   <div class="col-md-4">
-    <p-floatlabel variant="on">
+     <p-floatlabel variant="on">
       <p-inputNumber 
-        formControlName="purchaseRate" 
-        inputId="on_Product_purchaseRate" 
-        mode="currency" 
-        currency="INR"
+        formControlName="discount" 
+        inputId="on_Product_discount" 
         [minFractionDigits]="0" 
-        [maxFractionDigits]="2" 
-        [min]="10"
-        class="w-full"  [ngClass]="{ 'ng-invalid ng-dirty': productForm.get('purchaseRate')?.invalid && productForm.get('purchaseRate')?.touched }"  >
+        [maxFractionDigits]="0" 
+        class="w-full"  [ngClass]="{ 'ng-invalid ng-dirty': productForm.get('discount')?.invalid && productForm.get('discount')?.touched }"  >
       </p-inputNumber>
-      <label for="on_Product_purchaseRate">
-        Purchase Rate 
+      <label for="on_Product_discount">
+        Gst %
       </label>
     </p-floatlabel>
-  </div>
-
-  <div class="col-md-4">
-        <p-floatlabel class="w-full md:w-56" variant="on">
-                <p-select
-                  formControlName="discount"
-                  inputId="on_Product_stockGroup"
-                  [options]="(gst$ | async) ?? []"
-                  optionLabel="gstValue"
-                  optionValue="gstValue"
-                  appendTo="body"
-                  class="w-full"
-                  [ngClass]="{ 'ng-invalid ng-dirty': productForm.get('discount')?.invalid && productForm.get('discount')?.touched }">
-                 </p-select>
-                 <label for="on_Product_gst">Select Gst %</label>
-        </p-floatlabel>
+       
    </div>
    </div>
   </div>

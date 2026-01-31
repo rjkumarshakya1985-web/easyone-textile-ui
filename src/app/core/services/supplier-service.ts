@@ -8,11 +8,13 @@ import { Transport } from '../../model/transporter.model';
 import { TableResult } from '../../model/table-result';
 import { SupplierTableResponse } from '../../model/response/supplier/supplier-table-response.model';
 import { SupplierTransportResponse } from '../../model/response/supplier-transport/supplier-trasnport-table-response.model';
-import { SupplierStockGroupDeleteRequest, SupplierTransportDeleteRequest } from '../../model/request/supplier/supplier-transport-delete-request.model';
+import { SupplierHsnCodeRequest, SupplierStockGroupDeleteRequest, SupplierTransportDeleteRequest } from '../../model/request/supplier/supplier-transport-delete-request.model';
 import { SupplierRequest } from '../../model/request/supplier/supplier-request.model';
 import { Supplier } from '../../model/supplier.model';
 import { SupplierStockGroupResponse } from '../../model/response/supplier-stock-group/supplier-stockgroup.response';
 import { StockGroup } from '../../model/stock-group.model';
+import { SupplierHsnCodeResponse } from '../../model/response/supplier/supplier-hsncode/supplier-hsncode-response.model';
+import { ProductHsnCode } from '../../model/response/hsn-code.model';
 
 
 @Injectable({
@@ -90,9 +92,34 @@ export class SupplierService {
     return this.http.post<boolean>(`${this.apiUrl}supplier/supplier-stockgroup-delete`, request);
   }
    
-   getGetSupplierStockGroups():Observable<StockGroup[]>
+  getSupplierStockGroups(supplierId?: string): Observable<StockGroup[]> {
+    const url = supplierId
+      ? `${this.apiUrl}supplier/supplier-stockgroups/${supplierId}`
+      : `${this.apiUrl}supplier/supplier-stockgroups`;
+   return this.http.get<StockGroup[]>(url);
+ }
+   /// Hsn Code //
+  getSupplierHsnCodeTableData(request: TableDataRequest): Observable<TableResult<SupplierHsnCodeResponse>> {
+    return this.http.post<TableResult<SupplierHsnCodeResponse>>(`${this.apiUrl}supplier/supplier-hsncode-mapping-table`, request);
+   }
+  
+   getSupplierOrphanHsnCodes(supplierId:string,categoryId:Number,search:string):Observable<ProductHsnCode[]>
    {
-     return this.http.get<StockGroup[]>(`${this.apiUrl}supplier/supplier-stockgroups`);
+     return this.http.get<ProductHsnCode[]>(`${this.apiUrl}supplier/orphan-hsncode/${supplierId}/${categoryId}/${search}`);
+   }
+
+   assignSupplierHsnCode(supplierId:string,stockGroupId:number,hsnCodeId:string):Observable<boolean> {
+    let request = {SupplierId:supplierId,StockGroupId:stockGroupId,HsnCodeId:hsnCodeId};
+    return this.http.post<boolean>(`${this.apiUrl}supplier/assign-hsncode-stockgroup`, request);
+  }
+
+   deleteSupplierHsnCode(request:SupplierHsnCodeRequest):Observable<boolean> {
+    return this.http.post<boolean>(`${this.apiUrl}supplier/supplier-hsncode-delete`, request);
+  }
+   
+   getGetSupplierHsnCodes(stockGroupId:number):Observable<ProductHsnCode[]>
+   {
+     return this.http.get<ProductHsnCode[]>(`${this.apiUrl}supplier/supplier-hsncodes/${stockGroupId}`);
    }
 
 

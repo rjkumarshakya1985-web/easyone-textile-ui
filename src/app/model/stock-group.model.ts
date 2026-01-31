@@ -1,3 +1,5 @@
+import { GstRuleDto } from "./response/gstrule/gstrule-response.model";
+
 export interface StockGroup {
   id: number;
   name: string;
@@ -6,4 +8,5 @@ export interface StockGroup {
   isGstRule: boolean;
   isActive: boolean;
   isDeleted: boolean;
+  gstRuleDtos :GstRuleDto[]
 }

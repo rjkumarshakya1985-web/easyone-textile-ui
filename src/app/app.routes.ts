@@ -183,6 +183,11 @@ export const routes: Routes = [
         loadComponent: () => import('./layouts/admin-layout/pages/products/show-product/show-product').then(c => c.ShowProduct)
       },
       {
+        path: 'supplier-hsncode',
+        canActivate: [roleGuard('SuperAdmin')],
+        loadComponent: () => import('./layouts/admin-layout/pages/supplier-hsncode/supplier-hsncode-list').then(c => c.SupplierHsnCodeList)
+      },
+      {
         path: 'print/:id',
         loadComponent: () => import('./layouts/supplier-layout/pages/prints/print/print').then(c => c.Print)
        },

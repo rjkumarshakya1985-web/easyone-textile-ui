@@ -1,6 +1,6 @@
 
 
-import { Component, OnInit, signal } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, signal, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule  } from 'primeng/select';
@@ -42,14 +42,17 @@ import { SupplierService } from '../../../../../core/services/supplier-service';
   templateUrl: './add-product.html',
   styleUrls: ['./add-product.css']
 })
-export class AddProduct implements OnInit {
+export class AddProduct implements OnInit, AfterViewInit {
   isEdit = false;
+   @ViewChild('productNameInput')
+  productNameInput!: ElementRef<HTMLInputElement>;
   stockGroup$!: Observable<StockGroup[]>;
   gst$!:Observable<Gsts[]>;
   productForm!: FormGroup;
   productId!: string;
   selectedHsnCode: any = null;
   filteredHsnCodes = signal<ProductHsnCode[]>([]);
+  stockGroupList: StockGroup[] = [];
 
   registrationTypes = [
     { label: 'Regular', value: 'Regular' },
@@ -87,9 +90,10 @@ export class AddProduct implements OnInit {
   ngOnInit(): void {
     
     this.initForm();
-    this.loadDropdowns();
+    
     this.checkEditMode();
-  
+    this.loadDropdowns();
+
   }
 
   initForm()
@@ -114,20 +118,46 @@ export class AddProduct implements OnInit {
     this.productForm.get('name')?.valueChanges.subscribe(value => {
     this.productForm.get('printName')?.setValue(value, { emitEvent: false });
     this.productForm.get('alias')?.setValue(value, { emitEvent: false });
+    });
+
+    this.productForm.get('purchaseRate')?.valueChanges.subscribe(rate => {
+    if (rate == null) return;
+
+    const stockGroupId = this.productForm.get('stockGroupId')?.value;
+    const selectedGroup = this.stockGroupList.find(x => x.id === stockGroupId);
+
+    if (selectedGroup?.isGstRule) {
+      this.applyGstFromSlab(selectedGroup);
+    }
    });
   }
 
   loadDropdowns() {
      
-    this.stockGroup$ = this.supplierService.getGetSupplierStockGroups()
-    .pipe(tap(list => {
-      const control = this.productForm.get('stockGroupId');
+    this.stockGroup$ = this.supplierService.getSupplierStockGroups()
+    .pipe(
+      tap(list => {
+        this.stockGroupList = list; 
+          if(!this.isEdit)
+          {
+           const control = this.productForm.get('stockGroupId');
+             
+            if (list.length > 0 && !control?.value) {
+              control?.setValue(list[0].id);
+              this.onCategoryChange(list[0].id);
+            }
 
-      
-      if (list.length > 0 && !control?.value) {
-        control?.setValue(list[0].id);
-      }
-    })
+           const controlDiscount = this.productForm.get('discount');
+            if (list.length > 0 && !controlDiscount?.value) {
+              
+             if(!list[0].isGstRule)
+             {
+              controlDiscount?.setValue(list[0].gstValue);
+             }
+           }
+
+          }
+      })
     );
 
     this.gst$ = this.masterDataService.getGsts();
@@ -200,16 +230,16 @@ export class AddProduct implements OnInit {
           // Navigate after update
           this.router.navigate(['supplier/products']);
         } else {
-          // Reset form after create
-          this.initForm();
-          this.checkEditMode();
+           this.router.navigate(['supplier/products']);
+          // this.initForm();
+          // this.checkEditMode();
         }
       }
     });
 }
 
 
-searchHsnCode(event: any) {
+ searchHsnCode(event: any) {
   
   const query = event.query;
  
@@ -218,7 +248,72 @@ searchHsnCode(event: any) {
    });
  }
 
+ /// CalCulate Gst
+ onStockGroupSelect(event: any) {
+  const selectedId = event.value;
+  this.onCategoryChange(selectedId);
+  const selectedGroup = this.stockGroupList.find(
+    x => x.id === selectedId
+  );
+
+
+  if (!selectedGroup) return;
+
+  if (selectedGroup.isGstRule === false) {
+    this.productForm.get('discount')?.setValue(selectedGroup.gstValue);
+  } else {
+     this.applyGstFromSlab(selectedGroup);
+  }
+}
+
+applyGstFromSlab(selectedGroup: any) {
+  const rate = this.productForm.get('purchaseRate')?.value;
+
+  if (rate == null || !selectedGroup?.gstRuleDtos?.length) {
+    this.productForm.get('discount')?.reset();
+    return;
+  }
+
+  const matchedRule = selectedGroup.gstRuleDtos.find((rule: any) => {
+    const start = rule.startRange ?? 0;
+    const end = rule.endRange ?? Number.MAX_SAFE_INTEGER;
+
+    return rate >= start && rate <= end;
+  });
+
+  if (matchedRule) {
+    this.productForm.get('discount')?.setValue(matchedRule.gstValue);
+  } else {
+    this.productForm.get('discount')?.reset();
+  }
+}
+
+/// Get hsn code by stock group
+
+onCategoryChange(stockGroupId:number)
+{
+  this.loader.show();
+  this.supplierService.getGetSupplierHsnCodes(stockGroupId).subscribe(response=>{
+
+       this.loader.hide();
+       const control = this.productForm.get('hsnCodeObj');
+       if (response.length > 0 && !control?.value) {
+              control?.setValue(response[0]);
+       }
+       else{
+          control?.setValue(null);
+       }
+  })
+}
+
   cancel() {
     this.productForm.reset();
+  }
+
+  ngAfterViewInit(): void {
+    // Small timeout to ensure PrimeNG renders fully
+    setTimeout(() => {
+      this.productNameInput?.nativeElement.focus();
+    }, 0);
   }
 }

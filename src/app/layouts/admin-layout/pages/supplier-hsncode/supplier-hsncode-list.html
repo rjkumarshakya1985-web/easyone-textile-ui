@@ -1,0 +1,194 @@
+<p-toolbar class="page-header">
+  <div class="p-toolbar-group-left">
+    <p-breadcrumb [model]="breadcrumbItems" homeIcon="pi pi-home"></p-breadcrumb>
+  </div>
+
+  <div class="p-toolbar-group-right">
+    <button 
+    pButton 
+    label="Assign Product HsnCode" 
+    icon="pi pi-plus"
+    class="p-button-sm mr-2" 
+    (click)="showDialog()">
+  </button>
+
+
+<button pButton label="Export" icon="pi pi-file-export"
+      class="p-button-sm p-button-secondary" (click)="onExport()"></button>
+  </div>
+</p-toolbar>
+
+<p-card>
+    <div class="d-flex justify-content-between mb-3">
+
+      <div class="flex-grow-1" style="max-width:300px">
+         <p-floatlabel variant="on">
+          <input pInputText id="on_label" [formControl]="searchControl" autocomplete="off" />
+          <label for="on_label">Search keyword</label>
+        </p-floatlabel>
+      </div>
+
+      <ng-container *ngIf="isLoading()">
+        <p-buttonGroup>
+          <p-button label="{{pageSize}}" outlined severity="secondary"></p-button>
+          <p-button label="Total ({{tblResult().totalRows}})" disabled outlined></p-button>
+
+          <p-button icon="pi pi-angle-left"
+            outlined (click)="onPrevious()"></p-button>
+
+          <p-button label="{{ pageindex() + 1 }}/{{ numberofPage() }}"
+            disabled outlined></p-button>
+
+          <p-button icon="pi pi-angle-right"
+            outlined (click)="onNext()"></p-button>
+        </p-buttonGroup>
+      </ng-container>
+
+    </div>
+
+    <!-- TABLE -->
+    <ng-container *ngIf="isLoading()">
+     <p-table [value]="tblResult().result" showGridlines class="p-datatable-sm">
+
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Code</th>
+      <th>Supplier</th>
+      <th>Category</th>
+      <th>Hsn Codes</th>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body" let-row>
+    <tr>
+      <td>{{ row.code }}</td>
+      <td>{{ row.name }}</td>
+      <td>{{row.stockGroupName}}</td>
+      <td>
+        <p-chip class="chip-space" 
+                *ngFor="let hsnCode of row.hsnCodeResponses"
+                [label]="hsnCode.name" 
+                removable="true"
+                (onRemove)="onDeleteStockGroup(row.supplierId, hsnCode.id,row.stockGroupId)">
+        </p-chip>
+      </td>
+    </tr>
+  </ng-template>
+
+  <!-- ✔ FOOTER TEMPLATE FOR NO RECORD FOUND -->
+  <ng-template pTemplate="footer" let-columns>
+    <tr *ngIf="!tblResult().result || tblResult().result.length === 0">
+      <td colspan="3" class="text-center">
+        <strong>No Record Found</strong>
+      </td>
+    </tr>
+  </ng-template>
+
+     </p-table>
+
+    </ng-container>
+
+</p-card>
+
+ <p-dialog [(visible)]="visible" [modal]="true" [style]="{ width: '25rem' }">
+    
+    <!-- HEADER -->
+    <ng-template pTemplate="header">
+        <div class="inline-flex items-center justify-center gap-2">
+            <span class="font-bold whitespace-nowrap">Assign HsnCode</span>
+        </div>
+    </ng-template>
+
+    <!-- BODY -->
+    <div class="flex flex-column gap-4 mt-2">
+
+        <!-- SUPPLIER AUTOCOMPLETE -->
+        <div class="w-full">
+            <label class="block mb-1 font-medium text-sm">Supplier</label>
+
+            <p-autocomplete 
+                [(ngModel)]="selectedSupplier"
+                [suggestions]="filteredSuppliers()"
+                (completeMethod)="searchSupplier($event)"
+                (onSelect)="onSupplierSelect($event)"
+                optionLabel="name"
+                placeholder="Search Supplier"
+                appendTo="body"
+                [style]="{ width: '100%' }">
+
+                <ng-template let-supplier pTemplate="item">
+                    <div class="flex items-center gap-2">
+                        <div>{{ supplier.name }}</div>
+                        <small class="text-gray-500">({{ supplier.code }})</small>
+                    </div>
+                </ng-template>
+
+                <ng-template pTemplate="header">
+                    <div class="font-medium px-3 py-2">Select Supplier</div>
+                </ng-template>
+
+                <ng-template pTemplate="footer">
+                    <div class="px-3 py-3">
+                        <p-button 
+                            label="Add New Supplier"
+                            severity="secondary"
+                            text
+                            size="small"
+                            icon="pi pi-plus"
+                            (click)="goToAddSupplier()">
+                        </p-button>
+                    </div>
+                </ng-template>
+
+            </p-autocomplete>
+        </div>
+
+        <!-- TRANSPORT AUTOCOMPLETE -->
+        <div class="w-full">
+           <label for="category" class="font-medium text-sm">Select Category</label>
+           <p-select [(ngModel)]="stockGroupId" appendTo="body" [disabled]="!selectedSupplier" inputId="category" [options]="(supplierStockGroups$ | async) ?? []" optionLabel="name" optionValue="id"  class="w-full" />
+        </div>
+        
+         <!-- HSN CODE AUTOCOMPLETE -->
+      <div class="w-full">
+        <label class="block mb-1 font-medium text-sm">Hsn Code</label>
+        <p-autocomplete
+      [(ngModel)]="selectedHsnCode"
+      [suggestions]="filteredHsnCodes()"
+      (completeMethod)="searchHsnCode($event)"
+      optionLabel="name"
+      placeholder="Search Hsn Code"
+      appendTo="body"
+      [disabled]="!selectedSupplier || !stockGroupId"
+      [style]="{ width: '100%' }">
+
+      <ng-template let-hsn pTemplate="item">
+          <div>
+              <div>{{ hsn.name }}</div>
+          </div>
+      </ng-template>
+       </p-autocomplete>
+     </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <ng-template pTemplate="footer">
+        <p-button 
+            label="Cancel"
+            [text]="true"
+            severity="secondary"
+            (click)="visible = false">
+        </p-button>
+
+        <p-button 
+            label="Save"
+            [outlined]="true"
+            severity="secondary"
+            (click)="onSave()">
+        </p-button>
+    </ng-template>
+
+</p-dialog>
+
+<p-toast></p-toast>

@@ -64,7 +64,8 @@ export class UserList implements OnInit {
   roleTypes = [
     { name: 'Admin', value: 1 },
     { name: 'Cashier', value: 3 },
-    { name: 'Sales Man', value: 4 }
+    { name: 'Sales Man', value: 4 },
+    { name: 'Store Operator', value: 5 }
   ];
   
   constructor(private fb: FormBuilder,
@@ -184,6 +185,8 @@ export class UserList implements OnInit {
           return "Cashier";
         case 4:
           return "Sales Man";
+        case 5:
+        return "Store Operator";
         default:
           return "";
       }
