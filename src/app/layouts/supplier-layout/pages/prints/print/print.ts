@@ -143,7 +143,7 @@ getTotalPayableAmount(): number {
    return (this.printData()?.billingDetailPrints || [])
     .reduce(
       (sum, item) =>
-        sum + (Number(item.payableamt) || 0),
+        sum + (Number(item.payableAmount) || 0),
       0
   );
 }
