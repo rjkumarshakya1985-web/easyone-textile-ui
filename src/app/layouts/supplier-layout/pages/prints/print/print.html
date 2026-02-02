@@ -275,7 +275,7 @@
                               <td>{{(p.cgst||0)| currency:'INR':'symbol':'1.2-2'}}</td>
                                <td>{{(p.sgst||0)| currency:'INR':'symbol':'1.2-2'}}</td>
                                 <td>{{(p.igst||0)| currency:'INR':'symbol':'1.2-2'}}</td>
-                                 <td>{{getTotalPayableAmount()  | currency:'INR':'symbol':'1.2-2'}}</td>
+                                 <td>{{(p.PayableAmount ||0)  | currency:'INR':'symbol':'1.2-2'}}</td>
                          </tr>
                  </tbody>
                   <tfoot>
