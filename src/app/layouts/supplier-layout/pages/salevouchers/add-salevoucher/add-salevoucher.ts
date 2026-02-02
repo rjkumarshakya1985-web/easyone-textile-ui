@@ -142,7 +142,10 @@ export class AddSalevoucher {
     });
 
   // Reset selectproduct and productId when stockGroupId changes
- 
+  const input = document.getElementById('supplierBillNumber') as HTMLInputElement;
+    if (input) {
+     input.focus(); // Focus the input
+    }
    }
 
   checkEditMode() {
@@ -157,8 +160,7 @@ export class AddSalevoucher {
 
    loadSaleVoucherForEdit() {
     this.loader.show();
-
-  this.saleVoucherService.get(this.saleVoucherId)
+    this.saleVoucherService.get(this.saleVoucherId)
     .pipe(finalize(() => this.loader.hide()))
     .subscribe({
       next: salevoucher => {
@@ -415,4 +417,5 @@ openMenu(event: Event, row: SaleVoucherDetail, index: number) {
   this.menu.toggle(event); // ✅ Always defined
 }
 
-}
+
+} 
