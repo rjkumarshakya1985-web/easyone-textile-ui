@@ -194,6 +194,24 @@ export const routes: Routes = [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   },
+   { 
+    canActivate: [authGuard],
+    path: 'stock-incharge', 
+    loadComponent: () => import('./layouts/store-operator-layout/store-operator-layout').then(m => m.StoreOperatorLayout),
+    children: [
+      {
+        path: 'parcel-scanners',
+        canActivate: [authGuard],
+        loadComponent: () => import('./layouts/store-operator-layout/pages/parcel-scanners/parcel-scanners').then(c => c.ParcelScanners)
+      },
+      {
+        path: 'visitors',
+        canActivate: [authGuard],
+        loadComponent: () => import('./layouts/store-operator-layout/pages/visitors/visitors').then(c => c.Visitors)
+      },
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
+    ]
+  },
   { path: 'not-found', component: NotFoundRecord },
   { path: '**', redirectTo: '/login' }
  ,

@@ -44,9 +44,31 @@ export class Nav {
       this.setAdminMenu();
     } else if (this.userRole === 'Supplier') {
       this.setSupplierMenu();
-    } else {
+    } else if(this.userRole === 'StockIncharge')
+    {
+      this.setStoreOperator(); 
+    }
+    else {
       this.items = [];
     }
+  }
+
+  // Store Operator
+
+  private setStoreOperator()
+  {
+     this.items = [
+       {
+        label: 'Parcel Scanners',
+        icon: 'pi pi-fw pi-home',
+        routerLink: ['/stock-incharge/parcel-scanners']
+       },
+       {
+        label: 'Visitors',
+        icon: 'pi pi-fw pi-users',
+        routerLink: ['/stock-incharge/visitors']
+      }
+    ];
   }
 
   //---------------------------------------

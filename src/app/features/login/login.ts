@@ -90,7 +90,13 @@ export class Login {
         } 
         else if (user.roleName === 'SuperAdmin') {
           this.router.navigate(['/admin']);
-        } 
+        }
+        else if(user.roleName === 'StockIncharge')
+        {
+           
+           this.router.navigate(['/stock-incharge']);
+        }
+
        
       }
     });

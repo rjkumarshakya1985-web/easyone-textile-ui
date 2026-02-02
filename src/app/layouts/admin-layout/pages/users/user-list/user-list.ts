@@ -65,7 +65,7 @@ export class UserList implements OnInit {
     { name: 'Admin', value: 1 },
     { name: 'Cashier', value: 3 },
     { name: 'Sales Man', value: 4 },
-    { name: 'Store Operator', value: 5 }
+    { name: 'Stock Incharge', value: 5 }
   ];
   
   constructor(private fb: FormBuilder,
@@ -186,7 +186,7 @@ export class UserList implements OnInit {
         case 4:
           return "Sales Man";
         case 5:
-        return "Store Operator";
+        return "Stock Incharge";
         default:
           return "";
       }
