@@ -33,6 +33,9 @@ export interface BillingDetailPrint
     gst:number;
     discountAmount:number;
     total:number;
+    cgst:number;
+    sgst:number;
+    igst:number;
 }
 
 export interface StickerPrint {

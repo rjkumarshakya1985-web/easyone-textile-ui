@@ -114,5 +114,37 @@ export class Print {
         sum + (Number(item.discountAmount) || 0),
       0
     );
-  }
+  } 
+  getRowCGST(): number {
+  return (this.printData()?.billingDetailPrints || [])
+    .reduce(
+      (sum, item) =>
+        sum + (Number(item.cgst) || 0),
+      0
+);
+}
+ getRowSGST(): number {
+  return (this.printData()?.billingDetailPrints || [])
+    .reduce(
+      (sum, item) =>
+        sum + (Number(item.sgst) || 0),
+      0
+);
+}
+getRowIGST(): number {
+   return (this.printData()?.billingDetailPrints || [])
+    .reduce(
+      (sum, item) =>
+        sum + (Number(item.igst) || 0),
+      0
+);
+}
+getTotalPayableAmount(): number {
+  return (
+    this.getTotalDiscAmount() +
+    this.getRowCGST() +
+    this.getRowSGST()+
+this.getRowIGST()
+  );
+}
 }
