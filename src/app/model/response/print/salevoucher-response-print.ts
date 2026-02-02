@@ -36,7 +36,7 @@ export interface BillingDetailPrint
     cgst:number;
     sgst:number;
     igst:number;
-    PayableAmount:number;
+    payableamt:number;
 }
 
 export interface StickerPrint {
