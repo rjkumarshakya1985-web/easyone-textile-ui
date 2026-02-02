@@ -176,14 +176,16 @@ export class SupplierCategoryList {
       stockGroupId: stockGroupId
     };
 
-     this.supplierService.deleteSupplierStockGroup(request).subscribe(response=>{
-       
-      if(response)
-       {
-        this.loadTableData();
-       }
-
-     })
+    
+    this.supplierService.deleteSupplierStockGroup(request).subscribe({
+        next: (response) => {
+               if (response === true) {
+                this.loadTableData();
+                }
+      },error: (err) => {
+           this.loadTableData();
+        }
+     });
   }
 
    showDialog() {

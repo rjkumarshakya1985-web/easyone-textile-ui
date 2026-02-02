@@ -167,15 +167,16 @@ export class SupplierTransportList {
       transportId: transportId
     };
 
-     this.supplierService.deleteSupplierTransport(request).subscribe(response=>{
-       
-      if(response)
-       {
-        this.loadTableData();
-       }
-
-     })
-  }
+    this.supplierService.deleteSupplierTransport(request).subscribe({
+        next: (response) => {
+               if (response === true) {
+                this.loadTableData();
+                }
+      },error: (err) => {
+           this.loadTableData();
+        }
+     });
+   }
 
    showDialog() {
     this.visible = true;
