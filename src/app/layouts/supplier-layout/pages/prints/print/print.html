@@ -159,30 +159,30 @@
             <div id="sticker-print-section">
               <div *ngFor="let sticker of printData()?.stickerPrints">
                 <br>
-                <div style="width: 260px;
+                <div style="width: 280px;
                             height: auto;
                             background: #fff;
                             border-radius: 12px;
                             padding: 10px 12px;
-                            font-family: Arial, serif;
+                            font-family: inherit;
                             color: #000;
                             box-sizing: border-box;
                             border: 1px solid #e0e0e0;">
 
                <!-- Header -->
            
-             <div style="font-size:14px;margin-bottom:3px;display:flex;justify-content:space-between;width:98%;">
+             <div style="font-size:15px;margin-bottom:3px;display:flex;justify-content:space-between;width:98%;">
                 <b>SSBD</b>
                 <small>{{ sticker.printDateString }}</small>
              </div>
 
             <!-- Product + Supplier -->
-            <div style="font-size: 11px;">
+            <div style="font-size: 15px; font-weight: bold; text-align:center">
               {{sticker.productName}}/{{sticker.supplierCode}}
             </div>
 
             <!-- MRP -->
-            <div style="font-size: 14px; font-weight: bold;">
+            <div style="font-size: 15px; text-align:center">
              MRP Rs. {{sticker.mrpRate}}/-
             </div>
 
@@ -192,7 +192,7 @@
            <div style="text-align:center;">
                    <div style="display:inline-block;">
                     <!-- Top Row -->
-                     <div style="font-size:11px;margin-bottom:3px;margin-left: 9px;
+                     <div style="font-size:15px;margin-bottom:3px;margin-left: 9px;
                                  display:flex;justify-content:space-between;width:90%;">
                             <span>{{ sticker.wholeSaleRate }}</span>
                             <span>{{ sticker.retailRate }}</span>
@@ -203,9 +203,9 @@
       [bc-value]="sticker.barcode"
       [bc-format]="'CODE128'"
       [bc-width]="3"
-      [bc-height]="32"
+      [bc-height]="40"
       [bc-margin]="0"
-      [bc-font-size]="11"
+      [bc-font-size]="15"
       [bc-display-value]="true"
       [bc-margin-top]="2"
       [bc-margin-bottom]="2">
@@ -252,9 +252,13 @@
                            <th>Gst Rate</th>
                            <th>Quantity</th>
                            <th>Rate</th>
-                           <th>Disc (%)</th>
                            <th>Amount</th>
-                           <th>Discounted Amount</th>
+                           <th>Disc (%)</th>                           
+                           <th>Taxable</th>
+                           <th>CGST</th>
+                           <th>SGST</th>
+                           <th>IGST</th>
+                           <th>Payable</th>
                         </tr>
                    </thead>
                    <tbody>
@@ -265,23 +269,29 @@
                              <td>{{p.gst}}</td>
                              <td>{{p.qty}} Pcs</td>
                              <td>{{p.purchasePrice  | currency:'INR':'symbol':'1.2-2'}}</td>
-                             <td>{{printData()?.saleVoucherPrint?.discount }}</td>
                              <td>{{p.total  | currency:'INR':'symbol':'1.2-2'}}</td>
+                             <td>{{printData()?.saleVoucherPrint?.discount }}</td>                             
                              <td>{{p.discountAmount  | currency:'INR':'symbol':'1.2-2'}}</td>
+                              <td>{{(p.cgst||0)| currency:'INR':'symbol':'1.2-2'}}</td>
+                               <td>{{(p.sgst||0)| currency:'INR':'symbol':'1.2-2'}}</td>
+                                <td>{{(p.igst||0)| currency:'INR':'symbol':'1.2-2'}}</td>
+                                 <td>{{getTotalPayableAmount()  | currency:'INR':'symbol':'1.2-2'}}</td>
                          </tr>
                  </tbody>
                   <tfoot>
                       <tr>
                         <th colspan="4" class="text-end">Total</th>
                         <th>{{ getTotalQty() }} Pcs</th>
-                        <th colspan="2" class="text-end">Total Amount</th>
+                        <th colspan="1" class="text-end">Amount</th>
                         <th>{{ getTotalAmount() | currency:'INR':'symbol':'1.2-2' }}</th>
+                        <th class="text-end"></th>
                         <th>{{ getTotalDiscAmount() | currency:'INR':'symbol':'1.2-2' }}</th>
-                      </tr>
-                       <tr>
-                        <th colspan="8" class="text-end">Total Discount</th>
-                        <th>{{ getTotalAmount() - getTotalDiscAmount() | currency:'INR':'symbol':'1.2-2' }}</th>
-                      </tr>
+                      <th>{{ getRowCGST() | currency:'INR':'symbol':'1.2-2' }}</th>
+                      <th>{{ getRowSGST() | currency:'INR':'symbol':'1.2-2' }}</th>
+                      <th>{{ getRowIGST() | currency:'INR':'symbol':'1.2-2' }}</th>
+                      <th>{{ getTotalPayableAmount() | currency:'INR':'symbol':'1.2-2' }}</th>
+                      
+                      </tr>                      
                   </tfoot>
                 </table>
                 <div class="row">

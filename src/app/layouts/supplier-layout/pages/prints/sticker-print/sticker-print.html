@@ -21,7 +21,7 @@
 
 <p-card *ngIf="printData() as sticker">
   <div id="sticker-print-section">
-  <div style="width:260px;border:1px solid #e0e0e0;border-radius:12px;padding:10px">
+  <div style="width:300px;border:1px solid #e0e0e0;border-radius:12px;padding:10px">
 
     <!-- Header -->
     <div style="display:flex;justify-content:space-between;font-size:14px">
@@ -30,12 +30,12 @@
     </div>
 
     <!-- Product -->
-    <div style="font-size:11px">
+    <div  style="font-size:14px;font-weight:bold">
       {{ sticker.productName }}/{{ sticker.supplierCode }}
     </div>
 
     <!-- MRP -->
-    <div style="font-size:14px;font-weight:bold">
+    <div style="font-size:11px">
       MRP Rs. {{ sticker.mrpRate }}/-
     </div>
 
@@ -51,7 +51,7 @@
         [bc-value]="sticker.barcode"
         [bc-format]="'CODE128'"
         [bc-width]="3"
-        [bc-height]="32"
+        [bc-height]="40"
         [bc-display-value]="true">
       </ngx-barcode6>
     </div>
