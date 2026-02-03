@@ -140,11 +140,11 @@ getRowIGST(): number {
 );
 }
 getTotalPayableAmount(): number {
-  return (
-    this.getTotalDiscAmount() +
-    this.getRowCGST() +
-    this.getRowSGST()+
-this.getRowIGST()
+   return (this.printData()?.billingDetailPrints || [])
+    .reduce(
+      (sum, item) =>
+        sum + (Number(item.payableAmount) || 0),
+      0
   );
 }
 }
