@@ -85,12 +85,20 @@ export class Login {
         }
 
        
-        if (user.roleName === 'Supplier') {
+       switch (user.roleName) {
+        case 'Supplier':
           this.router.navigate(['/supplier']);
-        } 
-        else if (user.roleName === 'SuperAdmin') {
+          break;
+        case 'SuperAdmin':
           this.router.navigate(['/admin']);
-        } 
+          break;
+        case 'StockIncharge':
+          this.router.navigate(['/stock-incharge']);
+          break;
+        default:
+          this.router.navigate(['/']);
+          break;
+      }
        
       }
     });

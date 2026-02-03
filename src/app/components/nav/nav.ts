@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import { RouterModule } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { LocalStorageService } from '../../core/services/local-storage.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-nav',
@@ -11,112 +12,118 @@ import { LocalStorageService } from '../../core/services/local-storage.service';
   templateUrl: './nav.html',
   styleUrls: ['./nav.css']
 })
-export class Nav {
+export class Nav implements OnInit, OnDestroy {
+
   items: MenuItem[] = [];
-  isLogin: boolean = false;
+  isLogin = false;
   userRole: string | null = null;
 
-  constructor(private localStorage: LocalStorageService) {
-    this.initializeMenu();
+  private subscription!: Subscription;
+
+  constructor(private localStorage: LocalStorageService) {}
+
+  ngOnInit(): void {
+    this.loadUserMenu();
+
+   
   }
 
-  private initializeMenu() {
+  ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
+
+  // ---------------------------------------
+  // MAIN LOGIC
+  // ---------------------------------------
+  private loadUserMenu(): void {
     const token = this.localStorage.getToken();
     const user = this.localStorage.getUser();
 
     this.isLogin = !!token;
+    this.userRole = this.isLogin && user ? user.roleName : null;
 
-    if (this.isLogin && user) {
-      this.userRole = user.roleName; // role from backend: "Admin", "Supplier"
-    }
-
-    this.setMenu();
+    this.items = this.isLogin && this.userRole
+      ? this.menuByRole[this.userRole] ?? []
+      : [];
   }
 
-  // MAIN LOGIC
-  private setMenu() {
-    if (!this.isLogin) {
-      this.items = [];
-      return;
-    }
+  // ---------------------------------------
+  // ROLE → MENU CONFIG
+  // ---------------------------------------
+  private menuByRole: Record<string, MenuItem[]> = {
 
-    if (this.userRole === 'SuperAdmin') {
-      this.setAdminMenu();
-    } else if (this.userRole === 'Supplier') {
-      this.setSupplierMenu();
-    } else {
-      this.items = [];
-    }
-  }
+    SuperAdmin: [
+      {
+        label: 'Dashboard',
+        icon: 'pi pi-fw pi-home',
+        routerLink: ['/admin/dashboard']
+      },
+      {
+        label: 'GST Rules',
+        icon: 'pi pi-fw pi-book',
+        routerLink: ['/admin/gstrule']
+      },
+      {
+        label: 'Masters',
+        icon: 'pi pi-fw pi-cog',
+        items: [
+          { label: 'HSN Codes', icon: 'pi pi-hashtag', routerLink: ['/admin/hsncodes'] },
+          { label: 'Transports', icon: 'pi pi-truck', routerLink: ['/admin/transports'] },
+          { label: 'Departments', icon: 'pi pi-building', routerLink: ['/admin/departments'] },
+          { label: 'Product Categories', icon: 'pi pi-tags', routerLink: ['/admin/item-categories'] }
+        ]
+      },
+      {
+        label: 'Users',
+        icon: 'pi pi-fw pi-user-plus',
+        routerLink: ['/admin/users']
+      },
+      {
+        label: 'Suppliers',
+        icon: 'pi pi-fw pi-users',
+        items: [
+          { label: 'Supplier List', icon: 'pi pi-user', routerLink: ['/admin/suppliers'] },
+          { label: 'Supplier Transports', icon: 'pi pi-truck', routerLink: ['/admin/supplier-transports'] },
+          { label: 'Supplier Categories', icon: 'pi pi-tags', routerLink: ['/admin/supplier-stockgroups'] },
+          { label: 'Supplier HSN Code', icon: 'pi pi-code', routerLink: ['/admin/supplier-hsncode'] },
+          { label: 'Supplier Products', icon: 'pi pi-box', routerLink: ['/admin/supplier-products'] },
+          { label: 'Supplier Sale Voucher', icon: 'pi pi-receipt', routerLink: ['/admin/supplier-salevoucher'] }
+        ]
+      },
+      {
+        label: 'Customers',
+        icon: 'pi pi-fw pi-users',
+        routerLink: ['/admin/customers']
+      },
+      {
+        label: 'Reports',
+        icon: 'pi pi-fw pi-chart-bar',
+        items: [
+          { label: 'Sales Report', icon: 'pi pi-chart-line', routerLink: ['/admin/sale-history'] },
+          { label: 'Purchase Report', icon: 'pi pi-chart-pie', routerLink: ['/admin/purchase-history'] }
+        ]
+      }
+    ],
 
-  //---------------------------------------
-  // Supplier Menu
-  //---------------------------------------
-  private setSupplierMenu() {
-    this.items = [
+    Supplier: [
       { label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/supplier/dashboard'] },
       { label: 'Product', icon: 'pi pi-fw pi-box', routerLink: ['/supplier/products'] },
       { label: 'Sale Voucher', icon: 'pi pi-fw pi-file', routerLink: ['/supplier/salevouchers'] }
-    ];
-  }
+    ],
 
-  //---------------------------------------
-  // Admin Menu
-  //---------------------------------------
- private setAdminMenu() {
-  this.items = [
-    {
-      label: 'Dashboard',
-      icon: 'pi pi-fw pi-home',
-      routerLink: ['/admin/dashboard']
-    },
-    {
-      label: 'GST Rules',
-      icon: 'pi pi-fw pi-book',
-      routerLink: ['/admin/gstrule']
-    },
-    {
-      label: 'Masters',
-      icon: 'pi pi-fw pi-cog',
-      items: [
-        { label: 'HSN Codes', icon: 'pi pi-hashtag', routerLink: ['/admin/hsncodes'] },
-        { label: 'Transports', icon: 'pi pi-truck', routerLink: ['/admin/transports'] },
-        { label: 'Departments', icon: 'pi pi-building', routerLink: ['/admin/departments'] },
-        { label: 'Product Categories', icon: 'pi pi-tags', routerLink: ['/admin/item-categories'] }
-      ]
-    },
-    {
-      label: 'Users',
-      icon: 'pi pi-fw pi-user-plus',
-      routerLink: ['/admin/users']
-    },
-    {
-      label: 'Suppliers',
-      icon: 'pi pi-fw pi-users',
-      items: [
-        { label: 'Supplier List', icon: 'pi pi-user', routerLink: ['/admin/suppliers'] },
-        { label: 'Supplier Transports', icon: 'pi pi-truck', routerLink: ['/admin/supplier-transports'] },
-        { label: 'Supplier Categories', icon: 'pi pi-tags', routerLink: ['/admin/supplier-stockgroups'] },
-               { label: 'Supplier HsnCode', icon: 'pi pi-code', routerLink: ['/admin/supplier-hsncode'] },
-        { label: 'Supplier Products', icon: 'pi pi-box', routerLink: ['/admin/supplier-products'] },
-        { label: 'Supplier SaleVoucher', icon: 'pi pi-receipt', routerLink: ['/admin/supplier-salevoucher'] },
- 
-      ]
-    },
-    {
-      label: 'Customers',
-      icon: 'pi pi-fw pi-users',
-      routerLink: ['/admin/customers']
-    },
-    {
-      label: 'Reports',
-      icon: 'pi pi-fw pi-chart-bar',
-      items: [
-        { label: 'Sales Report', icon: 'pi pi-chart-line', routerLink: ['/admin/sale-history'] },
-        { label: 'Purchase Report', icon: 'pi pi-chart-pie', routerLink: ['/admin/purchase-history'] }
-      ]
-    }
-  ];
-}
-
+    StockIncharge: [
+      {
+        label: 'Parcel Scanners',
+        icon: 'pi pi-fw pi-home',
+        routerLink: ['/stock-incharge/parcel-scanners']
+      },
+      {
+        label: 'Visitors',
+        icon: 'pi pi-fw pi-users',
+        routerLink: ['/stock-incharge/visitors']
+      }
+    ]
+  };
 }

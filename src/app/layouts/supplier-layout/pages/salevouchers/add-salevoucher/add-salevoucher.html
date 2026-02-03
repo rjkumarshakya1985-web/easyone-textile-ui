@@ -25,6 +25,18 @@
 <p-card class="p-mb-3">
     <div class="row g-3">
 
+        <!-- Supplier Bill Number -->
+      <div class="col-md-3"> 
+            <input pInputText id="supplierBillNumber"
+             class="form-control"   
+             formControlName="supplierBillNumber" autocomplete="off" 
+             
+           [ngClass]="{
+              'ng-invalid ng-dirty':
+              voucherForm.get('supplierBillNumber')?.invalid &&
+              voucherForm.get('supplierBillNumber')?.touched
+            }"  placeholder="My Bill Number" tabindex="0"/>
+      </div>
       <!-- Date -->
       <div class="col-md-3">
         <p-floatlabel variant="on" class="w-full">
@@ -90,15 +102,7 @@
              <label for="on_Product_numberOfPacket">Number of Packet</label>
        </p-floatLabel>
       </div>
-      <!-- Supplier Bill Number -->
-      <div class="col-md-3"> 
-            <input pInputText id="supplierBillNumber" class="form-control"   formControlName="supplierBillNumber" autocomplete="off" 
-           [ngClass]="{
-              'ng-invalid ng-dirty':
-              voucherForm.get('supplierBillNumber')?.invalid &&
-              voucherForm.get('supplierBillNumber')?.touched
-            }"  placeholder="My Bill Number"/>
-      </div>
+    
       <!-- Description -->
     </div>
 </p-card>
@@ -114,7 +118,7 @@
            <div class="row mb-12">
                 <div class="col-md-5">
                    <p-floatlabel variant="on">
-                       <p-autocomplete
+                       <p-autocomplete 
                             formControlName="selectproduct"
                             [suggestions]="filteredProducts()"
                             (completeMethod)="searchProduct($event)"
