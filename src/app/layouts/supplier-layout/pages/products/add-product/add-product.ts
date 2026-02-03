@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
 import { StockGroup } from '../../../../../model/stock-group.model';
 import { finalize, Observable, tap } from 'rxjs';
 import { StockGroupService } from '../../../../../core/services/stock-group.service';
-import { FloatLabel, FloatLabelModule } from 'primeng/floatlabel';
+import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { ToastModule } from 'primeng/toast';
 import { LoaderService } from '../../../../../core/services/loader.service';
@@ -164,9 +164,11 @@ export class AddProduct implements OnInit, AfterViewInit {
   }
 
   checkEditMode() {
-    this.productId = this.route.snapshot.paramMap.get('id')!;
+     let id = this.route.snapshot.paramMap.get('id')!;
 
-    if (this.productId && isNaN(Number(this.productId))) {
+    if (id && isNaN(Number(id))) {
+      
+      this.productId= id;
       this.isEdit = true;
       this.loadProductForEdit();
     }
@@ -230,13 +232,20 @@ export class AddProduct implements OnInit, AfterViewInit {
           // Navigate after update
           this.router.navigate(['supplier/products']);
         } else {
-           this.router.navigate(['supplier/products']);
-          // this.initForm();
-          // this.checkEditMode();
+         
+           setTimeout(() => {
+               this.initForm();
+               this.isEdit = false;          
+               this.loadDropdowns();         
+               this.checkEditMode();
+                this.productNameInput?.nativeElement.focus();
+           }, 300);
+          
+           
         }
       }
     });
-}
+  }
 
 
  searchHsnCode(event: any) {

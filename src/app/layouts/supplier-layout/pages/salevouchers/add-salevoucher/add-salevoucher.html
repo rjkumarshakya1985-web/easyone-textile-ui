@@ -190,9 +190,9 @@
              <th>Product</th>
              <th>Quantity</th>
              <th>Purchase Price</th>
-             <th>WholeSale Price</th>
+             <!-- <th>WholeSale Price</th>
              <th>Retail Price</th>
-             <th>MRP Price</th>
+             <th>MRP Price</th> -->
              <th>Total</th>
              <th>Action</th>
          </tr>
@@ -205,9 +205,9 @@
       <td>{{ item.productName }}</td>
       <td>{{ item.qty }}</td>
       <td>{{ item.purchasePrice | number:'1.2-2' }}</td>
-      <td>{{ item.wholeSalePrice | number:'1.2-2' }}</td>
+      <!-- <td>{{ item.wholeSalePrice | number:'1.2-2' }}</td>
       <td>{{ item.retailPrice | number:'1.2-2' }}</td>
-      <td>{{ item.mrpPrice | number:'1.2-2' }}</td>
+      <td>{{ item.mrpPrice | number:'1.2-2' }}</td> -->
       <td>{{ (item.purchasePrice * item.qty) | number:'1.2-2' }}</td>
       <td class="text-center">
           <p-menu #menu
@@ -235,7 +235,6 @@
     <tr class="footer-bold">
       <td colspan="3" class="text-right">TOTAL</td>
       <td>{{ getTotalQty() }}</td>
-      <td colspan="3"></td>
       <td>SUM</td>
       <td>{{ getTotalWholeSaleAmount() | number:'1.2-2' }}</td>
       <td></td>
@@ -300,4 +299,4 @@
     </ng-template>
 </p-dialog>
 
-
+<p-confirmDialog></p-confirmDialog>

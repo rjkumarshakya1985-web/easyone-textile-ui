@@ -39,17 +39,73 @@
 
     <!-- TABLE -->
     <ng-container *ngIf="isLoading()">
-      <p-table [value]="tblResult().result" size="small" showGridlines class="p-datatable-sm">
+      <p-table [value]="tblResult().result" [lazy]="true"
+  (onLazyLoad)="onLazyLoad($event)"
+  [sortField]="sortField" [lazyLoadOnInit]="false"
+  [sortOrder]="sortOrder" size="small" showGridlines class="p-datatable-sm">
 
         <ng-template pTemplate="header">
           <tr>
-            <th>Supplier</th>
-            <th>Category name</th>
-            <th>Product Name</th>
-            <th>Print Name</th>
-            <th>Barcode</th>
-            <th>Hsn Code</th>
-            <th>Purchase Rate</th>
+        <th pSortableColumn="supplierName">
+          <div class="supplier-header">
+              <span class="header-title">Supplier</span>&nbsp;
+              <p-sortIcon field="supplierName"></p-sortIcon>
+         <!-- 
+    <p-columnFilter
+      field="supplierName"
+      display="menu"
+      matchMode="contains"
+      [showMatchModes]="false"
+      [showOperator]="false"
+      [showAddButton]="false"
+      styleClass="supplier-filter">
+
+      <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+        <div class="filter-input">
+          <i class="pi pi-search"></i>
+          <input
+            pInputText
+            type="text"
+            [value]="value"
+            (input)="filter($event.target.value)"
+            placeholder="Search supplier">
+        </div>
+      </ng-template>
+
+    </p-columnFilter> -->
+          </div>
+       </th>
+        <th pSortableColumn="CategoryName">
+                    <div class="flex items-center gap-2">Category name
+                        <p-sortIcon field="CategoryName" />
+                    </div>
+        </th>
+         <th pSortableColumn="name">
+                    <div class="flex items-center gap-2">Product Name
+                        <p-sortIcon field="name" />
+                    </div>
+        </th>
+        <th pSortableColumn="printName">
+                    <div class="flex items-center gap-2">Print Name
+                        <p-sortIcon field="printName" />
+                    </div>
+        </th>
+        <th pSortableColumn="barcode">
+                    <div class="flex items-center gap-2">Barcode
+                        <p-sortIcon field="barcode" />
+                    </div>
+        </th>
+        
+        <th pSortableColumn="hsnCode">
+                    <div class="flex items-center gap-2">Hsn Code
+                        <p-sortIcon field="hsnCode" />
+                    </div>
+        </th>
+         <th pSortableColumn="purchaseRate">
+                    <div class="flex items-center gap-2">Purchase Rate
+                        <p-sortIcon field="purchaseRate" />
+                    </div>
+        </th>
             <th>Discount</th>
             <th>Action</th>
           </tr>
