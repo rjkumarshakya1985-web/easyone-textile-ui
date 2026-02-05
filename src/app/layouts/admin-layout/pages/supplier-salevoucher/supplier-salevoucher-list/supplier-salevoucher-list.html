@@ -63,7 +63,7 @@
             <td>{{row.numberOfParcel}}</td>
             <td>{{row.billNumber}}</td>
             <td>
-              <p-chip label="{{getStatusText(row.parcelStatus)}}" />
+              <p-tag [severity]="ParcelStatusHelper.getParcelStatusColor(row.parcelStatus)" [value]="ParcelStatusHelper.getParcelStatusText(row.parcelStatus)" />
             </td>
             <td>
               <span class="px-2 py-1 rounded bg-blue-50 text-blue-600 cursor-pointer hover:bg-blue-100"

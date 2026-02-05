@@ -23,6 +23,8 @@ import { SaleVoucherTableResponse } from '../../../../../model/response/salevouc
 import { SaleVoucherService } from '../../../../../core/services/salevoucher.service';
 import { ParcelStatus } from '../../../../../core/enums/enum';
 import { ChipModule } from 'primeng/chip';
+import { TagModule } from 'primeng/tag';
+import { Helper } from '../../../../../core/helpers/helper';
 
 @Component({
   selector: 'app-salevoucher-list',
@@ -42,6 +44,7 @@ import { ChipModule } from 'primeng/chip';
     ReactiveFormsModule,
     MenubarModule, 
     BadgeModule,
+    TagModule, 
     ConfirmDialogModule,
     MenuModule,ChipModule    
   ],
@@ -52,6 +55,7 @@ export class SalevoucherList {
 
   @ViewChild('menu') menu!: Menu;
   items: MenuItem[] = [];
+  ParcelStatusHelper = Helper;
   
   // -----------------------------
   // Signals
@@ -154,25 +158,49 @@ export class SalevoucherList {
   {
     this.router.navigate(['supplier/print',id]);
   }
-   openMenu(event: Event, row: SaleVoucherTableResponse) {
-       this.items = [{
-            label: 'Edit',
-            icon: 'pi pi-pencil',
-          command: () => this.gotoEditSaleVoucher(row.id)
-        },
-        {
-          label: 'Delete',
-          icon: 'pi pi-trash',
-          //command: () => this.deleteProduct(row.id)
-        },
-        {
-          label: 'Print',
-          icon: 'pi pi-print',
-          command: () => this.goToPrint(row.id)
-        }
-      ];
-    
-      this.menu.toggle(event);
-    
+
+  gotoViewSaleVoucher(id:number)
+  {
+    this.router.navigate(['supplier/salevoucher-detail',id]);
+  }
+  
+  openMenu(event: Event, row: SaleVoucherTableResponse) {
+
+  if (row.parcelStatus === ParcelStatus.InTransit) {
+
+    // ✏️ Edit + 🗑️ Delete
+    this.items = [
+      {
+        label: 'Edit',
+        icon: 'pi pi-pencil',
+        command: () => this.gotoEditSaleVoucher(row.id)
+      },
+      {
+        label: 'Delete',
+        icon: 'pi pi-trash',
+       // command: () => this.deleteSaleVoucher(row.id)
       }
+    ];
+
+  } else {
+
+    // 🖨️ Print + 👁️ View
+    this.items = [
+      {
+        label: 'View',
+        icon: 'pi pi-eye',
+        command: () => this.gotoViewSaleVoucher(row.id)
+      },
+      {
+        label: 'Print',
+        icon: 'pi pi-print',
+        command: () => this.goToPrint(row.id)
+      }
+    ];
+
+  }
+
+  this.menu.toggle(event);
+}
+
 }

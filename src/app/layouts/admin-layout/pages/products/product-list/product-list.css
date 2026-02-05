@@ -27,3 +27,10 @@
   margin-right: 0.5rem; /* Adjust space as needed */
 }
 
+
+.supplier-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* left = title+sort, right = filter */
+  width: 100%;
+}

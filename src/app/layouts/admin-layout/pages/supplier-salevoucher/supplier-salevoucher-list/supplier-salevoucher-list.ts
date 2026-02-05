@@ -23,6 +23,8 @@ import { SaleVoucherTableResponse } from '../../../../../model/response/salevouc
 import { SaleVoucherService } from '../../../../../core/services/salevoucher.service';
 import { ParcelStatus } from '../../../../../core/enums/enum';
 import { ChipModule } from 'primeng/chip';
+import { Helper } from '../../../../../core/helpers/helper';
+import { TagModule } from 'primeng/tag';
 
 @Component({
   selector: 'app-supplier-salevoucher-list',
@@ -43,7 +45,7 @@ import { ChipModule } from 'primeng/chip';
     MenubarModule, 
     BadgeModule,
     ConfirmDialogModule,
-    MenuModule,ChipModule    
+    MenuModule,TagModule    
   ],
  templateUrl: './supplier-salevoucher-list.html',
   styleUrl: './supplier-salevoucher-list.css',
@@ -52,6 +54,7 @@ export class SupplierSalevoucherList {
 
   @ViewChild('menu') menu!: Menu;
   items: MenuItem[] = [];
+  ParcelStatusHelper = Helper;
   
   // -----------------------------
   // Signals

@@ -40,6 +40,12 @@ export const SUPPLIER_ROUTES: Routes = [
       import('./pages/salevouchers/add-salevoucher/add-salevoucher')
         .then(c => c.AddSalevoucher)
   },
+    {
+      path: 'salevoucher-detail/:id',
+      loadComponent: () =>
+        import('../admin-layout/pages/supplier-salevoucher/supplier-salevoucher-detail/supplier-salevoucher-detail')
+          .then(c => c.SupplierSalevoucherDetail)
+    },
   {
     path: 'print/:id',
     loadComponent: () =>

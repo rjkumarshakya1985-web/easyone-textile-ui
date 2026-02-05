@@ -16,7 +16,7 @@ export enum ParcelStatus {
   Ready = 1,
   Packed = 2,
   InTransit = 3,
-  Received = 4,
+  InWareHouse = 4,
   Opened = 5,
   Returned = 6,
   Cancelled = 7,

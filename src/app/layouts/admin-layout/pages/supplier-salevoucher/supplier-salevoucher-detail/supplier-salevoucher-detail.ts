@@ -13,6 +13,8 @@ import { TabsModule } from 'primeng/tabs';
 import { StepperModule } from 'primeng/stepper';
 import { ButtonModule } from 'primeng/button';
 import { SaleVoucherStatusView } from '../../../../../model/response/salevouchers/salevoucher-status-response.model';
+import { Helper } from '../../../../../core/helpers/helper';
+import { TagModule } from 'primeng/tag';
 
 
 @Component({
@@ -20,7 +22,7 @@ import { SaleVoucherStatusView } from '../../../../../model/response/salevoucher
   standalone: true,
   providers: [ConfirmationService],
   imports: [ButtonModule, StepperModule,
-   CommonModule,TableModule,TabsModule    
+   CommonModule,TableModule,TabsModule,TagModule    
   ],
  templateUrl: './supplier-salevoucher-detail.html',
   styleUrl: './supplier-salevoucher-detail.css',
@@ -31,7 +33,7 @@ export class SupplierSalevoucherDetail {
     saleVoucher = signal<SaleVoucherResponse | null>(null);
     saleVoucherStatus = signal<SaleVoucherStatusView[]>([]);
     saleVoucherId!:number;
-    
+    ParcelStatusHelper = Helper;
     statuses = [
     { label: 'InTransit', value: 3 },
   ];
