@@ -1,1 +1,63 @@
-<p>parcel-scanners works!</p>
+<p-toolbar class="page-header">
+  <div class="p-toolbar-group-left">
+    <div class="flex flex-col gap-2">
+      <i class="pi pi-question-circle" style="font-size: 24px;"
+      pTooltip="
+1. Scan or enter the parcel number.
+2. Parcel details will appear in the list.
+3. Duplicate parcels will not be added.
+4. Review the list and click 'Receive in Warehouse'.
+5. Parcel status will be updated to Warehouse Received."
+  tooltipPosition="right"></i>
+      <label>Parcel Number</label>
+
+      <input
+        pInputText
+        [ngModel]="parcelNumber()"
+        (ngModelChange)="parcelNumber.set($event)"
+        (keyup.enter)="onEnter()" />
+
+
+    </div>
+  </div>
+  <div class="p-toolbar-group-right">
+    <p-button label="Receive in Warehouse" class="p-button-sm mr-2"  variant="text" [raised]="true" (click)="parcelReceived()"/>
+  </div>
+</p-toolbar>
+
+<div class="card">
+  <p-table
+    [value]="parcels()"
+    [loading]="isLoading()"
+    dataKey="saleVoucherId"
+    [tableStyle]="{'min-width': '50rem'}">
+
+    <ng-template #header>
+      <tr>
+        <th style="width: 4rem;">#</th>
+        <th>Parcel No.</th>
+        <th>Transport</th>
+        <th>Supplier</th>
+        <th>Bill No</th>
+        <th>Action</th>
+      </tr>
+    </ng-template>
+
+    <ng-template #body let-p let-i="rowIndex">
+      <tr>
+        <td>{{ i + 1 }}</td>
+        <td>{{ p.saleVoucherId }}</td>
+        <td>{{ p.transporterName }}</td>
+        <td>{{ p.supplierName }}</td>
+        <td>{{ p.supplierBillNumber }}</td>
+        <td>
+              <span class="px-2 py-1 rounded bg-red-50 text-red-600 cursor-pointer hover:bg-red-100 ml-2"
+                 pTooltip="Delete" (click)="remove(p.saleVoucherId)">
+                 <i class="pi pi-trash"></i>
+               </span>
+        </td>
+      </tr>
+    </ng-template>
+
+  </p-table>
+</div>

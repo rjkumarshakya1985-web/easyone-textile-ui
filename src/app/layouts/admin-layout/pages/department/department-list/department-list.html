@@ -28,10 +28,16 @@
             <td>{{ row.description || '-' }}</td>
             <td class="text-center">
                
-            <span class="px-2 py-1 rounded bg-blue-50 text-blue-600 cursor-pointer hover:bg-blue-100"
+            <span class="px-2 mr-2 py-1 rounded bg-blue-50 text-blue-600 cursor-pointer hover:bg-blue-100"
              (click)="editDepartment(row)" pTooltip="Edit">
-            <i class="pi pi-pencil"></i>
+            <i class="pi pi-pencil"></i> 
            </span>
+
+            <span class="px-2  py-1 rounded bg-blue-50 text-blue-600 cursor-pointer hover:bg-blue-100"
+             (click)="gotoSubDepartment(row.id)" pTooltip="Go to Sub Department">
+            <i class="pi pi-building"></i> 
+           </span>
+
           
           </td>
           </tr>

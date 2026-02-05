@@ -115,7 +115,12 @@ export class Nav implements OnInit, OnDestroy {
 
     StockIncharge: [
       {
-        label: 'Parcel Scanners',
+        label: 'In Transit Parcel Scanners',
+        icon: 'pi pi-fw pi-home',
+        routerLink: ['/stock-incharge/parcel-scanners']
+      },
+      {
+        label: 'Transport Parcel Scanners',
         icon: 'pi pi-fw pi-home',
         routerLink: ['/stock-incharge/parcel-scanners']
       },
