@@ -49,19 +49,24 @@
   </ng-template>
 
   <ng-template pTemplate="body" let-row>
-    <tr>
+    <tr [ngClass]="{ 'inactive-row': !row.isActive }">
       <td>{{customerType(row.customerType)}}</td>
       <td>{{ row.name }}</td>
       <td>{{row.gstIn}}</td>
       <td>{{row.mobile}}</td>
       <td>{{getTransactionTypeName(row.regType)}}</td>
       <td>
-        <button pButton icon="pi pi-pencil" class="p-button-text p-button-sm" (click)="goToEditCustomer(row.id)"></button>
-        <button pButton icon="pi pi-trash"  class="p-button-text p-button-sm p-button-danger"></button>
+        <span class="px-2 py-1 rounded bg-blue-50 text-blue-600 cursor-pointer hover:bg-blue-100"
+              (click)="openMenu($event, row)" pTooltip="Actions">
+               <i class="pi pi-ellipsis-v"></i>
+           </span>
+        <!-- <button pButton icon="pi pi-pencil" class="p-button-text p-button-sm" (click)="goToEditCustomer(row.id)"></button>
+        <button pButton icon="pi pi-trash"  class="p-button-text p-button-sm p-button-danger"></button> -->
       </td>
     </tr>
   </ng-template>
 
 </p-table>
 </p-card>
-
+<p-menu #menu [model]="items" [popup]="true"></p-menu>
+<p-confirmDialog></p-confirmDialog>

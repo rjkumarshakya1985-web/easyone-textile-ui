@@ -1,6 +1,6 @@
 import { Component, signal, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { MenuItem } from 'primeng/api';
+import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { Customer } from '../../../../../model/customer.model';
 import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
@@ -24,6 +24,8 @@ import { debounceTime, distinctUntilChanged } from 'rxjs';
 
 @Component({
   selector: 'app-customer-list',
+  standalone: true,
+    providers: [ConfirmationService],  
   imports: [ CommonModule,
     PanelModule,
     ButtonGroupModule,
@@ -67,7 +69,12 @@ export class CustomerList {
     { label: 'Customer' }
   ];
 
-  constructor(private router: Router,private customerService:CustomerService) {}
+  constructor(
+    private router: Router,
+    private customerService:CustomerService,
+    private confirmationService:ConfirmationService, 
+    private messageService:MessageService
+  ) {}
 
    ngOnInit() {
     this.setupSearch();    
@@ -153,10 +160,9 @@ export class CustomerList {
     this.router.navigate(['admin/customer/add']);
   }
 
-  goToEditCustomer(id: number) {
+  goToEditCustomer(id: string) {
     this.router.navigate(['admin/customer/edit', id]);
   }
-
   customerType(type:number):string
   {
      switch(type)
@@ -200,5 +206,81 @@ export class CustomerList {
       this.loadTableData(this.searchControl.value || '');
     }
   }
+  
 
+  deleteCustomer(id: string) {
+  this.confirmationService.confirm({
+    header: 'Delete Customer',
+    message: 'Are you sure you want to delete this Customer?',
+    icon: 'pi pi-trash',
+    acceptLabel: 'Yes',
+    rejectLabel: 'No',
+    acceptButtonStyleClass: 'p-button-danger',
+    rejectButtonStyleClass: 'p-button-secondary',
+    accept: () => {
+      this.customerService.updateStatusCustomer(id, 0).subscribe(status => {
+        if (status) {
+          this.loadTableData();
+
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Deleted',
+            detail: 'Customer deleted successfully'
+          });
+        }
+      });
+    }
+  });
+ }
+  /////
+  openMenu(event: Event, row: CustomerResponse) {
+   this.items = [
+     ...(row.isActive ? [{
+      label: 'Edit',
+      icon: 'pi pi-pencil',
+      command: () => this.goToEditCustomer(row.id)
+    }] : []),
+    {
+      label: 'Delete',
+      icon: 'pi pi-trash',
+      command: () => this.deleteCustomer(row.id)
+    },
+    {
+      label: row.isActive ? 'Deactivate' : 'Activate',
+      icon: row.isActive ? 'pi pi-times-circle' : 'pi pi-check-circle',
+      command: () => this.toggleActive(row)
+    }
+  ];
+
+  this.menu.toggle(event);
+
+  }
+   toggleActive(response: CustomerResponse) {
+     this.confirmationService.confirm({
+      header: 'Change Status',
+      message: 'Are you sure you want to change active status?',
+      icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Yes',
+      rejectLabel: 'No',
+      acceptButtonStyleClass: 'p-button-warning',
+      rejectButtonStyleClass: 'p-button-secondary',
+      accept: () => {
+        this.customerService.updateStatusCustomer(response.id, response.isActive ? 2 : 1)
+          .subscribe(status => {
+            if (status) {
+              this.loadTableData();
+  
+              this.messageService.add({
+                severity: 'success',
+                summary: 'Success',
+                detail: response.isActive
+                  ? 'Customer deactivated successfully'
+                  : 'Customer activated successfully'
+              });
+            }
+          });
+      }
+    });
+    }
+  
 }

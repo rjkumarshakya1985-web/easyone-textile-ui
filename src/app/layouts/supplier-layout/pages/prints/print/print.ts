@@ -147,4 +147,18 @@ getTotalPayableAmount(): number {
       0
   );
 }
+getItemSummary(): string {
+  const items = this.printData()?.billingDetailPrints;
+
+  if (!items || items.length === 0) {
+    return '';
+  }
+
+  if (items.length <= 2) {
+    return items.map((x: any) => x.productName).join(', ');
+  }
+
+  return `${items[0].productName}, ${items[1].productName} +${items.length - 2} More`;
+}
+
 }

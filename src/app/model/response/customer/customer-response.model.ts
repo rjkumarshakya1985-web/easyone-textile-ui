@@ -26,4 +26,5 @@ export interface CustomerResponse {
   tallyCategory?: number;
   customerType: number;
   remarks?: string;
+  isActive: boolean;
 }

@@ -14,7 +14,7 @@ export interface Customer {
   shippingAddress?: string;
 
   city?: string | number;               // Depends on your DB (string or ID)
-  state?: string | number;
+  state?: number;
   stateCode?: string;
   pin?: string;
   country?: string;

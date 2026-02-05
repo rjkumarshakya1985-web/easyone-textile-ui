@@ -12,11 +12,10 @@ import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import { TextareaModule } from 'primeng/textarea';
 import { FloatLabelModule } from 'primeng/floatlabel';
-
 import { ToastModule } from 'primeng/toast';
 import { State } from '../../../../../model/state.model';
 import { City } from '../../../../../model/city.model';
-import { Observable } from 'rxjs';
+import {finalize, Observable } from 'rxjs';
 import { CustomerService } from '../../../../../core/services/customer-service';
 
 @Component({
@@ -28,10 +27,10 @@ import { CustomerService } from '../../../../../core/services/customer-service';
   styleUrl: './add-customer.css',
 })
 export class AddCustomer {
-
   states$!: Observable<State[]>;
   cities$!: Observable<City[]>;
-
+isEdit = false;
+  CustomerId!: string;
   customerForm!: FormGroup;
 
   
@@ -68,6 +67,46 @@ export class AddCustomer {
   ) {
       this.loadDropdowns();
       this.initForm();
+  }
+ngOnInit(): void {
+   this.initForm();
+  this.loadDropdowns();
+ // this.loadSupplierCode();
+  this.checkEditMode();
+  }
+ checkEditMode() {
+    this.CustomerId = this.route.snapshot.paramMap.get('id')!;
+
+    if (this.CustomerId) {
+      this.isEdit = true;
+      this.loadCustomerForEdit();
+    } 
+  }
+    loadCustomerForEdit() {
+    this.loader.show();
+    this.customerService.getCustomer(this.CustomerId)
+      .pipe(finalize(() => this.loader.hide()))
+      .subscribe({
+        next: customer => {
+          
+          this.customerForm.patchValue(customer);
+
+          // Load subDepartments & cities based on existing values
+          // if (customer.customerType) {
+          //   this.subDepartment$ = this.masterService.getSubDepartments(customer.departmentId);
+          // }
+          if (customer.state) {
+            this.cities$ = this.masterService.getCitiesByStateId(customer.state);
+          }
+
+          this.customerForm.get('userName')?.disable();
+          this.customerForm.get('code')?.disable();
+        },
+       error: err => {
+        console.error('Error loading customer', err);
+        this.router.navigate(['admin/not-found'])
+     }
+      });
   }
 
    initForm()
@@ -119,19 +158,36 @@ export class AddCustomer {
     this.cities$ = this.masterService.getCitiesByStateId(stateId);
     this.customerForm.patchValue({ cityId: '' });
   }
-
   submit(){
    
        if (this.customerForm.invalid) {
           this.customerForm.markAllAsTouched();
           return;
        }
-       let request = this.customerForm.value;
-       this.customerService.create(request).subscribe(result=>{
-        console.log(result);
-       })    
-
-    }
-
- 
+   let request = this.customerForm.value;
+   request.id=this.CustomerId;
+  this.loader.show();         
+       this.customerService.create(request)
+    .pipe(finalize(() => this.loader.hide())) 
+    .subscribe({
+      next: () => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Customer saved successfully!'
+        });
+ if(this.CustomerId)
+        {
+          setTimeout(() => {
+            this.router.navigate(['admin/customers']);
+          }, 1000);
+        }
+        else
+        {
+        this.customerForm.reset();
+        }
+      }
+  });
+      
+}
 }

@@ -2,13 +2,13 @@
 <div class="card" *ngIf="printData()">
     <p-tabs [value]="value">
         <p-tablist>
-            <p-tab [value]="0">Parcel Sticker</p-tab>
+            <p-tab [value]="0">Product Sticker</p-tab>
             <p-tab [value]="1">SaleVoucher</p-tab>
-            <p-tab [value]="2">Product Sticker</p-tab>
+            <p-tab [value]="2">Parcel Sticker</p-tab>
             <p-tab [value]="3">Supplier Bill</p-tab>
         </p-tablist>
         <p-tabpanels>
-          <p-tabpanel [value]="0">
+          <p-tabpanel [value]="2">
           <div>
             <div class="panel panel-default">
                 <div class="panel-heading d-flex justify-content-between align-items-center">
@@ -59,6 +59,14 @@
                            </div>
                            <div class="col-md-8">
                                <h4><b>{{ printData()?.saleVoucherPrint?.transportName }}</b></h4>
+                          </div>
+                       </div>
+                        <div class="row mb-2">
+                            <div class="col-md-4">
+                              <h4 class="pull-left">Particulars :</h4>
+                           </div>
+                           <div class="col-md-8">
+                               <h4><b>{{ getItemSummary() }}</b></h4>
                           </div>
                        </div>
             </div>
@@ -142,17 +150,18 @@
                 <div class="row">
                         <div class="col-xs-8 col-sm-8 col-md-8">
                             <br>
-                          {{printData()?.saleVoucherPrint?.companyName}}                            
+                          {{printData()?.saleVoucherPrint?.companyName}} 
+<br><b>Note:</b> This dispatch voucher must be attached with the transport copy.
                         </div>
                         <div class="col-xs-4 col-sm-4 col-md-4 ">
                             <div class="text-right">
-                            <ngx-barcode6 [bc-value]="printData()?.saleVoucherPrint?.id?.toString() ?? ''"  [bc-display-value]="false" [bc-font-size]="5" [bc-height]="40" [bc-display-value]="true" ></ngx-barcode6>   
+                            <ngx-barcode6 [bc-value]="printData()?.saleVoucherPrint?.id?.toString() ?? ''"  [bc-display-value]="false" [bc-font-size]="15" [bc-height]="40" [bc-display-value]="true" ></ngx-barcode6>   
                             </div>
                         </div>
                 </div>  
               </div>
             </p-tabpanel>
-            <p-tabpanel [value]="2">
+            <p-tabpanel [value]="0">
                 <p-button label="Cancel" [raised]="true" icon="pi pi-times" severity="secondary" (click)="cancel()"></p-button>
                 <p-button label="Print" [raised]="true" icon="pi pi-print" severity="success" class="ml-2" (click)="printPage('sticker-print-section')"></p-button>
                    <hr>
@@ -173,18 +182,18 @@
            
              <div style="font-size:15px;margin-bottom:3px;display:flex;justify-content:space-between;width:98%;">
                 <b>SSBD</b>
-                <small>{{ sticker.printDateString }}</small>
+                MRP ₹ {{sticker.mrpRate}}/- 
              </div>
 
             <!-- Product + Supplier -->
-            <div style="font-size: 15px; font-weight: bold; text-align:center">
+            <div style="font-size: 15px; font-weight: bold; text-align:center;text-transform: uppercase;">
               {{sticker.productName}}/{{sticker.supplierCode}}
             </div>
 
             <!-- MRP -->
-            <div style="font-size: 15px; text-align:center">
+            <!-- <div style="font-size: 15px; text-align:center">
              MRP Rs. {{sticker.mrpRate}}/-
-            </div>
+            </div> -->
 
             
 
@@ -195,6 +204,7 @@
                      <div style="font-size:15px;margin-bottom:3px;margin-left: 9px;
                                  display:flex;justify-content:space-between;width:90%;">
                             <span>{{ sticker.wholeSaleRate }}</span>
+                            <small>{{ sticker.printDateString }}</small>
                             <span>{{ sticker.retailRate }}</span>
                     </div>
 
