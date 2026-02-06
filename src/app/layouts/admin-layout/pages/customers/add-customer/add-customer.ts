@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component ,OnInit} from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MasterDataService } from '../../../../../core/services/master-data-service';
@@ -26,14 +26,14 @@ import { CustomerService } from '../../../../../core/services/customer-service';
   templateUrl: './add-customer.html',
   styleUrl: './add-customer.css',
 })
-export class AddCustomer {
-  states$!: Observable<State[]>;
-  cities$!: Observable<City[]>;
-isEdit = false;
+export class AddCustomer implements OnInit {
+   isEdit = false; 
   CustomerId!: string;
+  states$!: Observable<State[]>;
+  cities$!: Observable<City[]>; 
   customerForm!: FormGroup;
 
-  
+
   // Dropdown data
   registrationTypes = [
     { name: 'Regular', value: 1 },
@@ -65,51 +65,16 @@ isEdit = false;
     private messageService: MessageService,
     private route: ActivatedRoute
   ) {
-      this.loadDropdowns();
-      this.initForm();
+      // this.loadDropdowns();
+      // this.initForm();
   }
-ngOnInit(): void {
+ngOnInit(): void {  
    this.initForm();
   this.loadDropdowns();
  // this.loadSupplierCode();
   this.checkEditMode();
   }
- checkEditMode() {
-    this.CustomerId = this.route.snapshot.paramMap.get('id')!;
-
-    if (this.CustomerId) {
-      this.isEdit = true;
-      this.loadCustomerForEdit();
-    } 
-  }
-    loadCustomerForEdit() {
-    this.loader.show();
-    this.customerService.getCustomer(this.CustomerId)
-      .pipe(finalize(() => this.loader.hide()))
-      .subscribe({
-        next: customer => {
-          
-          this.customerForm.patchValue(customer);
-
-          // Load subDepartments & cities based on existing values
-          // if (customer.customerType) {
-          //   this.subDepartment$ = this.masterService.getSubDepartments(customer.departmentId);
-          // }
-          if (customer.state) {
-            this.cities$ = this.masterService.getCitiesByStateId(customer.state);
-          }
-
-          this.customerForm.get('userName')?.disable();
-          this.customerForm.get('code')?.disable();
-        },
-       error: err => {
-        console.error('Error loading customer', err);
-        this.router.navigate(['admin/not-found'])
-     }
-      });
-  }
-
-   initForm()
+  initForm()
     {
       this.customerForm = this.fb.group({
        id: [null], // instead of 0
@@ -148,6 +113,41 @@ ngOnInit(): void {
       });
   
     }
+ checkEditMode() {
+  debugger; 
+    this.CustomerId = this.route.snapshot.paramMap.get('id')!;
+    if (this.CustomerId) {
+      this.isEdit = true;
+      this.loadCustomerForEdit();
+    } 
+  }
+    loadCustomerForEdit() {
+    this.loader.show();
+    this.customerService.getCustomer(this.CustomerId)
+      .pipe(finalize(() => this.loader.hide()))
+      .subscribe({
+        next: customer => {
+          
+          this.customerForm.patchValue(customer);
+
+          // Load subDepartments & cities based on existing values
+          // if (customer.customerType) {
+          //   this.subDepartment$ = this.masterService.getSubDepartments(customer.departmentId);
+          // }
+          if (customer.stateId) {
+            this.cities$ = this.masterService.getCitiesByStateId(customer.stateId);
+          }
+          this.customerForm.get('userName')?.disable();
+          this.customerForm.get('code')?.disable();
+        },
+       error: err => {
+        console.error('Error loading customer', err);
+        this.router.navigate(['admin/not-found'])
+     }
+      });
+  }
+
+   
 
     loadDropdowns() {
      this.states$ = this.masterService.getStates();
@@ -166,8 +166,10 @@ ngOnInit(): void {
        }
    let request = this.customerForm.value;
    request.id=this.CustomerId;
-  this.loader.show();         
-       this.customerService.create(request)
+  this.loader.show();   
+     if(!this.CustomerId)
+        {   
+    this.customerService.create(request)
     .pipe(finalize(() => this.loader.hide())) 
     .subscribe({
       next: () => {
@@ -175,7 +177,7 @@ ngOnInit(): void {
           severity: 'success',
           summary: 'Success',
           detail: 'Customer saved successfully!'
-        });
+        });      
  if(this.CustomerId)
         {
           setTimeout(() => {
@@ -186,8 +188,37 @@ ngOnInit(): void {
         {
         this.customerForm.reset();
         }
+      
       }
+    
   });
       
+}
+else
+{
+   this.customerService.update(this.CustomerId,request)
+    .pipe(finalize(() => this.loader.hide())) 
+    .subscribe({
+      next: () => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Customer updated successfully!'
+        });      
+ if(this.CustomerId)
+        {
+          setTimeout(() => {
+            this.router.navigate(['admin/customers']);
+          }, 1000);
+        }
+        else
+        {
+        this.customerForm.reset();
+        }
+      
+      }
+    
+  });
+}
 }
 }
