@@ -122,7 +122,7 @@ export class CustomerList {
     gstin: '27AAAAA1234A1Z5',
     registrationType: 'Regular',
     billingAddress: 'Andheri East, Mumbai',
-    city: 101,
+    cityId: 101,
     pin: '400059',
     mobile: '9876543210',
     email: 'alpha@logistics.com',
@@ -134,7 +134,7 @@ export class CustomerList {
     gstin: '07BBBBB5678B2Z3',
     registrationType: 'Composition',
     billingAddress: 'Sector 10, Rohini',
-    city: 102,
+    cityId: 102,
     pin: '110085',
     mobile: '9012345678',
     email: 'fasttrack@move.com',
@@ -146,8 +146,8 @@ export class CustomerList {
     gstin: '07BBBBB5678B2Z3',
     registrationType: 'Unregistered',
     billingAddress: 'Baner, Pune',
-    city: 103,
-    state: 27,
+    cityId: 103,
+    stateId: 27,
     pin: '411045',
     mobile: '9123456780',
     email: '',
@@ -161,7 +161,7 @@ export class CustomerList {
   }
 
   goToEditCustomer(id: string) {
-    this.router.navigate(['admin/customer/edit', id]);
+        this.router.navigate(['admin/customer/edit', id]);
   }
   customerType(type:number):string
   {

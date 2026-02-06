@@ -138,10 +138,9 @@ export const ADMIN_ROUTES: Routes = [
     path: 'customer/edit/:id',
     canActivate: [roleGuard('SuperAdmin')],
     loadComponent: () =>
-      import('./pages/customers/update-customer/update-customer')
-        .then(c => c.UpdateCustomer)
+      import('./pages/customers/add-customer/add-customer')
+        .then(c => c.AddCustomer)
   },
-
   // =========================
   // Departments
   // =========================

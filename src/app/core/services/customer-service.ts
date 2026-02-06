@@ -42,8 +42,8 @@ export class CustomerService {
   }
 
   /** PUT: api/customer */
-  update(request: CustomerRequest): Observable<void> {
-    return this.http.put<void>(this.baseUrl, request);
+  update(id: string,request:CustomerRequest): Observable<void> {
+    return this.http.put<void>(`${this.baseUrl}/${id}`, request);
   }
 
   /** DELETE: api/customer/{id} */

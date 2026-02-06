@@ -13,8 +13,8 @@ export interface Customer {
   billingAddress?: string;
   shippingAddress?: string;
 
-  city?: string | number;               // Depends on your DB (string or ID)
-  state?: number;
+  cityId?: number;               // Depends on your DB (string or ID)
+  stateId?: number;
   stateCode?: string;
   pin?: string;
   country?: string;
