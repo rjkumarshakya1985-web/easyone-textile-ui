@@ -57,15 +57,25 @@ export class Header {
   }
 
   private loadHeaderData() {
+
     const token = this.storage.getToken();
+
     const user = this.storage.getUser();
 
     this.isLogin = !!token;
 
-    if (this.isLogin && user) {
-      this.roleName = user.roleName || 'User';
+    if (!this.isLogin || !user) {
+      this.roleName = '';
+       return;
     }
-  }
+
+     if (user.roleName === 'Supplier') {
+      this.roleName = `Welcome ${user.name}`;   
+     } else {
+      this.roleName = `Welcome ${user.roleName}`;
+    }
+}
+
 
    logout() {
     this.storage.clearAll();

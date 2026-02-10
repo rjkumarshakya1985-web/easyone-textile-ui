@@ -1,29 +1,39 @@
 import { ParcelStatus } from "../enums/enum";
 
 
+export type TagSeverity =
+  | 'success'
+  | 'info'
+  | 'warn'
+  | 'danger'
+  | 'secondary'
+  | 'contrast';
+
 export class Helper {
 
- 
+  
 
-  static getParcelStatusColor(status: ParcelStatus): string {
-    switch (status) {
-      case ParcelStatus.Ready:
-        return 'info';
-      case ParcelStatus.Packed:
-        return 'success';
-      case ParcelStatus.InTransit:
-        return 'warning';
-      case ParcelStatus.InWareHouse:
-        return 'secondary';
-      case ParcelStatus.Opened:
-        return 'contrast';
-      case ParcelStatus.Returned:
-      case ParcelStatus.Cancelled:
-        return 'danger';
-      default:
-        return 'secondary';
-    }
+
+  static getParcelStatusColor(status: ParcelStatus): TagSeverity {
+  switch (status) {
+    case ParcelStatus.Ready:
+      return 'info';
+    case ParcelStatus.Packed:
+      return 'success';
+    case ParcelStatus.InTransit:
+      return 'warn';   
+    case ParcelStatus.InWareHouse:
+      return 'secondary';
+    case ParcelStatus.Opened:
+      return 'contrast';
+    case ParcelStatus.Returned:
+    case ParcelStatus.Cancelled:
+      return 'danger';
+    default:
+      return 'secondary';
   }
+}
+
 
    static getParcelStatusText(status: ParcelStatus): string {
     switch (status) {
