@@ -42,8 +42,11 @@ export class SaleVoucherService {
 
   update(request: SaleVoucherRequest): Observable<boolean> {
         return this.http.post<boolean>(`${this.baseUrl}/update`, request);
-    }
+  }
 
+  delete(id: number): Observable<boolean> {
+  return this.http.delete<boolean>(`${this.baseUrl}/${id}`);
+}
   getAllSaleVoucherStatus(saleVoucher:number):Observable<SaleVoucherStatusView[]>
   {
      return this.http.get<SaleVoucherStatusView[]>(`${this.apiUrl}salevoucherstatus/${saleVoucher}`);

@@ -4,6 +4,7 @@ export interface AppUser
     refreshToken:string;
     roleName:string;
     userName:string;
+    name:string;
     isLoginFailed:boolean;
     message:string;
 }

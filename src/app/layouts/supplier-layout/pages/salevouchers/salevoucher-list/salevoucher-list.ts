@@ -75,6 +75,8 @@ export class SalevoucherList {
 
   constructor(
     private router: Router,
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService,
     private saleVoucherService: SaleVoucherService,
   ) {}
 
@@ -163,6 +165,32 @@ export class SalevoucherList {
   {
     this.router.navigate(['supplier/salevoucher-detail',id]);
   }
+
+  deleteSaleVoucher(id:number)
+  {
+    this.confirmationService.confirm({
+    header: 'Delete SaleVoucher',
+    message: 'Are you sure you want to delete this sale voucher?',
+    icon: 'pi pi-trash',
+    acceptLabel: 'Yes',
+    rejectLabel: 'No',
+    acceptButtonStyleClass: 'p-button-danger',
+    rejectButtonStyleClass: 'p-button-secondary',
+    accept: () => {
+      this.saleVoucherService.delete(id).subscribe(status => {
+        if (status) {
+          this.loadTableData();
+
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Deleted',
+            detail: 'Sale voucher deleted successfully'
+          });
+        }
+      });
+    }
+  });
+  }
   
   openMenu(event: Event, row: SaleVoucherTableResponse) {
 
@@ -171,6 +199,11 @@ export class SalevoucherList {
     // ✏️ Edit + 🗑️ Delete
     this.items = [
       {
+        label: 'Print',
+        icon: 'pi pi-print',
+        command: () => this.goToPrint(row.id)
+      },
+      {
         label: 'Edit',
         icon: 'pi pi-pencil',
         command: () => this.gotoEditSaleVoucher(row.id)
@@ -178,7 +211,7 @@ export class SalevoucherList {
       {
         label: 'Delete',
         icon: 'pi pi-trash',
-       // command: () => this.deleteSaleVoucher(row.id)
+       command: () => this.deleteSaleVoucher(row.id)
       }
     ];
 

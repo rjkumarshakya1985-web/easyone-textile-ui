@@ -413,9 +413,12 @@ openMenu(event: Event, row: SaleVoucherDetail, index: number) {
       command: () => this.removeItem(index)
     }
   ];
-
-  this.menu.toggle(event); // ✅ Always defined
+   this.menu.toggle(event); // ✅ Always defined
 }
 
+ cancel()
+ {
+    this.router.navigate(['supplier/salevouchers']);     
+ }
 
 } 
