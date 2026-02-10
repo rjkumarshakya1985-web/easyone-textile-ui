@@ -21,7 +21,8 @@
 
       <ng-container *ngIf="isLoading()">
         <p-buttonGroup>
-          <p-button label="{{pageSize}}" outlined severity="secondary"></p-button>
+          <p-menu #menuItem [model]="pageSizeItems" [popup]="true" />
+          <p-button (click)="menuItem.toggle($event)" label="{{pageSize}}" outlined severity="secondary"></p-button>
           <p-button label="Total ({{tblResult().totalRows}})" disabled outlined></p-button>
 
           <p-button icon="pi pi-angle-left"

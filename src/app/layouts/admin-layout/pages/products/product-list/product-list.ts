@@ -48,7 +48,7 @@ import { PAGE_PAGE } from '../../../../../config/api.config';
   styleUrl: './product-list.css'
 })
 export class ProductList {
-
+  pageSizeItems: MenuItem[] | undefined;
   sortField: string = '';
   sortOrder: number = 1; // 1 = ASC, -1 = DESC
   @ViewChild('menu') menu!: Menu;
@@ -80,7 +80,26 @@ export class ProductList {
   ngOnInit() {
     this.setupSearch();
     this.loadTableData();
+    
+    this.pageSizeItems = [
+            {
+                 items: [
+                         { label: '5',  command: () => this.onPageSizeChange(5) },
+                         { label: '10', command: () => this.onPageSizeChange(10) },
+                         { label: '30', command: () => this.onPageSizeChange(30) },
+                         { label: '50', command: () => this.onPageSizeChange(50) },
+                         
+                        ]
+            }
+        ];
   }
+
+
+ onPageSizeChange(size: number) {
+  this.pageindex.set(0);      // reset to first page
+  this.pageSize = size;
+  this.loadTableData(this.searchControl.value || '');
+}
 
   // -----------------------------
   // SEARCH
