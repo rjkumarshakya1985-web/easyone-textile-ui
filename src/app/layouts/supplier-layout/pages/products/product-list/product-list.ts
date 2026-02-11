@@ -181,7 +181,10 @@ export class ProductList {
 
   printProduct(id:string)
   {
-    
+    this.router.navigate(
+     ['/supplier/sticker-print', id],
+     { queryParams: { isSaleVoucher: false } }
+   );
   }
 
   openMenu(event: Event, row: SupplierProductDto) {
