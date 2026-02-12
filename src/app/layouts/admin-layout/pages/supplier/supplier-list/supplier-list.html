@@ -21,7 +21,9 @@
 
       <ng-container *ngIf="isLoading()">
         <p-buttonGroup>
-          <p-button label="{{pageSize}}" outlined severity="secondary"></p-button>
+          <!-- <p-button label="{{pageSize}}" outlined severity="secondary"></p-button> -->
+           <p-menu #menuItem [model]="pageSizeItems" [popup]="true" />
+          <p-button (click)="menuItem.toggle($event)" label="{{pageSize}}" outlined severity="secondary"></p-button>        
           <p-button label="Total ({{tblResult().totalRows}})" disabled outlined></p-button>
 
           <p-button icon="pi pi-angle-left"
@@ -39,16 +41,47 @@
 
     <!-- TABLE -->
     <ng-container *ngIf="isLoading()">
-      <p-table [value]="tblResult().result" size="small" showGridlines class="p-datatable-sm">
+      <!-- <p-table [value]="tblResult().result" size="small" showGridlines class="p-datatable-sm"> -->
+ <p-table [value]="tblResult().result" [lazy]="true"
+  (onLazyLoad)="onLazyLoad($event)"
+  [sortField]="sortField" [lazyLoadOnInit]="false"
+  [sortOrder]="sortOrder" size="small" showGridlines class="p-datatable-sm">
 
+     
         <ng-template pTemplate="header">
-          <tr>
-            <th>Code</th>
-            <th>Name</th>
-            <th>User Name</th>
-            <th>GST No.</th>
-            <th>Pan No.</th>
-            <th>Address</th>
+           <tr>
+        <th pSortableColumn="code">
+          <div class="supplier-header">
+              <span class="header-title">Code</span>&nbsp;
+              <p-sortIcon field="code"></p-sortIcon>
+                 </div>
+       </th>
+        <th pSortableColumn="name">
+                    <div class="flex items-center gap-2">Name
+                        <p-sortIcon field="name" />
+                    </div>
+        </th>
+           <th pSortableColumn="userName">
+                    <div class="flex items-center gap-2">User Name
+                        <p-sortIcon field="userName" />
+                    </div>
+        </th>
+              <th pSortableColumn="gstIn">
+                    <div class="flex items-center gap-2">GST No.
+                        <p-sortIcon field="gstIn" />
+                    </div>
+        </th>
+             <th pSortableColumn="pan">
+                    <div class="flex items-center gap-2">Pan No.
+                        <p-sortIcon field="pan" />
+                    </div>
+        </th>
+        <th pSortableColumn="address">
+                    <div class="flex items-center gap-2">Address
+                        <p-sortIcon field="address" />
+                    </div>
+        </th>
+            
             <th>Action</th>
           </tr>
         </ng-template>

@@ -20,6 +20,7 @@ import { MenubarModule } from 'primeng/menubar';
 import { BadgeModule } from 'primeng/badge';
 import { Menu } from 'primeng/menu';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { PAGE_PAGE } from '../../../../../config/api.config';
 
 @Component({
   selector: 'app-supplier-list',
@@ -46,6 +47,9 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
   styleUrl: './supplier-list.css',
 })
 export class SupplierList {
+   pageSizeItems: MenuItem[] | undefined;
+  sortField: string = '';
+  sortOrder: number = 1; // 1 = ASC, -1 = DESC
   @ViewChild('menu') menu!: Menu;
   items: MenuItem[] = [];
   // -----------------------------
@@ -54,7 +58,7 @@ export class SupplierList {
   isLoading = signal(false);
   tblResult = signal({ totalRows: 0, result: [] as SupplierTableResponse[] });
 
-  pageSize = 10;
+ pageSize = PAGE_PAGE;
   pageindex = signal(0);
 
 
@@ -79,8 +83,23 @@ export class SupplierList {
   ngOnInit() {
     this.setupSearch();
     this.loadTableData();
+    this.pageSizeItems = [
+            {
+                 items: [
+                         { label: '5',  command: () => this.onPageSizeChange(5) },
+                         { label: '10', command: () => this.onPageSizeChange(10) },
+                         { label: '30', command: () => this.onPageSizeChange(30) },
+                         { label: '50', command: () => this.onPageSizeChange(50) },
+                         
+                        ]
+            }
+        ];
   }
-
+onPageSizeChange(size: number) {
+  this.pageindex.set(0);      // reset to first page
+  this.pageSize = size;
+  this.loadTableData(this.searchControl.value || '');
+}
   // -----------------------------
   // SEARCH WITH DEBOUNCE
   // -----------------------------
@@ -102,7 +121,9 @@ export class SupplierList {
     const req: TableDataRequest = {
       pageIndex: this.pageindex(),
       pageSize: this.pageSize,
-      search: search
+      search,
+      sortField: this.sortField,
+      sortOrder: this.sortOrder
     };
 
     this.supplierService.getSupplierTableData(req).subscribe({
@@ -224,4 +245,16 @@ export class SupplierList {
   this.menu.toggle(event);
 
   }
+  private isFirstLoad = true;
+    onLazyLoad(event: any) {
+      if (this.isFirstLoad) {
+    this.isFirstLoad = false;
+    return;
+  }
+      this.sortField = event.sortField ?? '';
+  this.sortOrder = event.sortOrder ?? 1;
+
+  this.loadTableData(this.searchControl.value || '');
+   }
+
 }

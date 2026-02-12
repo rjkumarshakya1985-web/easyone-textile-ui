@@ -79,8 +79,7 @@ export class ProductList {
 
   ngOnInit() {
     this.setupSearch();
-    this.loadTableData();
-    
+    this.loadTableData();    
     this.pageSizeItems = [
             {
                  items: [
