@@ -36,12 +36,15 @@ export class ProductStickerPrint {
     loadPrint() {
     const idParam = this.route.snapshot.paramMap.get('id');
 
+    const isSaleVoucher =
+    this.route.snapshot.queryParamMap.get('isSaleVoucher') === 'true';
+   
     if (idParam) {
       let id = idParam;
-
-      this.printService.productBarcodeSticker(id)
+  
+      this.printService.productBarcodeSticker(id,isSaleVoucher)
         .subscribe(result => {
-          this.printData.set(result);   // ✅ correct signal update
+          this.printData.set(result);  
           
         });
     }

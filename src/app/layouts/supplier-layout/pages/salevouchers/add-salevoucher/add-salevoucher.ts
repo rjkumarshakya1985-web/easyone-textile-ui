@@ -310,8 +310,13 @@ export class AddSalevoucher {
  printItem(index:number)
  {
    const item = this.saleVouherDetail()[index];
-   this.router.navigate(['supplier/sticker-print', item.id]);
- }
+  
+   this.router.navigate(
+     ['/supplier/sticker-print', item.id],
+     { queryParams: { isSaleVoucher: true } }
+   );
+  
+}
      
  getTotalQty(): number {
   return this.saleVouherDetail()

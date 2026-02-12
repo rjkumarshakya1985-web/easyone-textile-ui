@@ -24,8 +24,13 @@ export class PrintService {
         return this.http.get<SaleVoucherPrintResponse>(`${this.baseUrl}/${saleVoucherId}`);
       }
 
-   productBarcodeSticker(id:string): Observable<StickerPrint> {
-        return this.http.get<StickerPrint>(`${this.baseUrl}/product-barcode-sticker/${id}`);
+   productBarcodeSticker(id:string,isSaleVoucher?: boolean): Observable<StickerPrint> {
+          let url = `${this.baseUrl}/product-barcode-sticker/${id}`;
+          if (isSaleVoucher !== undefined) {
+               url += `?isSaleVoucher=${isSaleVoucher}`;
+            }
+          
+        return this.http.get<StickerPrint>(url);
       }
     
 }
