@@ -21,40 +21,54 @@
 
 <p-card *ngIf="printData() as sticker">
   <div id="sticker-print-section">
-  <div style="width:300px;border:1px solid #e0e0e0;border-radius:12px;padding:10px">
+  <div style="width: 300px;
+                            height: auto;
+                            background: #fff;
+                            border-radius: 12px;
+                            padding: 10px 12px;
+                            font-family: inherit;
+                            color: #000;
+                            box-sizing: border-box;
+                            border: 1px solid #e0e0e0;">
 
-    <!-- Header -->
-    <div style="display:flex;justify-content:space-between;font-size:14px">
-      <b>SSBD</b>
-      <small>{{ sticker.printDateString }}</small>
-    </div>
+   <!-- Header -->
+           
+             <div style="font-size:15px;margin-bottom:3px;display:flex;justify-content:space-between;width:98%;">
+                <b>SSBD</b>
+                MRP ₹ {{sticker.mrpRate}}/- 
+             </div>
 
-    <!-- Product -->
-    <div  style="font-size:14px;font-weight:bold">
-      {{ sticker.productName }}/{{ sticker.supplierCode }}
-    </div>
-
-    <!-- MRP -->
-    <div style="font-size:11px">
-      MRP Rs. {{ sticker.mrpRate }}/-
-    </div>
-
-    <!-- Rates -->
-    <div style="display:flex;justify-content:space-between;font-size:11px">
-      <span>{{ sticker.wholeSaleRate }}</span>
-      <span>{{ sticker.retailRate }}</span>
-    </div>
+    <!-- Product + Supplier -->
+            <div style="font-size: 15px; font-weight: bold; text-align:center;text-transform: uppercase;">
+              {{sticker.productName}}/{{sticker.supplierCode}}
+            </div> 
+      <!-- Barcode -->
+           <div style="text-align:center;">
+                   <div style="display:inline-block;">
+                    <!-- Top Row -->
+                     <div style="font-size:15px;margin-bottom:3px;margin-left: 9px;
+                                 display:flex;justify-content:space-between;width:90%;">
+                            <span>{{ sticker.wholeSaleRate }}</span>
+                            <small>{{ sticker.printDateString }}</small>
+                            <span>{{ sticker.retailRate }}</span>
+                    </div>
 
     <!-- Barcode -->
-    <div style="text-align:center">
-      <ngx-barcode6
-        [bc-value]="sticker.barcode"
-        [bc-format]="'CODE128'"
-        [bc-width]="3"
-        [bc-height]="40"
-        [bc-display-value]="true">
-      </ngx-barcode6>
-    </div>
+    <ngx-barcode6
+      [bc-value]="sticker.barcode"
+      [bc-format]="'CODE128'"
+      [bc-width]="3"
+      [bc-height]="40"
+      [bc-margin]="0"
+      [bc-font-size]="15"
+      [bc-display-value]="true"
+      [bc-margin-top]="2"
+      [bc-margin-bottom]="2">
+    </ngx-barcode6>
+
+  </div>
+
+</div>
 
   </div>
   </div>

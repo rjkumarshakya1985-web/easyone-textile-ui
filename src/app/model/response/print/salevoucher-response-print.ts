@@ -21,6 +21,8 @@ export interface SupplierPrint {
   name: string;
   supplierCode:string;
   gstIn:string;
+  department:string;
+  subDepartment:string;
 }
 
 

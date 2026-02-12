@@ -15,6 +15,8 @@
                   <div>
                    <p-button label="Cancel" [raised]="true" icon="pi pi-times" severity="secondary" (click)="cancel()"></p-button>
                    <p-button label="Print" [raised]="true" icon="pi pi-print" severity="success" class="ml-2" (click)="printPage('print-section')"></p-button>
+                 <b> Note:</b> This sticker must be affixed to the parcel.
+                 
                  </div>
                 </div>
                 <hr>
@@ -34,9 +36,17 @@
                                 <h4 class="pull-left">Dispatch No :</h4>
                              </div>
                              <div class="col-md-8">
-                                <h4><b>{{ printData()?.saleVoucherPrint?.id }}</b></h4>
+                                <h4><b>{{ printData()?.saleVoucherPrint?.id }}</b></h4> 
                              </div>
                           </div>
+                          <div class="row mb-2">
+                              <div class="col-md-4">
+                               <h4 class="pull-left">Department :</h4>
+                              </div>
+                              <div class="col-md-8">
+                                <h4><b> {{ printData()?.supplierPrint?.department}}-{{ printData()?.supplierPrint?.subDepartment}}</b></h4> 
+                             </div>
+                         </div>
                           <div class="row mb-2">
                               <div class="col-md-4">
                                <h4 class="pull-left">Invoice No :</h4>
@@ -61,6 +71,7 @@
                                <h4><b>{{ printData()?.saleVoucherPrint?.transportName }}</b></h4>
                           </div>
                        </div>
+                       
                         <div class="row mb-2">
                             <div class="col-md-4">
                               <h4 class="pull-left">Particulars :</h4>
@@ -95,6 +106,7 @@
             <p-tabpanel [value]="1">
                 <p-button label="Cancel" [raised]="true" icon="pi pi-times" severity="secondary" (click)="cancel()"></p-button>
                 <p-button label="Print" [raised]="true" icon="pi pi-print" severity="success" class="ml-2" (click)="printPage('parcel-salevoucher')"></p-button>
+                <b> Note:</b> This dispatch voucher must be attached with the transport copy.
                    <hr>
               <div id="parcel-salevoucher">
                     <div style="text-align: center;" > <h4><b><u>DISPATCH VOUCHER</u></b></h4></div>
@@ -151,7 +163,6 @@
                         <div class="col-xs-8 col-sm-8 col-md-8">
                             <br>
                           {{printData()?.saleVoucherPrint?.companyName}} 
-<br><b>Note:</b> This dispatch voucher must be attached with the transport copy.
                         </div>
                         <div class="col-xs-4 col-sm-4 col-md-4 ">
                             <div class="text-right">
@@ -168,7 +179,7 @@
             <div id="sticker-print-section">
               <div *ngFor="let sticker of printData()?.stickerPrints">
                 <br>
-                <div style="width: 280px;
+                <div style="width: 300px;
                             height: auto;
                             background: #fff;
                             border-radius: 12px;
@@ -188,15 +199,7 @@
             <!-- Product + Supplier -->
             <div style="font-size: 15px; font-weight: bold; text-align:center;text-transform: uppercase;">
               {{sticker.productName}}/{{sticker.supplierCode}}
-            </div>
-
-            <!-- MRP -->
-            <!-- <div style="font-size: 15px; text-align:center">
-             MRP Rs. {{sticker.mrpRate}}/-
-            </div> -->
-
-            
-
+            </div> 
             <!-- Barcode -->
            <div style="text-align:center;">
                    <div style="display:inline-block;">
