@@ -39,7 +39,7 @@
              </div>
 
     <!-- Product + Supplier -->
-            <div style="font-size: 15px; font-weight: bold; text-align:center;text-transform: uppercase;">
+            <div style="font-size: 18px; font-weight: bold; text-align:center;text-transform: uppercase;">
               {{sticker.productName}}/{{sticker.supplierCode}}
             </div> 
       <!-- Barcode -->
@@ -49,7 +49,7 @@
                      <div style="font-size:15px;margin-bottom:3px;margin-left: 9px;
                                  display:flex;justify-content:space-between;width:90%;">
                             <span>{{ sticker.wholeSaleRate }}</span>
-                            <small>{{ sticker.printDateString }}</small>
+                            <span>{{ sticker.printDateString }}</span>
                             <span>{{ sticker.retailRate }}</span>
                     </div>
 
@@ -58,7 +58,7 @@
       [bc-value]="sticker.barcode"
       [bc-format]="'CODE128'"
       [bc-width]="3"
-      [bc-height]="40"
+      [bc-height]="30"
       [bc-margin]="0"
       [bc-font-size]="15"
       [bc-display-value]="true"
