@@ -12,6 +12,7 @@ import { TableResult } from '../../model/table-result';
 import { ProductHsnCode } from '../../model/response/hsn-code.model';
 import { ProductHsnCodeRequest } from '../../model/request/hsn-code-request.model';
 import { Gsts } from '../../model/views/gsts-view.model';
+import { LookupDto } from '../../model/views/lookup.model';
 
 @Injectable({
   providedIn: 'root'
@@ -55,6 +56,10 @@ export class MasterDataService {
   }
 
   /// Hsn code
+  getHsnCodeLookup(): Observable<LookupDto<string>[]> {
+  return this.http.get<LookupDto<string>[]>(`${this.apiUrl}master/hsncode-lookup`);
+  }
+
   getHsnCodeTableData(request: TableDataRequest): Observable<TableResult<ProductHsnCode>> {
       return this.http.post<TableResult<ProductHsnCode>>(`${this.apiUrl}master/hsncode-table`, request);
   }
@@ -71,4 +76,7 @@ export class MasterDataService {
       return this.http.get<Gsts[]>(`${this.apiUrl}master/gsts`);
   }
 
+  getTransportLookup(): Observable<LookupDto<number>[]> {
+  return this.http.get<LookupDto<number>[]>(`${this.apiUrl}master/transport-lookup`);
+  }
 }
