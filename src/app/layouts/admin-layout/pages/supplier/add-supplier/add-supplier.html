@@ -376,6 +376,58 @@
       </div>
     </div>
 
+    <div class="card mt-3" *ngIf="!isEdit">
+       <div class="card-header flex items-center">
+       <span class="text-lg font-semibold" style="margin-top: 16px;"> Supplier Master Configuration:</span>
+      </div>
+      <div class="card-body">
+         <div class="row g-3">
+           <div class="col-md-4">
+            <p-multiselect [options]="(transport$ | async) ?? []" 
+                    formControlName="transportIds"
+                    optionLabel="name"
+                    optionValue="id"
+                    placeholder="Select Transport"
+                    [maxSelectedLabels]="3"
+                    display="chip"
+                    class="w-full md:w-80">
+            </p-multiselect>
+          </div> 
+          <div class="col-md-4">
+            <p-floatlabel class="w-full">
+            <p-select
+                 inputId="stockGroup"
+                 formControlName="stockGroupId"
+                 [options]="(stockGroup$ | async) ?? []"
+                 optionLabel="name"
+                 optionValue="id"
+                 class="w-full">
+    </p-select>
+    <label for="stockGroup">Select Product Category</label>
+  </p-floatlabel>
+         </div> 
+          <div class="col-md-4">
+  <p-floatlabel class="w-full">
+    <p-select
+        inputId="hsnCode"
+        formControlName="hsnCodeId"
+        [options]="(hsnCodes$ | async) ?? []"
+        optionLabel="name"
+        optionValue="id"
+        class="w-full"
+        [ngClass]="{
+          'ng-invalid ng-dirty':
+          supplierForm.get('hsnCodeId')?.invalid &&
+          supplierForm.get('hsnCodeId')?.touched
+        }">
+    </p-select>
+    <label for="hsnCode">Select HSN Code</label>
+  </p-floatlabel>
+         </div>
+         </div>
+      </div>
+    </div>
+
      <div class="card mt-3">
        <div class="card-header flex items-center">
        <span class="text-lg font-semibold" style="margin-top: 16px;">Notes:</span>

@@ -20,12 +20,17 @@ import { LoaderService } from '../../../../../core/services/loader.service';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { StockGroupService } from '../../../../../core/services/stock-group.service';
+import { StockGroup } from '../../../../../model/stock-group.model';
+import { LookupDto } from '../../../../../model/views/lookup.model';
 
 @Component({
   selector: 'app-add-supplier',
   imports: [CommonModule, ReactiveFormsModule, InputNumberModule,
     InputTextModule, SelectModule , ButtonModule, CardModule,
-     TextareaModule,Select, FloatLabelModule,DatePicker,ToastModule],
+     TextareaModule,Select, FloatLabelModule,DatePicker,ToastModule
+     ,MultiSelectModule],
   templateUrl: './add-supplier.html',
   styleUrl: './add-supplier.css',
   providers: [MessageService]
@@ -37,8 +42,11 @@ export class AddSupplier implements OnInit {
   supplierId!: string;
   states$!: Observable<State[]>;
   cities$!: Observable<City[]>;
+  stockGroup$!:Observable<StockGroup[]>;
   department$!: Observable<DepartmentResponse[]>;
   subDepartment$!:Observable<SubDepartmentResponse[]>;
+  transport$!:Observable<LookupDto<number>[]>;
+  hsnCodes$!:Observable<LookupDto<string>[]>;
   supplierForm!: FormGroup;
 
   // Dropdown data
@@ -64,7 +72,8 @@ export class AddSupplier implements OnInit {
     private supplierService:SupplierService,
     private loader: LoaderService,
     private messageService: MessageService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private stockGroupService:StockGroupService
   ) {}
 
   ngOnInit(): void {
@@ -98,7 +107,9 @@ export class AddSupplier implements OnInit {
      accountNumber: [''],
      ifsc: ['', Validators.pattern(/^[A-Z]{4}0[A-Z0-9]{6}$/)],
      UPID: [''],
-
+     stockGroupId:[null],
+     transportIds:[null],
+     hsnCodeId:[null],
      creditDays: [null],       // changed from ''
      creditLimit: [null],      // changed from ''
      gstRegistrationDate: [null], // changed from ''
@@ -134,7 +145,11 @@ export class AddSupplier implements OnInit {
       this.loadSupplierForEdit();
     } else {
       this.loadSupplierCode(); // Add mode only
+      this.stockGroup$ = this.stockGroupService.getAll();
+      this.transport$ = this.masterService.getTransportLookup();
+      this.hsnCodes$ = this.masterService.getHsnCodeLookup();
     }
+    
   }
 
   loadSupplierForEdit() {
@@ -181,6 +196,7 @@ submit() {
     return;
   }
   const request = this.supplierForm.value;
+ 
   request.id=this.supplierId;
   this.loader.show();
 
