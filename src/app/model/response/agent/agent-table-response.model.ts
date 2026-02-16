@@ -1,6 +1,6 @@
 export interface AgentTableResponse {
   id: string;
-  agentName?: string | null;
+  name?: string | null;
   contactPersonName?:string|null;
   contactPersonMobile?:string | null;
   gstin?: string | null;

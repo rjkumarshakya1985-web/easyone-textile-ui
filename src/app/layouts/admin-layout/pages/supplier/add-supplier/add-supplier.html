@@ -14,6 +14,40 @@
       <div class="card-body">
 
          <div class="row g-3">
+            <div class="col-md-3">
+             <div class="w-full">
+                <p-autocomplete
+                   formControlName="agentObj"
+                   [suggestions]="filteredAgents()"
+                   (completeMethod)="searchAgent($event)"
+                   optionLabel="name"
+                   placeholder="Search Agent"
+                   appendTo="body"
+                   [forceSelection]="true"
+                   styleClass="w-full"
+                   inputStyleClass="w-full"
+                   [ngClass]="{
+                 'ng-invalid ng-dirty':
+                  supplierForm.get('agentObj')?.invalid &&
+                  supplierForm.get('agentObj')?.touched}">
+
+        <ng-template let-agent pTemplate="item">
+         <div style="display: flex; flex-direction: column;">
+            <span style="font-weight: 500;">{{ agent.name }}</span>
+         </div>
+       </ng-template>
+
+       <ng-template pTemplate="header">
+        <div class="font-medium px-3 py-2">Select Agent</div>
+      </ng-template>
+                </p-autocomplete>
+                <small class="text-red-500"
+                 *ngIf="supplierForm.get('agentObj')?.invalid &&
+                      supplierForm.get('agentObj')?.touched">
+                    Agent is required 
+               </small>
+             </div>
+          </div>
 
           <div class="col-md-3">
             <p-floatlabel class="w-full md:w-56" variant="on">

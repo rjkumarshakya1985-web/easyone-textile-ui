@@ -1,4 +1,4 @@
-import { Component,OnInit } from '@angular/core';
+import { Component,OnInit, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators,ReactiveFormsModule} from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { Select, SelectModule  } from 'primeng/select';
@@ -24,13 +24,16 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { StockGroupService } from '../../../../../core/services/stock-group.service';
 import { StockGroup } from '../../../../../model/stock-group.model';
 import { LookupDto } from '../../../../../model/views/lookup.model';
+import { AgentTableResponse } from '../../../../../model/response/agent/agent-table-response.model';
+import { AutoCompleteService } from '../../../../../core/services/auto-complete-service';
+import { AutoCompleteModule } from 'primeng/autocomplete';
 
 @Component({
   selector: 'app-add-supplier',
   imports: [CommonModule, ReactiveFormsModule, InputNumberModule,
     InputTextModule, SelectModule , ButtonModule, CardModule,
      TextareaModule,Select, FloatLabelModule,DatePicker,ToastModule
-     ,MultiSelectModule],
+     ,MultiSelectModule,AutoCompleteModule],
   templateUrl: './add-supplier.html',
   styleUrl: './add-supplier.css',
   providers: [MessageService]
@@ -48,6 +51,7 @@ export class AddSupplier implements OnInit {
   transport$!:Observable<LookupDto<number>[]>;
   hsnCodes$!:Observable<LookupDto<string>[]>;
   supplierForm!: FormGroup;
+   filteredAgents = signal<AgentTableResponse[]>([]);
 
   // Dropdown data
   registrationTypes = [
@@ -73,7 +77,8 @@ export class AddSupplier implements OnInit {
     private loader: LoaderService,
     private messageService: MessageService,
     private route: ActivatedRoute,
-    private stockGroupService:StockGroupService
+    private stockGroupService:StockGroupService,
+    private autocompleteService:AutoCompleteService,
   ) {}
 
   ngOnInit(): void {
@@ -127,7 +132,8 @@ export class AddSupplier implements OnInit {
      paymentDiscount:[null],
      annualIncentive:[null],
 
-
+     agentId: [null],
+     agentObj:[null,Validators.required],
     });
 
   }
@@ -195,8 +201,14 @@ submit() {
     this.supplierForm.markAllAsTouched();
     return;
   }
-  const request = this.supplierForm.value;
- 
+  
+   const agentSelected = this.supplierForm.value.agentObj as AgentTableResponse;
+    
+    const request = {
+      ...this.supplierForm.value,
+      agentId: agentSelected?.id,  
+      id: this.supplierId
+    };
   request.id=this.supplierId;
   this.loader.show();
 
@@ -236,4 +248,14 @@ submit() {
     this.cities$ = this.masterService.getCitiesByStateId(stateId);
     this.supplierForm.patchValue({ cityId: '' });
   }
+
+  
+ searchAgent(event: any) {
+  
+  const query = event.query;
+ 
+   this.autocompleteService.searchAgents(query).subscribe(res => {
+     this.filteredAgents.set(res); 
+   });
+ }
 }

@@ -52,8 +52,8 @@
            <tr>
         <th pSortableColumn="agentName">
           <div class="supplier-header">
-              <span class="header-title">Agent</span>&nbsp;
-              <p-sortIcon field="agentName"></p-sortIcon>
+              <span class="header-title">Name</span>&nbsp;
+              <p-sortIcon field="name"></p-sortIcon>
                  </div>
        </th>
         <th pSortableColumn="contactPersonName">
@@ -93,10 +93,10 @@
 
         <ng-template pTemplate="body" let-row>
           <tr [ngClass]="{ 'inactive-row': !row.isActive }">
-            <td>{{row.agentName}}</td>
+            <td>{{row.name}}</td>
             <td>{{ row.contactPersonName }}</td>
             <td>{{row.contactPersonMobile}}</td>
-            <td>{{row.gstIn}}</td>
+            <td>{{row.gstin}}</td>
             <td>{{row.pan}}</td>
             <td>{{row.tallyLedgerName}}</td>
             <td>

@@ -1,6 +1,7 @@
 export interface SupplierRequest {
   id: string; // Guid in C# → string in TS
   userName: string;
+  agentId?:string;
   subDepartmentId?: number;
   code: string;
   name?: string;
