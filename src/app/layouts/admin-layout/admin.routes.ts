@@ -116,6 +116,30 @@ export const ADMIN_ROUTES: Routes = [
       import('./pages/supplier/add-supplier/add-supplier')
         .then(c => c.AddSupplier)
   },
+  // =========================
+// Agents
+// =========================
+{
+  path: 'agents',
+  canActivate: [roleGuard('SuperAdmin')],
+  loadComponent: () =>
+    import('./pages/agents/agent-list/agent-list')
+      .then(c => c.AgentList)
+},
+{
+  path: 'agent/add',
+  canActivate: [roleGuard('SuperAdmin')],
+  loadComponent: () =>
+    import('./pages/agents/add-agent/add-agent')
+      .then(c => c.AddAgent)
+},
+{
+  path: 'agent/edit/:id',
+  canActivate: [roleGuard('SuperAdmin')],
+  loadComponent: () =>
+    import('./pages/agents/update-agent/update-agent')
+      .then(c => c.UpdateAgent)
+},
 
   // =========================
   // Customers
