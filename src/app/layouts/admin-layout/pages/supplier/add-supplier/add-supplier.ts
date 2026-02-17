@@ -52,6 +52,8 @@ export class AddSupplier implements OnInit {
   hsnCodes$!:Observable<LookupDto<string>[]>;
   supplierForm!: FormGroup;
    filteredAgents = signal<AgentTableResponse[]>([]);
+   private readonly DEFAULT_STATE_ID = 1;   // Default State Gujarat ID
+   private readonly DEFAULT_CITY_ID = 1;    // Defaul City Surat ID
 
   // Dropdown data
   registrationTypes = [
@@ -86,6 +88,8 @@ export class AddSupplier implements OnInit {
   this.loadDropdowns();
   this.loadSupplierCode();
   this.checkEditMode();
+  this.autoFillPanFromGstin();
+
   }
 
   initForm()
@@ -100,7 +104,7 @@ export class AddSupplier implements OnInit {
      alias: [''],
      gstIn: ['', Validators.pattern(/^[0-9A-Z]{15}$/)],
      pan: ['', Validators.pattern(/[A-Z]{5}[0-9]{4}[A-Z]{1}/)],
-     regType: [null],
+     regType: [1],
      address: [''],
      cityId: [null],
      stateId: [null],
@@ -137,6 +141,20 @@ export class AddSupplier implements OnInit {
     });
 
   }
+autoFillPanFromGstin() {
+  this.supplierForm.get('gstIn')?.valueChanges.subscribe(gstin => {
+
+    if (gstin && gstin.length >= 12) {
+
+      const pan = gstin.substring(2, 12);
+
+      this.supplierForm.patchValue(
+        { pan: pan },
+        { emitEvent: false }
+      );
+    }
+  });
+}
 
   loadDropdowns() {
     this.department$ = this.masterService.getDepartments();
@@ -154,9 +172,26 @@ export class AddSupplier implements OnInit {
       this.stockGroup$ = this.stockGroupService.getAll();
       this.transport$ = this.masterService.getTransportLookup();
       this.hsnCodes$ = this.masterService.getHsnCodeLookup();
+      this.setDefaultStateAndCity();   // Default State & City
     }
     
   }
+setDefaultStateAndCity() {
+
+  // Set state
+  this.supplierForm.patchValue({
+    stateId: this.DEFAULT_STATE_ID
+  });
+
+  // Load cities for that state
+  this.cities$ = this.masterService.getCitiesByStateId(this.DEFAULT_STATE_ID);
+
+  // Set city
+  this.supplierForm.patchValue({
+    cityId: this.DEFAULT_CITY_ID
+  });
+}
+
 
   loadSupplierForEdit() {
     this.loader.show();
