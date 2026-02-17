@@ -59,17 +59,17 @@ export class AddAgent implements OnInit {
   {
     this.agentForm = this.fb.group({
      id: [null], // instead of 0
-     name: ['', Validators.required],
+     agentName: ['', Validators.required],
      contactPersonName:['',Validators.required],
-     gstIn: ['', Validators.pattern(/^[0-9A-Z]{15}$/)],
+     gstin: ['', Validators.pattern(/^[0-9A-Z]{15}$/)],
      pan: ['', Validators.pattern(/[A-Z]{5}[0-9]{4}[A-Z]{1}/)],
      address: [''],
      cityId: [null],
      stateId: [null],
      area:['',Validators.required],
-     pin:['', Validators.pattern(/^[0-9]{6}$/)],
-     tallyname:['',Validators.required],
-     mobile: ['', Validators.pattern(/^[0-9]{10}$/)],
+     pincode:['', Validators.pattern(/^[0-9]{6}$/)],
+     tallyLedgerName:['',Validators.required],
+     contactPersonMobile: ['', Validators.pattern(/^[0-9]{10}$/)],
      email: ['', Validators.email]
     });
 

@@ -16,9 +16,9 @@
           <!-- Name -->
           <div class="col-md-3">
             <p-floatlabel variant="on">
-              <input pInputText class="form-control" id="on_Agent_name" formControlName="name"  autocomplete="off"
-               [ngClass]="{ 'ng-invalid ng-dirty': agentForm.get('name')?.invalid && agentForm.get('name')?.touched }"  />
-              <label for="on_Agent_name">Name</label>
+              <input pInputText class="form-control" id="on_Agent_agentName" formControlName="agentName"  autocomplete="off"
+               [ngClass]="{ 'ng-invalid ng-dirty': agentForm.get('agentName')?.invalid && agentForm.get('agentName')?.touched }"  />
+              <label for="on_Agent_agentName">Name</label>
             </p-floatlabel>
           </div>
 
@@ -32,7 +32,7 @@
           </div>
 <div class="col-md-3">
              <p-floatlabel variant="on">
-              <input pInputText class="form-control" id="on_Agent_mobile" formControlName="mobile" autocomplete="off" />
+              <input pInputText class="form-control" id="on_Agent_mobile" formControlName="contactPersonMobile" autocomplete="off" />
               <label for="on_Agent_mobile">Mobile</label>
             </p-floatlabel>
           </div>
@@ -44,7 +44,7 @@
           </div>
            <div class="col-md-3">
             <p-floatlabel variant="on">
-              <input pInputText class="form-control" id="on_Agent_gstIn" formControlName="gstIn" autocomplete="off" />
+              <input pInputText class="form-control" id="on_Agent_gstIn" formControlName="gstin" autocomplete="off" />
               <label for="on_Agent_gstIn">GSTIN</label>
             </p-floatlabel>
           </div>
@@ -78,13 +78,13 @@
           </div>  
           <div class="col-md-3">
              <p-floatlabel variant="on">
-              <input pInputText class="form-control" id="on_Agent_pin" formControlName="pin" autocomplete="off" />
+              <input pInputText class="form-control" id="on_Agent_pin" formControlName="pincode" autocomplete="off" />
               <label for="on_Agent_pin">PIN CODE</label>
             </p-floatlabel>
           </div>  
            <div class="col-md-3">
              <p-floatlabel variant="on">
-              <input pInputText class="form-control" id="on_Agent_tallyname" formControlName="tallyname" autocomplete="off" />
+              <input pInputText class="form-control" id="on_Agent_tallyname" formControlName="tallyLedgerName" autocomplete="off" />
               <label for="on_Agent_tallyname">TALLY LEDGER NAME</label>
             </p-floatlabel>
           </div>      

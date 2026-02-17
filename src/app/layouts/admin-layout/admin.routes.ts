@@ -137,8 +137,8 @@ export const ADMIN_ROUTES: Routes = [
   path: 'agent/edit/:id',
   canActivate: [roleGuard('SuperAdmin')],
   loadComponent: () =>
-    import('./pages/agents/update-agent/update-agent')
-      .then(c => c.UpdateAgent)
+    import('./pages/agents/add-agent/add-agent')
+      .then(c => c.AddAgent)
 },
 
   // =========================
