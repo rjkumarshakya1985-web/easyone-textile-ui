@@ -7,6 +7,7 @@ import { Transport } from '../../model/transporter.model';
 import { ProductHsnCode } from '../../model/response/hsn-code.model';
 import { SupplierProductDto } from '../../model/entity/products/supplier-product.model';
 import { SupplierProductView } from '../../model/views/supplier-product-view.model';
+import { AgentTableResponse } from '../../model/response/agent/agent-table-response.model';
 
 @Injectable({
   providedIn: 'root'
@@ -47,6 +48,13 @@ export class AutoCompleteService {
   searchSupplierProduct(search: string) {
     return this.http.get<SupplierProductView[]>(
       `${this.baseUrl}supplier-product-search/${encodeURIComponent(search)}`
+    );
+  }
+
+  // ---------------- HSN Code ----------------
+  searchAgents(search: string) {
+    return this.http.get<AgentTableResponse[]>(
+      `${this.baseUrl}agent-search/${encodeURIComponent(search)}`
     );
   }
 }

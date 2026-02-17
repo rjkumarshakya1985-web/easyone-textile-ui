@@ -11,7 +11,7 @@ import { finalize, Observable } from 'rxjs';
 import { MasterDataService } from '../../../../../core/services/master-data-service';
 import { State } from '../../../../../model/state.model';
 import { City } from '../../../../../model/city.model';
-import { DatePicker } from 'primeng/datepicker';
+import { DatePickerModule } from 'primeng/datepicker';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { LoaderService } from '../../../../../core/services/loader.service';
 import { MessageService } from 'primeng/api';
@@ -25,7 +25,7 @@ import { LookupDto } from '../../../../../model/views/lookup.model';
   selector: 'app-add-agent',
   imports: [CommonModule, ReactiveFormsModule, InputNumberModule,
     InputTextModule, SelectModule , ButtonModule, CardModule,
-     TextareaModule,Select, FloatLabelModule,DatePicker,ToastModule
+     TextareaModule,Select, FloatLabelModule,DatePickerModule,ToastModule
      ,MultiSelectModule],
   templateUrl: './add-agent.html',
   styleUrl: './add-agent.css',
@@ -66,10 +66,13 @@ export class AddAgent implements OnInit {
      address: [''],
      cityId: [null],
      stateId: [null],
-     area:['',Validators.required],
-     pincode:['', Validators.pattern(/^[0-9]{6}$/)],
-     tallyLedgerName:['',Validators.required],
-     contactPersonMobile: ['', Validators.pattern(/^[0-9]{10}$/)],
+     area:[''],
+     pin:['', Validators.pattern(/^[0-9]{6}$/)],
+     tallyname:[''],
+     mobile: ['',  [
+    Validators.required,
+    Validators.pattern(/^[0-9]{10}$/)
+  ]],
      email: ['', Validators.email]
     });
 

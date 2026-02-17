@@ -25,14 +25,15 @@
           <!-- Alias -->
           <div class="col-md-3">
              <p-floatlabel variant="on">
-              <input pInputText class="form-control" id="on_Agent_cperson" formControlName="contactPersonName" autocomplete="off" />
+              <input pInputText class="form-control" id="on_Agent_cperson" formControlName="contactPersonName" autocomplete="off" 
+              [ngClass]="{ 'ng-invalid ng-dirty': agentForm.get('contactPersonName')?.invalid && agentForm.get('contactPersonName')?.touched }" />
               <label for="on_Agent_cperson">Contact Person</label>
-            </p-floatlabel>
-           
+            </p-floatlabel>  
           </div>
-<div class="col-md-3">
+         <div class="col-md-3">
              <p-floatlabel variant="on">
-              <input pInputText class="form-control" id="on_Agent_mobile" formControlName="contactPersonMobile" autocomplete="off" />
+              <input pInputText class="form-control" id="on_Agent_mobile" formControlName="mobile" autocomplete="off" 
+              [ngClass]="{ 'ng-invalid ng-dirty': agentForm.get('mobile')?.invalid && agentForm.get('mobile')?.touched }"/>
               <label for="on_Agent_mobile">Mobile</label>
             </p-floatlabel>
           </div>

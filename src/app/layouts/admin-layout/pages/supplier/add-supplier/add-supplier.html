@@ -14,7 +14,7 @@
       <div class="card-body">
 
          <div class="row g-3">
-
+           
           <div class="col-md-3">
             <p-floatlabel class="w-full md:w-56" variant="on">
                 <p-select formControlName="departmentId" inputId="department"
@@ -33,6 +33,42 @@
              </p-floatlabel>
           </div>
 
+           <div class="col-md-3">
+             <div class="w-full">
+                <p-autocomplete
+                   formControlName="agentObj"
+                   [suggestions]="filteredAgents()"
+                   (completeMethod)="searchAgent($event)"
+                   optionLabel="name"
+                   placeholder="Search Agent"
+                   appendTo="body"
+                   [forceSelection]="true"
+                   styleClass="w-full"
+                   inputStyleClass="w-full"
+                   [ngClass]="{
+                 'ng-invalid ng-dirty':
+                  supplierForm.get('agentObj')?.invalid &&
+                  supplierForm.get('agentObj')?.touched}">
+
+        <ng-template let-agent pTemplate="item">
+         <div style="display: flex; flex-direction: column;">
+            <span style="font-weight: 500;">{{ agent.name }}</span>
+         </div>
+       </ng-template>
+
+       <ng-template pTemplate="header">
+        <div class="font-medium px-3 py-2">Select Agent</div>
+      </ng-template>
+                </p-autocomplete>
+                <small class="text-red-500"
+                 *ngIf="supplierForm.get('agentObj')?.invalid &&
+                      supplierForm.get('agentObj')?.touched">
+                 
+               </small>
+             </div>
+           </div>
+
+
           <div class="col-md-3">
             <p-floatlabel variant="on">
               <input pInputText  class="form-control" id="on_Supplier_userName" formControlName="userName"  autocomplete="off"
@@ -41,13 +77,7 @@
             </p-floatlabel>
           </div>
 
-           <div class="col-md-3">
-            <p-floatlabel variant="on">
-              <input pInputText class="form-control"  id="on_Supplier_code" formControlName="code"  autocomplete="off"
-              [ngClass]="{ 'ng-invalid ng-dirty': supplierForm.get('code')?.invalid && supplierForm.get('code')?.touched }"  />
-              <label for="on_Supplier_code">Code</label>
-            </p-floatlabel>
-          </div>
+        
 
           <!-- Name -->
           <div class="col-md-3">
@@ -65,6 +95,14 @@
               <label for="on_Supplier_alias">Alias</label>
             </p-floatlabel>
            
+          </div>
+
+           <div class="col-md-3">
+            <p-floatlabel variant="on">
+              <input pInputText class="form-control"  id="on_Supplier_code" formControlName="code"  autocomplete="off"
+              [ngClass]="{ 'ng-invalid ng-dirty': supplierForm.get('code')?.invalid && supplierForm.get('code')?.touched }"  />
+              <label for="on_Supplier_code">Code</label>
+            </p-floatlabel>
           </div>
 
           <!-- PAN -->
@@ -186,40 +224,9 @@
               </p-floatlabel>
            </div>
 
-             <div class="col-md-3">
-           <p-floatlabel variant="on">
-              <p-inputNumber
-                 inputId="on_Supplier_paymentDiscount"
-                 formControlName="paymentDiscount"
-                 mode="currency"
-                 currency="INR"
-                 locale="en-IN"
-                 [minFractionDigits]="0"
-                 [maxFractionDigits]="2"
-                 autocomplete="off"
-                 class="w-full">
-              </p-inputNumber>
-             <label for="on_Supplier_paymentDiscount">Payment Discount</label>
-           </p-floatlabel>
-        </div>
+          
 
-       <div class="col-md-3">
-         <p-floatlabel variant="on">
-            <p-inputNumber
-              inputId="on_Supplier_annualIncentive"
-              formControlName="annualIncentive"
-              mode="currency"
-              currency="INR"
-              locale="en-IN"
-              [minFractionDigits]="0"
-              [maxFractionDigits]="2"
-              autocomplete="off"
-              class="w-full">
-           </p-inputNumber>
-           <label for="on_Supplier_annualIncentive">Annual Incentive</label>
-         </p-floatlabel>
-       </div>
-
+     
        <div class="col-md-3">
               <p-floatlabel variant="on">
                <p-inputNumber
@@ -265,6 +272,41 @@
              <label for="on_Supplier_mrpMargin">MRP Margin</label>
            </p-floatlabel>
         </div>
+
+           <div class="col-md-3">
+              <p-floatlabel variant="on">
+               <p-inputNumber
+                 inputId="on_Supplier_paymentDiscount"
+                 formControlName="paymentDiscount"
+                 mode="currency"
+                 currency="INR"
+                 locale="en-IN"
+                 [minFractionDigits]="0"
+                 [maxFractionDigits]="2"
+                 autocomplete="off"
+                 class="w-full">
+              </p-inputNumber>
+             <label for="on_Supplier_paymentDiscount">Payment Discount</label>
+           </p-floatlabel>
+            </div>
+
+            <div class="col-md-3">
+               <p-floatlabel variant="on">
+            <p-inputNumber
+              inputId="on_Supplier_annualIncentive"
+              formControlName="annualIncentive"
+              mode="currency"
+              currency="INR"
+              locale="en-IN"
+              [minFractionDigits]="0"
+              [maxFractionDigits]="2"
+              autocomplete="off"
+              class="w-full">
+           </p-inputNumber>
+           <label for="on_Supplier_annualIncentive">Annual Incentive</label>
+              </p-floatlabel>
+          </div>
+
          </div>
       </div>
     </div>
