@@ -1,6 +1,6 @@
 export interface AgentRequest {
   id: string; // Guid in C# → string in TS
-  agentName?: string;
+  name?: string;
   contactPersonName?: string;
   contactPersonMobile?: string;
   gstin?: string;
