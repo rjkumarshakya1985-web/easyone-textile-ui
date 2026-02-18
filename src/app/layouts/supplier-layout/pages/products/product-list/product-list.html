@@ -48,8 +48,8 @@
             <th>Print Name</th>
             <th>Barcode</th>
             <th>Hsn Code</th>
-            <th>Purchase Rate</th>
-            <th>Gst %</th>
+            <th class="text-end">Purchase Rate</th>
+            <th class="text-center">Gst %</th>
             <th>Action</th>
           </tr>
         </ng-template>
@@ -61,8 +61,8 @@
             <td>{{row.printName}}</td>
             <td>{{row.barcode}}</td>
             <td>{{row.hsnCode}}</td>
-            <td>{{row.purchaseRate}}</td>
-            <td>{{row.discount}}</td>
+            <td class="text-end">{{row.purchaseRate | currency:'INR':'symbol':'1.2-2'}}</td>
+            <td class="text-center">{{row.discount}}</td>
             <td>
                <span class="px-2 py-1 rounded bg-blue-50 text-blue-600 cursor-pointer hover:bg-blue-100"
                  (click)="openMenu($event, row)" pTooltip="Actions">
