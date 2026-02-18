@@ -61,15 +61,15 @@ export class AddAgent implements OnInit {
      id: [null], // instead of 0
      name: ['', Validators.required],
      contactPersonName:['',Validators.required],
-     gstIn: ['', Validators.pattern(/^[0-9A-Z]{15}$/)],
+     gstin: ['', Validators.pattern(/^[0-9A-Z]{15}$/)],
      pan: ['', Validators.pattern(/[A-Z]{5}[0-9]{4}[A-Z]{1}/)],
      address: [''],
      cityId: [null],
      stateId: [null],
      area:[''],
-     pin:['', Validators.pattern(/^[0-9]{6}$/)],
-     tallyname:[''],
-     mobile: ['',  [
+     pincode:['', Validators.pattern(/^[0-9]{6}$/)],
+     tallyLedgerName:[''],
+     contactPersonMobile: ['',  [
     Validators.required,
     Validators.pattern(/^[0-9]{10}$/)
   ]],

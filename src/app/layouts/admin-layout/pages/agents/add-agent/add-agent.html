@@ -32,8 +32,8 @@
           </div>
          <div class="col-md-3">
              <p-floatlabel variant="on">
-              <input pInputText class="form-control" id="on_Agent_mobile" formControlName="mobile" autocomplete="off" 
-              [ngClass]="{ 'ng-invalid ng-dirty': agentForm.get('mobile')?.invalid && agentForm.get('mobile')?.touched }"/>
+              <input pInputText class="form-control" id="on_Agent_mobile" formControlName="contactPersonMobile" autocomplete="off" 
+              [ngClass]="{ 'ng-invalid ng-dirty': agentForm.get('contactPersonMobile')?.invalid && agentForm.get('contactPersonMobile')?.touched }"/>
               <label for="on_Agent_mobile">Mobile</label>
             </p-floatlabel>
           </div>
@@ -45,7 +45,7 @@
           </div>
            <div class="col-md-3">
             <p-floatlabel variant="on">
-              <input pInputText class="form-control" id="on_Agent_gstIn" formControlName="gstIn" autocomplete="off" />
+              <input pInputText class="form-control" id="on_Agent_gstIn" formControlName="gstin" autocomplete="off" />
               <label for="on_Agent_gstIn">GSTIN</label>
             </p-floatlabel>
           </div>
@@ -79,13 +79,13 @@
           </div>  
           <div class="col-md-3">
              <p-floatlabel variant="on">
-              <input pInputText class="form-control" id="on_Agent_pin" formControlName="pin" autocomplete="off" />
+              <input pInputText class="form-control" id="on_Agent_pin" formControlName="pincode" autocomplete="off" />
               <label for="on_Agent_pin">PIN CODE</label>
             </p-floatlabel>
           </div>  
            <div class="col-md-3">
              <p-floatlabel variant="on">
-              <input pInputText class="form-control" id="on_Agent_tallyname" formControlName="tallyname" autocomplete="off" />
+              <input pInputText class="form-control" id="on_Agent_tallyname" formControlName="tallyLedgerName" autocomplete="off" />
               <label for="on_Agent_tallyname">TALLY LEDGER NAME</label>
             </p-floatlabel>
           </div>      
