@@ -43,11 +43,11 @@
 
         <ng-template pTemplate="header">
           <tr>
-            <th>Supplier</th>
-            <th>Parcel Number</th>
             <th>Date</th>
+            <th>Parcel Number</th>
+             <th>Supplier</th>
+            <th>Supplier Invoice No.</th>
             <th>Transport</th>
-            <th>My Bill Number</th>
             <th>Status</th>
             <th>Action</th>
           </tr>
@@ -55,11 +55,11 @@
 
         <ng-template pTemplate="body" let-row>
           <tr>
-            <td>{{row.supplierName}}</td>
-            <td>{{ row.id }}</td>
             <td>{{row.date | date:'dd, MMMM, yyyy'}}</td>
+            <td>{{ row.id }}</td>
+            <td>{{row.supplierName}}</td>
+             <td>{{row.billNumber}}</td>
             <td>{{row.tranportName}}</td>
-            <td>{{row.billNumber}}</td>
             <td>
               <p-tag [severity]="ParcelStatusHelper.getParcelStatusColor(row.parcelStatus)" [value]="ParcelStatusHelper.getParcelStatusText(row.parcelStatus)" />
             </td>

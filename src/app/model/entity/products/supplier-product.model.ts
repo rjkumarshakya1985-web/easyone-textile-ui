@@ -1,4 +1,5 @@
 import { ProductHsnCode } from "../../response/hsn-code.model";
+import { SupplierTableResponse } from "../../response/supplier/supplier-table-response.model";
 
 export interface SupplierProductDto {
   id: string;                 // Guid → string
@@ -25,6 +26,11 @@ export interface SupplierProductDto {
 
   purchaseRate: number;
   discount: number;
+  manualWholeSaleRate ? :number;
+
+  wholeSaleRate?:number;
+  retailPrice?:number;
+  mrpRate?:number;
 
   isActive: boolean;
   isDeleted: boolean;
@@ -38,4 +44,5 @@ export interface SupplierProductDto {
   modifiedByUserName?: string;
   modifiedOn?: string;        // DateTime? → optional ISO string
   hsnCodeObj:ProductHsnCode
+  supplierObj?: SupplierTableResponse
 }

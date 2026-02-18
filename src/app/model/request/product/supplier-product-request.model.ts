@@ -20,6 +20,7 @@ export interface SupplierProductRequest {
   gstTaxability: number;
 
   purchaseRate: number;    // decimal → number
+  manualWholeSaleRate?:number
   discount: number;
 
   isActive: boolean;

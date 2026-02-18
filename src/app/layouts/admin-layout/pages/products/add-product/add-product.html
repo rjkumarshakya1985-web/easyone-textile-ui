@@ -1,1 +1,236 @@
-<p>add-product works!</p>
+<div class="container mt-4">
+  <form [formGroup]="productForm" (ngSubmit)="submit()">
+    <div class="card">
+       <div class="card-header flex items-center">
+         <span class="text-lg font-semibold" style="margin-top: 16px;">Product Information</span>
+            <p-button type="submit"
+               label="Save Product" 
+               class="p-button-sm ml-auto"  
+               variant="text" 
+               [raised]="true" tabindex="3">
+            </p-button>
+        </div>
+      <div class="card-body">
+
+        <div class="row mb-4">
+         <div class="col-md-4">
+            <div class="w-full">
+             <p-autocomplete 
+                formControlName="supplierObj"
+                [suggestions]="filteredSuppliers()"
+                (completeMethod)="searchSupplier($event)"
+                (onSelect)="onSupplierSelect($event)"
+                optionLabel="name"
+                placeholder="Search Supplier"
+                styleClass="w-full"
+                inputStyleClass="w-full"    
+                appendTo="body"
+                [style]="{ width: '100%' }">
+
+                <ng-template let-supplier pTemplate="item">
+                    <div class="flex items-center gap-2">
+                        <div>{{ supplier.name }}</div>
+                        <small class="text-gray-500">({{ supplier.code }})</small>
+                    </div>
+                </ng-template>
+
+                <ng-template pTemplate="header">
+                    <div class="font-medium px-3 py-2">Select Supplier</div>
+                </ng-template>
+            </p-autocomplete>
+            </div>
+         </div>
+          <div class="col-md-4">
+               <p-floatlabel variant="on">
+                 <input pInputText #productNameInput class="form-control" id="on_Product_name" formControlName="name" autocomplete="off"
+                  [ngClass]="{ 'ng-invalid ng-dirty': productForm.get('name')?.invalid && productForm.get('name')?.touched }"  tabindex="1" />
+                 <label for="on_Product_name">Product Name</label>
+               </p-floatlabel>
+         </div>
+         <div class="col-md-4">
+           <p-floatlabel variant="on">
+             <p-inputNumber 
+                 formControlName="purchaseRate" 
+                 inputId="on_Product_purchaseRate" 
+                 mode="currency" 
+                 currency="INR"
+                 [minFractionDigits]="0" 
+                 [maxFractionDigits]="2" 
+                 [min]="10"
+                 tabindex="2"
+                 class="w-full"  [ngClass]="{ 'ng-invalid ng-dirty': productForm.get('purchaseRate')?.invalid && productForm.get('purchaseRate')?.touched }"  >
+             </p-inputNumber>
+               <label for="on_Product_purchaseRate">
+                 Purchase Rate 
+              </label>
+           </p-floatlabel>
+         </div>           
+        </div>
+
+    <!-- Print Name, HSN, Barcode -->
+       <div class="row mb-4">
+          <div class="col-md-4">
+               <p-floatlabel class="w-full md:w-56" variant="on">
+                <p-select
+                  formControlName="stockGroupId"
+                  inputId="on_Product_stockGroup"
+                  [options]="(stockGroup$ | async) ?? []"
+                  optionLabel="name"
+                  optionValue="id"
+                  class="w-full"
+                  (onChange)="onStockGroupSelect($event)"
+                  [ngClass]="{ 'ng-invalid ng-dirty': productForm.get('stockGroupId')?.invalid && productForm.get('stockGroupId')?.touched }">
+                </p-select>
+                 <label for="on_Product_stockGroup">Select Item Category</label>
+                </p-floatlabel>
+          </div>            
+          <div class="col-md-4">
+              <p-floatlabel variant="on">
+               <input pInputText class="form-control" id="on_Product_alias" formControlName="alias" autocomplete="off" />
+               <label for="on_Product_alias">Alias</label>
+             </p-floatlabel>
+          </div>
+          <div class="col-md-4">
+             <p-floatlabel variant="on">
+                <input pInputText class="form-control" id="on_Product_printName" formControlName="printName" autocomplete="off" 
+                         [ngClass]="{ 'ng-invalid ng-dirty': productForm.get('printName')?.invalid && productForm.get('printName')?.touched }" />
+                  <label for="on_Product_printName">Print Name</label>
+             </p-floatlabel>
+         </div>
+     </div>
+
+    <!-- GST Details -->
+    <div class="row mb-4">
+       <div class="col-md-4">
+          <div class="w-full">
+            <p-autocomplete
+              formControlName="hsnCodeObj"
+              [suggestions]="filteredHsnCodes()"
+              (completeMethod)="searchHsnCode($event)"
+              optionLabel="name"
+              placeholder="Search HSN Code"
+              appendTo="body"
+              [forceSelection]="true"
+              styleClass="w-full"
+              inputStyleClass="w-full"
+              [ngClass]="{
+                 'ng-invalid ng-dirty':
+                  productForm.get('hsnCodeObj')?.invalid &&
+                  productForm.get('hsnCodeObj')?.touched}">
+
+        <ng-template let-hsn pTemplate="item">
+         <div style="display: flex; flex-direction: column;">
+            <span style="font-weight: 500;">{{ hsn.name }}</span>
+             <span style="font-size: 0.85rem; color: gray; display: block;">
+               {{ hsn.description }}
+          </span>
+         </div>
+       </ng-template>
+
+       <ng-template pTemplate="header">
+        <div class="font-medium px-3 py-2">Select HSN Code</div>
+      </ng-template>
+  </p-autocomplete>
+  <small class="text-red-500"
+    *ngIf="productForm.get('hsnCodeObj')?.invalid &&
+           productForm.get('hsnCodeObj')?.touched">
+    HSN Code is required
+  </small>
+  </div>
+    </div>
+       <div class="col-md-4">
+        <p-floatlabel variant="on">
+          <input pInputText class="form-control" id="on_Product_barcode" formControlName="barcode" autocomplete="off" 
+          [ngClass]="{ 'ng-invalid ng-dirty': productForm.get('barcode')?.invalid && productForm.get('barcode')?.touched }" readonly />
+          <label for="on_Product_barcode">Barcode</label>
+        </p-floatlabel>
+      </div>
+      <div class="col-md-4">
+        <p-floatlabel class="w-full md:w-56" variant="on">
+          <p-select
+            formControlName="gstApplicable"
+            inputId="on_Product_gstApplicable"
+            [options]="gstOptions"
+            optionLabel="label"
+            optionValue="value"
+            class="w-full">
+          </p-select>
+          <label for="on_Product_gstApplicable">GST Applicable</label>
+        </p-floatlabel>
+      </div>
+
+    
+     
+    </div>
+
+    <!-- Purchase Rate & Discount -->
+     <div class="row mb-4">
+       <div class="col-md-4">
+         <p-floatlabel variant="on">
+           <p-select
+             formControlName="gstNature"
+             inputId="on_Product_gstNature"
+             [options]="gstNatureOptions"
+             optionLabel="label"
+             optionValue="value"
+             class="w-full">
+          </p-select>
+            <label for="on_Product_gstNature">GST Nature</label>
+        </p-floatlabel>
+      </div>
+
+      <div class="col-md-4">
+         <p-floatlabel variant="on">
+           <p-select
+             formControlName="gstTaxability"
+             inputId="on_Product_gstTaxability"
+             [options]="gstTaxabilityOptions"
+             optionLabel="label"
+             optionValue="value"
+             class="w-full">
+          </p-select>
+          <label for="on_Product_gstTaxability">GST Taxability</label>
+        </p-floatlabel>
+      </div>
+   
+      <div class="col-md-4">
+         <p-floatlabel variant="on">
+           <p-inputNumber 
+              formControlName="discount" 
+              inputId="on_Product_discount" 
+              [minFractionDigits]="0" 
+              [maxFractionDigits]="0" 
+              class="w-full"  [ngClass]="{ 'ng-invalid ng-dirty': productForm.get('discount')?.invalid && productForm.get('discount')?.touched }"  >
+           </p-inputNumber>
+           <label for="on_Product_discount">Gst %</label>
+        </p-floatlabel>
+     </div>
+    </div>
+
+    
+    <div class="row mb-4">
+           <div class="col-md-4">
+              <p-floatlabel variant="on">
+                <p-inputNumber 
+                 formControlName="manualWholeSaleRate" 
+                 inputId="on_Product_manualWholeSaleRate" 
+                 mode="currency" 
+                 currency="INR"
+                 [minFractionDigits]="0" 
+                 [maxFractionDigits]="2" 
+                 [min]="10"
+                 tabindex="2"
+                 class="w-full">
+               </p-inputNumber>
+               <label for="on_Product_manualWholeSaleRate">
+                 Manual Wholesale Rate 
+              </label>
+           </p-floatlabel>
+           </div>
+    </div>
+    
+  </div>
+ </div>
+</form>
+</div>
+<p-toast></p-toast>

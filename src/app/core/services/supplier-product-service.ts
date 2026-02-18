@@ -40,6 +40,11 @@ export class SupplierProductService {
     return this.http.get<SupplierProductDto>(`${this.baseUrl}/${id}`);
   }
 
+  // 🔍 GET BY ID
+  getProductViewById(id: string): Observable<SupplierProductDto> {
+    return this.http.get<SupplierProductDto>(`${this.baseUrl}/product-view/${id}`);
+  }
+
   getCode(): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/fetch-code`);
   }

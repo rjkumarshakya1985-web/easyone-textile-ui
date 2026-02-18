@@ -1,5 +1,7 @@
 export interface SupplierTableResponse {
   id: string;
+  agentId:string;
+  agentName:string;
   code: string;
   name?: string | null;
 

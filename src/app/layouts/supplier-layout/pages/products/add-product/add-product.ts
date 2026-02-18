@@ -306,7 +306,8 @@ onCategoryChange(stockGroupId:number)
 
        this.loader.hide();
        const control = this.productForm.get('hsnCodeObj');
-       if (response.length > 0 && !control?.value) {
+       if (response.length > 0) {
+          console.log(response[0]);
               control?.setValue(response[0]);
        }
        else{

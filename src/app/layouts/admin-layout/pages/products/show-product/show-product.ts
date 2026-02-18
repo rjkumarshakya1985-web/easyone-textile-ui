@@ -53,7 +53,7 @@ export class ShowProduct implements OnInit {
    loadProductForEdit() {
     
       this.loader.show();
-      this.supplierProductService.getById(this.productId)
+      this.supplierProductService.getProductViewById(this.productId)
         .pipe(finalize(() => this.loader.hide()))
         .subscribe({
           next: product => {

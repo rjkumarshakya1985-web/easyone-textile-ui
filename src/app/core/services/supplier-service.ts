@@ -117,10 +117,16 @@ export class SupplierService {
     return this.http.post<boolean>(`${this.apiUrl}supplier/supplier-hsncode-delete`, request);
   }
    
-   getGetSupplierHsnCodes(stockGroupId:number):Observable<ProductHsnCode[]>
-   {
-     return this.http.get<ProductHsnCode[]>(`${this.apiUrl}supplier/supplier-hsncodes/${stockGroupId}`);
-   }
+   getGetSupplierHsnCodes(stockGroupId: number,supplierId?: string): Observable<ProductHsnCode[]> {
+
+    let url = `${this.apiUrl}supplier/supplier-hsncodes/${stockGroupId}`;
+
+    if (supplierId) {
+     url += `/${supplierId}`;
+    }
+  return this.http.get<ProductHsnCode[]>(url);
+}
+
 
 
 }

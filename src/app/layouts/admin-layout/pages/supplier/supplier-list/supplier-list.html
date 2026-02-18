@@ -61,19 +61,24 @@
                         <p-sortIcon field="name" />
                     </div>
         </th>
-           <th pSortableColumn="userName">
+           <th pSortableColumn="agent">
+                    <div class="flex items-center gap-2">Agent
+                        <p-sortIcon field="agent" />
+                    </div>
+        </th>
+        <th pSortableColumn="gstIn">
+                    <div class="flex items-center gap-2">GSTIN
+                        <p-sortIcon field="gstIn" />
+                    </div>
+        </th>
+        <th pSortableColumn="userName">
                     <div class="flex items-center gap-2">User Name
                         <p-sortIcon field="userName" />
                     </div>
         </th>
-              <th pSortableColumn="gstIn">
-                    <div class="flex items-center gap-2">GST No.
-                        <p-sortIcon field="gstIn" />
-                    </div>
-        </th>
-             <th pSortableColumn="pan">
-                    <div class="flex items-center gap-2">Pan No.
-                        <p-sortIcon field="pan" />
+         <th pSortableColumn="password">
+                    <div class="flex items-center gap-2">Password
+                        <p-sortIcon field="password" />
                     </div>
         </th>
         <th pSortableColumn="address">
@@ -90,9 +95,10 @@
           <tr [ngClass]="{ 'inactive-row': !row.isActive }">
             <td>{{row.code}}</td>
             <td>{{ row.name }}</td>
-            <td>{{row.userName}}</td>
+            <td>{{row.agentName}}</td>
             <td>{{row.gstIn}}</td>
-            <td>{{row.pan}}</td>
+            <td>{{row.userName}}</td>
+            <td>{{row.password===row.code?'-':row.password}}</td>
             <td>
             <small>{{row.state}},{{row.city}}</small>
             <div><small>{{row.address}}</small></div> 

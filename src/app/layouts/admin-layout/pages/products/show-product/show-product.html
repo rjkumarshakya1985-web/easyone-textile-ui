@@ -45,13 +45,31 @@
                   <div><b>GST Taxability</b></div>
                   {{getGstTaxabilityLabel(product.gstTaxability)}}
               </div>
-              <div class="col-md-2">
-                  <div><b>Purchase Rate</b></div>
-                  {{product.purchaseRate}}
-              </div>
                 <div class="col-md-2">
                   <div><b>Gst % </b></div>
                   {{product.discount}}
+              </div>
+               <div class="col-md-2">
+                  <div><b> Manaual WholeSale Rate </b></div>
+                  {{ product.manualWholeSaleRate ? (product.manualWholeSaleRate | currency:'INR':'symbol':'1.2-2') : '-' }}
+              </div>
+                <div class="col-md-2">
+                  <div><b>Purchase Rate</b></div>
+                  {{product.purchaseRate | currency:'INR':'symbol':'1.2-2'}}
+              </div>
+               <div class="col-md-2">
+                  <div><b>WholeSale Rate </b></div>
+                  {{ product.wholeSaleRate | currency:'INR':'symbol':'1.2-2' }}
+              </div>
+
+              <div class="col-md-2">
+                  <div><b>Retail Rate </b></div>
+                  {{ product.retailPrice | currency:'INR':'symbol':'1.2-2' }}
+              </div>
+               
+                <div class="col-md-2">
+                  <div><b>MRP </b></div>
+                  {{ product.mrpRate | currency:'INR':'symbol':'1.2-2' }}
               </div>
                
             </div>

@@ -2,11 +2,10 @@
   <div class="p-toolbar-group-left">
     <p-breadcrumb [model]="breadcrumbItems" homeIcon="pi pi-home"></p-breadcrumb>
   </div>
-
-  <!-- <div class="p-toolbar-group-right">
+  <div class="p-toolbar-group-right">
     <p-button label="Add Product" class="p-button-sm mr-2"  variant="text" [raised]="true" icon="pi pi-plus" (click)="goToAddProduct()"/>
     <p-button label="Export" variant="text" icon="pi pi-file-export" [raised]="true" severity="secondary" />
-  </div> -->
+  </div>
 </p-toolbar>
 
 <p-card>
@@ -47,6 +46,21 @@
 
         <ng-template pTemplate="header">
           <tr>
+         <th pSortableColumn="barcode">
+                    <div class="flex items-center gap-2">Barcode
+                        <p-sortIcon field="barcode" />
+                    </div>
+        </th>
+              <th pSortableColumn="name">
+                    <div class="flex items-center gap-2">Product Name
+                        <p-sortIcon field="name" />
+                    </div>
+        </th>
+          <th pSortableColumn="CategoryName">
+                    <div class="flex items-center gap-2">Category
+                        <p-sortIcon field="CategoryName" />
+                    </div>
+        </th>
         <th pSortableColumn="supplierName">
           <div class="supplier-header">
               <span class="header-title">Supplier</span>&nbsp;
@@ -76,52 +90,32 @@
     </p-columnFilter> -->
           </div>
        </th>
-        <th pSortableColumn="CategoryName">
-                    <div class="flex items-center gap-2">Category name
-                        <p-sortIcon field="CategoryName" />
-                    </div>
-        </th>
-         <th pSortableColumn="name">
-                    <div class="flex items-center gap-2">Product Name
-                        <p-sortIcon field="name" />
-                    </div>
-        </th>
-        <th pSortableColumn="printName">
-                    <div class="flex items-center gap-2">Print Name
-                        <p-sortIcon field="printName" />
-                    </div>
-        </th>
-        <th pSortableColumn="barcode">
-                    <div class="flex items-center gap-2">Barcode
-                        <p-sortIcon field="barcode" />
-                    </div>
-        </th>
-        
-        <th pSortableColumn="hsnCode">
-                    <div class="flex items-center gap-2">Hsn Code
-                        <p-sortIcon field="hsnCode" />
-                    </div>
-        </th>
+      
          <th pSortableColumn="purchaseRate">
                     <div class="flex items-center gap-2">Purchase Rate
                         <p-sortIcon field="purchaseRate" />
                     </div>
         </th>
-            <th>Discount</th>
+        <th  class="text-end">Wholesale Rate</th>
+         <th  class="text-end">Retail Rate</th>
+         <th  class="text-end">MRP</th>
+        
             <th>Action</th>
           </tr>
         </ng-template>
 
         <ng-template pTemplate="body" let-row>
           <tr [ngClass]="{ 'inactive-row': !row.isActive }">
-            <td>{{row.supplierName}}</td>
-            <td>{{row.stockGroupName}}</td>
-            <td>{{ row.name }}</td>
-            <td>{{row.printName}}</td>
             <td>{{row.barcode}}</td>
-            <td>{{row.hsnCode}}</td>
-            <td>{{row.purchaseRate}}</td>
-            <td>{{row.discount}}</td>
+            <td>{{ row.name }}</td>
+            <td>{{row.stockGroupName}}</td>
+            <td>{{row.supplierName}}</td>
+            <td  class="text-end">{{row.purchaseRate | currency:'INR':'symbol':'1.2-2'}}</td>
+            <td  class="text-end" [ngClass]="{'manual-rate-text': row.manualWholeSaleRate != null}" [pTooltip]="row.manualWholeSaleRate != null? 'Manual Wholesale Rate: ' + (row.manualWholeSaleRate | currency:'INR':'symbol':'1.2-2') :''">
+              {{row.wholeSaleRate | currency:'INR':'symbol':'1.2-2'}}
+            </td>
+            <td  class="text-end">{{row.retailPrice | currency:'INR':'symbol':'1.2-2'}}</td>
+            <td  class="text-end">{{row.mrpRate | currency:'INR':'symbol':'1.2-2'}}</td>
             <td>
                <span class="px-2 py-1 rounded bg-blue-50 text-blue-600 cursor-pointer hover:bg-blue-100"
                  (click)="openMenu($event, row)" pTooltip="Actions">

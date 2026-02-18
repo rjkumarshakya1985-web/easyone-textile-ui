@@ -157,11 +157,11 @@ export class ProductList {
   // ROUTING
   // -----------------------------
   goToAddProduct() {
-    this.router.navigate(['supplier/product/add']);
+    this.router.navigate(['admin/supplier-product/add']);
   }
 
   goToEditProduct(id: string) {
-    this.router.navigate(['supplier/product/edit', id]);
+    this.router.navigate(['admin/supplier-product/', id]);
   }
   
   
@@ -222,6 +222,10 @@ export class ProductList {
         label: 'Show Detail',
         icon: 'pi pi-eye',
         command: () => this.goToShowDetail(row.id)
+      },{
+        label: 'Edit',
+        icon: 'pi pi-pencil',
+        command: () => this.goToEditProduct(row.id)
       }] : []),
       {
         label: 'Delete',

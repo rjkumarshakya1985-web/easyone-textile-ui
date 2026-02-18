@@ -218,8 +218,15 @@ export const ADMIN_ROUTES: Routes = [
       import('./pages/products/product-list/product-list')
         .then(c => c.ProductList)
   },
+   {
+    path: 'supplier-product/add',
+    canActivate: [roleGuard('SuperAdmin')],
+    loadComponent: () =>
+      import('./pages/products/add-product/add-product')
+        .then(c => c.AddProduct)
+  },
   {
-    path: 'add-supplier-product/:id',
+    path: 'supplier-product/:id',
     canActivate: [roleGuard('SuperAdmin')],
     loadComponent: () =>
       import('./pages/products/add-product/add-product')
