@@ -36,7 +36,7 @@
                <p-tabs [value]="value">
                   <p-tablist>
                      <p-tab [value]="0">Sale Voucher Products</p-tab>
-                     <!-- <p-tab [value]="1">Sale Voucher Status History</p-tab> -->
+                     <p-tab [value]="1">Sale Voucher Status History</p-tab>
                   </p-tablist>
                   <p-tabpanels>
                     <p-tabpanel [value]="0">
@@ -75,44 +75,24 @@
                     </p-tabpanel>
                     <p-tabpanel [value]="1">
                        <div class="card flex justify-center">
-           <p-stepper [(value)]="stepValue" class="basis-[50rem]">
-
-        <p-step-list>
-            <p-step [value]="1">Design
-            </p-step>
-            <p-step [value]="2">Development</p-step>
-            <p-step [value]="3">QA</p-step>
-        </p-step-list>
-        <p-step-panels>
-
-            <p-step-panel [value]="1">
-                <ng-template pTemplate="content">
-                     <div class="flex justify-content-center align-items-center h-48">
-                       asf Design
-                    </div>
-                </ng-template>
-            </p-step-panel>
-
-            <p-step-panel [value]="2">
-                <ng-template pTemplate="content">
-                    <div class="flex justify-content-center align-items-center h-48">
-                        asf Q
-                    </div>
-                </ng-template>
-            </p-step-panel>
-
-            <p-step-panel [value]="3">
-                <ng-template pTemplate="content">
-                   <div class="flex justify-content-center align-items-center h-48">
-                        asf R
-                    </div>
-                </ng-template>
-            </p-step-panel>
-
-        </p-step-panels>
-    </p-stepper>
-</div>
-
+                           <p-stepper [(value)]="stepValue" class="basis-[12rem]">
+                             <p-step-list>
+                                <p-step *ngFor="let step of saleVoucherStatus(); let i = index" [value]="i + 1">
+                                  
+                                 <div class="text-sm font-medium">
+                                   👤 {{ step.createdByUserName }}
+                                </div>
+                                 <div class="px-2 py-1 rounded-full text-xs font-semibold w-fit"
+                                     [ngClass]="getStatusBadgeClass(step.status)">
+                                     {{ ParcelStatusHelper.getParcelStatusText(step.status) }}
+                                 </div>
+                                <div class="text-xs text-gray-500">
+                                  📅 {{ step.date | date:'dd MMM yyyy' }}
+                                </div>
+                               </p-step>
+                             </p-step-list>
+                        </p-stepper>
+                      </div>
                     </p-tabpanel>
                   </p-tabpanels>
                 </p-tabs>                
