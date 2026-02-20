@@ -82,15 +82,14 @@ export class Nav implements OnInit, OnDestroy {
           { label: 'Product Categories', icon: 'pi pi-tags', routerLink: ['/admin/item-categories'] }
         ]
       },
-      {
-        label: 'Users',
-        icon: 'pi pi-fw pi-user-plus',
-        routerLink: ['/admin/users']
-      },
-      {
-        label: 'Agents',
+       {
+        label: 'People',
         icon: 'pi pi-fw pi-users',
-        routerLink: ['/admin/agents']
+        items: [
+          {label: 'Users',icon: 'pi pi-fw pi-user-plus',routerLink: ['/admin/users']},
+          {label: 'Customers',icon: 'pi pi-fw pi-user',routerLink: ['/admin/customers']},
+          {label: 'Agents',icon: 'pi pi-fw pi-user',routerLink: ['/admin/agents']}
+        ]
       },
       {
         label: 'Suppliers',
@@ -105,9 +104,37 @@ export class Nav implements OnInit, OnDestroy {
         ]
       },
       {
-        label: 'Customers',
-        icon: 'pi pi-fw pi-users',
-        routerLink: ['/admin/customers']
+        label: 'Parcel Management',
+        icon: 'pi pi-fw pi-cog',
+        items:[
+           {
+        label: 'Transit Scanning',
+        icon: 'pi pi-fw pi-truck',
+        routerLink: ['/stock-incharge/parcel-scanners',ParcelStatus.InTransit],
+      },
+      {
+        label: 'Warehouse Scanning',
+        icon: 'pi pi-fw pi-home',
+        routerLink: ['/stock-incharge/parcel-scanners',ParcelStatus.InWareHouse],
+        
+      }
+        ]
+      },
+      {
+         label: 'Stock Management',
+         icon: 'pi pi-fw pi-warehouse',
+         items: [
+           { 
+             label: 'Current Stock', 
+             icon: 'pi pi-fw pi-box', 
+             routerLink: ['/admin/stock'] 
+           },
+           { 
+             label: 'Stock Transactions', 
+             icon: 'pi pi-fw pi-sort-alt', 
+             routerLink: ['/admin/stock-transactions'] 
+           }
+        ]
       },
       {
         label: 'Reports',
@@ -127,12 +154,12 @@ export class Nav implements OnInit, OnDestroy {
 
     StockIncharge: [
       {
-        label: 'In Transit Parcel Scanners',
-        icon: 'pi pi-fw pi-home',
+        label: 'Transit Scanning',
+        icon: 'pi pi-fw pi-truck',
         routerLink: ['/stock-incharge/parcel-scanners',ParcelStatus.InTransit],
       },
       {
-        label: 'Warehouse Parcel Scanners',
+        label: 'Warehouse Scanning',
         icon: 'pi pi-fw pi-home',
         routerLink: ['/stock-incharge/parcel-scanners',ParcelStatus.InWareHouse],
         

@@ -136,57 +136,71 @@ export class ParcelScanners implements OnInit {
   
   parcelReceived() {
 
-  const parcels = this.parcels();
+    const parcels = this.parcels();
 
-  if (!parcels || parcels.length === 0) {
-    this.messageService.add({
-      severity: 'warn',
-      summary: 'No Parcels',
-      detail: 'Please scan at least one parcel.'
-    });
-    return;
-  }
+    if (!parcels || parcels.length === 0) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'No Parcels',
+        detail: 'Please scan at least one parcel.'
+     });
+     return;
+   }
 
-  const request = {
+   const request = {
     saleVoucherId: parcels.map(p => p.saleVoucherId),
-    statusEnum: 4 // ParcelStatusEnum.InWarehouse
-  };
+    statusEnum: this.parcelEnum==ParcelStatus.InTransit
+                ? ParcelStatus.InWareHouse: ParcelStatus.Opened
+   };
 
   this.isLoading.set(true);
 
-  this.parcelService.changeParcelStatus(request)
-    .subscribe({
-      next: (success) => {
-        if (success) {
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Success',
-            detail: 'Parcels moved to warehouse successfully.'
-          });
+  let apiCall$;
 
-          // clear table
-          this.parcels.set([]);
-          this.selectedParcel.set([]);
-        } else {
-          this.messageService.add({
-            severity: 'warn',
-            summary: 'Failed',
-            detail: 'Parcel status update failed.'
-          });
-        }
-      },
-      error: () => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Server error while updating parcel status.'
-        });
-      },
-      complete: () => {
-        this.isLoading.set(false);
-      }
-    });
+  if (this.parcelEnum === ParcelStatus.InTransit) {
+    apiCall$ = this.parcelService.changeParcelStatus(request);
   }
+  else if (this.parcelEnum === ParcelStatus.InWareHouse) {
+    apiCall$ = this.parcelService.moveSaleVoucherProductsToStock(request);
+  }
+  else {
+    this.isLoading.set(false);
+    return;
+  }
+
+  apiCall$.subscribe({
+    next: (success) => {
+      if (success) {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: this.parcelEnum === ParcelStatus.InTransit
+            ? 'Parcels moved to warehouse successfully.'
+            : 'Stock updated successfully.'
+        });
+
+        this.parcels.set([]);
+        this.selectedParcel.set([]);
+      } else {
+        this.messageService.add({
+          severity: 'warn',
+          summary: 'Failed',
+          detail: 'Operation failed.'
+        });
+      }
+    },
+    error: () => {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Server error while processing request.'
+      });
+    },
+    complete: () => {
+      this.isLoading.set(false);
+    }
+  });
+}
   
   get actionButtonLabel(): string {
  
