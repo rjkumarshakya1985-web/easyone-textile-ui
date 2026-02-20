@@ -21,6 +21,7 @@ import { MenubarModule } from 'primeng/menubar';
 import { BadgeModule } from 'primeng/badge';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { PAGE_PAGE } from '../../../../../config/api.config';
 
 @Component({
   selector: 'app-customer-list',
@@ -45,7 +46,9 @@ import { debounceTime, distinctUntilChanged } from 'rxjs';
   styleUrl: './customer-list.css',
 })
 export class CustomerList {
-
+ pageSizeItems: MenuItem[] | undefined;
+  sortField: string = '';
+  sortOrder: number = 1; // 1 = ASC, -1 = DESC
   @ViewChild('menu') menu!: Menu;
   items: MenuItem[] = [];
   // -----------------------------
@@ -54,9 +57,19 @@ export class CustomerList {
   isLoading = signal(false);
   tblResult = signal({ totalRows: 0, result: [] as CustomerResponse[] });
 
-  pageSize = 10;
+  pageSize = PAGE_PAGE;
   pageindex = signal(0);
+  private isFirstLoad = true;
+    onLazyLoad(event: any) {
+      if (this.isFirstLoad) {
+    this.isFirstLoad = false;
+    return;
+  }
+      this.sortField = event.sortField ?? '';
+  this.sortOrder = event.sortOrder ?? 1;
 
+  this.loadTableData(this.searchControl.value || '');
+   }
 
 
   // -----------------------------
@@ -79,8 +92,23 @@ export class CustomerList {
    ngOnInit() {
     this.setupSearch();    
     this.loadTableData();
+      this.pageSizeItems = [
+            {
+                 items: [
+                         { label: '5',  command: () => this.onPageSizeChange(5) },
+                         { label: '10', command: () => this.onPageSizeChange(10) },
+                         { label: '30', command: () => this.onPageSizeChange(30) },
+                         { label: '50', command: () => this.onPageSizeChange(50) },
+                         
+                        ]
+            }
+        ];
   }
-
+onPageSizeChange(size: number) {
+  this.pageindex.set(0);      // reset to first page
+  this.pageSize = size;
+  this.loadTableData(this.searchControl.value || '');
+}
   // -----------------------------
     // SEARCH WITH DEBOUNCE
     // -----------------------------
@@ -92,19 +120,19 @@ export class CustomerList {
           this.loadTableData(value || '');
         });
     }
-  
-   // -----------------------------
-    // LOAD DATA
-    // -----------------------------
-    loadTableData(search: string = '') {
-      this.isLoading.set(false);
-  
-      const req: TableDataRequest = {
-        pageIndex: this.pageindex(),
-        pageSize: this.pageSize,
-        search: search
-      };
-  
+  // -----------------------------
+  // LOAD DATA
+  // -----------------------------
+  loadTableData(search: string = '') {
+    this.isLoading.set(false);
+
+    const req: TableDataRequest = {
+      pageIndex: this.pageindex(),
+      pageSize: this.pageSize,
+      search,
+      sortField: this.sortField,
+      sortOrder: this.sortOrder
+    };
       this.customerService.getCustomerTableData(req).subscribe({
         next: (res) => {
           this.tblResult.set(res);
@@ -114,7 +142,6 @@ export class CustomerList {
         }
       });
     }
-  
   customers: Customer[] = [
   {
     id: 1,
@@ -188,7 +215,6 @@ export class CustomerList {
            return 'Unknown';
       }
    }
-
    numberofPage(): number {
     return Math.ceil(this.tblResult().totalRows / this.pageSize);
    }

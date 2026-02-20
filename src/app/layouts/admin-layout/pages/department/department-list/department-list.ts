@@ -41,7 +41,6 @@ export class DepartmentList {
 
   isLoading = signal(false);
   tableData = signal<DepartmentResponse[]>([]);   // <-- FIXED
-
   visible = false;
   departmentForm!: FormGroup;
 

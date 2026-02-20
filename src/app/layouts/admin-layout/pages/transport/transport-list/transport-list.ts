@@ -19,10 +19,15 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { Transport } from '../../../../../model/transporter.model';
+import { MenuModule } from 'primeng/menu';
+import { PAGE_PAGE } from '../../../../../config/api.config';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-transport-list',
-  standalone: true,
+  standalone: true, 
+   providers: [ConfirmationService],  
   imports: [
     CommonModule,
     PanelModule,
@@ -37,19 +42,37 @@ import { Transport } from '../../../../../model/transporter.model';
     ReactiveFormsModule,
     InputTextModule,
     InputGroupModule,
+    MenuModule,
+    ConfirmDialogModule
   ],
   templateUrl: './transport-list.html',
   styleUrls: ['./transport-list.css']
 })
 export class TransportList implements OnInit {
+  pageSizeItems: MenuItem[] | undefined;
+  sortField: string = '';
+  sortOrder: number = 1; // 1 = ASC, -1 = DESC
+   items: MenuItem[] = [];
   // -----------------------------
   // Signals
   // -----------------------------
   isLoading = signal(false);
   tblResult = signal({ totalRows: 0, result: [] as Transport[] });
 
-  pageSize = 10;
+  pageSize = PAGE_PAGE;
   pageindex = signal(0);
+
+private isFirstLoad = true;
+    onLazyLoad(event: any) {
+      if (this.isFirstLoad) {
+    this.isFirstLoad = false;
+    return;
+  }
+      this.sortField = event.sortField ?? '';
+  this.sortOrder = event.sortOrder ?? 1;
+
+  this.loadTableData(this.searchControl.value || '');
+   }
 
 
 
@@ -71,8 +94,23 @@ export class TransportList implements OnInit {
   ngOnInit() {
     this.setupSearch();
     this.loadTableData();
+     this.pageSizeItems = [
+            {
+                 items: [
+                         { label: '5',  command: () => this.onPageSizeChange(5) },
+                         { label: '10', command: () => this.onPageSizeChange(10) },
+                         { label: '30', command: () => this.onPageSizeChange(30) },
+                         { label: '50', command: () => this.onPageSizeChange(50) },
+                         
+                        ]
+            }
+        ];
   }
-
+onPageSizeChange(size: number) {
+  this.pageindex.set(0);      // reset to first page
+  this.pageSize = size;
+  this.loadTableData(this.searchControl.value || '');
+}
   // -----------------------------
   // SEARCH WITH DEBOUNCE
   // -----------------------------
@@ -94,7 +132,9 @@ export class TransportList implements OnInit {
     const req: TableDataRequest = {
       pageIndex: this.pageindex(),
       pageSize: this.pageSize,
-      search: search
+      search: search,
+      sortField: this.sortField,
+      sortOrder: this.sortOrder
     };
 
     this.transportService.getTableData(req).subscribe({
