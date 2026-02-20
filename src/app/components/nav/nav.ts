@@ -1,9 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { PanelMenuModule } from 'primeng/panelmenu';
-import { RouterModule } from '@angular/router';
+import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { LocalStorageService } from '../../core/services/local-storage.service';
-import { Subscription } from 'rxjs';
+import { filter, Subscription } from 'rxjs';
+import { ParcelStatus } from '../../core/enums/enum';
 
 @Component({
   selector: 'app-nav',
@@ -20,13 +21,19 @@ export class Nav implements OnInit, OnDestroy {
 
   private subscription!: Subscription;
 
-  constructor(private localStorage: LocalStorageService) {}
+  constructor(private localStorage: LocalStorageService,private router: Router) {}
 
   ngOnInit(): void {
     this.loadUserMenu();
+   this.subscription = this.router.events
+    .pipe(filter(event => event instanceof NavigationEnd))
+    .subscribe(() => this.setActiveMenu());
 
+  this.setActiveMenu(); 
    
   }
+
+ 
 
   ngOnDestroy(): void {
     if (this.subscription) {
@@ -122,12 +129,13 @@ export class Nav implements OnInit, OnDestroy {
       {
         label: 'In Transit Parcel Scanners',
         icon: 'pi pi-fw pi-home',
-        routerLink: ['/stock-incharge/parcel-scanners']
+        routerLink: ['/stock-incharge/parcel-scanners',ParcelStatus.InTransit],
       },
       {
-        label: 'Transport Parcel Scanners',
+        label: 'Warehouse Parcel Scanners',
         icon: 'pi pi-fw pi-home',
-        routerLink: ['/stock-incharge/parcel-scanners']
+        routerLink: ['/stock-incharge/parcel-scanners',ParcelStatus.InWareHouse],
+        
       },
       {
         label: 'Visitors',
@@ -136,4 +144,48 @@ export class Nav implements OnInit, OnDestroy {
       }
     ]
   };
+
+  private setActiveMenu() {
+  const currentUrl = this.router.url.split('?')[0]; // remove query params
+
+  const markActive = (items: MenuItem[]): boolean => {
+    let anyChildActive = false;
+
+    items.forEach(item => {
+      item.styleClass = '';
+      item.expanded = false;
+
+      let isActive = false;
+
+      if (item.routerLink) {
+        const link = this.router.serializeUrl(
+          this.router.createUrlTree(item.routerLink as any)
+        );
+
+        // Use startsWith instead of ===
+        if (currentUrl.startsWith(link)) {
+          isActive = true;
+          item.styleClass = 'test-menu';
+        }
+      }
+
+      if (item.items) {
+        const childActive = markActive(item.items);
+
+        if (childActive) {
+          item.expanded = true;
+          isActive = true;
+        }
+      }
+
+      if (isActive) {
+        anyChildActive = true;
+      }
+    });
+
+    return anyChildActive;
+  };
+
+  markActive(this.items);
+}
 }
