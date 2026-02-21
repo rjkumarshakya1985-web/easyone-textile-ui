@@ -272,6 +272,12 @@ export const ADMIN_ROUTES: Routes = [
       import('../store-operator-layout/pages/parcel-scanners/parcel-scanners')
         .then(c => c.ParcelScanners)
   },  
+  {
+    path: 'stocks',
+    loadComponent: () =>
+      import('./pages/stocks/stock-list/stock-list')
+        .then(c => c.StockList)
+  },
   ///
   // =========================
   // Default

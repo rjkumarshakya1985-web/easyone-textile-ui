@@ -127,7 +127,7 @@ export class Nav implements OnInit, OnDestroy {
            { 
              label: 'Current Stock', 
              icon: 'pi pi-fw pi-box', 
-             routerLink: ['/admin/stock'] 
+             routerLink: ['/admin/stocks'] 
            },
            { 
              label: 'Stock Transactions', 
