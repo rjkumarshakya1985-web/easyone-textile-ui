@@ -2,11 +2,6 @@
   <div class="p-toolbar-group-left">
     <p-breadcrumb [model]="breadcrumbItems" homeIcon="pi pi-home"></p-breadcrumb>
   </div>
-
-  <div class="p-toolbar-group-right">
-    <p-button label="Add Supplier" class="p-button-sm mr-2"  variant="text" [raised]="true" icon="pi pi-plus"/>
-    <p-button label="Export" variant="text" icon="pi pi-file-export" [raised]="true" severity="secondary" />
-  </div>
 </p-toolbar>
 
 <p-card>
@@ -62,38 +57,35 @@
           <tr>
             <td>{{row.barcode}}</td>
             <td>{{row.supplierName}}</td>
-           <td class="product-cell">
-  <div class="product-name">
-    {{ row.productName }}
-  </div>
-  <div class="stock-group">
-    {{ row.stockGroup }}
-  </div>
-</td>
-            <td class="text-center">{{row.availableQty}}</td>
+            <td class="product-cell">
+              <div class="product-name">
+                {{ row.productName }}
+              </div>
+             <div class="stock-group">
+                {{ row.stockGroup }}
+             </div>
+           </td>
+           <td class="text-center">{{row.availableQty}}</td>
            <td class="rate-cell">
-  <div class="rate-item">
-    <span class="rate-label">Purchase</span>
-    <span class="rate-value">{{ row.purchaseRate | currency:'INR':'symbol':'1.2-2' }}</span>
-  </div>
-
-  <div class="rate-item">
-    <span class="rate-label">Wholesale</span>
-    <span class="rate-value">{{ row.wholeSaleRate | currency:'INR':'symbol':'1.2-2' }}</span>
-  </div>
-
-  <div class="rate-item">
-    <span class="rate-label">Retail</span>
-    <span class="rate-value">{{ row.retailRate | currency:'INR':'symbol':'1.2-2' }}</span>
-  </div>
-
-  <div class="rate-item">
-    <span class="rate-label">MRP</span>
-    <span class="rate-value highlight">
-      {{ row.mrpRate | currency:'INR':'symbol':'1.2-2' }}
-    </span>
-  </div>
-</td>
+              <div class="rate-item">
+                 <span class="rate-label">Purchase</span>
+                 <span class="rate-value">{{ row.purchaseRate | currency:'INR':'symbol':'1.2-2' }}</span>
+             </div>
+             <div class="rate-item">
+                <span class="rate-label">Wholesale</span>
+                <span class="rate-value">{{ row.wholeSaleRate | currency:'INR':'symbol':'1.2-2' }}</span>
+             </div>
+             <div class="rate-item">
+                 <span class="rate-label">Retail</span>
+                <span class="rate-value">{{ row.retailRate | currency:'INR':'symbol':'1.2-2' }}</span>
+             </div>
+             <div class="rate-item">
+                <span class="rate-label">MRP</span>
+                <span class="rate-value highlight">
+                  {{ row.mrpRate | currency:'INR':'symbol':'1.2-2' }}
+                </span>
+             </div>
+           </td>
           </tr>
         </ng-template>
 

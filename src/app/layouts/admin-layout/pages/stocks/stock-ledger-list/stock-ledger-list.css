@@ -1,0 +1,82 @@
+    
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 10px;
+}
+
+/* Right side action buttons container */
+.header-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Optional: adjust button size */
+.header-actions .p-button-sm {
+  font-size: 0.85rem;
+}
+
+.p-toolbar
+{
+ padding: 1px 11px 0px 1px;
+}
+
+.mr-2 {
+  margin-right: 0.5rem; /* Adjust space as needed */
+}
+
+.rate-cell {
+  min-width: 30px;
+  padding: 6px 10px;
+}
+
+.rate-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  margin-bottom: 3px;
+}
+
+.rate-label {
+  color: #6c757d;
+  font-weight: 500;
+}
+
+.rate-value {
+  font-weight: 600;
+}
+
+.highlight {
+  font-weight: 700;
+}
+
+.product-cell {
+  min-width: 200px;
+}
+
+.product-name {
+  font-weight: 600;
+  font-size: 13px;
+  color: #212529;
+}
+
+.stock-group {
+  font-size: 11px;
+  color: #6c757d;
+  margin-top: 2px;
+}
+
+.ledger-row td {
+  padding: 10px 12px;
+  vertical-align: middle;
+}
+
+.ledger-row:hover {
+  background-color: #f8f9fa;
+}
+
+.text-nowrap {
+  white-space: nowrap;
+}

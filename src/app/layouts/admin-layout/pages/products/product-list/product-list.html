@@ -40,6 +40,8 @@
     <!-- TABLE -->
     <ng-container *ngIf="isLoading()">
       <p-table [value]="tblResult().result" [lazy]="true"
+        scrollable="true"
+    scrollHeight="600px"
   (onLazyLoad)="onLazyLoad($event)"
   [sortField]="sortField" [lazyLoadOnInit]="false"
   [sortOrder]="sortOrder" size="small" showGridlines class="p-datatable-sm">

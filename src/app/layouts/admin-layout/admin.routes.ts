@@ -278,6 +278,12 @@ export const ADMIN_ROUTES: Routes = [
       import('./pages/stocks/stock-list/stock-list')
         .then(c => c.StockList)
   },
+  {
+    path: 'stock-transactions',
+    loadComponent: () =>
+      import('./pages/stocks/stock-ledger-list/stock-ledger-list')
+        .then(c => c.StockLedgerList)
+  },
   ///
   // =========================
   // Default

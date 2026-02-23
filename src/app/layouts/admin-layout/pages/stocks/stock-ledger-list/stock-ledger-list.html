@@ -1,0 +1,122 @@
+<p-toolbar class="page-header">
+  <div class="p-toolbar-group-left">
+    <p-breadcrumb [model]="breadcrumbItems" homeIcon="pi pi-home"></p-breadcrumb>
+  </div>
+</p-toolbar>
+
+<p-card>
+    <div class="d-flex justify-content-between mb-3">
+
+      <div class="flex-grow-1" style="max-width:300px">
+        <p-floatlabel variant="on">
+          <input pInputText id="on_label" [formControl]="searchControl" autocomplete="off" />
+          <label for="on_label">Search keyword</label>
+        </p-floatlabel>
+      </div>
+
+      <ng-container *ngIf="isLoading()">
+        <p-buttonGroup>
+          <!-- <p-button label="{{pageSize}}" outlined severity="secondary"></p-button> -->
+           <p-menu #menuItem [model]="pageSizeItems" [popup]="true" />
+          <p-button (click)="menuItem.toggle($event)" label="{{pageSize}}" outlined severity="secondary"></p-button>        
+          <p-button label="Total ({{tblResult().totalRows}})" disabled outlined></p-button>
+
+          <p-button icon="pi pi-angle-left"
+            outlined (click)="onPrevious()"></p-button>
+
+          <p-button label="{{ pageindex() + 1 }}/{{ numberofPage() }}"
+            disabled outlined></p-button>
+
+          <p-button icon="pi pi-angle-right"
+            outlined (click)="onNext()"></p-button>
+        </p-buttonGroup>
+      </ng-container>
+
+    </div>
+
+    <!-- TABLE -->
+    <ng-container *ngIf="isLoading()">
+     <p-table 
+    [value]="tblResult().result"
+    [lazy]="true"
+    (onLazyLoad)="onLazyLoad($event)"
+    [lazyLoadOnInit]="false"
+    size="small"
+    showGridlines
+    responsiveLayout="scroll"
+    scrollable="true"
+    scrollHeight="500px"
+    styleClass="ledger-table">
+
+    <!-- HEADER -->
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Date</th>
+            <th>Category</th>
+            <th>Product</th>
+            <th class="text-center">Bill No</th>
+            <th>Description</th>
+            <th class="text-end">In</th>
+            <th class="text-end">Out</th>
+            <th class="text-end">Balance</th>
+        </tr>
+    </ng-template>
+
+    <!-- BODY -->
+    <ng-template pTemplate="body" let-row let-i="rowIndex">
+        <tr class="ledger-row">
+
+            <!-- Date -->
+            <td class="text-nowrap fw-medium">
+                {{ row.date | date:'dd MMM yyyy' }}
+            </td>
+
+            <!-- Category -->
+            <td class="text-muted small">
+                {{ row.stockGroupName }}
+            </td>
+
+            <!-- Product -->
+            <td class="fw-semibold">
+                {{ row.productName }}
+            </td>
+
+            <!-- Bill No -->
+            <td class="text-center text-secondary">
+                {{ row.billNo || '-' }}
+            </td>
+
+            <!-- Description -->
+            <td class="text-muted">
+                {{ row.description }}
+            </td>
+
+            <!-- In -->
+            <td class="text-end text-success fw-semibold">
+                {{ row.in ? (row.in | number:'1.0-2') : '-' }}
+            </td>
+
+            <!-- Out -->
+            <td class="text-end text-danger fw-semibold">
+                {{ row.out ? (row.out | number:'1.0-2') : '-' }}
+            </td>
+
+            <!-- Balance -->
+            <td class="text-end fw-bold"
+                [ngClass]="{
+                  'text-danger': row.balance < 0,
+                  'text-primary': row.balance >= 0
+                }">
+                {{ row.balance | number:'1.0-2' }}
+            </td>
+
+        </tr>
+    </ng-template>
+
+</p-table>
+    </ng-container>
+
+</p-card>
+
+<p-menu #menu [model]="items" [popup]="true"></p-menu>
+<p-confirmDialog></p-confirmDialog>
