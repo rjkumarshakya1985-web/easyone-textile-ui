@@ -59,3 +59,27 @@
 .text-primary{
    color:#800000 !important;
 }
+
+/* Top Level Header */
+.test-menu .p-panelmenu-header-link {
+  background-color: #800000 !important;
+  color: #fff !important;
+  font-weight: 700 !important;
+}
+
+/* Submenu Item */
+.test-menu .p-panelmenu-item-link {
+  background-color: #800000 !important;
+  color: #fff !important;
+  font-weight: 700 !important;
+}
+
+.p-panelmenu-item-link {
+  transition: background-color 0.3s ease;
+}
+
+
+
+
+
+

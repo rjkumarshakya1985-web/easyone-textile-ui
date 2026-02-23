@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 
 export const STOCK_INCHARGE_ROUTES: Routes = [
   {
-    path: 'parcel-scanners',
+    path: 'parcel-scanners/:status',
     loadComponent: () =>
       import('./pages/parcel-scanners/parcel-scanners')
         .then(c => c.ParcelScanners)

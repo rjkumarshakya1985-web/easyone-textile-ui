@@ -114,7 +114,6 @@ ngOnInit(): void {
   
     }
  checkEditMode() {
-  debugger; 
     this.CustomerId = this.route.snapshot.paramMap.get('id')!;
     if (this.CustomerId) {
       this.isEdit = true;

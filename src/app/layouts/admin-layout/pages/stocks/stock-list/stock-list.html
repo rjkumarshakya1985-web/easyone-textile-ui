@@ -1,0 +1,106 @@
+<p-toolbar class="page-header">
+  <div class="p-toolbar-group-left">
+    <p-breadcrumb [model]="breadcrumbItems" homeIcon="pi pi-home"></p-breadcrumb>
+  </div>
+
+  <div class="p-toolbar-group-right">
+    <p-button label="Add Supplier" class="p-button-sm mr-2"  variant="text" [raised]="true" icon="pi pi-plus"/>
+    <p-button label="Export" variant="text" icon="pi pi-file-export" [raised]="true" severity="secondary" />
+  </div>
+</p-toolbar>
+
+<p-card>
+    <div class="d-flex justify-content-between mb-3">
+
+      <div class="flex-grow-1" style="max-width:300px">
+        <p-floatlabel variant="on">
+          <input pInputText id="on_label" [formControl]="searchControl" autocomplete="off" />
+          <label for="on_label">Search keyword</label>
+        </p-floatlabel>
+      </div>
+
+      <ng-container *ngIf="isLoading()">
+        <p-buttonGroup>
+          <!-- <p-button label="{{pageSize}}" outlined severity="secondary"></p-button> -->
+           <p-menu #menuItem [model]="pageSizeItems" [popup]="true" />
+          <p-button (click)="menuItem.toggle($event)" label="{{pageSize}}" outlined severity="secondary"></p-button>        
+          <p-button label="Total ({{tblResult().totalRows}})" disabled outlined></p-button>
+
+          <p-button icon="pi pi-angle-left"
+            outlined (click)="onPrevious()"></p-button>
+
+          <p-button label="{{ pageindex() + 1 }}/{{ numberofPage() }}"
+            disabled outlined></p-button>
+
+          <p-button icon="pi pi-angle-right"
+            outlined (click)="onNext()"></p-button>
+        </p-buttonGroup>
+      </ng-container>
+
+    </div>
+
+    <!-- TABLE -->
+    <ng-container *ngIf="isLoading()">
+      <!-- <p-table [value]="tblResult().result" size="small" showGridlines class="p-datatable-sm"> -->
+ <p-table [value]="tblResult().result" [lazy]="true"
+  (onLazyLoad)="onLazyLoad($event)"
+  [sortField]="sortField" [lazyLoadOnInit]="false"
+  [sortOrder]="sortOrder" size="small" showGridlines class="p-datatable-sm">
+
+     
+        <ng-template pTemplate="header">
+         <tr>
+            <th>BarCode</th>
+            <th>Supplier</th>
+            <th>Product</th>
+            <th class="text-center">Available Qty</th>
+            <th class="text-center">Product Rate</th>
+         </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-row>
+          <tr>
+            <td>{{row.barcode}}</td>
+            <td>{{row.supplierName}}</td>
+           <td class="product-cell">
+  <div class="product-name">
+    {{ row.productName }}
+  </div>
+  <div class="stock-group">
+    {{ row.stockGroup }}
+  </div>
+</td>
+            <td class="text-center">{{row.availableQty}}</td>
+           <td class="rate-cell">
+  <div class="rate-item">
+    <span class="rate-label">Purchase</span>
+    <span class="rate-value">{{ row.purchaseRate | currency:'INR':'symbol':'1.2-2' }}</span>
+  </div>
+
+  <div class="rate-item">
+    <span class="rate-label">Wholesale</span>
+    <span class="rate-value">{{ row.wholeSaleRate | currency:'INR':'symbol':'1.2-2' }}</span>
+  </div>
+
+  <div class="rate-item">
+    <span class="rate-label">Retail</span>
+    <span class="rate-value">{{ row.retailRate | currency:'INR':'symbol':'1.2-2' }}</span>
+  </div>
+
+  <div class="rate-item">
+    <span class="rate-label">MRP</span>
+    <span class="rate-value highlight">
+      {{ row.mrpRate | currency:'INR':'symbol':'1.2-2' }}
+    </span>
+  </div>
+</td>
+          </tr>
+        </ng-template>
+
+      </p-table>
+    </ng-container>
+
+</p-card>
+
+<p-menu #menu [model]="items" [popup]="true"></p-menu>
+<p-confirmDialog></p-confirmDialog>

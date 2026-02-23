@@ -26,5 +26,9 @@ export class ParcelService {
   changeParcelStatus(request: ParcelScanRequest): Observable<boolean> {
       return this.http.put<boolean>(`${this.apiUrl}parcel/change`, request);
     }
+
+  moveSaleVoucherProductsToStock(request: ParcelScanRequest): Observable<boolean> {
+      return this.http.put<boolean>(`${this.apiUrl}parcel/movesalevouchertostock`, request);
+    }
 }
 

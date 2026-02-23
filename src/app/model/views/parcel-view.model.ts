@@ -3,4 +3,7 @@ export interface ParcelView {
   supplierName: string;
   transporterName: string;
   supplierBillNumber: string;
+  quantity:number;
+  products:string;
+  status:string;
 }
