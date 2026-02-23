@@ -21,10 +21,11 @@
 
       <ng-container *ngIf="isLoading()">
         <p-buttonGroup>
-          <p-button label="{{pageSize}}" outlined severity="secondary"></p-button>
+         <p-menu #menuItem [model]="pageSizeItems" [popup]="true" />
+          <p-button (click)="menuItem.toggle($event)" label="{{pageSize}}" outlined severity="secondary"></p-button>        
           <p-button label="Total ({{tblResult().totalRows}})" disabled outlined></p-button>
 
-          <p-button icon="pi pi-angle-left"
+       <p-button icon="pi pi-angle-left"
             outlined (click)="onPrevious()"></p-button>
 
           <p-button label="{{ pageindex() + 1 }}/{{ numberofPage() }}"
@@ -37,18 +38,53 @@
 
     </div>
 
-    <!-- TABLE -->
+      <!-- TABLE -->
     <ng-container *ngIf="isLoading()">
-      <p-table [value]="tblResult().result" size="small" showGridlines class="p-datatable-sm">
+     <p-table [value]="tblResult().result" [lazy]="true"
+  (onLazyLoad)="onLazyLoad($event)"
+  [sortField]="sortField" [lazyLoadOnInit]="false"
+  [sortOrder]="sortOrder" size="small" showGridlines class="p-datatable-sm">
 
         <ng-template pTemplate="header">
           <tr>
-            <th>Date</th>
-            <th>Parcel Number</th>
-             <th>Supplier</th>
-            <th>Supplier Invoice No.</th>
-            <th>Transport</th>
-            <th>Status</th>
+            <th pSortableColumn="date">
+          <div class="supplier-header">
+              <span class="header-title">Date</span>&nbsp;
+              <p-sortIcon field="date"></p-sortIcon>
+                 </div>
+       </th>
+        <th pSortableColumn="id">
+          <div class="supplier-header">
+              <span class="header-title">Parcel Number</span>&nbsp;
+              <p-sortIcon field="id"></p-sortIcon>
+                 </div>
+       </th>
+           
+            <th pSortableColumn="supplierName">
+          <div class="supplier-header">
+              <span class="header-title">Supplier</span>&nbsp;
+              <p-sortIcon field="supplierName"></p-sortIcon>
+                 </div>
+       </th>
+             <th pSortableColumn="billNumber">
+          <div class="supplier-header">
+              <span class="header-title">Supplier Invoice No.</span>&nbsp;
+              <p-sortIcon field="billNumber"></p-sortIcon>
+                 </div>
+       </th>
+            <th pSortableColumn="tranportName">
+          <div class="supplier-header">
+              <span class="header-title">Transport</span>&nbsp;
+              <p-sortIcon field="tranportName"></p-sortIcon>
+                 </div>
+       </th>     
+       <th pSortableColumn="parcelStatus">
+          <div class="supplier-header">
+              <span class="header-title">Status</span>&nbsp;
+              <p-sortIcon field="parcelStatus"></p-sortIcon>
+                 </div>
+       </th>          
+          
             <th>Action</th>
           </tr>
         </ng-template>

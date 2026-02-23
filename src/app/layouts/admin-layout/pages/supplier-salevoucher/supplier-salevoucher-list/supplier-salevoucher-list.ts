@@ -25,6 +25,7 @@ import { ParcelStatus } from '../../../../../core/enums/enum';
 import { ChipModule } from 'primeng/chip';
 import { Helper } from '../../../../../core/helpers/helper';
 import { TagModule } from 'primeng/tag';
+import { PAGE_PAGE } from '../../../../../config/api.config';
 
 @Component({
   selector: 'app-supplier-salevoucher-list',
@@ -51,7 +52,9 @@ import { TagModule } from 'primeng/tag';
   styleUrl: './supplier-salevoucher-list.css',
 })
 export class SupplierSalevoucherList {
-
+ pageSizeItems: MenuItem[] | undefined;
+  sortField: string = '';
+  sortOrder: number = 1; // 1 = ASC, -1 = DESC
   @ViewChild('menu') menu!: Menu;
   items: MenuItem[] = [];
   ParcelStatusHelper = Helper;
@@ -62,7 +65,7 @@ export class SupplierSalevoucherList {
   isLoading = signal(false);
   tblResult = signal({ totalRows: 0, result: [] as SaleVoucherTableResponse[] });
 
-  pageSize = 10;
+  pageSize = PAGE_PAGE;
   pageindex = signal(0);
 
   searchControl = new FormControl('');
@@ -72,6 +75,18 @@ export class SupplierSalevoucherList {
     { label: 'SaleVoucher' }
   ];
 
+private isFirstLoad = true;
+    onLazyLoad(event: any) {
+      if (this.isFirstLoad) {
+    this.isFirstLoad = false;
+    return;
+  }
+      this.sortField = event.sortField ?? '';
+  this.sortOrder = event.sortOrder ?? 1;
+
+  this.loadTableData(this.searchControl.value || '');
+   }
+
   constructor(
     private router: Router,
     private saleVoucherService: SaleVoucherService,
@@ -80,8 +95,23 @@ export class SupplierSalevoucherList {
   ngOnInit() {
     this.setupSearch();
     this.loadTableData();
+    this.pageSizeItems = [
+            {
+                 items: [
+                         { label: '5',  command: () => this.onPageSizeChange(5) },
+                         { label: '10', command: () => this.onPageSizeChange(10) },
+                         { label: '30', command: () => this.onPageSizeChange(30) },
+                         { label: '50', command: () => this.onPageSizeChange(50) },
+                         
+                        ]
+            }
+        ];
   }
-
+onPageSizeChange(size: number) {
+  this.pageindex.set(0);      // reset to first page
+  this.pageSize = size;
+  this.loadTableData(this.searchControl.value || '');
+}
   // -----------------------------
   // SEARCH
   // -----------------------------
@@ -103,7 +133,9 @@ export class SupplierSalevoucherList {
     const req: TableDataRequest = {
       pageIndex: this.pageindex(),
       pageSize: this.pageSize,
-      search
+      search,
+      sortField: this.sortField,
+      sortOrder: this.sortOrder
     };
 
     this.saleVoucherService.getTableData(req).subscribe({

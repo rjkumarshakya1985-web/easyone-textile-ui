@@ -21,9 +21,10 @@
       </div>
 
       <ng-container *ngIf="isLoading()">
-        <p-buttonGroup>
-          <p-button label="{{pageSize}}" outlined severity="secondary"></p-button>
-          <p-button label="Total ({{tblResult().totalRows}})" severity="secondary" disabled outlined></p-button>
+         <p-buttonGroup>
+         <p-menu #menuItem [model]="pageSizeItems" [popup]="true" />
+          <p-button (click)="menuItem.toggle($event)" label="{{pageSize}}" outlined severity="secondary"></p-button>        
+          <p-button label="Total ({{tblResult().totalRows}})" disabled outlined></p-button>
 
           <p-button icon="pi pi-angle-left"
             outlined (click)="onPrevious()" severity="secondary"></p-button>
@@ -40,18 +41,60 @@
 
     <!-- TABLE -->
     <ng-container *ngIf="isLoading()">
-      <p-table [value]="tblResult().result" showGridlines class="p-datatable-sm">
+     <p-table [value]="tblResult().result" [lazy]="true"
+  (onLazyLoad)="onLazyLoad($event)"
+  [sortField]="sortField" [lazyLoadOnInit]="false"
+  [sortOrder]="sortOrder" size="small" showGridlines class="p-datatable-sm">
 
         <ng-template pTemplate="header">
           <tr>
-            <th>Name</th>
-            <th>Transport Type</th>
-            <th>City</th>
-            <th>State</th>
-            <th>GSTIN</th>
-            <th>Reg. Type</th>
-            <th>Mobile</th>
-            <th>Email</th>
+            <th pSortableColumn="name">
+          <div class="supplier-header">
+              <span class="header-title">Name</span>&nbsp;
+              <p-sortIcon field="name"></p-sortIcon>
+                 </div>
+       </th>
+         <th pSortableColumn="transportType">
+          <div class="supplier-header">
+              <span class="header-title">Transport Type</span>&nbsp;
+              <p-sortIcon field="transportType"></p-sortIcon>
+                 </div>
+       </th>
+             <th pSortableColumn="city">
+          <div class="supplier-header">
+              <span class="header-title">City</span>&nbsp;
+              <p-sortIcon field="city"></p-sortIcon>
+                 </div>
+       </th>
+            <th pSortableColumn="state">
+          <div class="supplier-header">
+              <span class="header-title">State</span>&nbsp;
+              <p-sortIcon field="state"></p-sortIcon>
+                 </div>
+       </th>    
+       <th pSortableColumn="gstin">
+          <div class="supplier-header">
+              <span class="header-title">GSTIN</span>&nbsp;
+              <p-sortIcon field="gstin"></p-sortIcon>
+                 </div>
+       </th>     
+       <th pSortableColumn="registrationType">
+          <div class="supplier-header">
+              <span class="header-title">Reg. Type</span>&nbsp;
+              <p-sortIcon field="registrationType"></p-sortIcon>
+                 </div>
+       </th>        
+             <th pSortableColumn="mobile">
+          <div class="supplier-header">
+              <span class="header-title">Mobile</span>&nbsp;
+              <p-sortIcon field="mobile"></p-sortIcon>
+                 </div>
+       </th>  <th pSortableColumn="email">
+          <div class="supplier-header">
+              <span class="header-title">Email</span>&nbsp;
+              <p-sortIcon field="email"></p-sortIcon>
+                 </div>
+       </th> 
             <th>Actions</th>
           </tr>
         </ng-template>
@@ -83,3 +126,5 @@
     </ng-container>
 
 </p-card>
+<p-menu #menu [model]="items" [popup]="true"></p-menu>
+<p-confirmDialog></p-confirmDialog>

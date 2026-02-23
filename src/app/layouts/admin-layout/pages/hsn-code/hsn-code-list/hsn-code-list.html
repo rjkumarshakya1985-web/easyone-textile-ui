@@ -22,8 +22,9 @@
 
       <ng-container *ngIf="isLoading()">
         <p-buttonGroup>
-          <p-button label="{{pageSize}}" outlined severity="secondary"></p-button>
-          <p-button label="Total ({{tblResult().totalRows}})" severity="secondary" disabled outlined></p-button>
+           <p-menu #menuItem [model]="pageSizeItems" [popup]="true" />
+          <p-button (click)="menuItem.toggle($event)" label="{{pageSize}}" outlined severity="secondary"></p-button>        
+          <p-button label="Total ({{tblResult().totalRows}})" disabled outlined></p-button>
 
           <p-button icon="pi pi-angle-left"
             outlined (click)="onPrevious()" severity="secondary"></p-button>
@@ -38,14 +39,28 @@
 
     </div>
 
+    
     <!-- TABLE -->
     <ng-container *ngIf="isLoading()">
-      <p-table [value]="tblResult().result" showGridlines class="p-datatable-sm">
+     <p-table [value]="tblResult().result" [lazy]="true"
+  (onLazyLoad)="onLazyLoad($event)"
+  [sortField]="sortField" [lazyLoadOnInit]="false"
+  [sortOrder]="sortOrder" size="small" showGridlines class="p-datatable-sm">
 
         <ng-template pTemplate="header">
           <tr>
-            <th>Name</th>
-            <th>Description</th>
+           <th pSortableColumn="name">
+          <div class="supplier-header">
+              <span class="header-title">Name</span>&nbsp;
+              <p-sortIcon field="name"></p-sortIcon>
+                 </div>
+       </th> 
+       <th pSortableColumn="description">
+          <div class="supplier-header">
+              <span class="header-title">Description</span>&nbsp;
+              <p-sortIcon field="description"></p-sortIcon>
+                 </div>
+       </th>            
             <th>Actions</th>
           </tr>
         </ng-template>
@@ -61,9 +76,8 @@
                </span>
             </td>
           </tr>
-        </ng-template>
-
-      </p-table>
+        </ng-template>  
+     </p-table> 
     </ng-container>
 
 </p-card>
@@ -95,5 +109,5 @@
         <p-button label="Save" [raised]="true" severity="info" (click)="saveHsnCode()" />
     </ng-template>
 </p-dialog>
-
+<p-menu #menu [model]="items" [popup]="true"></p-menu>
 <p-confirmDialog></p-confirmDialog>

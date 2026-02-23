@@ -12,7 +12,6 @@ import { ButtonGroupModule } from 'primeng/buttongroup';
 import { Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-
 import { InputTextModule } from 'primeng/inputtext';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { TableDataRequest } from '../../../../../model/request/table-datafilter-request.model';
@@ -22,8 +21,8 @@ import { LoaderService } from '../../../../../core/services/loader.service';
 import { DialogModule } from 'primeng/dialog';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { FloatLabelModule } from 'primeng/floatlabel';
-
-
+import { PAGE_PAGE } from '../../../../../config/api.config';
+import { Menu, MenuModule } from 'primeng/menu';
 @Component({
   selector: 'app-hsn-code-list',
   standalone: true,
@@ -43,14 +42,19 @@ import { FloatLabelModule } from 'primeng/floatlabel';
   InputTextModule,
   InputGroupModule,
   DialogModule,
-  ConfirmDialogModule
+  ConfirmDialogModule,
+    MenuModule,
 ],
   templateUrl: './hsn-code-list.html',
   styleUrls: ['./hsn-code-list.css']
 })
 export class HsnCodeList implements OnInit {
+  pageSizeItems: MenuItem[] | undefined;
+  sortField: string = '';
+  sortOrder: number = 1; // 1 = ASC, -1 = DESC
    visible = false;
    hsnCodeForm!: FormGroup;
+   items: MenuItem[] = [];
  
    // -----------------------------
   // Signals
@@ -58,9 +62,19 @@ export class HsnCodeList implements OnInit {
   isLoading = signal(false);
   tblResult = signal({ totalRows: 0, result: [] as ProductHsnCode[] });
 
-  pageSize = 10;
+  pageSize = PAGE_PAGE;
   pageIndex = signal(0);
+  private isFirstLoad = true;
+    onLazyLoad(event: any) {
+      if (this.isFirstLoad) {
+    this.isFirstLoad = false;
+    return;
+  }
+      this.sortField = event.sortField ?? '';
+  this.sortOrder = event.sortOrder ?? 1;
 
+  this.loadTableData(this.searchControl.value || '');
+   }
   // -----------------------------
   // Search Control
   // -----------------------------
@@ -90,8 +104,23 @@ export class HsnCodeList implements OnInit {
   ngOnInit() {
     this.setupSearch();
     this.loadTableData();
+    this.pageSizeItems = [
+            {
+                 items: [
+                         { label: '5',  command: () => this.onPageSizeChange(5) },
+                         { label: '10', command: () => this.onPageSizeChange(10) },
+                         { label: '30', command: () => this.onPageSizeChange(30) },
+                         { label: '50', command: () => this.onPageSizeChange(50) },
+                         
+                        ]
+            }
+        ];
   }
-
+onPageSizeChange(size: number) {
+  this.pageIndex.set(0);      // reset to first page
+  this.pageSize = size;
+  this.loadTableData(this.searchControl.value || '');
+}
   showDialog() {
     this.visible = true;
      this.hsnCodeForm = this.fb.group({
@@ -122,7 +151,9 @@ export class HsnCodeList implements OnInit {
     const req: TableDataRequest = {
       pageIndex: this.pageIndex(),
       pageSize: this.pageSize,
-      search: search
+      search: search,
+      sortField: this.sortField,
+      sortOrder: this.sortOrder
     };
 
     this.masterService.getHsnCodeTableData(req).subscribe({
