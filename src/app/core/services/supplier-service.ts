@@ -69,8 +69,11 @@ export class SupplierService {
     return this.http.post<boolean>(`${this.apiUrl}supplier/update-status-supplier`, request);
   }
 
-  getSupplierTransport():Observable<Transport[]>{
-       return this.http.get<Transport[]>(`${this.apiUrl}supplier/supplier-transports`);
+  getSupplierTransport(supplierId?: string):Observable<Transport[]>{
+       const url = supplierId
+      ? `${this.apiUrl}supplier/supplier-transports/${supplierId}`
+      : `${this.apiUrl}supplier/supplier-transports`;
+       return this.http.get<Transport[]>(url);
   }
   
   /// Stock Group //

@@ -45,11 +45,14 @@ export class AutoCompleteService {
   }
 
   // ---------------- Supplier Products ----------------
-  searchSupplierProduct(search: string) {
-    return this.http.get<SupplierProductView[]>(
-      `${this.baseUrl}supplier-product-search/${encodeURIComponent(search)}`
-    );
-  }
+  searchSupplierProduct(search: string, supplierId?: string) {
+
+     let url = `${this.baseUrl}supplier-product-search/${encodeURIComponent(search)}`;
+     if (supplierId) {
+       url += `?id=${supplierId}`;
+     }
+    return this.http.get<SupplierProductView[]>(url);
+}
 
   // ---------------- HSN Code ----------------
   searchAgents(search: string) {

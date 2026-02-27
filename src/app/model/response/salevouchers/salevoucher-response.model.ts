@@ -1,3 +1,5 @@
+import { SupplierTableResponse } from "../supplier/supplier-table-response.model";
+
 export interface SaleVoucherResponse {
   id: number;
   supplierId: string;          // Guid → string
@@ -10,6 +12,7 @@ export interface SaleVoucherResponse {
   status: number;
   remarks?: string | null;
   details: SaleVoucherDetailResponse[];
+  supplierObj:SupplierTableResponse
 }
 
 export interface SaleVoucherDetailResponse {
