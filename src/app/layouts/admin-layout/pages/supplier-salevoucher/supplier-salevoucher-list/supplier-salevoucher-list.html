@@ -71,7 +71,10 @@
               <p-sortIcon field="billNumber"></p-sortIcon>
                  </div>
        </th>
-            <th pSortableColumn="tranportName">
+       <th>
+        Products
+       </th>
+       <th pSortableColumn="tranportName">
           <div class="supplier-header">
               <span class="header-title">Transport</span>&nbsp;
               <p-sortIcon field="tranportName"></p-sortIcon>
@@ -83,10 +86,7 @@
               <p-sortIcon field="parcelStatus"></p-sortIcon>
                  </div>
        </th>          
-       <th>
-        Products
-       </th>
-          
+       
             <th>Action</th>
           </tr>
         </ng-template>
@@ -96,12 +96,12 @@
             <td>{{row.date | date:'dd, MMMM, yyyy'}}</td>
             <td>{{ row.id }}</td>
             <td>{{row.supplierName}}</td>
-             <td>{{row.billNumber}}</td>
+            <td>{{row.billNumber}}</td>
+            <td>{{row.productDetails}}</td>
             <td>{{row.tranportName}}</td>
             <td>
               <p-tag [severity]="ParcelStatusHelper.getParcelStatusColor(row.parcelStatus)" [value]="ParcelStatusHelper.getParcelStatusText(row.parcelStatus)" />
             </td>
-            <td>{{row.productDetails}}</td>
             <td>
               <span class="px-2 py-1 rounded bg-blue-50 text-blue-600 cursor-pointer hover:bg-blue-100"
                  (click)="openMenu($event, row)">
