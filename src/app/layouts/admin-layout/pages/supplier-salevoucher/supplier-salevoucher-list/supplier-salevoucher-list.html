@@ -83,6 +83,9 @@
               <p-sortIcon field="parcelStatus"></p-sortIcon>
                  </div>
        </th>          
+       <th>
+        Products
+       </th>
           
             <th>Action</th>
           </tr>
@@ -98,6 +101,7 @@
             <td>
               <p-tag [severity]="ParcelStatusHelper.getParcelStatusColor(row.parcelStatus)" [value]="ParcelStatusHelper.getParcelStatusText(row.parcelStatus)" />
             </td>
+            <td>{{row.productDetails}}</td>
             <td>
               <span class="px-2 py-1 rounded bg-blue-50 text-blue-600 cursor-pointer hover:bg-blue-100"
                  (click)="openMenu($event, row)">

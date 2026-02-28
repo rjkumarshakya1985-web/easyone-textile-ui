@@ -8,5 +8,6 @@ export interface SaleVoucherTableResponse {
   numberOfParcel: number;
   billNumber: string;
   parcelStatus: ParcelStatus;
+  productDetails:string;
 }
 
