@@ -22,7 +22,9 @@ export class Helper {
       return 'success';
     case ParcelStatus.InTransit:
       return 'warn';   
-    case ParcelStatus.InWareHouse:
+    case ParcelStatus.Transport:
+      return 'secondary';
+      case ParcelStatus.PackedAtLocation:
       return 'secondary';
     case ParcelStatus.Opened:
       return 'contrast';
@@ -43,8 +45,10 @@ export class Helper {
         return 'Packed';
       case ParcelStatus.InTransit:
         return 'In Transit';
-      case ParcelStatus.InWareHouse:
-        return 'In Warehouse';
+      case ParcelStatus.Transport:
+        return 'Transport';
+      case ParcelStatus.PackedAtLocation:
+        return 'Packed at Location';
       case ParcelStatus.Opened:
         return 'Opened';
       case ParcelStatus.Returned:

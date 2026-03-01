@@ -150,17 +150,20 @@ export class ParcelScanners implements OnInit {
    const request = {
     saleVoucherId: parcels.map(p => p.saleVoucherId),
     statusEnum: this.parcelEnum==ParcelStatus.InTransit
-                ? ParcelStatus.InWareHouse: ParcelStatus.Opened
+                 ? ParcelStatus.Transport
+                 : this.parcelEnum === ParcelStatus.Transport
+                 ? ParcelStatus.PackedAtLocation
+                 : ParcelStatus.Opened
    };
 
   this.isLoading.set(true);
 
   let apiCall$;
 
-  if (this.parcelEnum === ParcelStatus.InTransit) {
+  if (this.parcelEnum === ParcelStatus.InTransit  || this.parcelEnum===ParcelStatus.Transport) {
     apiCall$ = this.parcelService.changeParcelStatus(request);
   }
-  else if (this.parcelEnum === ParcelStatus.InWareHouse) {
+  else if (this.parcelEnum === ParcelStatus.PackedAtLocation) {
     apiCall$ = this.parcelService.moveSaleVoucherProductsToStock(request);
   }
   else {
@@ -206,8 +209,10 @@ export class ParcelScanners implements OnInit {
  
     switch (this.parcelEnum) {
     case ParcelStatus.InTransit:
-      return 'Receive in Warehouse';
-    case ParcelStatus.InWareHouse:
+      return 'Receive in Transport';
+    case ParcelStatus.Transport:
+      return 'Packed at Location';
+    case ParcelStatus.PackedAtLocation:
       return 'Open Parcel';
     default:
       return 'Update Status';
@@ -225,7 +230,15 @@ export class ParcelScanners implements OnInit {
             4. Review the list and click 'Receive in Warehouse'.
             5. Parcel status will be updated to Warehouse Received.
             `;
-    case ParcelStatus.InWareHouse:
+         case ParcelStatus.Transport:
+           return `
+            1. Scan or enter the parcel number.
+            2. Parcel details will appear in the list.
+            3. Duplicate parcels will not be added.
+            4. Review the list and click 'Packed at Location'.
+            5. Parcel status will be updated to Packed at Location Received.
+            `;
+        case ParcelStatus.PackedAtLocation:
           return `
             1. Scan parcel received in warehouse.
             2. Verify supplier and product details.

@@ -13,12 +13,13 @@ export enum TransportType
 }
 
 export enum ParcelStatus {
-  Ready = 1,
-  Packed = 2,
-  InTransit = 3,
-  InWareHouse = 4,
-  Opened = 5,
-  Returned = 6,
-  Cancelled = 7,
-  Other = 8
+   Ready = 1,
+   Packed = 2,
+   InTransit = 3,
+   Transport = 4,
+   PackedAtLocation=5,
+   Opened = 6,
+   Returned = 7,
+   Cancelled = 9,
+   Other = 10
 }

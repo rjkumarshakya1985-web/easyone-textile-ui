@@ -115,7 +115,12 @@ export class Nav implements OnInit, OnDestroy {
       {
         label: 'Warehouse Scanning',
         icon: 'pi pi-fw pi-home',
-        routerLink: ['/stock-incharge/parcel-scanners',ParcelStatus.InWareHouse],
+        routerLink: ['/stock-incharge/parcel-scanners',ParcelStatus.Transport],
+      },
+      {
+        label: 'Packed at Location',
+        icon: 'pi pi-fw pi-box',
+        routerLink: ['/stock-incharge/parcel-scanners',ParcelStatus.PackedAtLocation],
         
       }
         ]
@@ -161,7 +166,13 @@ export class Nav implements OnInit, OnDestroy {
       {
         label: 'Warehouse Scanning',
         icon: 'pi pi-fw pi-home',
-        routerLink: ['/stock-incharge/parcel-scanners',ParcelStatus.InWareHouse],
+        routerLink: ['/stock-incharge/parcel-scanners',ParcelStatus.Transport],
+        
+      },
+      {
+        label: 'Packed at Location',
+        icon: 'pi pi-fw pi-box',
+        routerLink: ['/stock-incharge/parcel-scanners',ParcelStatus.PackedAtLocation],
         
       },
       {

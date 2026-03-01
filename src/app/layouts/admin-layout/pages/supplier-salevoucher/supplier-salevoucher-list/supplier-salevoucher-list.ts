@@ -199,7 +199,7 @@ onPageSizeChange(size: number) {
   ];
 
   // 👇 Only add Edit if NOT InWareHouse
-  if (row.parcelStatus < ParcelStatus.InWareHouse) {
+  if (row.parcelStatus < ParcelStatus.Opened) {
     this.items.push({
       label: 'Edit',
       icon: 'pi pi-pencil',
