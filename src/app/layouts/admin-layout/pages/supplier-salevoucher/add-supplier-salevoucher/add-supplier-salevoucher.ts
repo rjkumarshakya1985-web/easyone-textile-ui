@@ -453,7 +453,6 @@ openMenu(event: Event, row: SaleVoucherDetail, index: number) {
 
   addNewSupplier()
   {
-    console.log('asf');
     this.router.navigate(['admin/supplier/add']);
   }
 } 
