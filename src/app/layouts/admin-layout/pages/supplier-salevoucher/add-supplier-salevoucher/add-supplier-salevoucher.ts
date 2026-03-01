@@ -136,8 +136,8 @@ export class AddSupplierSalevoucher {
 
   checkEditMode() {
     const idParam = this.route.snapshot.paramMap.get('id');
-
-    if (idParam) {
+     const parsedId = idParam ? Number(idParam) : null;
+    if (parsedId !== null && !isNaN(parsedId)) {
       this.saleVoucherId = Number(idParam); // convert string → number
       this.isEdit = true;
       this.loadSaleVoucherForEdit();
