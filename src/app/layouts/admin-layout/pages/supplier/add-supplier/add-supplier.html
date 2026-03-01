@@ -131,21 +131,24 @@
 
           <div class="col-md-3">
             <p-floatlabel class="w-full md:w-56" variant="on">
-                <p-select formControlName="cityId" inputId="city" [options]="(cities$ | async) ?? []" optionLabel="name" optionValue="id"  class="w-full" />
+                <p-select formControlName="cityId" inputId="city" [options]="(cities$ | async) ?? []" optionLabel="name" optionValue="id"  class="w-full" 
+                 />
                 <label for="city">Select City</label>
              </p-floatlabel>
           </div>
           
           <div class="col-md-3">
              <p-floatlabel variant="on">
-              <input pInputText class="form-control" id="on_Supplier_contactPerson" formControlName="contactPerson" autocomplete="off" />
+              <input pInputText class="form-control" id="on_Supplier_contactPerson" formControlName="contactPerson" autocomplete="off"
+              [ngClass]="{ 'ng-invalid ng-dirty': supplierForm.get('contactPerson')?.invalid && supplierForm.get('contactPerson')?.touched }"  />
               <label for="on_Supplier_contactPerson">Contact Person</label>
             </p-floatlabel>
           </div>
 
           <div class="col-md-3">
              <p-floatlabel variant="on">
-              <input pInputText class="form-control" id="on_Supplier_mobile" formControlName="mobile" autocomplete="off" />
+              <input pInputText class="form-control" id="on_Supplier_mobile" formControlName="mobile" autocomplete="off" 
+               [ngClass]="{ 'ng-invalid ng-dirty': supplierForm.get('mobile')?.invalid && supplierForm.get('mobile')?.touched }"  />
               <label for="on_Supplier_mobile">Mobile</label>
             </p-floatlabel>
           </div>
@@ -165,7 +168,8 @@
           <!-- GSTIN -->
           <div class="col-md-3">
             <p-floatlabel variant="on">
-              <input pInputText class="form-control" id="on_Supplier_gstIn" formControlName="gstIn" autocomplete="off" />
+              <input pInputText class="form-control" id="on_Supplier_gstIn" formControlName="gstIn" autocomplete="off" 
+              [ngClass]="{ 'ng-invalid ng-dirty': supplierForm.get('gstIn')?.invalid && supplierForm.get('gstIn')?.touched }" />
               <label for="on_Supplier_gstIn">GSTIN</label>
             </p-floatlabel>
           </div>
@@ -186,7 +190,8 @@
            <!-- Address -->
           <div class="col-md-12">
              <p-floatlabel variant="on">
-              <textarea class="form-control"  pTextarea id="on_address" fluid formControlName="address" rows="3" cols="30" style="resize: none" class="h-full"></textarea>
+              <textarea class="form-control"  pTextarea id="on_address" fluid formControlName="address" rows="3" cols="30" style="resize: none" class="h-full"
+              [ngClass]="{ 'ng-invalid ng-dirty': supplierForm.get('address')?.invalid && supplierForm.get('address')?.touched }"></textarea>
               <label for="on_address">Address</label>
             </p-floatlabel>
           </div>
@@ -235,7 +240,7 @@
                 mode="decimal"
                [minFractionDigits]="0"
                [maxFractionDigits]="0"
-                   [ngClass]="{ 'ng-invalid ng-dirty': supplierForm.get('wholeSalesMargin')?.invalid && supplierForm.get('wholeSalesMargin')?.touched }">
+               [ngClass]="{ 'ng-invalid ng-dirty': supplierForm.get('wholeSalesMargin')?.invalid && supplierForm.get('wholeSalesMargin')?.touched }">
               </p-inputNumber>
               <label for="on_Supplier_wholesaleMargin">Wholesale Margin</label>
           </p-floatlabel>

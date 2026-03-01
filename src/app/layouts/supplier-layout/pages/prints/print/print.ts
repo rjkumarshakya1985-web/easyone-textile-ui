@@ -161,4 +161,17 @@ getItemSummary(): string {
   return `${items[0].productName}, ${items[1].productName} +${items.length - 2} More`;
 }
 
+ addPrefixIfThreeDigit(value: number | undefined): string {
+  if(!value) 
+  {
+    return '';
+  }
+  const str = value.toString();
+
+  if (str.length === 3) {
+    return '0' + str;
+  }
+
+  return str;
+}
 }
