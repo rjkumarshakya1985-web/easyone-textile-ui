@@ -15,9 +15,12 @@
                   <div>
                    <p-button label="Cancel" [raised]="true" icon="pi pi-times" severity="secondary" (click)="cancel()"></p-button>
                    <p-button label="Print" [raised]="true" icon="pi pi-print" severity="success" class="ml-2" (click)="printPage('print-section')"></p-button>
-                 <b> Note:</b> This sticker must be affixed to the parcel.
                  
                  </div>
+                 
+<div class="print-note no-print">
+    ⚠️ Note: This sticker must be affixed to the parcel.
+</div>
                 </div>
                 <hr>
                 <div class="panel-body" id="print-section">
@@ -84,12 +87,19 @@
 
             <!-- Right Section - Barcode -->
             <div class="col-md-5 text-center">
-
-            <ngx-barcode6
-  [bc-value]="printData()?.saleVoucherPrint?.id?.toString() ?? ''"
-  [bc-display-value]="true"
-  [bc-width]="4">
-</ngx-barcode6>
+ <ngx-barcode6
+      [bc-value]="printData()?.saleVoucherPrint?.id?.toString() ?? ''"
+      [bc-format]="'CODE128'"
+      [bc-width]="2"
+      [bc-height]="80"      
+      [bc-display-value]="true"     
+      [bc-margin]="10"     
+      [bc-display-value]="true"
+      [bc-margin-top]="2"
+      [bc-margin-bottom]="2">
+      >
+    </ngx-barcode6>
+           
 
 
             </div>
@@ -106,8 +116,12 @@
             <p-tabpanel [value]="1">
                 <p-button label="Cancel" [raised]="true" icon="pi pi-times" severity="secondary" (click)="cancel()"></p-button>
                 <p-button label="Print" [raised]="true" icon="pi pi-print" severity="success" class="ml-2" (click)="printPage('parcel-salevoucher')"></p-button>
-                <b> Note:</b> This dispatch voucher must be attached with the transport copy.
-                   <hr>
+                
+                 <hr>
+                <div class="print-note no-print">
+    ⚠️ Note: This dispatch voucher must be attached with the transport copy.
+</div>   
+                <hr>
               <div id="parcel-salevoucher">
                     <div style="text-align: center;" > <h4><b><u>DISPATCH VOUCHER</u></b></h4></div>
                     <hr>
@@ -166,7 +180,7 @@
                         </div>
                         <div class="col-xs-4 col-sm-4 col-md-4 ">
                             <div class="text-right">
-                            <ngx-barcode6 [bc-value]="printData()?.saleVoucherPrint?.id?.toString() ?? ''"  [bc-display-value]="false" [bc-font-size]="15" [bc-height]="40" [bc-display-value]="true" ></ngx-barcode6>   
+                            <ngx-barcode6 [bc-value]="printData()?.saleVoucherPrint?.id?.toString() ?? ''" [bc-format]="'CODE128'" [bc-display-value]="false" [bc-font-size]="15" [bc-height]="40" [bc-display-value]="true" ></ngx-barcode6>   
                             </div>
                         </div>
                 </div>  
