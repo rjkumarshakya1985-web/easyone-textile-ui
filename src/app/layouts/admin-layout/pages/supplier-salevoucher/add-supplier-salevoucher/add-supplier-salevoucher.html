@@ -45,7 +45,11 @@
                         <small class="text-gray-500">({{ supplier.code }})</small>
                     </div>
                 </ng-template>
-
+                <ng-template #footer>
+                               <div class="px-3 py-3">
+                                    <p-button label="Add New Supplier" fluid severity="secondary" text size="small" icon="pi pi-plus" (click)="addNewSupplier()" />
+                                </div>
+                           </ng-template>
                 <ng-template pTemplate="header">
                     <div class="font-medium px-3 py-2">Select Supplier</div>
                 </ng-template>

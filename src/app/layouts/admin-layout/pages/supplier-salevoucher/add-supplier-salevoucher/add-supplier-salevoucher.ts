@@ -449,5 +449,11 @@ openMenu(event: Event, row: SaleVoucherDetail, index: number) {
     this.autocompleteService.searchSupplier(query).subscribe(res => {
       this.filteredSuppliers.set(res); 
     });
- }
+  }
+
+  addNewSupplier()
+  {
+    console.log('asf');
+    this.router.navigate(['admin/supplier/add']);
+  }
 } 
