@@ -84,7 +84,6 @@ export class AddProduct implements OnInit, AfterViewInit {
     private messageService: MessageService,
     private supplierService :SupplierService,
     private supplierProductService: SupplierProductService,
-    private stockGroupService:StockGroupService,
     private loader: LoaderService,
     private autocompleteService:AutoCompleteService,
     private masterDataService:MasterDataService) {}

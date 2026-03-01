@@ -284,6 +284,12 @@ export const ADMIN_ROUTES: Routes = [
       import('./pages/stocks/stock-ledger-list/stock-ledger-list')
         .then(c => c.StockLedgerList)
   },
+  {
+    path: 'add-supplier-salevoucher/:id',
+    loadComponent: () =>
+      import('./pages/supplier-salevoucher/add-supplier-salevoucher/add-supplier-salevoucher')
+        .then(c => c.AddSupplierSalevoucher)
+  },
   ///
   // =========================
   // Default

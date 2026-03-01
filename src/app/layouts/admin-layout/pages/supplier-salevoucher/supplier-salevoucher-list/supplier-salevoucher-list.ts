@@ -22,7 +22,6 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { SaleVoucherTableResponse } from '../../../../../model/response/salevouchers/salevoucher-table-response.model';
 import { SaleVoucherService } from '../../../../../core/services/salevoucher.service';
 import { ParcelStatus } from '../../../../../core/enums/enum';
-import { ChipModule } from 'primeng/chip';
 import { Helper } from '../../../../../core/helpers/helper';
 import { TagModule } from 'primeng/tag';
 import { PAGE_PAGE } from '../../../../../config/api.config';
@@ -169,11 +168,11 @@ onPageSizeChange(size: number) {
   // ROUTING
   // -----------------------------
   add() {
-    this.router.navigate(['supplier/salevoucher/add']);
+    this.router.navigate(['admin/add-supplier-salevoucher/add']);
   }
 
-  edit(id: string) {
-    this.router.navigate(['supplier/product/edit', id]);
+  edit(id: number) {
+    this.router.navigate(['admin/add-supplier-salevoucher/', id]);
   }
   
   getStatusText(status: ParcelStatus): string {
@@ -189,20 +188,31 @@ onPageSizeChange(size: number) {
   {
     this.router.navigate(['admin/print',id]);
   }
-   openMenu(event: Event, row: SaleVoucherTableResponse) {
-       this.items = [{
-            label: 'Detail',
-            icon: 'pi pi-eye',
-          command: () => this.gotoEditSaleVoucher(row.id)
-        },
-        {
-          label: 'Print',
-          icon: 'pi pi-print',
-          command: () => this.goToPrint(row.id)
-        }
-      ];
-    
-      this.menu.toggle(event);
-    
-      }
+  openMenu(event: Event, row: SaleVoucherTableResponse) {
+
+  this.items = [
+    {
+      label: 'Detail',
+      icon: 'pi pi-eye',
+      command: () => this.gotoEditSaleVoucher(row.id)
+    }
+  ];
+
+  // 👇 Only add Edit if NOT InWareHouse
+  if (row.parcelStatus < ParcelStatus.InWareHouse) {
+    this.items.push({
+      label: 'Edit',
+      icon: 'pi pi-pencil',
+      command: () => this.edit(row.id)
+    });
+  }
+
+  this.items.push({
+    label: 'Print',
+    icon: 'pi pi-print',
+    command: () => this.goToPrint(row.id)
+  });
+
+  this.menu.toggle(event);
+}
 }

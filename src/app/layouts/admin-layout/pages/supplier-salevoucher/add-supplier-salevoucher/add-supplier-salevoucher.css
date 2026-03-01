@@ -1,0 +1,38 @@
+.page-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #333;
+}
+
+form .form-label {
+  font-weight: 600;
+}
+
+p-tabview {
+  margin-top: 1rem;
+}
+
+.p-toolbar {
+  padding: 0.7rem 1rem;
+}
+
+.p-card {
+  border-radius: 8px;
+}
+
+.bg-light {
+  background-color: #fff4d2 !important;
+}
+
+
+.myTabContent {
+    margin-top: 11px;
+}
+
+.ui-autocomplete-panel {
+    z-index: 2000 !important; /* dialog z-index is usually 1100 */
+}
+
+.footer-bold td {
+  font-weight: bold;
+}

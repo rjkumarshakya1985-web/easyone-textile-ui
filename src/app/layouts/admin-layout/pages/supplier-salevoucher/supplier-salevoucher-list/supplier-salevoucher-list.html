@@ -2,11 +2,10 @@
   <div class="p-toolbar-group-left">
     <p-breadcrumb [model]="breadcrumbItems" homeIcon="pi pi-home"></p-breadcrumb>
   </div>
-
-  <!-- <div class="p-toolbar-group-right">
+  <div class="p-toolbar-group-right">
     <p-button label="Add SaleVoucher" class="p-button-sm mr-2" (click)="add()"  variant="text" [raised]="true" icon="pi pi-plus"/>
     <p-button label="Export" variant="text" icon="pi pi-file-export" [raised]="true" severity="secondary" />
-  </div> -->
+  </div>
 </p-toolbar>
 
 <p-card>
@@ -72,7 +71,10 @@
               <p-sortIcon field="billNumber"></p-sortIcon>
                  </div>
        </th>
-            <th pSortableColumn="tranportName">
+       <th>
+        Products
+       </th>
+       <th pSortableColumn="tranportName">
           <div class="supplier-header">
               <span class="header-title">Transport</span>&nbsp;
               <p-sortIcon field="tranportName"></p-sortIcon>
@@ -84,7 +86,7 @@
               <p-sortIcon field="parcelStatus"></p-sortIcon>
                  </div>
        </th>          
-          
+       
             <th>Action</th>
           </tr>
         </ng-template>
@@ -94,7 +96,8 @@
             <td>{{row.date | date:'dd, MMMM, yyyy'}}</td>
             <td>{{ row.id }}</td>
             <td>{{row.supplierName}}</td>
-             <td>{{row.billNumber}}</td>
+            <td>{{row.billNumber}}</td>
+            <td>{{row.productDetails}}</td>
             <td>{{row.tranportName}}</td>
             <td>
               <p-tag [severity]="ParcelStatusHelper.getParcelStatusColor(row.parcelStatus)" [value]="ParcelStatusHelper.getParcelStatusText(row.parcelStatus)" />

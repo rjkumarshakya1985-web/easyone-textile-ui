@@ -11,12 +11,13 @@ import { DashboardService } from '../../../../core/services/dashboard-service';
 import { LoaderService } from '../../../../core/services/loader.service';
 import { finalize } from 'rxjs';
 import { RouterModule } from '@angular/router';
+import { TurnoverChart } from '../charts/turnover-chart/turnover-chart';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
   imports: [CommonModule, CardModule, TableModule,
-     ButtonModule, TagModule,DividerModule,RouterModule],
+     ButtonModule, TagModule,DividerModule,RouterModule,TurnoverChart],
 templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
