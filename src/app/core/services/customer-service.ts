@@ -57,5 +57,8 @@ export class CustomerService {
   getCustomer(CustomerId: string): Observable<Customer> {
      return this.http.get<Customer>(`${this.apiUrl}customer/${CustomerId}`);
     }
+    getCustomerbyMobile(mobile: string): Observable<Customer> {
+     return this.http.get<Customer>(`${this.apiUrl}customer/mobile-lookup/${mobile}`);
+    }
   
 }

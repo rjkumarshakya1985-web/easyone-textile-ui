@@ -1,0 +1,130 @@
+<div class="container mt-4">
+<form [formGroup]="visitorForm" (ngSubmit)="submit()">
+
+<div class="card">
+
+<div class="card-header flex items-center">
+<span class="text-lg font-semibold" style="margin-top:16px;">Visitor Information</span>
+
+<p-button 
+type="submit"
+label="Save Visitor"
+class="p-button-sm ml-auto"
+[raised]="true">
+</p-button>
+
+</div>
+
+<div class="card-body">
+
+<div class="row g-3">
+
+<!-- MOBILE SEARCH -->
+<div class="col-md-4">
+<p-floatlabel variant="on">
+<input 
+pInputText 
+class="form-control"
+formControlName="mobile"
+autocomplete="off"
+(maxlength)="10"
+(blur)="searchCustomerByMobile()"
+/>
+<label>Mobile Number</label>
+</p-floatlabel>
+</div>
+
+<div class="col-md-2">
+<p-button 
+label="Search"
+icon="pi pi-search"
+(click)="searchCustomerByMobile()">
+</p-button>
+</div>
+<div class="col-md-12"></div>
+<div class="col-md-12" *ngIf="customerNotFound">
+<span class="text-danger">
+No customer found with this mobile number. Please create new customer.
+</span>
+</div>
+<div class="col-md-12"></div>
+</div>
+<div class="row g-3">
+<!-- Customer Type -->
+<div class="col-md-4">
+<p-floatlabel variant="on">
+<p-select
+formControlName="customerType"
+[options]="customerTypes"
+optionLabel="name"
+optionValue="value"
+class="w-full">
+</p-select>
+<label>Customer Type</label>
+</p-floatlabel>
+</div>
+
+<!-- Name -->
+<div class="col-md-4">
+<p-floatlabel variant="on">
+<input pInputText class="form-control" formControlName="name"/>
+<label>Name</label>
+</p-floatlabel>
+</div>
+
+<!-- Registration Type -->
+<div class="col-md-4">
+<p-floatlabel variant="on">
+<p-select
+formControlName="regType"
+[options]="registrationTypes"
+optionLabel="name"
+optionValue="value"
+class="w-full">
+</p-select>
+<label>Registration Type</label>
+</p-floatlabel>
+</div>
+
+
+
+
+
+
+
+
+ <!-- City, State, Pin -->
+          <div class="col-md-4">
+             <p-floatlabel class="w-full md:w-56" variant="on">
+                <p-select formControlName="stateId" inputId="state" [options]="(states$ | async) ?? []" optionLabel="name" optionValue="id" (onChange)="onStateChange($event)" class="w-full" 
+                [ngClass]="{ 'ng-invalid ng-dirty': visitorForm.get('stateId')?.invalid && visitorForm.get('stateId')?.touched }"/>
+                <label for="state">Select State</label>
+             </p-floatlabel>
+          </div>
+
+          <div class="col-md-4">
+            <p-floatlabel class="w-full md:w-56" variant="on">
+                <p-select formControlName="cityId" inputId="city" [options]="(cities$ | async) ?? []" optionLabel="name" optionValue="id"  class="w-full" 
+                [ngClass]="{ 'ng-invalid ng-dirty': visitorForm.get('cityId')?.invalid && visitorForm.get('cityId')?.touched }"/>
+                <label for="city">Select City</label>
+             </p-floatlabel>
+          </div>
+
+
+
+<!-- Remarks -->
+<div class="col-md-12">
+<p-floatlabel variant="on">
+<textarea pTextarea class="form-control" formControlName="remarks"></textarea>
+<label>Remarks</label>
+</p-floatlabel>
+</div>
+
+</div>
+</div>
+</div>
+
+</form>
+</div>
+
+<p-toast></p-toast>
