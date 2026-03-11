@@ -16,13 +16,15 @@ import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { ToolbarModule } from 'primeng/toolbar';
 import { TooltipModule } from 'primeng/tooltip';
 import { FloatLabelModule } from 'primeng/floatlabel';
-import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { debounceTime, distinctUntilChanged, Observable } from 'rxjs';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { CheckboxModule } from 'primeng/checkbox';
 import { SelectModule } from 'primeng/select';
+import { DepartmentResponse } from '../../../../../model/response/department/department.model';
+import { MasterDataService } from '../../../../../core/services/master-data-service';
 
 @Component({
   selector: 'app-user-list',
@@ -46,6 +48,7 @@ import { SelectModule } from 'primeng/select';
 export class UserList implements OnInit {
   visible = false;
   userForm!: FormGroup;
+  department$!: Observable<DepartmentResponse[]>;
    // -----------------------------
   // Signals
   // -----------------------------
@@ -64,11 +67,12 @@ export class UserList implements OnInit {
   roleTypes = [
     { name: 'Admin', value: 1 },
     { name: 'Cashier', value: 3 },
-    { name: 'Sales Man', value: 4 },
+    { name: 'Packing Slip Operator', value: 4 },
     { name: 'Stock Incharge', value: 5 }
   ];
   
   constructor(private fb: FormBuilder,
+    private masterService: MasterDataService,
     private router: Router,
     private userService:UserService,
     private messageService: MessageService,
@@ -82,6 +86,7 @@ export class UserList implements OnInit {
       password: ['',Validators.required],
       email:[''],
       phone:[''],
+      departmentId:[null],
       isActive:[true]
     });
 
@@ -90,6 +95,22 @@ export class UserList implements OnInit {
   ngOnInit() {
     this.setupSearch();
     this.loadTableData();
+
+    this.department$ = this.masterService.getDepartments();
+
+    this.userForm.get('roleId')?.valueChanges.subscribe(role => {
+
+    const deptControl = this.userForm.get('departmentId');
+
+    if (role == 4) {
+      deptControl?.setValidators([Validators.required]);
+    } else {
+      deptControl?.clearValidators();
+      deptControl?.setValue(null);
+    }
+
+    deptControl?.updateValueAndValidity();
+  });
   }
 
   setupSearch() {
@@ -154,6 +175,7 @@ export class UserList implements OnInit {
          password: ['',Validators.required],
          email:[''],
          phone:[''],
+         departmentId:[null],
          isActive:[true]
       });
     }
@@ -161,17 +183,30 @@ export class UserList implements OnInit {
     editUser(user:UserResponse)
     {
        this.visible = true;
-       
-       this.userForm = this.fb.group({
+       this.loader.show();
+       this.userService.getUser(user.id).subscribe(result=>{
+
+          this.userForm = this.fb.group({
              id:user.id,
              roleId:user.role,
              userName: user.userName,
              password: user.password,
              email:user.email,
              phone:user.phone,
+             departmentId:null,
             isActive:user.isActive
+         });
+        
+          if (result.role == 4) {
+            
+             this.userForm.patchValue({
+            departmentId: result.userDetail?.departmentId   
+            });
+        }
+       this.loader.hide();
        });
 
+     
     }
     
 
@@ -184,7 +219,7 @@ export class UserList implements OnInit {
         case 3:
           return "Cashier";
         case 4:
-          return "Sales Man";
+          return "Packing Slip Operator";
         case 5:
         return "Stock Incharge";
         default:

@@ -25,7 +25,7 @@ export class UserService {
   }
 
   getUser(id:string):Observable<UserResponse>{
-     return this.http.get<UserResponse>(`${this.apiUrl}users/table/${id}`);
+     return this.http.get<UserResponse>(`${this.apiUrl}users/${id}`);
   }
 
   saveUsers(request: UserRequest): Observable<string> {

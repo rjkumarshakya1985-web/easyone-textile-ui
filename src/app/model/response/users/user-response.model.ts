@@ -6,4 +6,11 @@ export interface UserResponse {
   email?: string;      // nullable → optional
   phone?: string;      // nullable → optional
   isActive: boolean;
+  userDetail?: UserDetailResponse;
+}
+
+ export interface UserDetailResponse {
+  id: string;
+  userId: string;
+  departmentId?: number;
 }

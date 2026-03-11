@@ -93,6 +93,14 @@
               </p-select>
         </div>
 
+         <div class="flex items-center gap-4 mb-4" *ngIf="userForm.get('roleId')?.value == 4">
+            <label for="department" class="font-semibold w-24 form-label">Department</label>
+              <p-select formControlName="departmentId" inputId="department"   class="flex-auto"
+                 [options]="(department$ | async) ?? []" optionLabel="name" optionValue="id"
+                  [ngClass]="{ 'ng-invalid ng-dirty': userForm.get('departmentId')?.invalid && userForm.get('departmentId')?.touched }">
+              </p-select>
+        </div>
+
         <div class="flex items-center gap-4 mb-4">
             <label for="userName" class="font-semibold w-24 form-label">User Name</label>
             <input pInputText id="userName" class="flex-auto" formControlName="userName" 
@@ -114,6 +122,12 @@
             <label for="phone" class="font-semibold w-24 form-label">Phone</label>
             <input pInputText id="phone" class="flex-auto" formControlName="phone" />
         </div>
+
+         <div class="flex items-center gap-4 mb-2">
+            <label for="phone" class="font-semibold w-24 form-label">Phone</label>
+            <input pInputText id="phone" class="flex-auto" formControlName="phone" />
+        </div>
+
         <div class="flex items-center gap-4 mb-2">
             <label for="phone" class="font-semibold w-24 form-label">Status</label>
             <p-checkbox
