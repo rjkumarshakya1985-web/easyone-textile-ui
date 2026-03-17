@@ -21,7 +21,6 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { PAGE_PAGE } from '../../../../../config/api.config';
 import { VisitorService } from '../../../../../core/services/visitor-service';
-import { Visitors } from '../../../../../model/visitors.model';
 import { VisitorResponse } from '../../../../../model/response/visitor/visitor-response.model';
 @Component({
   selector: 'app-visitor-list',
@@ -145,6 +144,15 @@ onPageSizeChange(size: number) {
 
   goToEditVisitor(id: string) {
         this.router.navigate(['/stock-incharge/visitor/edit', id]);
+  }
+
+  goToPrintVisitor(id: string) {
+        this.router.navigate(['/stock-incharge/visitor/print', id]);
+  }
+
+  deleteVisitor(id:string)
+  {
+
   }
   customerType(type:number):string
   {

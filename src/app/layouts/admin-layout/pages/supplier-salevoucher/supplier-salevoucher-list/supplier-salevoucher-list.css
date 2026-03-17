@@ -27,3 +27,12 @@
   margin-right: 0.5rem; /* Adjust space as needed */
 }
 
+.supplier-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.supplier-header .p-column-filter {
+  margin-left: 4px;
+}

@@ -34,17 +34,17 @@ export class VisitorService {
   }
 
   /** GET: api/visitor/{id} */
-  getById(id: string): Observable<VisitorResponse> {
+  getById(id: number): Observable<VisitorResponse> {
     return this.http.get<VisitorResponse>(`${this.baseUrl}/${id}`);
   }
 
   /** POST: api/visitor */
-  create(request: VisitorsReuest): Observable<void> {
-    return this.http.post<void>(this.baseUrl, request);
+  create(request: VisitorsReuest): Observable<number> {
+    return this.http.post<number>(this.baseUrl, request);
   }
 
   /** PUT: api/visitor */
-  update(id: string,request:VisitorsReuest): Observable<void> {
+  update(id: number,request:VisitorsReuest): Observable<void> {
     return this.http.put<void>(`${this.baseUrl}/${id}`, request);
   }
 

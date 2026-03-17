@@ -29,5 +29,11 @@ export const STOCK_INCHARGE_ROUTES: Routes = [
         import('./pages/visitors/add-visitor/add-visitor')
           .then(c => c.AddVisitor)
     },
+    {
+      path: 'visitor/print/:id',
+      loadComponent: () =>
+        import('../../components/print/visitor-print/visitor-print')
+          .then(c => c.VisitorPrint)
+    },
   { path: '', redirectTo: 'parcel-scanners', pathMatch: 'full' }
 ];

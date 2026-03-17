@@ -6,4 +6,5 @@ export interface TableDataRequest {
     // Sorting (PrimeNG compatible)
     sortField?: string;   // e.g. 'supplierName'
     sortOrder?:number;   // 1 = ASC, -1 = DESC
+    filters?: { [key: string]: string | null };
 }

@@ -6,7 +6,7 @@ import { CustomerResponse } from '../../model/response/customer/customer-respons
 import { CustomerRequest } from '../../model/request/customer/customer-request.model';
 import { TableDataRequest } from '../../model/request/table-datafilter-request.model';
 import { TableResult } from '../../model/table-result';
-import { Customer } from '../../model/customer.model';
+
 
 @Injectable({
   providedIn: 'root'
@@ -54,11 +54,11 @@ export class CustomerService {
     let request = {customerId:id,ActionType:actionType};
     return this.http.post<boolean>(`${this.apiUrl}customer/update-status-customer`, request);
   }
-  getCustomer(CustomerId: string): Observable<Customer> {
-     return this.http.get<Customer>(`${this.apiUrl}customer/${CustomerId}`);
+  getCustomer(CustomerId: string): Observable<CustomerResponse> {
+     return this.http.get<CustomerResponse>(`${this.apiUrl}customer/${CustomerId}`);
     }
-    getCustomerbyMobile(mobile: string): Observable<Customer> {
-     return this.http.get<Customer>(`${this.apiUrl}customer/mobile-lookup/${mobile}`);
+    getCustomerbyMobile(mobile: string): Observable<CustomerResponse> {
+     return this.http.get<CustomerResponse>(`${this.apiUrl}customer/mobile-lookup/${mobile}`);
     }
   
 }

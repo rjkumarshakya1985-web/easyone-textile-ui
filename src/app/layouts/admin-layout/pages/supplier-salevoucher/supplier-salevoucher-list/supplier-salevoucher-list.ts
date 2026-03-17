@@ -8,7 +8,7 @@ import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { ToolbarModule } from 'primeng/toolbar';
 import { Router } from '@angular/router';
 import { ConfirmationService, MenuItem } from 'primeng/api';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { TableDataRequest } from '../../../../../model/request/table-datafilter-request.model';
 import { PanelModule } from 'primeng/panel';
@@ -25,13 +25,15 @@ import { ParcelStatus } from '../../../../../core/enums/enum';
 import { Helper } from '../../../../../core/helpers/helper';
 import { TagModule } from 'primeng/tag';
 import { PAGE_PAGE } from '../../../../../config/api.config';
+import { SelectModule } from 'primeng/select';
+import { TableHeader } from '../../../../../components/table-header/table-header';
 
 @Component({
   selector: 'app-supplier-salevoucher-list',
   standalone: true,
   providers: [ConfirmationService],
   imports: [
-   CommonModule,
+   CommonModule,FormsModule,
     PanelModule,
     ButtonGroupModule,
     TableModule,
@@ -44,20 +46,25 @@ import { PAGE_PAGE } from '../../../../../config/api.config';
     ReactiveFormsModule,
     MenubarModule, 
     BadgeModule,
+    SelectModule,
     ConfirmDialogModule,
-    MenuModule,TagModule    
+    MenuModule,TagModule,
+    TableHeader    
   ],
  templateUrl: './supplier-salevoucher-list.html',
   styleUrl: './supplier-salevoucher-list.css',
 })
 export class SupplierSalevoucherList {
- pageSizeItems: MenuItem[] | undefined;
+  pageSizeItems: MenuItem[] | undefined;
   sortField: string = '';
   sortOrder: number = 1; // 1 = ASC, -1 = DESC
   @ViewChild('menu') menu!: Menu;
   items: MenuItem[] = [];
   ParcelStatusHelper = Helper;
-  
+  filters: { [key: string]: string } = {};
+  supplierInput: string = '';
+  statusInput: number | null = null;
+  transportInput:string=''
   // -----------------------------
   // Signals
   // -----------------------------
@@ -68,6 +75,14 @@ export class SupplierSalevoucherList {
   pageindex = signal(0);
 
   searchControl = new FormControl('');
+
+  parcelStatusList = [
+  { label: 'In Transit', value: 3 },
+  { label: 'Transport', value: 4 },
+  { label: 'Packed At Location', value: 5 },
+  { label: 'Opened', value: 6 },
+  { label: 'Tally Synched', value: 11 }
+];
 
   breadcrumbItems: MenuItem[] = [
     { label: 'Dashboard', routerLink: '/supplier' },
@@ -134,7 +149,10 @@ onPageSizeChange(size: number) {
       pageSize: this.pageSize,
       search,
       sortField: this.sortField,
-      sortOrder: this.sortOrder
+      sortOrder: this.sortOrder,
+      filters: Object.keys(this.filters).length 
+  ? this.filters 
+  : undefined
     };
 
     this.saleVoucherService.getTableData(req).subscribe({
@@ -188,6 +206,8 @@ onPageSizeChange(size: number) {
   {
     this.router.navigate(['admin/print',id]);
   }
+
+   
   openMenu(event: Event, row: SaleVoucherTableResponse) {
 
   this.items = [
@@ -213,6 +233,62 @@ onPageSizeChange(size: number) {
     command: () => this.goToPrint(row.id)
   });
 
+  /// Filter
+
+ 
   this.menu.toggle(event);
+}
+
+
+ /// Filter
+
+ onSupplierApply(filterCallback: any) {
+  filterCallback(this.supplierInput); // ✅ UI state
+
+  this.applyFilter('supplierName', this.supplierInput); // ✅ API
+}
+
+onSupplierClear(filterCallback: any) {
+  this.supplierInput = '';
+
+  filterCallback(null); // ✅ UI clear
+
+  this.clearFilter('supplierName'); // ✅ API
+}
+
+onStatusApply(filterCallback: any) {
+  filterCallback(this.statusInput); // ✅ UI state
+
+  this.applyFilter('parcelStatus', this.statusInput); // ✅ API
+}
+
+onStatusClear(filterCallback: any) {
+  this.statusInput = null;
+
+  filterCallback(null); // ✅ UI clear
+
+  this.clearFilter('parcelStatus'); // ✅ API
+}
+  applyFilter(key: string, value: any) {
+    const val = value?.toString()?.trim();
+
+    if (val) {
+      this.filters[key] = val;
+   } else {
+     delete this.filters[key];
+   }
+
+   this.pageindex.set(0);
+   this.loadTableData(this.searchControl.value || '');
+ }
+ 
+ clearFilter(key: string) {
+  delete this.filters[key];
+
+  if (key === 'supplierName') this.supplierInput = '';
+  if (key === 'parcelStatus') this.statusInput = null;
+  if (key === 'tranportName') this.transportInput = '';
+  this.pageindex.set(0);
+  this.loadTableData(this.searchControl.value || '');
 }
 }

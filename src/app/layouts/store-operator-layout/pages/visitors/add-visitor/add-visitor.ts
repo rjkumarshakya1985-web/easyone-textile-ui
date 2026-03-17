@@ -31,7 +31,7 @@ export class AddVisitor implements OnInit {
   visitorForm!: FormGroup;
   customerNotFound=false;
   isEdit = false; 
-  VisitorId!: string;
+  visitorId!: number;
   states$!: Observable<State[]>;
   cities$!: Observable<City[]>; 
 
@@ -58,18 +58,20 @@ export class AddVisitor implements OnInit {
     private route: ActivatedRoute,
     private visitorService:VisitorService
   ) {
-      // this.loadDropdowns();
-      // this.initForm();
+      
   }
-ngOnInit(): void {  
+  
+  ngOnInit(): void {  
    this.initForm();
-  this.loadDropdowns();
-  this.checkEditMode();
+   this.loadDropdowns();
+   this.checkEditMode();
   }
+
   initForm()
     {
       this.visitorForm = this.fb.group({
        id: [null], // instead of 0
+       customerId:[null],
        customerType: [1,Validators.required],
        name: ['', Validators.required],
        regType: [1,Validators.required],     
@@ -77,67 +79,58 @@ ngOnInit(): void {
        stateId:[null,Validators.required],      
        mobile: ['',Validators.required],
        remarks: ['']
-      });
-
-       this.visitorForm.get('name')?.valueChanges.subscribe(value => {
-           this.visitorForm.get('mobile')?.setValue(value, { emitEvent: false });
-           this.visitorForm.get('remarks')?.setValue(value, { emitEvent: false });
-               });
-  
+      });      
     }
-    /* SEARCH CUSTOMER */
+    
+  searchCustomerByMobile(){
+    const mobile=this.visitorForm.get('mobile')?.value;
+       if(!mobile || mobile.length<10)return;
+      this.customerService.getCustomerbyMobile(mobile).subscribe({
+          next:(res:any)=>{
+             if(res){
+               this.customerNotFound=false;
+               this.visitorForm.patchValue({
+                customerId:res.id,
+                name:res.name,
+                customerType:res.customerType,
+                cityId:res.cityId,
+                stateId:res.stateId,
+                regType:res.regType
+              });
 
-searchCustomerByMobile(){
+              this.cities$ = this.masterService.getCitiesByStateId(res.stateId);
 
-const mobile=this.visitorForm.get('mobile')?.value;
+           setTimeout(() => {
+             this.visitorForm.patchValue({
+              cityId: res.cityId
+            });
+          });
 
-if(!mobile || mobile.length<10)return;
+          this.visitorForm.disable();
+        }
+     },
+     error:()=>{
+     this.customerNotFound=true;  
+   }});
+ }
 
-this.customerService.getCustomerbyMobile(mobile).subscribe({
-
-next:(res:any)=>{
-
-if(res){
-
-this.customerNotFound=false;
-
-this.visitorForm.patchValue({
-
-customerId:res.customerId,
-name:res.name,
-mobile:res.mobile,
-customerType:res.customerType,
-cityId:res.cityId
-
-});
-
-}
-
-},
-
-error:()=>{
-
-this.customerNotFound=true;
-
-}
-
-});
-
-}
  checkEditMode() {
-    this.VisitorId = this.route.snapshot.paramMap.get('id')!;
-    if (this.VisitorId) {
+   const id = this.route.snapshot.paramMap.get('id');
+
+    if (id) {
+      this.visitorId = Number(id);
       this.isEdit = true;
       this.loadVisitorForEdit();
-    } 
+    }
   }
-    loadVisitorForEdit() {
+  
+  loadVisitorForEdit() {
     this.loader.show();
-    this.customerService.getCustomer(this.VisitorId)
+    this.visitorService.getById(this.visitorId)
       .pipe(finalize(() => this.loader.hide()))
       .subscribe({
         next: visitor => {
-          
+          console.log(visitor);
           this.visitorForm.patchValue(visitor);          
           if (visitor.stateId) {
             this.cities$ = this.masterService.getCitiesByStateId(visitor.stateId);
@@ -150,77 +143,47 @@ this.customerNotFound=true;
       });
   }  
 
-    loadDropdowns() {
+  loadDropdowns() {
      this.states$ = this.masterService.getStates();
-    }
+  }
 
   onStateChange(event: any) {  
     const stateId = event.value;
     this.cities$ = this.masterService.getCitiesByStateId(stateId);
     this.visitorForm.patchValue({ cityId: '' });
   }
-  submit(){
-   
-       if (this.visitorForm.invalid) {
-          this.visitorForm.markAllAsTouched();
-          return;
-       }
-   let request = this.visitorForm.value;
-   request.id=this.VisitorId;
-  this.loader.show();   
-     if(!this.VisitorId)
-        {   
-    this.visitorService.create(request)
-    .pipe(finalize(() => this.loader.hide())) 
+
+
+   submit() {
+
+     if (this.visitorForm.invalid) {
+      this.visitorForm.markAllAsTouched();
+      return;
+    }
+
+   const request = {
+      ...this.visitorForm.value,
+     id: this.visitorId
+   };
+
+   this.loader.show();
+
+  this.visitorService.create(request)
+    .pipe(finalize(() => this.loader.hide()))
     .subscribe({
-      next: () => {
+      next: (id: number) => {
+
         this.messageService.add({
           severity: 'success',
           summary: 'Success',
-          detail: 'Visitor saved successfully!'
-        });      
- if(this.VisitorId)
-        {
-          setTimeout(() => {
-            this.router.navigate(['/visitors']);
-          }, 1000);
-        }
-        else
-        {
-        this.visitorForm.reset();
-        }
-      
+          detail: this.visitorId
+            ? 'Visitor updated successfully!'
+            : 'Visitor saved successfully!'
+        });
+
+        this.router.navigate(['/stock-incharge/visitor/print', id]);
       }
-    
-  });
-      
-}
-else
-{
-   this.visitorService.update(this.VisitorId,request)
-    .pipe(finalize(() => this.loader.hide())) 
-    .subscribe({
-      next: () => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Success',
-          detail: 'Visitor updated successfully!'
-        });      
- if(this.VisitorId)
-        {
-          setTimeout(() => {
-            this.router.navigate(['/visitors']);
-          }, 1000);
-        }
-        else
-        {
-        this.visitorForm.reset();
-        }
-      
-      }
-    
-  });
-}
-}
+    });
+ }
 }
 

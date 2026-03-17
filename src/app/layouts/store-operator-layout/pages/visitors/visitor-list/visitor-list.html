@@ -4,7 +4,7 @@
   </div>
 
   <div class="p-toolbar-group-right">
-    <button pButton type="button" label="Add Customer" icon="pi pi-plus" class="p-button-sm p-mr-2" (click)="goToAddVisitor()"></button>
+    <button pButton type="button" label="Add Visitor" icon="pi pi-plus" class="p-button-sm p-mr-2" (click)="goToAddVisitor()"></button>
     <button pButton type="button" label="Export" icon="pi pi-file-export" class="p-button-sm p-button-secondary"></button>
   </div>
 </p-toolbar>
@@ -52,7 +52,7 @@
                  </div>
        </th> 
        <th pSortableColumn="name">
-                    <div class="flex items-center gap-2">Name
+                    <div class="flex items-center gap-2">Customer Company / Name
                         <p-sortIcon field="name" />
                     </div>
         </th>  
@@ -73,16 +73,16 @@
   </ng-template>
 
   <ng-template pTemplate="body" let-row>
-    <tr [ngClass]="{ 'inactive-row': !row.isActive }">
+    <tr>
       <td>{{customerType(row.customerType)}}</td>
       <td>{{ row.name }}</td>
       <td>{{row.mobile}}</td>
-      <td>{{row.visitDate}}</td>
+      <td>{{row.visitDate | date:'dd/MM/yyyy hh:mm a' }}</td>
       
-      <td>
-       
-        <button pButton icon="pi pi-pencil" class="p-button-text p-button-sm" (click)="goToEditVisitor(row.id)"></button>
-       
+      <td>          
+        <button pButton icon="pi pi-trash" class="p-button-text p-button-sm p-button-danger" (click)="deleteVisitor(row.id)"></button>
+            <button pButton icon="pi pi-print" class="p-button-text p-button-sm" (click)="goToPrintVisitor(row.id)"></button>
+        <button *ngIf="!row.customerId" pButton icon="pi pi-pencil" class="p-button-text p-button-sm" (click)="goToEditVisitor(row.id)"></button>
       </td>
     </tr>
   </ng-template>

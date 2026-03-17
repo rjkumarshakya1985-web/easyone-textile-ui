@@ -11,6 +11,7 @@ export interface CustomerResponse {
   billingAddress?: string;
   shippingAddress?: string;
   cityName: string;
+  stateId:number;
   stateName: string;
   stateCode: string;
   pinCode?: string;

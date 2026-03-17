@@ -59,36 +59,52 @@
                  </div>
        </th>
            
-            <th pSortableColumn="supplierName">
-          <div class="supplier-header">
-              <span class="header-title">Supplier</span>&nbsp;
-              <p-sortIcon field="supplierName"></p-sortIcon>
-                 </div>
-       </th>
-             <th pSortableColumn="billNumber">
+   <th pSortableColumn="supplierName">
+ <app-table-header
+  title="Supplier"
+  field="supplierName"
+  filterType="text"
+  placeholder="Search Supplier"
+  [(value)]="supplierInput"
+  (onApply)="applyFilter($event.field, $event.value)"
+  (onClear)="clearFilter($event)">
+</app-table-header>
+</th>
+    <th pSortableColumn="billNumber">
           <div class="supplier-header">
               <span class="header-title">Supplier Invoice No.</span>&nbsp;
               <p-sortIcon field="billNumber"></p-sortIcon>
                  </div>
-       </th>
+    </th>
        <th>
         Products
        </th>
-       <th pSortableColumn="tranportName">
-          <div class="supplier-header">
-              <span class="header-title">Transport</span>&nbsp;
-              <p-sortIcon field="tranportName"></p-sortIcon>
-                 </div>
-       </th>     
-       <th pSortableColumn="parcelStatus">
-          <div class="supplier-header">
-              <span class="header-title">Status</span>&nbsp;
-              <p-sortIcon field="parcelStatus"></p-sortIcon>
-                 </div>
-       </th>          
-       
-            <th>Action</th>
-          </tr>
+     <th pSortableColumn="tranportName">
+  <app-table-header
+    title="Transport"
+    field="tranportName"
+    filterType="text"
+    placeholder="Search Transport"
+    [(value)]="transportInput"
+    (onApply)="applyFilter($event.field, $event.value)"
+    (onClear)="clearFilter($event)">
+  </app-table-header>
+</th>
+    <th pSortableColumn="parcelStatus">
+  <app-table-header
+  title="Status"
+  field="parcelStatus"
+  filterType="select"
+  [options]="parcelStatusList"
+  matchMode="equals"
+  placeholder="Select Status"
+  [(value)]="statusInput"
+  (onApply)="applyFilter($event.field, $event.value)"
+  (onClear)="clearFilter($event)">
+</app-table-header>
+</th>
+        <th>Action</th>
+        </tr>
         </ng-template>
 
         <ng-template pTemplate="body" let-row>

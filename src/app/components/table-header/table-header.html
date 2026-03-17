@@ -1,0 +1,61 @@
+<div class="supplier-header">
+  <span class="header-title">{{ title }}</span>&nbsp;
+
+  <p-sortIcon *ngIf="sortable" [field]="field"></p-sortIcon>
+
+  <p-columnFilter
+    *ngIf="filterType"
+    [field]="field"
+    [matchMode]="matchMode"
+    display="menu"
+    [showMatchModes]="false"
+    [showOperator]="false"
+    [showAddButton]="false"
+    [showApplyButton]="false"
+    [showClearButton]="false">
+
+    <ng-template pTemplate="filter" let-filter="filterCallback">
+
+      <!-- TEXT FILTER -->
+      <ng-container *ngIf="filterType === 'text'">
+        <input
+          type="text"
+          pInputText
+          [(ngModel)]="value"
+          (ngModelChange)="valueChange.emit($event)"
+          [placeholder]="placeholder" />
+      </ng-container>
+
+      <!-- SELECT FILTER -->
+      <ng-container *ngIf="filterType === 'select'">
+        <p-select
+          [options]="options"
+          optionLabel="label"
+          optionValue="value"
+          [(ngModel)]="value"
+          (ngModelChange)="valueChange.emit($event)"
+          [placeholder]="placeholder">
+        </p-select>
+      </ng-container>
+
+      <!-- BUTTONS -->
+      <div class="mt-2 flex gap-2">
+        <button
+          pButton
+          type="button"
+          label="Apply"
+          (click)="apply(filter)">
+        </button>
+
+        <button
+          pButton
+          type="button"
+          label="Clear"
+          class="p-button-secondary"
+          (click)="clear(filter)">
+        </button>
+      </div>
+
+    </ng-template>
+  </p-columnFilter>
+</div>
