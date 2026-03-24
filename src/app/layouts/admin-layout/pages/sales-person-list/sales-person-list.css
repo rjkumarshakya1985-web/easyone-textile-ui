@@ -1,0 +1,5 @@
+.form-label {
+  width: 90px; /* set any width you want */
+  font-weight: 600;
+  display: inline-block;
+}

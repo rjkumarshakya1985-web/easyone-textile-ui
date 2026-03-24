@@ -289,6 +289,12 @@ export const ADMIN_ROUTES: Routes = [
     loadComponent: () =>
       import('./pages/supplier-salevoucher/add-supplier-salevoucher/add-supplier-salevoucher')
         .then(c => c.AddSupplierSalevoucher)
+  },  
+  {
+    path: 'sales-persons',
+    loadComponent: () =>
+      import('./pages/sales-person-list/sales-person-list')
+        .then(c => c.SalesPersonList)
   },
   ///
   // =========================
