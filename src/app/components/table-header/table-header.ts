@@ -18,7 +18,7 @@ export class TableHeader {
   @Input() sortable: boolean = true;
 @Input() value: any;   // 👈 ADD THIS
 @Output() valueChange = new EventEmitter<any>();
-  @Input() filterType: 'text' | 'select' | null = null;
+  @Input() filterType: 'text' | 'select'| 'number' | null = null;
   @Input() matchMode: string = 'contains';
   @Input() placeholder: string = '';
   @Input() options: any[] = [];

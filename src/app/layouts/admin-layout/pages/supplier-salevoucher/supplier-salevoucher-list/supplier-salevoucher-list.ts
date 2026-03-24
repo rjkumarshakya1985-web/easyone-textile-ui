@@ -27,6 +27,7 @@ import { TagModule } from 'primeng/tag';
 import { PAGE_PAGE } from '../../../../../config/api.config';
 import { SelectModule } from 'primeng/select';
 import { TableHeader } from '../../../../../components/table-header/table-header';
+import { LoaderService } from '../../../../../core/services/loader.service';
 
 @Component({
   selector: 'app-supplier-salevoucher-list',
@@ -65,6 +66,9 @@ export class SupplierSalevoucherList {
   supplierInput: string = '';
   statusInput: number | null = null;
   transportInput:string=''
+  supplierNumber:string=''
+  saleVoucherNumber: number | null = null;
+ 
   // -----------------------------
   // Signals
   // -----------------------------
@@ -103,6 +107,7 @@ private isFirstLoad = true;
 
   constructor(
     private router: Router,
+     private loader: LoaderService,
     private saleVoucherService: SaleVoucherService,
   ) {}
 
@@ -143,7 +148,7 @@ onPageSizeChange(size: number) {
   // -----------------------------
   loadTableData(search: string = '') {
     this.isLoading.set(false);
-
+    this.loader.show();
     const req: TableDataRequest = {
       pageIndex: this.pageindex(),
       pageSize: this.pageSize,
@@ -157,7 +162,10 @@ onPageSizeChange(size: number) {
 
     this.saleVoucherService.getTableData(req).subscribe({
       next: res => this.tblResult.set(res),
-      complete: () => this.isLoading.set(true)
+      complete: () => {
+      this.isLoading.set(true);
+      this.loader.hide();
+      }
     });
   }
 
@@ -288,6 +296,7 @@ onStatusClear(filterCallback: any) {
   if (key === 'supplierName') this.supplierInput = '';
   if (key === 'parcelStatus') this.statusInput = null;
   if (key === 'tranportName') this.transportInput = '';
+  if(key === 'saleVoucherNumber') this.saleVoucherNumber = null;
   this.pageindex.set(0);
   this.loadTableData(this.searchControl.value || '');
 }

@@ -52,12 +52,18 @@
               <p-sortIcon field="date"></p-sortIcon>
                  </div>
        </th>
-        <th pSortableColumn="id">
-          <div class="supplier-header">
-              <span class="header-title">Parcel Number</span>&nbsp;
-              <p-sortIcon field="id"></p-sortIcon>
-                 </div>
-       </th>
+   <th pSortableColumn="saleVoucherNumber">
+  <app-table-header
+    title="Parcel Number"
+    field="saleVoucherNumber"
+    [sortable]="true"
+    filterType="number"
+    placeholder="Enter Parcel No"
+    [(value)]="saleVoucherNumber"
+    (onApply)="applyFilter($event.field, $event.value)"
+    (onClear)="clearFilter($event)">
+  </app-table-header>
+</th>
            
    <th pSortableColumn="supplierName">
  <app-table-header
