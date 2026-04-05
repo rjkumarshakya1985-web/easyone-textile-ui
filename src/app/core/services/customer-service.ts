@@ -37,8 +37,8 @@ export class CustomerService {
   }
 
   /** POST: api/customer */
-  create(request: CustomerRequest): Observable<void> {
-    return this.http.post<void>(this.baseUrl, request);
+  create(request: CustomerRequest): Observable<string> {
+    return this.http.post<string>(this.baseUrl, request);
   }
 
   /** PUT: api/customer */

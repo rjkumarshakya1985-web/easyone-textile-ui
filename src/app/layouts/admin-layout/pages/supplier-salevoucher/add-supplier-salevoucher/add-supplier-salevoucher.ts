@@ -346,10 +346,17 @@ submit():void
   const formValue = this.voucherForm.value;
   const supplierSelected = this.voucherForm.value.supplierObj as SupplierTableResponse;
   
+  
+  const d = new Date(formValue.date);
+
+const formattedDate = `${d.getFullYear()}-${(d.getMonth()+1)
+  .toString().padStart(2,'0')}-${d.getDate()
+  .toString().padStart(2,'0')}`;
+
   const request: SaleVoucherRequest = {
     id:this.saleVoucherId,
     transportId: formValue.transportId,
-    date: new Date(formValue.date).toISOString(),
+    date: formattedDate,
     numberOfParcel: formValue.numberOfPacket,
     supplierBillNumber: formValue.supplierBillNumber,
     status: formValue.status,

@@ -67,12 +67,13 @@
               <p-sortIcon field="tranportName"></p-sortIcon>
                  </div>
        </th>
-             <th pSortableColumn="billNumber">
+        <th pSortableColumn="billNumber">
           <div class="supplier-header">
               <span class="header-title">My Bill Number</span>&nbsp;
               <p-sortIcon field="billNumber"></p-sortIcon>
                  </div>
-       </th>            
+       </th>
+       <th>Products</th>            
             <th>Status</th>
             <th>Action</th>
           </tr>
@@ -84,6 +85,19 @@
             <td>{{row.date | date:'dd, MMMM, yyyy'}}</td>
             <td>{{row.tranportName}}</td>
             <td>{{row.billNumber}}</td>
+             <td>
+            <ng-container *ngIf="row.productDetails.length > 15; else shortText">
+             <span *ngIf="!row.expanded">
+               {{ row.productDetails | slice:0:15 }} 
+                <a href="#" (click)="row.expanded = true; $event.preventDefault()">... see more</a>
+             </span>
+             <span *ngIf="row.expanded">
+               {{ row.productDetails }} 
+                <a href="#" (click)="row.expanded = false; $event.preventDefault()"> see less</a>
+             </span>
+           </ng-container>
+           <ng-template #shortText>{{ row.productDetails }}</ng-template>
+          </td>
             <td>
               <p-tag [severity]="ParcelStatusHelper.getParcelStatusColor(row.parcelStatus)" [value]="ParcelStatusHelper.getParcelStatusText(row.parcelStatus)" />
             </td>
