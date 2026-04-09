@@ -12,6 +12,7 @@
     <div class="d-flex justify-content-between mb-3">
 
       <div class="flex-grow-1" style="max-width:300px">
+   
         <p-floatlabel variant="on">
           <input pInputText id="on_label" [formControl]="searchControl" autocomplete="off" />
           <label for="on_label">Search keyword</label>
@@ -37,88 +38,117 @@
 
     </div>
 
-      <!-- TABLE -->
+        
     <ng-container *ngIf="isLoading()">
-     <p-table [value]="tblResult().result" [lazy]="true"
-  (onLazyLoad)="onLazyLoad($event)"
-  [sortField]="sortField" [lazyLoadOnInit]="false"
-  [sortOrder]="sortOrder" size="small" showGridlines class="p-datatable-sm">
+  
+     <p-table #dt1 [value]="tblResult().result" [lazy]="true"
+       (onLazyLoad)="onLazyLoad($event)"
+       [sortField]="sortField" [lazyLoadOnInit]="false"
+       [sortOrder]="sortOrder" size="small" showGridlines class="p-datatable-sm">
 
         <ng-template pTemplate="header">
+         
           <tr>
+            <th>
+                <i class="pi pi-filter-slash cursor-pointer" (click)="clear(dt1)"></i>
+            </th>
             <th pSortableColumn="date">
-          <div class="supplier-header">
-              <span class="header-title">Date</span>&nbsp;
-              <p-sortIcon field="date"></p-sortIcon>
+               <div class="supplier-header">
+                    <span class="header-title">Date</span>&nbsp;
+                    <p-sortIcon field="date"></p-sortIcon>
+                </div>
+            </th>
+             <th pSortableColumn="saleVoucherNumber">
+              <div class="flex align-items-center gap-2">
+                 <span>Parcel No</span>
+                 <p-sortIcon field="saleVoucherNumber"></p-sortIcon>
+                    <p-columnFilter 
+                        type="numeric"
+                        field="saleVoucherNumber"
+                        display="menu"
+                        matchMode="equals"
+                        [showMatchModes]="false"
+                        [showOperator]="false"
+                       [showAddButton]="false">
+                    </p-columnFilter>
+              </div>
+             </th>
+            <th pSortableColumn="supplierName">
+               <div class="flex align-items-center gap-2">
+              <span>Supplier</span>
+                <p-sortIcon field="supplierName"></p-sortIcon>
+                  <p-columnFilter 
+                        type="text"
+                        field="supplierName"
+                        display="menu"
+                        matchMode="contains"
+                        [showMatchModes]="false"
+                        [showOperator]="false"
+                        [showAddButton]="false">
+                 </p-columnFilter>
                  </div>
-       </th>
-   <th pSortableColumn="saleVoucherNumber">
-  <app-table-header
-    title="Parcel Number"
-    field="saleVoucherNumber"
-    [sortable]="true"
-    filterType="number"
-    placeholder="Enter Parcel No"
-    [(value)]="saleVoucherNumber"
-    (onApply)="applyFilter($event.field, $event.value)"
-    (onClear)="clearFilter($event)">
-  </app-table-header>
-</th>
-           
-   <th pSortableColumn="supplierName">
- <app-table-header
-  title="Supplier"
-  field="supplierName"
-  filterType="text"
-  placeholder="Search Supplier"
-  [(value)]="supplierInput"
-  (onApply)="applyFilter($event.field, $event.value)"
-  (onClear)="clearFilter($event)">
-</app-table-header>
-</th>
-    <th pSortableColumn="billNumber">
-          <div class="supplier-header">
-              <span class="header-title">Supplier Invoice No.</span>&nbsp;
-              <p-sortIcon field="billNumber"></p-sortIcon>
+            </th>
+           <th pSortableColumn="billNumber">
+                <div class="supplier-header">
+                  <span class="header-title">SupplierInvoice</span>&nbsp;
+                   <p-sortIcon field="billNumber"></p-sortIcon>
                  </div>
-    </th>
-       <th>
-        Products
-       </th>
-     <th pSortableColumn="tranportName">
-  <app-table-header
-    title="Transport"
-    field="tranportName"
-    filterType="text"
-    placeholder="Search Transport"
-    [(value)]="transportInput"
-    (onApply)="applyFilter($event.field, $event.value)"
-    (onClear)="clearFilter($event)">
-  </app-table-header>
-</th>
-    <th pSortableColumn="parcelStatus">
-  <app-table-header
-  title="Status"
-  field="parcelStatus"
-  filterType="select"
-  [options]="parcelStatusList"
-  matchMode="equals"
-  placeholder="Select Status"
-  [(value)]="statusInput"
-  (onApply)="applyFilter($event.field, $event.value)"
-  (onClear)="clearFilter($event)">
-</app-table-header>
-</th>
+           </th>
+           <th>
+             Products
+          </th>
+          <th pSortableColumn="tranportName">
+           <div class="flex align-items-center gap-2">
+             <span>Transport</span>
+             <p-sortIcon field="tranportName"></p-sortIcon>
+               <p-columnFilter 
+                  type="text"
+                  field="tranportName"
+                  display="menu"
+                  matchMode="contains"
+                  [showMatchModes]="false"
+                  [showOperator]="false"
+                  [showAddButton]="false">
+                </p-columnFilter>
+            </div>
+          </th>
+          <th pSortableColumn="parcelStatus">
+            <div class="flex align-items-center gap-2">
+              <span>Status</span>
+               <p-sortIcon field="parcelStatus"></p-sortIcon>
+                <p-columnFilter 
+                  field="parcelStatus"
+                  matchMode="equals"
+                  display="menu"
+                  [showMatchModes]="false"
+                  [showOperator]="false"
+                  [showAddButton]="false">
+
+                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+               <p-select 
+                  [options]="parcelStatusList"
+                  optionLabel="label"
+                  optionValue="value"
+                  [ngModel]="value"
+                  (onChange)="filter($event.value)">
+            </p-select>
+      </ng-template>
+
+               </p-columnFilter>
+            </div>
+          </th>
         <th>Action</th>
         </tr>
         </ng-template>
 
         <ng-template pTemplate="body" let-row>
+          
           <tr>
+            <td></td>
             <td>{{row.date | date:'dd, MMMM, yyyy'}}</td>
-            <td>{{ row.id }}</td>
+            <td style="text-align: center;">{{ row.id }}</td>
             <td>{{row.supplierName}}</td>
-            <td>{{row.billNumber}}</td>
+            <td style="text-align: center;">{{row.billNumber}}</td>
          <td>
             <ng-container *ngIf="row.productDetails.length > 15; else shortText">
              <span *ngIf="!row.expanded">

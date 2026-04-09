@@ -1,7 +1,7 @@
 
 import { Component, signal, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TableModule } from 'primeng/table';
+import { Table, TableModule } from 'primeng/table';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
@@ -37,6 +37,7 @@ import { LoaderService } from '../../../../../core/services/loader.service';
    CommonModule,FormsModule,
     PanelModule,
     ButtonGroupModule,
+    
     TableModule,
     CardModule,
     ButtonModule,
@@ -94,16 +95,64 @@ export class SupplierSalevoucherList {
   ];
 
 private isFirstLoad = true;
-    onLazyLoad(event: any) {
-      if (this.isFirstLoad) {
-    this.isFirstLoad = false;
-    return;
-  }
-      this.sortField = event.sortField ?? '';
+
+
+clear(table: any) {
+  table.clear();              // ✅ PrimeNG filters clear
+  this.searchControl.setValue('');  // ✅ search textbox clear
+}
+
+
+
+onLazyLoad(event: any) {
+  
+ 
+  this.sortField = event.sortField ?? '';
   this.sortOrder = event.sortOrder ?? 1;
 
-  this.loadTableData(this.searchControl.value || '');
-   }
+  const filters = event.filters;
+
+  const request: TableDataRequest = {
+    pageIndex: this.pageindex(),
+    pageSize: this.pageSize,
+    search: this.searchControl.value || '',
+    sortField: this.sortField,
+    sortOrder: this.sortOrder,
+
+
+    
+    filters: {
+  saleVoucherNumber: this.getFilterValue(filters, 'saleVoucherNumber'),
+  supplierName: this.getFilterValue(filters, 'supplierName'),
+  tranportName: this.getFilterValue(filters, 'tranportName'),
+  parcelStatus: this.getFilterValue(filters, 'parcelStatus')
+}
+  };
+  this.loadTableDataFromLazy(request);
+}
+
+getFilterValue(filters: any, field: string): string {
+  const val = filters?.[field]?.[0]?.value;
+
+  if (val === null || val === undefined || val === '') {
+    return '';
+  }
+
+  return val.toString(); // 🔥 convert to string
+}
+
+loadTableDataFromLazy(req: TableDataRequest) {
+  this.loader.show();
+
+  this.saleVoucherService.getTableData(req).subscribe({
+    next: res => this.tblResult.set(res),
+    complete: () => {
+      this.isLoading.set(true);
+      this.loader.hide();
+    }
+  });
+}
+
 
   constructor(
     private router: Router,
