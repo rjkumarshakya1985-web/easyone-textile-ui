@@ -50,8 +50,7 @@ import { LoaderService } from '../../../../../core/services/loader.service';
     BadgeModule,
     SelectModule,
     ConfirmDialogModule,
-    MenuModule,TagModule,
-    TableHeader    
+    MenuModule,TagModule,    
   ],
  templateUrl: './supplier-salevoucher-list.html',
   styleUrl: './supplier-salevoucher-list.css',
