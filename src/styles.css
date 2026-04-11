@@ -82,4 +82,193 @@
 
 
 
+/* ====== TABLE CONTAINER ====== */
+.p-datatable {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+/* ====== HEADER ====== */
+.p-datatable thead > tr > th {
+    background: #f9fafb;
+    font-weight: 600;
+    font-size: 13px;
+    color: #374151;
+    padding: 12px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+/* ====== BODY ROW ====== */
+.p-datatable tbody > tr {
+    transition: all 0.2s ease;
+}
+
+/* Hover effect */
+.p-datatable tbody > tr:hover {
+    background: #f3f4f6;
+}
+
+/* Zebra striping */
+.p-datatable tbody > tr:nth-child(even) {
+    background: #fcfcfc;
+}
+
+/* ====== CELLS ====== */
+.p-datatable td {
+    padding: 10px 12px;
+    font-size: 13px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+/* ====== TEXT ALIGN ====== */
+.text-end {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    font-weight: 500;
+    color: #111827;
+}
+
+/* ====== INACTIVE ROW ====== */
+.inactive-row {
+    opacity: 0.5;
+    background: #fef2f2 !important;
+}
+
+/* ====== MANUAL RATE HIGHLIGHT ====== */
+.manual-rate-text {
+    color: #d97706;
+    font-weight: 600;
+}
+
+/* ====== ACTION BUTTON ====== */
+.action-btn {
+    border: none;
+    background: transparent;
+    padding: 6px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.action-btn:hover {
+    background: #e0f2fe;
+}
+
+/* ====== STATUS DOT ====== */
+.status-dot {
+    height: 8px;
+    width: 8px;
+    background: #22c55e;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 6px;
+}
+
+.status-dot.inactive {
+    background: #ef4444;
+}
+
+/* ====== FILTER ICON ====== */
+.pi-filter-slash {
+    font-size: 14px;
+    color: #6b7280;
+    cursor: pointer;
+}
+
+.pi-filter-slash:hover {
+    color: #111827;
+}
+
+/* ====== HEADER TITLE ====== */
+.header-title {
+    font-weight: 600;
+    font-size: 13px;
+}
+
+/* ====== TOOLTIP IMPROVEMENT (optional) ====== */
+.p-tooltip {
+    font-size: 12px;
+}
+
+
+/* ===== PAGINATOR CONTAINER ===== */
+.custom-paginator {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 12px;
+}
+
+/* ===== BUTTON GROUP ===== */
+.p-buttonset {
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+/* ===== ALL BUTTONS ===== */
+.p-button {
+    font-size: 13px;
+    padding: 6px 12px;
+    transition: all 0.2s ease;
+}
+
+/* ===== OUTLINED BUTTON ===== */
+.p-button.p-button-outlined {
+    border: 1px solid #e5e7eb;
+    background: #ffffff;
+    color: #374151;
+}
+
+/* ===== HOVER EFFECT ===== */
+.p-button:not(.p-disabled):hover {
+    background: #f3f4f6 !important;
+    border-color: #d1d5db !important;
+}
+
+/* ===== DISABLED BUTTON ===== */
+.p-button.p-disabled {
+    opacity: 0.6;
+    color: #6b7280 !important;
+}
+
+/* ===== PAGE NUMBER (CENTER) ===== */
+.p-button[label*="/"] {
+    font-weight: 600;
+    color: #111827;
+}
+
+/* ===== NAV BUTTONS (LEFT/RIGHT) ===== */
+.p-button .pi-angle-left,
+.p-button .pi-angle-right {
+    font-size: 14px;
+}
+
+/* ===== PAGE SIZE BUTTON ===== */
+.p-button[label] {
+    font-weight: 500;
+}
+
+/* ===== TOTAL COUNT BUTTON ===== */
+.p-button[label^="Total"] {
+    color: #2563eb;
+    font-weight: 500;
+}
+
+/* ===== MENU DROPDOWN ===== */
+.p-menu {
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid #e5e7eb;
+}
+
+.p-menuitem-link {
+    font-size: 13px;
+    padding: 8px 12px;
+}
+
+.p-menuitem-link:hover {
+    background: #f3f4f6;
+}
 

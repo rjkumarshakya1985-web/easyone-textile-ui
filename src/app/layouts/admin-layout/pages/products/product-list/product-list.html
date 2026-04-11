@@ -50,6 +50,7 @@
                 <i class="pi pi-filter-slash cursor-pointer" (click)="clear(dt1)"></i>
           </th>
          <th pSortableColumn="barcode">
+                
                  <div  class="flex align-items-center gap-2">
                     <span class="header-title">Barcode</span>&nbsp;
                     <p-sortIcon field="barcode"></p-sortIcon>
@@ -112,7 +113,6 @@
             <th>Action</th>
           </tr>
         </ng-template>
-
         <ng-template pTemplate="body" let-row>
           <tr [ngClass]="{ 'inactive-row': !row.isActive }">
             <td></td>

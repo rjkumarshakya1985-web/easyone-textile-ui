@@ -20,21 +20,43 @@
       </div>
 
       <ng-container>
-        <p-buttonGroup>
-         <p-menu #menuItem [model]="pageSizeItems" [popup]="true" />
-          <p-button (click)="menuItem.toggle($event)" label="{{pageSize}}" outlined severity="secondary"></p-button>        
-          <p-button label="Total ({{tblResult().totalRows}})" disabled outlined></p-button>
+     <div class="custom-paginator">
+      <p-buttonGroup>
+      <p-menu #menuItem [model]="pageSizeItems" [popup]="true" />
+      <p-button 
+        (click)="menuItem.toggle($event)" 
+        label="{{pageSize}}" 
+        outlined 
+        severity="secondary">
+      </p-button>        
 
-       <p-button icon="pi pi-angle-left"
-            outlined (click)="onPrevious()"></p-button>
+      <p-button 
+        label="Total ({{tblResult().totalRows}})" 
+        disabled 
+        outlined>
+      </p-button>
 
-          <p-button label="{{ pageindex() + 1 }}/{{ numberofPage() }}"
-            disabled outlined></p-button>
+      <p-button 
+        icon="pi pi-angle-left"
+        outlined 
+        (click)="onPrevious()">
+      </p-button>
 
-          <p-button icon="pi pi-angle-right"
-            outlined (click)="onNext()"></p-button>
-        </p-buttonGroup>
-      </ng-container>
+      <p-button 
+        label="{{ pageindex() + 1 }}/{{ numberofPage() }}"
+        disabled 
+        outlined>
+      </p-button>
+
+      <p-button 
+        icon="pi pi-angle-right"
+        outlined 
+        (click)="onNext()">
+      </p-button>
+
+    </p-buttonGroup>
+    </div>
+   </ng-container>
 
     </div>
 
