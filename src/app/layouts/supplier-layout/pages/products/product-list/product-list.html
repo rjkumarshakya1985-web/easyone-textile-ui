@@ -19,9 +19,10 @@
         </p-floatlabel>
       </div>
 
-      <ng-container *ngIf="isLoading()">
+      <ng-container>
         <p-buttonGroup>
-          <p-button label="{{pageSize}}" outlined severity="secondary"></p-button>
+          <p-menu #menuItem [model]="pageSizeItems" [popup]="true" />
+          <p-button (click)="menuItem.toggle($event)" label="{{pageSize}}" outlined severity="secondary"></p-button>
           <p-button label="Total ({{tblResult().totalRows}})" disabled outlined></p-button>
 
           <p-button icon="pi pi-angle-left"
@@ -38,16 +39,74 @@
     </div>
 
     <!-- TABLE -->
-    <ng-container *ngIf="isLoading()">
-      <p-table [value]="tblResult().result" size="small" showGridlines class="p-datatable-sm">
+    <ng-container>
+      <p-table #dt1 [value]="tblResult().result" [lazy]="true"
+       (onLazyLoad)="onLazyLoad($event)"
+       [sortField]="sortField" [lazyLoadOnInit]="false"
+       [sortOrder]="sortOrder" size="small" showGridlines class="p-datatable-sm">
 
         <ng-template pTemplate="header">
           <tr>
-            <th>Category</th>
-            <th>Name</th>
-            <th>Print Name</th>
-            <th>Barcode</th>
-            <th>Hsn Code</th>
+             <th>
+                <i class="pi pi-filter-slash cursor-pointer" (click)="clear(dt1)"></i>
+            </th>
+            <th pSortableColumn="stockGroupName">
+               <div class="supplier-header">
+                    <span class="header-title">Category</span>&nbsp;
+                    <p-sortIcon field="stockGroupName"></p-sortIcon>
+                </div>
+            </th>
+            <th pSortableColumn="name">
+               <div  class="flex align-items-center gap-2">
+                    <span class="header-title">Name</span>&nbsp;
+                    <p-sortIcon field="name"></p-sortIcon>
+                      <p-columnFilter 
+                        type="text"
+                        field="name"
+                        display="menu"
+                        matchMode="equals"
+                        [showMatchModes]="false"
+                        [showOperator]="false"
+                       [showAddButton]="false">
+                    </p-columnFilter>
+                </div>
+            </th>
+            <th pSortableColumn="printName">
+               <div  class="flex align-items-center gap-2">
+                    <span class="header-title">Print Name</span>&nbsp;
+                    <p-sortIcon field="printName"></p-sortIcon>
+                    <p-columnFilter 
+                        type="text"
+                        field="printName"
+                        display="menu"
+                        matchMode="equals"
+                        [showMatchModes]="false"
+                        [showOperator]="false"
+                       [showAddButton]="false">
+                    </p-columnFilter>
+                </div>
+            </th>
+             <th pSortableColumn="barcode">
+                   <div  class="flex align-items-center gap-2">
+                    <span class="header-title">Barcode</span>&nbsp;
+                    <p-sortIcon field="barcode"></p-sortIcon>
+                    <p-columnFilter 
+                        type="text"
+                        field="barcode"
+                        display="menu"
+                        matchMode="equals"
+                        [showMatchModes]="false"
+                        [showOperator]="false"
+                       [showAddButton]="false">
+                    </p-columnFilter>
+                </div>
+            </th>
+             <th pSortableColumn="hsnCode">
+               <div class="supplier-header">
+                    <span class="header-title">Hsn Code</span>&nbsp;
+                    <p-sortIcon field="hsnCode"></p-sortIcon>
+                </div>
+            </th>
             <th class="text-end">Purchase Rate</th>
             <th class="text-center">Gst %</th>
             <th>Action</th>
@@ -56,6 +115,7 @@
 
         <ng-template pTemplate="body" let-row>
           <tr [ngClass]="{ 'inactive-row': !row.isActive }">
+            <td></td>
             <td>{{row.stockGroupName}}</td>
             <td>{{ row.name }}</td>
             <td>{{row.printName}}</td>

@@ -19,7 +19,7 @@
         </p-floatlabel>
       </div>
 
-      <ng-container *ngIf="isLoading()">
+      <ng-container>
         <p-buttonGroup>
          <p-menu #menuItem [model]="pageSizeItems" [popup]="true" />
           <p-button (click)="menuItem.toggle($event)" label="{{pageSize}}" outlined severity="secondary"></p-button>        
@@ -39,7 +39,7 @@
     </div>
 
         
-    <ng-container *ngIf="isLoading()">
+    <ng-container>
   
      <p-table #dt1 [value]="tblResult().result" [lazy]="true"
        (onLazyLoad)="onLazyLoad($event)"
@@ -49,9 +49,9 @@
         <ng-template pTemplate="header">
          
           <tr>
-            <th>
-                <i class="pi pi-filter-slash cursor-pointer" (click)="clear(dt1)"></i>
-            </th>
+              <th>
+                  <i class="pi pi-filter-slash cursor-pointer" (click)="clear(dt1)"></i>
+              </th>
             <th pSortableColumn="date">
                <div class="supplier-header">
                     <span class="header-title">Date</span>&nbsp;
@@ -89,10 +89,19 @@
                  </div>
             </th>
            <th pSortableColumn="billNumber">
-                <div class="supplier-header">
-                  <span class="header-title">SupplierInvoice</span>&nbsp;
-                   <p-sortIcon field="billNumber"></p-sortIcon>
-                 </div>
+              <div class="flex align-items-center gap-2">
+                 <span>SupplierInvoice</span>
+                 <p-sortIcon field="billNumber"></p-sortIcon>
+                    <p-columnFilter 
+                        type="numeric"
+                        field="billNumber"
+                        display="menu"
+                        matchMode="equals"
+                        [showMatchModes]="false"
+                        [showOperator]="false"
+                       [showAddButton]="false">
+                    </p-columnFilter>
+              </div>
            </th>
            <th>
              Products

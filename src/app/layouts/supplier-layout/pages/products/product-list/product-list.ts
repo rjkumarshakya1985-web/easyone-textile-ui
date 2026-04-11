@@ -1,4 +1,4 @@
-import { Component, signal, ViewChild } from '@angular/core';
+  import { Component, signal, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { CardModule } from 'primeng/card';
@@ -7,7 +7,7 @@ import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { ToolbarModule } from 'primeng/toolbar';
 import { Router } from '@angular/router';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { SupplierProductDto } from '../../../../../model/entity/products/supplier-product.model';
 import { TableDataRequest } from '../../../../../model/request/table-datafilter-request.model';
@@ -20,6 +20,8 @@ import { MenubarModule } from 'primeng/menubar';
 import { BadgeModule } from 'primeng/badge';
 import { Menu, MenuModule } from 'primeng/menu';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { PAGE_PAGE } from '../../../../../config/api.config';
+import { LoaderService } from '../../../../../core/services/loader.service';
 
 @Component({
   selector: 'app-product-list',
@@ -27,6 +29,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
   providers: [ConfirmationService],
   imports: [
    CommonModule,
+   FormsModule,
     PanelModule,
     ButtonGroupModule,
     TableModule,
@@ -47,16 +50,21 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 })
 export class ProductList {
 
-  @ViewChild('menu') menu!: Menu;
-  items: MenuItem[] = [];
-  
+   @ViewChild('menu') menu!: Menu;
+    pageSizeItems: MenuItem[] | undefined;
+    sortField: string = '';
+    sortOrder: number = 1; 
+   
+    items: MenuItem[] = [];   
+    filters: { [key: string]: string | null } = {};
+
   // -----------------------------
   // Signals
   // -----------------------------
-  isLoading = signal(false);
+
   tblResult = signal({ totalRows: 0, result: [] as SupplierProductDto[] });
 
-  pageSize = 10;
+  pageSize = PAGE_PAGE;
   pageindex = signal(0);
 
   searchControl = new FormControl('');
@@ -70,13 +78,32 @@ export class ProductList {
     private router: Router,
     private confirmationService: ConfirmationService,
     private supplierProductService: SupplierProductService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private loader: LoaderService,
   ) {}
 
   ngOnInit() {
     this.setupSearch();
     this.loadTableData();
+
+    this.pageSizeItems = [
+            {
+                 items: [
+                         { label: '5',  command: () => this.onPageSizeChange(5) },
+                         { label: '10', command: () => this.onPageSizeChange(10) },
+                         { label: '30', command: () => this.onPageSizeChange(30) },
+                         { label: '50', command: () => this.onPageSizeChange(50) },
+                         
+                        ]
+            }
+        ];
   }
+
+  onPageSizeChange(size: number) {
+  this.pageindex.set(0);      // reset to first page
+  this.pageSize = size;
+  this.loadTableData(this.searchControl.value || '');
+}
 
   // -----------------------------
   // SEARCH
@@ -94,17 +121,22 @@ export class ProductList {
   // LOAD TABLE
   // -----------------------------
   loadTableData(search: string = '') {
-    this.isLoading.set(false);
-
+    this.loader.show();
+  
     const req: TableDataRequest = {
       pageIndex: this.pageindex(),
       pageSize: this.pageSize,
-      search
+      search,
+      sortField: this.sortField,
+      sortOrder: this.sortOrder,
+      filters: Object.keys(this.filters).length 
+  ? this.filters 
+  : undefined
     };
 
     this.supplierProductService.getTableData(req).subscribe({
       next: res => this.tblResult.set(res),
-      complete: () => this.isLoading.set(true)
+      complete: () => this.loader.hide()
     });
   }
 
@@ -213,4 +245,58 @@ export class ProductList {
     this.menu.toggle(event);
   
     }
+
+  // Filter
+
+  onLazyLoad(event: any) {
+  
+ 
+  this.sortField = event.sortField ?? '';
+  this.sortOrder = event.sortOrder ?? 1;
+
+  const filters = event.filters;
+
+  this.pageindex.set(0);
+  const request: TableDataRequest = {
+    pageIndex: this.pageindex(),
+    pageSize: this.pageSize,
+    search: this.searchControl.value || '',
+    sortField: this.sortField,
+    sortOrder: this.sortOrder,
+    filters: {
+     name: this.getFilterValue(filters, 'name'),
+     printName: this.getFilterValue(filters, 'printName'),
+     barcode: this.getFilterValue(filters, 'barcode')
+    }
+  };
+
+  this.filters = request.filters || {}
+  this.loadTableDataFromLazy(request);
+  }
+
+  getFilterValue(filters: any, field: string): string {
+  const val = filters?.[field]?.[0]?.value;
+
+  if (val === null || val === undefined || val === '') {
+    return '';
+  }
+
+  return val.toString(); // 🔥 convert to string
+}
+
+loadTableDataFromLazy(req: TableDataRequest) {
+  this.loader.show();
+
+  this.supplierProductService.getTableData(req).subscribe({
+    next: res => this.tblResult.set(res),
+    complete: () => {
+      this.loader.hide();
+    }
+  });
+}
+
+clear(table: any) {
+  table.clear();              // ✅ PrimeNG filters clear
+  this.searchControl.setValue('');  // ✅ search textbox clear
+}
 }

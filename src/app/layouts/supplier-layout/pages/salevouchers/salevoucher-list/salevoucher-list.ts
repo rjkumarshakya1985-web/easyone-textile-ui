@@ -8,7 +8,7 @@ import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { ToolbarModule } from 'primeng/toolbar';
 import { Router } from '@angular/router';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { TableDataRequest } from '../../../../../model/request/table-datafilter-request.model';
 import { PanelModule } from 'primeng/panel';
@@ -26,13 +26,15 @@ import { ChipModule } from 'primeng/chip';
 import { TagModule } from 'primeng/tag';
 import { Helper } from '../../../../../core/helpers/helper';
 import { PAGE_PAGE } from '../../../../../config/api.config';
+import { LoaderService } from '../../../../../core/services/loader.service';
+import { SelectModule } from 'primeng/select';
 
 @Component({
   selector: 'app-salevoucher-list',
   standalone: true,
   providers: [ConfirmationService],
   imports: [
-   CommonModule,
+    CommonModule,FormsModule,
     PanelModule,
     ButtonGroupModule,
     TableModule,
@@ -46,6 +48,7 @@ import { PAGE_PAGE } from '../../../../../config/api.config';
     MenubarModule, 
     BadgeModule,
     TagModule, 
+    SelectModule,
     ConfirmDialogModule,
     MenuModule,ChipModule    
   ],
@@ -54,16 +57,16 @@ import { PAGE_PAGE } from '../../../../../config/api.config';
 })
 export class SalevoucherList {
   pageSizeItems: MenuItem[] | undefined;
-sortField: string = '';
+  sortField: string = '';
   sortOrder: number = 1; // 1 = ASC, -1 = DESC
   @ViewChild('menu') menu!: Menu;
   items: MenuItem[] = [];
   ParcelStatusHelper = Helper;
-  
+  filters: { [key: string]: string | null } = {};
   // -----------------------------
   // Signals
   // -----------------------------
-  isLoading = signal(false);
+
   tblResult = signal({ totalRows: 0, result: [] as SaleVoucherTableResponse[] });
 
   pageSize = PAGE_PAGE;
@@ -75,11 +78,20 @@ sortField: string = '';
     { label: 'SaleVoucher' }
   ];
 
+   parcelStatusList = [
+  { label: 'In Transit', value: 3 },
+  { label: 'Transport', value: 4 },
+  { label: 'Packed At Location', value: 5 },
+  { label: 'Opened', value: 6 },
+  { label: 'Tally Synched', value: 11 }
+];
+
   constructor(
     private router: Router,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private saleVoucherService: SaleVoucherService,
+    private loader: LoaderService
   ) {}
 
   ngOnInit() {
@@ -90,7 +102,7 @@ sortField: string = '';
                  items: [
                          { label: '5',  command: () => this.onPageSizeChange(5) },
                          { label: '10', command: () => this.onPageSizeChange(10) },
-                         { label: '20', command: () => this.onPageSizeChange(30) },
+                         { label: '30', command: () => this.onPageSizeChange(30) },
                          { label: '50', command: () => this.onPageSizeChange(50) },
                          
                         ]
@@ -118,19 +130,21 @@ onPageSizeChange(size: number) {
   // LOAD TABLE
   // -----------------------------
   loadTableData(search: string = '') {
-    this.isLoading.set(false);
-
+    this.loader.show();
     const req: TableDataRequest = {
       pageIndex: this.pageindex(),
       pageSize: this.pageSize,
       search,
       sortField: this.sortField,
-      sortOrder: this.sortOrder
+      sortOrder: this.sortOrder,
+      filters: Object.keys(this.filters).length 
+  ? this.filters 
+  : undefined
     };
 
     this.saleVoucherService.getTableData(req).subscribe({
       next: res => this.tblResult.set(res),
-      complete: () => this.isLoading.set(true)
+      complete: () => this.loader.hide()
     });
   }
 
@@ -210,17 +224,8 @@ onPageSizeChange(size: number) {
     }
   });
   }
-  private isFirstLoad = true;
-    onLazyLoad(event: any) {
-      if (this.isFirstLoad) {
-    this.isFirstLoad = false;
-    return;
-  }
-      this.sortField = event.sortField ?? '';
-  this.sortOrder = event.sortOrder ?? 1;
+ 
 
-  this.loadTableData(this.searchControl.value || '');
-   }
   openMenu(event: Event, row: SaleVoucherTableResponse) {
 
   if (row.parcelStatus === ParcelStatus.InTransit) {
@@ -263,6 +268,59 @@ onPageSizeChange(size: number) {
   }
 
   this.menu.toggle(event);
+  }
+  
+  //// Filters
+  clear(table: any) {
+  table.clear();              // ✅ PrimeNG filters clear
+  this.searchControl.setValue('');  // ✅ search textbox clear
 }
 
+onLazyLoad(event: any) {
+  
+ 
+  this.sortField = event.sortField ?? '';
+  this.sortOrder = event.sortOrder ?? 1;
+
+  const filters = event.filters;
+
+  this.pageindex.set(0);
+  const request: TableDataRequest = {
+    pageIndex: this.pageindex(),
+    pageSize: this.pageSize,
+    search: this.searchControl.value || '',
+    sortField: this.sortField,
+    sortOrder: this.sortOrder,   
+    filters: {
+        billNumber: this.getFilterValue(filters,'billNumber'),
+        tranportName: this.getFilterValue(filters, 'tranportName'),
+        parcelStatus: this.getFilterValue(filters, 'parcelStatus')
+    }
+  };
+
+  this.filters = request.filters || {}
+  this.loadTableDataFromLazy(request);
+}
+
+getFilterValue(filters: any, field: string): string {
+  const val = filters?.[field]?.[0]?.value;
+
+  if (val === null || val === undefined || val === '') {
+    return '';
+  }
+
+  return val.toString(); // 🔥 convert to string
+}
+
+loadTableDataFromLazy(req: TableDataRequest) {
+  this.loader.show();
+
+  this.saleVoucherService.getTableData(req).subscribe({
+    next: res => this.tblResult.set(res),
+    complete: () => {
+      this.loader.hide();
+    }
+  });
+}
+  
 }

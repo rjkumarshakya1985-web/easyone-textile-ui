@@ -26,7 +26,7 @@ import { Helper } from '../../../../../core/helpers/helper';
 import { TagModule } from 'primeng/tag';
 import { PAGE_PAGE } from '../../../../../config/api.config';
 import { SelectModule } from 'primeng/select';
-import { TableHeader } from '../../../../../components/table-header/table-header';
+
 import { LoaderService } from '../../../../../core/services/loader.service';
 
 @Component({
@@ -37,7 +37,6 @@ import { LoaderService } from '../../../../../core/services/loader.service';
    CommonModule,FormsModule,
     PanelModule,
     ButtonGroupModule,
-    
     TableModule,
     CardModule,
     ButtonModule,
@@ -62,7 +61,7 @@ export class SupplierSalevoucherList {
   @ViewChild('menu') menu!: Menu;
   items: MenuItem[] = [];
   ParcelStatusHelper = Helper;
-  filters: { [key: string]: string } = {};
+  filters: { [key: string]: string | null } = {};
   supplierInput: string = '';
   statusInput: number | null = null;
   transportInput:string=''
@@ -72,7 +71,7 @@ export class SupplierSalevoucherList {
   // -----------------------------
   // Signals
   // -----------------------------
-  isLoading = signal(false);
+ 
   tblResult = signal({ totalRows: 0, result: [] as SaleVoucherTableResponse[] });
 
   pageSize = PAGE_PAGE;
@@ -93,15 +92,12 @@ export class SupplierSalevoucherList {
     { label: 'SaleVoucher' }
   ];
 
-private isFirstLoad = true;
 
 
 clear(table: any) {
   table.clear();              // ✅ PrimeNG filters clear
   this.searchControl.setValue('');  // ✅ search textbox clear
 }
-
-
 
 onLazyLoad(event: any) {
   
@@ -111,22 +107,23 @@ onLazyLoad(event: any) {
 
   const filters = event.filters;
 
+  this.pageindex.set(0);
   const request: TableDataRequest = {
     pageIndex: this.pageindex(),
     pageSize: this.pageSize,
     search: this.searchControl.value || '',
     sortField: this.sortField,
     sortOrder: this.sortOrder,
-
-
-    
     filters: {
-  saleVoucherNumber: this.getFilterValue(filters, 'saleVoucherNumber'),
-  supplierName: this.getFilterValue(filters, 'supplierName'),
-  tranportName: this.getFilterValue(filters, 'tranportName'),
-  parcelStatus: this.getFilterValue(filters, 'parcelStatus')
-}
+        saleVoucherNumber: this.getFilterValue(filters, 'saleVoucherNumber'),
+        supplierName: this.getFilterValue(filters, 'supplierName'),
+        tranportName: this.getFilterValue(filters, 'tranportName'),
+        parcelStatus: this.getFilterValue(filters, 'parcelStatus'),
+        billNumber: this.getFilterValue(filters,'billNumber')
+     }
   };
+
+  this.filters = request.filters || {}
   this.loadTableDataFromLazy(request);
 }
 
@@ -146,7 +143,6 @@ loadTableDataFromLazy(req: TableDataRequest) {
   this.saleVoucherService.getTableData(req).subscribe({
     next: res => this.tblResult.set(res),
     complete: () => {
-      this.isLoading.set(true);
       this.loader.hide();
     }
   });
@@ -195,7 +191,7 @@ onPageSizeChange(size: number) {
   // LOAD TABLE
   // -----------------------------
   loadTableData(search: string = '') {
-    this.isLoading.set(false);
+  
     this.loader.show();
     const req: TableDataRequest = {
       pageIndex: this.pageindex(),
@@ -211,7 +207,7 @@ onPageSizeChange(size: number) {
     this.saleVoucherService.getTableData(req).subscribe({
       next: res => this.tblResult.set(res),
       complete: () => {
-      this.isLoading.set(true);
+     
       this.loader.hide();
       }
     });
@@ -289,63 +285,10 @@ onPageSizeChange(size: number) {
     command: () => this.goToPrint(row.id)
   });
 
-  /// Filter
-
+  
  
   this.menu.toggle(event);
-}
+  }
 
-
- /// Filter
-
- onSupplierApply(filterCallback: any) {
-  filterCallback(this.supplierInput); // ✅ UI state
-
-  this.applyFilter('supplierName', this.supplierInput); // ✅ API
-}
-
-onSupplierClear(filterCallback: any) {
-  this.supplierInput = '';
-
-  filterCallback(null); // ✅ UI clear
-
-  this.clearFilter('supplierName'); // ✅ API
-}
-
-onStatusApply(filterCallback: any) {
-  filterCallback(this.statusInput); // ✅ UI state
-
-  this.applyFilter('parcelStatus', this.statusInput); // ✅ API
-}
-
-onStatusClear(filterCallback: any) {
-  this.statusInput = null;
-
-  filterCallback(null); // ✅ UI clear
-
-  this.clearFilter('parcelStatus'); // ✅ API
-}
-  applyFilter(key: string, value: any) {
-    const val = value?.toString()?.trim();
-
-    if (val) {
-      this.filters[key] = val;
-   } else {
-     delete this.filters[key];
-   }
-
-   this.pageindex.set(0);
-   this.loadTableData(this.searchControl.value || '');
- }
- 
- clearFilter(key: string) {
-  delete this.filters[key];
-
-  if (key === 'supplierName') this.supplierInput = '';
-  if (key === 'parcelStatus') this.statusInput = null;
-  if (key === 'tranportName') this.transportInput = '';
-  if(key === 'saleVoucherNumber') this.saleVoucherNumber = null;
-  this.pageindex.set(0);
-  this.loadTableData(this.searchControl.value || '');
-}
+  
 }

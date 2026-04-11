@@ -19,7 +19,7 @@
         </p-floatlabel>
       </div>
 
-      <ng-container *ngIf="isLoading()">
+      <ng-container>
         <p-buttonGroup>
          <p-menu #menuItem [model]="pageSizeItems" [popup]="true" />
           <p-button (click)="menuItem.toggle($event)" label="{{pageSize}}" outlined severity="secondary"></p-button>        
@@ -40,8 +40,8 @@
     </div>
 
     <!-- TABLE -->
-    <ng-container *ngIf="isLoading()">
-       <p-table [value]="tblResult().result" [lazy]="true"
+    <ng-container>
+       <p-table #dt1  [value]="tblResult().result" [lazy]="true"
   (onLazyLoad)="onLazyLoad($event)"
   [sortField]="sortField" [lazyLoadOnInit]="false"
   [sortOrder]="sortOrder" size="small" showGridlines class="p-datatable-sm">
@@ -49,38 +49,83 @@
     
         <ng-template pTemplate="header">
           <tr>
+             <th>
+                  <i class="pi pi-filter-slash cursor-pointer" (click)="clear(dt1)"></i>
+              </th>
              <th pSortableColumn="id">
-          <div class="supplier-header">
-              <span class="header-title">Parcel Number</span>&nbsp;
-              <p-sortIcon field="id"></p-sortIcon>
-                 </div>
-       </th>
+              <div class="supplier-header">
+                 <span class="header-title">Parcel Number</span>&nbsp;
+                 <p-sortIcon field="id"></p-sortIcon>
+                </div>
+             </th>
             <th pSortableColumn="date">
           <div class="supplier-header">
               <span class="header-title">Date</span>&nbsp;
               <p-sortIcon field="date"></p-sortIcon>
                  </div>
        </th>
-            <th pSortableColumn="tranportName">
-          <div class="supplier-header">
-              <span class="header-title">Transport</span>&nbsp;
-              <p-sortIcon field="tranportName"></p-sortIcon>
-                 </div>
+        <th pSortableColumn="tranportName">
+          <div class="flex align-items-center gap-2">
+             <span>Transport</span>
+             <p-sortIcon field="tranportName"></p-sortIcon>
+               <p-columnFilter 
+                  type="text"
+                  field="tranportName"
+                  display="menu"
+                  matchMode="contains"
+                  [showMatchModes]="false"
+                  [showOperator]="false"
+                  [showAddButton]="false">
+                </p-columnFilter>
+          </div>
        </th>
         <th pSortableColumn="billNumber">
-          <div class="supplier-header">
-              <span class="header-title">My Bill Number</span>&nbsp;
-              <p-sortIcon field="billNumber"></p-sortIcon>
-                 </div>
+      
+             <div class="flex align-items-center gap-2">
+                 <span>My Bill Number</span>
+                 <p-sortIcon field="billNumber"></p-sortIcon>
+                    <p-columnFilter 
+                        type="numeric"
+                        field="billNumber"
+                        display="menu"
+                        matchMode="equals"
+                        [showMatchModes]="false"
+                        [showOperator]="false"
+                       [showAddButton]="false">
+                    </p-columnFilter>
+              </div>
        </th>
        <th>Products</th>            
-            <th>Status</th>
-            <th>Action</th>
+       <th pSortableColumn="parcelStatus">
+            <div class="flex align-items-center gap-2">
+              <span>Status</span>
+               <p-sortIcon field="parcelStatus"></p-sortIcon>
+                <p-columnFilter 
+                  field="parcelStatus"
+                  matchMode="equals"
+                  display="menu"
+                  [showMatchModes]="false"
+                  [showOperator]="false"
+                  [showAddButton]="false">
+                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+               <p-select 
+                  [options]="parcelStatusList"
+                  optionLabel="label"
+                  optionValue="value"
+                  [ngModel]="value"
+                  (onChange)="filter($event.value)">
+            </p-select>
+          </ng-template>
+        </p-columnFilter>
+        </div>
+        </th>
+        <th>Action</th>
           </tr>
         </ng-template>
 
         <ng-template pTemplate="body" let-row>
           <tr>
+            <td></td>
             <td>{{ row.id }}</td>
             <td>{{row.date | date:'dd, MMMM, yyyy'}}</td>
             <td>{{row.tranportName}}</td>

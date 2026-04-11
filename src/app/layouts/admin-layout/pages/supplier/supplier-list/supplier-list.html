@@ -19,57 +19,89 @@
         </p-floatlabel>
       </div>
 
-      <ng-container *ngIf="isLoading()">
+      <ng-container>
         <p-buttonGroup>
-          <!-- <p-button label="{{pageSize}}" outlined severity="secondary"></p-button> -->
            <p-menu #menuItem [model]="pageSizeItems" [popup]="true" />
-          <p-button (click)="menuItem.toggle($event)" label="{{pageSize}}" outlined severity="secondary"></p-button>        
-          <p-button label="Total ({{tblResult().totalRows}})" disabled outlined></p-button>
-
-          <p-button icon="pi pi-angle-left"
-            outlined (click)="onPrevious()"></p-button>
-
-          <p-button label="{{ pageindex() + 1 }}/{{ numberofPage() }}"
-            disabled outlined></p-button>
-
-          <p-button icon="pi pi-angle-right"
-            outlined (click)="onNext()"></p-button>
+           <p-button (click)="menuItem.toggle($event)" label="{{pageSize}}" outlined severity="secondary"></p-button>        
+           <p-button label="Total ({{tblResult().totalRows}})" disabled outlined></p-button>
+          <p-button icon="pi pi-angle-left" outlined (click)="onPrevious()"></p-button>
+          <p-button label="{{ pageindex() + 1 }}/{{ numberofPage() }}" disabled outlined></p-button>
+          <p-button icon="pi pi-angle-right" outlined (click)="onNext()"></p-button>
         </p-buttonGroup>
       </ng-container>
 
     </div>
 
     <!-- TABLE -->
-    <ng-container *ngIf="isLoading()">
-      <!-- <p-table [value]="tblResult().result" size="small" showGridlines class="p-datatable-sm"> -->
- <p-table [value]="tblResult().result" [lazy]="true"
-  (onLazyLoad)="onLazyLoad($event)"
-  [sortField]="sortField" [lazyLoadOnInit]="false"
-  [sortOrder]="sortOrder" size="small" showGridlines class="p-datatable-sm">
-
-     
+    <ng-container>    
+    <p-table #dt1 [value]="tblResult().result" [lazy]="true"
+      (onLazyLoad)="onLazyLoad($event)"
+      [sortField]="sortField" [lazyLoadOnInit]="false"
+      [sortOrder]="sortOrder" size="small" showGridlines class="p-datatable-sm">
         <ng-template pTemplate="header">
            <tr>
-        <th pSortableColumn="code">
-          <div class="supplier-header">
-              <span class="header-title">Code</span>&nbsp;
-              <p-sortIcon field="code"></p-sortIcon>
-                 </div>
-       </th>
-        <th pSortableColumn="name">
-                    <div class="flex items-center gap-2">Name
-                        <p-sortIcon field="name" />
-                    </div>
-        </th>
-           <th pSortableColumn="agent">
-                    <div class="flex items-center gap-2">Agent
-                        <p-sortIcon field="agent" />
-                    </div>
-        </th>
+             <th>
+                <i class="pi pi-filter-slash cursor-pointer" (click)="clear(dt1)"></i>
+            </th>
+             <th pSortableColumn="code">
+                  <div  class="flex align-items-center gap-2">
+                    <span class="header-title">Code</span>&nbsp;
+                    <p-sortIcon field="code"></p-sortIcon>
+                      <p-columnFilter 
+                        type="text"
+                        field="code"
+                        display="menu"
+                        matchMode="equals"
+                        [showMatchModes]="false"
+                        [showOperator]="false"
+                       [showAddButton]="false">
+                    </p-columnFilter>
+                </div>
+             </th>
+             <th pSortableColumn="name"> 
+                  <div  class="flex align-items-center gap-2">
+                    <span class="header-title">Name</span>&nbsp;
+                    <p-sortIcon field="name"></p-sortIcon>
+                      <p-columnFilter 
+                        type="text"
+                        field="name"
+                        display="menu"
+                        matchMode="equals"
+                        [showMatchModes]="false"
+                        [showOperator]="false"
+                       [showAddButton]="false">
+                    </p-columnFilter>
+                </div>
+             </th>
+             <th pSortableColumn="agent">
+                  <div  class="flex align-items-center gap-2">
+                      <span class="header-title">Agent</span>&nbsp;
+                     <p-sortIcon field="agent"></p-sortIcon>
+                       <p-columnFilter 
+                         type="text"
+                         field="agent"
+                         display="menu"
+                         matchMode="equals"
+                         [showMatchModes]="false"
+                         [showOperator]="false"
+                        [showAddButton]="false">
+                    </p-columnFilter>
+                </div>
+             </th>
         <th pSortableColumn="gstIn">
-                    <div class="flex items-center gap-2">GSTIN
-                        <p-sortIcon field="gstIn" />
-                    </div>
+                    <div  class="flex align-items-center gap-2">
+                      <span class="header-title">GstIn</span>&nbsp;
+                     <p-sortIcon field="gstIn"></p-sortIcon>
+                       <p-columnFilter 
+                         type="text"
+                         field="gstIn"
+                         display="menu"
+                         matchMode="equals"
+                         [showMatchModes]="false"
+                         [showOperator]="false"
+                        [showAddButton]="false">
+                    </p-columnFilter>
+                </div>
         </th>
         <th pSortableColumn="userName">
                     <div class="flex items-center gap-2">User Name
@@ -93,6 +125,7 @@
 
         <ng-template pTemplate="body" let-row>
           <tr [ngClass]="{ 'inactive-row': !row.isActive }">
+            <td></td>
             <td>{{row.code}}</td>
             <td>{{ row.name }}</td>
             <td>{{row.agentName}}</td>
@@ -101,7 +134,19 @@
             <td>{{row.password===row.code?'-':row.password}}</td>
             <td>
             <small>{{row.state}},{{row.city}}</small>
-            <div><small>{{row.address}}</small></div> 
+            <div>
+             <ng-container *ngIf="row.address.length > 15; else shortText">
+             <span *ngIf="!row.expanded">
+               {{ row.address | slice:0:15 }} 
+                <a href="#" (click)="row.expanded = true; $event.preventDefault()">... see more</a>
+             </span>
+             <span *ngIf="row.expanded">
+               {{ row.address }} 
+                <a href="#" (click)="row.expanded = false; $event.preventDefault()"> see less</a>
+             </span>
+           </ng-container>
+           <ng-template #shortText>{{ row.address }}</ng-template>
+            </div> 
             </td>
             <td>
             <span class="px-2 py-1 rounded bg-blue-50 text-blue-600 cursor-pointer hover:bg-blue-100"

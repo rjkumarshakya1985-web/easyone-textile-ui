@@ -18,7 +18,7 @@
         </p-floatlabel>
       </div>
 
-      <ng-container *ngIf="isLoading()">
+      <ng-container>
         <p-buttonGroup>
           <p-menu #menuItem [model]="pageSizeItems" [popup]="true" />
           <p-button (click)="menuItem.toggle($event)" label="{{pageSize}}" outlined severity="secondary"></p-button>
@@ -38,25 +38,46 @@
     </div>
 
     <!-- TABLE -->
-    <ng-container *ngIf="isLoading()">
-      <p-table [value]="tblResult().result" [lazy]="true"
-        scrollable="true"
-    scrollHeight="600px"
-  (onLazyLoad)="onLazyLoad($event)"
-  [sortField]="sortField" [lazyLoadOnInit]="false"
-  [sortOrder]="sortOrder" size="small" showGridlines class="p-datatable-sm">
+    <ng-container>
+      <p-table #dt1 [value]="tblResult().result" [lazy]="true"
+        scrollable="true" scrollHeight="600px" (onLazyLoad)="onLazyLoad($event)"
+      [sortField]="sortField" [lazyLoadOnInit]="false"
+       [sortOrder]="sortOrder" size="small" showGridlines class="p-datatable-sm">
 
         <ng-template pTemplate="header">
           <tr>
+          <th>
+                <i class="pi pi-filter-slash cursor-pointer" (click)="clear(dt1)"></i>
+          </th>
          <th pSortableColumn="barcode">
-                    <div class="flex items-center gap-2">Barcode
-                        <p-sortIcon field="barcode" />
-                    </div>
+                 <div  class="flex align-items-center gap-2">
+                    <span class="header-title">Barcode</span>&nbsp;
+                    <p-sortIcon field="barcode"></p-sortIcon>
+                      <p-columnFilter 
+                        type="text"
+                        field="barcode"
+                        display="menu"
+                        matchMode="equals"
+                        [showMatchModes]="false"
+                        [showOperator]="false"
+                       [showAddButton]="false">
+                    </p-columnFilter>
+                </div>
         </th>
-              <th pSortableColumn="name">
-                    <div class="flex items-center gap-2">Product Name
-                        <p-sortIcon field="name" />
-                    </div>
+        <th pSortableColumn="name">
+             <div  class="flex align-items-center gap-2">
+                    <span class="header-title">Name</span>&nbsp;
+                    <p-sortIcon field="name"></p-sortIcon>
+                      <p-columnFilter 
+                        type="text"
+                        field="name"
+                        display="menu"
+                        matchMode="equals"
+                        [showMatchModes]="false"
+                        [showOperator]="false"
+                       [showAddButton]="false">
+                    </p-columnFilter>
+                </div>
         </th>
           <th pSortableColumn="CategoryName">
                     <div class="flex items-center gap-2">Category
@@ -64,33 +85,19 @@
                     </div>
         </th>
         <th pSortableColumn="supplierName">
-          <div class="supplier-header">
-              <span class="header-title">Supplier</span>&nbsp;
-              <p-sortIcon field="supplierName"></p-sortIcon>
-         <!-- 
-    <p-columnFilter
-      field="supplierName"
-      display="menu"
-      matchMode="contains"
-      [showMatchModes]="false"
-      [showOperator]="false"
-      [showAddButton]="false"
-      styleClass="supplier-filter">
-
-      <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-        <div class="filter-input">
-          <i class="pi pi-search"></i>
-          <input
-            pInputText
-            type="text"
-            [value]="value"
-            (input)="filter($event.target.value)"
-            placeholder="Search supplier">
-        </div>
-      </ng-template>
-
-    </p-columnFilter> -->
-          </div>
+            <div  class="flex align-items-center gap-2">
+                    <span class="header-title">Supplier Name</span>&nbsp;
+                    <p-sortIcon field="supplierName"></p-sortIcon>
+                      <p-columnFilter 
+                        type="text"
+                        field="supplierName"
+                        display="menu"
+                        matchMode="equals"
+                        [showMatchModes]="false"
+                        [showOperator]="false"
+                       [showAddButton]="false">
+                    </p-columnFilter>
+                </div>
        </th>
       
          <th pSortableColumn="purchaseRate">
@@ -108,6 +115,7 @@
 
         <ng-template pTemplate="body" let-row>
           <tr [ngClass]="{ 'inactive-row': !row.isActive }">
+            <td></td>
             <td>{{row.barcode}}</td>
             <td>{{ row.name }}</td>
             <td>{{row.stockGroupName}}</td>
@@ -129,7 +137,6 @@
 
       </p-table>
     </ng-container>
-
 </p-card>
 
 <p-menu #menu [model]="items" [popup]="true"></p-menu>

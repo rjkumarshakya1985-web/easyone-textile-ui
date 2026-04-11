@@ -21,6 +21,7 @@ import { BadgeModule } from 'primeng/badge';
 import { Menu } from 'primeng/menu';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { PAGE_PAGE } from '../../../../../config/api.config';
+import { LoaderService } from '../../../../../core/services/loader.service';
 
 @Component({
   selector: 'app-supplier-list',
@@ -47,25 +48,17 @@ import { PAGE_PAGE } from '../../../../../config/api.config';
   styleUrl: './supplier-list.css',
 })
 export class SupplierList {
-   pageSizeItems: MenuItem[] | undefined;
+  pageSizeItems: MenuItem[] | undefined;
   sortField: string = '';
   sortOrder: number = 1; // 1 = ASC, -1 = DESC
   @ViewChild('menu') menu!: Menu;
   items: MenuItem[] = [];
-  // -----------------------------
-  // Signals
-  // -----------------------------
-  isLoading = signal(false);
+  filters: { [key: string]: string | null } = {};
   tblResult = signal({ totalRows: 0, result: [] as SupplierTableResponse[] });
 
- pageSize = PAGE_PAGE;
+  pageSize = PAGE_PAGE;
   pageindex = signal(0);
-
-
-
-  // -----------------------------
-  // Search Control
-  // -----------------------------
+  
   searchControl = new FormControl('');
 
   breadcrumbItems: MenuItem[] = [
@@ -77,7 +70,8 @@ export class SupplierList {
     private router: Router,
     private supplierService: SupplierService,
     private confirmationService: ConfirmationService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private loader: LoaderService
   ) { }
 
   ngOnInit() {
@@ -116,22 +110,25 @@ onPageSizeChange(size: number) {
   // LOAD DATA
   // -----------------------------
   loadTableData(search: string = '') {
-    this.isLoading.set(false);
-
-    const req: TableDataRequest = {
+    
+     const req: TableDataRequest = {
       pageIndex: this.pageindex(),
       pageSize: this.pageSize,
       search,
       sortField: this.sortField,
-      sortOrder: this.sortOrder
+      sortOrder: this.sortOrder,
+      filters: Object.keys(this.filters).length 
+  ? this.filters 
+  : undefined
     };
 
+    this.loader.show();
     this.supplierService.getSupplierTableData(req).subscribe({
       next: (res) => {
         this.tblResult.set(res);
-      },
+      }, 
       complete: () => {
-        this.isLoading.set(true);   // safe for change detection
+       this.loader.hide();
       }
     });
   }
@@ -245,16 +242,59 @@ onPageSizeChange(size: number) {
   this.menu.toggle(event);
 
   }
-  private isFirstLoad = true;
-    onLazyLoad(event: any) {
-      if (this.isFirstLoad) {
-    this.isFirstLoad = false;
-    return;
-  }
-      this.sortField = event.sortField ?? '';
+  
+   /// Filter
+     
+  onLazyLoad(event: any) {
+  
+ 
+  this.sortField = event.sortField ?? '';
   this.sortOrder = event.sortOrder ?? 1;
 
-  this.loadTableData(this.searchControl.value || '');
-   }
+  const filters = event.filters;
 
+  this.pageindex.set(0);
+  const request: TableDataRequest = {
+    pageIndex: this.pageindex(),
+    pageSize: this.pageSize,
+    search: this.searchControl.value || '',
+    sortField: this.sortField,
+    sortOrder: this.sortOrder,
+    filters: {
+     code: this.getFilterValue(filters, 'code'),
+     name: this.getFilterValue(filters, 'name'),
+     agent: this.getFilterValue(filters, 'agent'),
+     gstIn: this.getFilterValue(filters, 'gstIn')
+    }
+  };
+
+  this.filters = request.filters || {}
+  this.loadTableDataFromLazy(request);
+  }
+
+  getFilterValue(filters: any, field: string): string {
+  const val = filters?.[field]?.[0]?.value;
+
+  if (val === null || val === undefined || val === '') {
+    return '';
+  }
+
+  return val.toString(); // 🔥 convert to string
+}
+
+loadTableDataFromLazy(req: TableDataRequest) {
+  this.loader.show();
+
+  this.supplierService.getSupplierTableData(req).subscribe({
+    next: res => this.tblResult.set(res),
+    complete: () => {
+      this.loader.hide();
+    }
+  });
+}
+
+clear(table: any) {
+  table.clear();              // ✅ PrimeNG filters clear
+  this.searchControl.setValue('');  // ✅ search textbox clear
+}
 }

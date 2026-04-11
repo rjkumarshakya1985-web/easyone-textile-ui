@@ -100,8 +100,21 @@
             <td>{{row.pan}}</td>
             <td>{{row.tallyLedgerName}}</td>
             <td>
-            <small>{{row.state}},{{row.city}}</small>
-            <div><small>{{row.address}}</small></div> 
+              <small>{{row.state}},{{row.city}}</small>
+            <div>
+             <ng-container *ngIf="row.address.length > 15; else shortText">
+             <span *ngIf="!row.expanded">
+               {{ row.address | slice:0:15 }} 
+                <a href="#" (click)="row.expanded = true; $event.preventDefault()">... see more</a>
+             </span>
+             <span *ngIf="row.expanded">
+               {{ row.address }} 
+                <a href="#" (click)="row.expanded = false; $event.preventDefault()"> see less</a>
+             </span>
+           </ng-container>
+           <ng-template #shortText>{{ row.address }}</ng-template>
+            </div> 
+            
             </td>
             <td>
             <span class="px-2 py-1 rounded bg-blue-50 text-blue-600 cursor-pointer hover:bg-blue-100"
