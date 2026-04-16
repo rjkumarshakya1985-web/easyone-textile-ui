@@ -1,0 +1,14 @@
+    
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 10px;
+}
+
+/* Right side action buttons container */
+.header-actions {
+  display: flex;
+  gap: 0.5rem;
+}

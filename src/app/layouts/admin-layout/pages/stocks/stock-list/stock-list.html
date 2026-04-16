@@ -14,10 +14,10 @@
         </p-floatlabel>
       </div>
 
-      <ng-container *ngIf="isLoading()">
+      <ng-container>
         <p-buttonGroup>
           <!-- <p-button label="{{pageSize}}" outlined severity="secondary"></p-button> -->
-           <p-menu #menuItem [model]="pageSizeItems" [popup]="true" />
+           <p-menu #menuItem [model]="pageSizeItems" icon="pi pi-file-export" [popup]="true" />
           <p-button (click)="menuItem.toggle($event)" label="{{pageSize}}" outlined severity="secondary"></p-button>        
           <p-button label="Total ({{tblResult().totalRows}})" disabled outlined></p-button>
 
@@ -35,7 +35,7 @@
     </div>
 
     <!-- TABLE -->
-    <ng-container *ngIf="isLoading()">
+    <ng-container>
       <!-- <p-table [value]="tblResult().result" size="small" showGridlines class="p-datatable-sm"> -->
  <p-table [value]="tblResult().result" [lazy]="true"
   (onLazyLoad)="onLazyLoad($event)"
@@ -50,6 +50,7 @@
             <th>Product</th>
             <th class="text-center">Available Qty</th>
             <th class="text-center">Product Rate</th>
+            <th class="text-center">Action</th>
          </tr>
         </ng-template>
 
@@ -86,6 +87,12 @@
                 </span>
              </div>
            </td>
+           <td class="text-center">
+              <span class="px-2 py-1 rounded bg-blue-50 text-blue-600 cursor-pointer hover:bg-blue-100"
+              (click)="openMenu($event,row)" pTooltip="Actions">
+               <i class="pi pi-ellipsis-v"></i>
+             </span>
+           </td>
           </tr>
         </ng-template>
 
@@ -94,5 +101,82 @@
 
 </p-card>
 
+
+<p-dialog [(visible)]="visible" [modal]="true" [style]="{ width: '40rem' }">
+
+    <!-- HEADER -->
+    <ng-template pTemplate="header">
+        <div class="flex items-center gap-2">
+            <span class="font-bold">Stock Adjustment</span>
+            <span>
+                ({{ curStockItem?.barcode + '-' + curStockItem?.productName }})
+            </span>
+        </div>
+    </ng-template>
+
+    <!-- FORM -->
+    <form [formGroup]="stockAdjustmentForm" class="w-100">
+
+      <div class="row mb-3 align-items-center">
+            <label class="col-md-4 col-form-label fw-semibold">
+                Select Adjustment Type 
+            </label>
+            <div class="col-md-8">
+              <select class="form-select" id="registrationType" 
+              formControlName="adjustmentType" (change)="calculateNewQty()">
+               <option value="" disabled selected>Select Type</option>
+               <option *ngFor="let type of stockAdjustmentTypes" [value]="type.value">{{ type.label }}</option>
+             </select>
+            </div>
+        </div>
+        <div class="row mb-3 align-items-center">
+            <label class="col-md-4 col-form-label fw-semibold">
+                System Quantity
+            </label>
+            <div class="col-md-8">
+                <input pInputText type="number" class="form-control w-100"
+                    formControlName="systemQty" />
+            </div>
+        </div>
+
+        <div class="row mb-3 align-items-center">
+            <label class="col-md-4 col-form-label fw-semibold">
+                Adjustment Quantity
+            </label>
+            <div class="col-md-8">
+                <input pInputText type="number" class="form-control w-100"
+                    formControlName="adjustmentQty"   (input)="calculateNewQty()" 
+                     [ngClass]="{'is-invalid': stockAdjustmentForm.get('adjustmentQty')?.touched && stockAdjustmentForm.get('adjustmentQty')?.invalid}" />
+            </div>
+        </div>
+        <div class="row mb-3 align-items-center">
+            <label class="col-md-4 col-form-label fw-semibold">
+                New  Quantity
+            </label>
+            <div class="col-md-8">
+               <b>{{ stockAdjustmentForm.get('newQty')?.value }}</b>
+            </div>
+        </div>
+
+
+        <div class="row mb-3 align-items-center">
+            <label class="col-md-4 col-form-label fw-semibold">
+                Reason
+            </label>
+            <div class="col-md-8">
+                <input pInputText type="text" class="form-control w-100"
+                    formControlName="reason" />
+            </div>
+        </div>
+
+    </form>
+
+    <!-- FOOTER -->
+    <ng-template pTemplate="footer">
+        <p-button label="Cancel" (click)="visible = false" severity="secondary"></p-button>
+        <p-button label="Save" (click)="adjustStocks()" severity="info"></p-button>
+    </ng-template>
+
+</p-dialog>
 <p-menu #menu [model]="items" [popup]="true"></p-menu>
 <p-confirmDialog></p-confirmDialog>

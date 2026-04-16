@@ -1,0 +1,141 @@
+<!-- HEADER -->
+<p-toolbar class="page-header">
+  <div class="p-toolbar-group-left">
+    <p-breadcrumb [model]="breadcrumbItems" homeIcon="pi pi-home"></p-breadcrumb>
+  </div>
+</p-toolbar>
+
+<!-- STOCK TABLE -->
+<p-card class="mb-3">
+  <p-table 
+    [value]="stockAdjustment() ? [stockAdjustment()?.stock] : []"
+    class="p-datatable-sm"
+    [tableStyle]="{ 'min-width': '100%' }"
+  >
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th>BarCode</th>
+        <th>Supplier</th>
+        <th>Product</th>
+        <th class="text-center">Available Qty</th>
+        <th>Product Rate</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-item>
+      <tr>
+        <td>{{ item.barcode }}</td>
+        <td>{{ item.supplierName }}</td>
+
+        <td>
+          <div class="font-semibold">{{ item.productName }}</div>
+          <div class="text-sm text-gray-500">
+            {{ item.stockGroup }}
+          </div>
+        </td>
+
+        <td class="text-center font-bold">
+          {{ item.availableQty }}
+        </td>
+
+        <td>
+          <div class="text-sm flex justify-between">
+            <span>Purchase</span>&nbsp;
+            <span>₹{{ item.purchaseRate }}</span>
+          </div>
+          <div class="text-sm flex justify-between">
+            <span>Wholesale</span>&nbsp;
+            <span>₹{{ item.wholeSaleRate }}</span>
+          </div>
+          <div class="text-sm flex justify-between">
+            <span>Retail</span>&nbsp;
+            <span>₹{{ item.retailRate }}</span>
+          </div>
+          <div class="text-sm flex justify-between font-semibold">
+            <span>MRP</span>&nbsp;
+            <span>₹{{ item.mrpRate }}</span>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+
+  </p-table>
+</p-card>
+
+<!-- ADJUSTMENT LIST -->
+<div *ngIf="stockAdjustment() as data">
+
+  <p-table 
+    [value]="data.adjustments"
+    [paginator]="true"
+    [rows]="10"
+    class="p-datatable-sm"
+    [tableStyle]="{ 'min-width': '100%' }"
+  >
+
+    <!-- HEADER -->
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Date / User</th>
+        <th class="text-center">Type</th>
+        <th class="text-center">System</th>
+        <th class="text-center">Adjust</th>
+        <th class="text-center">New</th>
+        <th class="text-right">Reason</th>
+      </tr>
+    </ng-template>
+
+    <!-- BODY -->
+    <ng-template pTemplate="body" let-item>
+      <tr>
+
+        <!-- DATE + USER -->
+        <td>
+          <div class="text-xs text-gray-500">
+            {{ item.createdOn | date:'short' }}
+          </div>
+          <div class="font-medium">
+            {{ item.createdByUserName }}
+          </div>
+        </td>
+
+        <!-- TYPE -->
+        <td class="text-center">
+          <p-tag
+            [value]="item.adjustmentType === 1 ? 'IN' : 'OUT'"
+            [severity]="item.adjustmentType === 1 ? 'success' : 'danger'"
+          ></p-tag>
+        </td>
+
+        <!-- SYSTEM -->
+        <td class="text-center">
+          {{ item.systemQty }}
+        </td>
+
+        <!-- ADJUST -->
+        <td class="text-center"
+            [ngClass]="{
+              'text-green-600': item.adjustmentType === 1,
+              'text-red-600': item.adjustmentType === 2
+            }">
+          {{ item.adjustmentType === 1 ? '+' : '-' }}
+          {{ item.adjustmentQty }}
+        </td>
+
+        <!-- NEW -->
+        <td class="text-center font-semibold">
+          {{ item.newQty }}
+        </td>
+
+        <!-- REASON -->
+        <td class="text-right text-sm text-gray-500">
+          {{ item.reason || '-' }}
+        </td>
+
+      </tr>
+    </ng-template>
+
+  </p-table>
+
+</div>
