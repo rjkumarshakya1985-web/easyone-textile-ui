@@ -222,6 +222,20 @@
               </p-floatlabel>
           </div>
 
+          <div class="col-md-3">
+              <p-floatlabel variant="on">
+                <p-inputNumber
+                    inputId="on_Supplier_discount"
+                    formControlName="discount"
+                    [min]="0"
+                    [max]="100"
+                    autocomplete="off"
+                    class="w-full">
+                </p-inputNumber>
+                <label for="on_Customer_discount">Discount</label>
+              </p-floatlabel>
+          </div>
+
            <div class="col-md-12">
              <p-floatlabel variant="on">
               <textarea class="form-control"  pTextarea id="on_remarks" fluid formControlName="remarks" rows="3" cols="30" style="resize: none" class="h-full"></textarea>

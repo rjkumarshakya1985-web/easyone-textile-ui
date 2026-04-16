@@ -87,6 +87,7 @@ ngOnInit(): void {
        gstIn: ['',Validators.required],
        pan: ['',Validators.required],
        regType: [null,Validators.required],
+       discount:[null],
        billingAddress: [''],
        shippingAddress: [''],
        cityId: [null,Validators.required],

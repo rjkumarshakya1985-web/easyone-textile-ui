@@ -8,6 +8,7 @@ export interface CustomerRequest {
   gstIn?: string;
   pan?: string;
   regType?: number;
+  discount?:number;
   billingAddress?: string;
   shippingAddress?: string;
   cityId: number;
