@@ -21,5 +21,6 @@ export enum ParcelStatus {
    Opened = 6,
    Returned = 7,
    Cancelled = 9,
-   Other = 10
+   Other = 10,
+   TallySynced=11
 }

@@ -31,6 +31,8 @@ export class Helper {
     case ParcelStatus.Returned:
     case ParcelStatus.Cancelled:
       return 'danger';
+    case ParcelStatus.TallySynced:
+      return 'success';
     default:
       return 'secondary';
   }
@@ -57,6 +59,8 @@ export class Helper {
         return 'Cancelled';
       case ParcelStatus.Other:
         return 'Other';
+      case ParcelStatus.TallySynced:
+        return 'Tally Synced'
       default:
         return 'Unknown';
     }
