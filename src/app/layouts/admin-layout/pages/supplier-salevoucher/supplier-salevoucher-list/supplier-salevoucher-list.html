@@ -23,7 +23,7 @@
      <div class="custom-paginator">
       <p-buttonGroup>
       <p-menu #menuItem [model]="pageSizeItems" [popup]="true" />
-      <p-button 
+      <p-button  icon="pi pi-file-filter"
         (click)="menuItem.toggle($event)" 
         label="{{pageSize}}" 
         outlined 
@@ -74,11 +74,40 @@
               <th>
                   <i class="pi pi-filter-slash cursor-pointer" (click)="clear(dt1)"></i>
               </th>
-            <th pSortableColumn="date">
-               <div class="supplier-header">
-                    <span class="header-title">Date</span>&nbsp;
-                    <p-sortIcon field="date"></p-sortIcon>
-                </div>
+             <th pSortableColumn="date">
+                 <div class="flex align-items-center gap-2">
+                       <span>Date</span>
+                       <p-sortIcon field="date"></p-sortIcon>
+
+                       <p-columnFilter 
+                         field="date"
+                         display="menu"
+                         matchMode="between"
+                         [showMatchModes]="false"
+                         [showOperator]="false"
+                         [showAddButton]="false"
+                         [showClearButton]="false" [showApplyButton]="false">
+
+                         <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                <p-datePicker 
+                                    [(ngModel)]="tempDateRange"
+                                    selectionMode="range"
+                                    [readonlyInput]="true"
+                                    dateFormat="dd/mm/yy">
+                        </p-datePicker>
+                       <div class="flex justify-content-between mt-2">
+                          
+                          <button type="button" class="p-button p-button-sm p-button-secondary"
+                              (click)="clearDateFilter(filter)">
+                            Clear</button>
+                            <button type="button" class="p-button p-button-sm p-button-primary" 
+                             (click)="applyDateFilter(filter)">
+                            Apply</button>
+                            
+                        </div>
+                      </ng-template>
+                    </p-columnFilter>
+                 </div>
             </th>
              <th pSortableColumn="saleVoucherNumber">
               <div class="flex align-items-center gap-2">
