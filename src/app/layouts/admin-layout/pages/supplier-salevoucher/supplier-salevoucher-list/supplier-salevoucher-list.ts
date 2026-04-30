@@ -26,7 +26,7 @@ import { Helper } from '../../../../../core/helpers/helper';
 import { TagModule } from 'primeng/tag';
 import { PAGE_PAGE } from '../../../../../config/api.config';
 import { SelectModule } from 'primeng/select';
-
+import { DatePicker, DatePickerModule } from 'primeng/datepicker';
 import { LoaderService } from '../../../../../core/services/loader.service';
 
 @Component({
@@ -48,13 +48,16 @@ import { LoaderService } from '../../../../../core/services/loader.service';
     MenubarModule, 
     BadgeModule,
     SelectModule,
+    DatePickerModule,
+    DatePicker,
     ConfirmDialogModule,
-    MenuModule,TagModule,    
+    MenuModule,TagModule,   
   ],
  templateUrl: './supplier-salevoucher-list.html',
   styleUrl: './supplier-salevoucher-list.css',
 })
 export class SupplierSalevoucherList {
+  tempDateRange: Date[] = [];
   pageSizeItems: MenuItem[] | undefined;
   sortField: string = '';
   sortOrder: number = 1; // 1 = ASC, -1 = DESC
@@ -95,8 +98,9 @@ export class SupplierSalevoucherList {
 
 
 clear(table: any) {
-  table.clear();              // ✅ PrimeNG filters clear
-  this.searchControl.setValue('');  // ✅ search textbox clear
+  table.clear();              
+  this.tempDateRange = [];
+  this.searchControl.setValue('');  
 }
 
 onLazyLoad(event: any) {
@@ -106,7 +110,26 @@ onLazyLoad(event: any) {
   this.sortOrder = event.sortOrder ?? 1;
 
   const filters = event.filters;
+ 
+  const dateRange = filters?.['date']?.[0]?.value;
 
+  let fromDate: string | null = null;
+  let toDate: string | null = null;
+
+  // ✅ Clean logic
+  if (dateRange!=null && dateRange.length > 0) {
+
+    if ( dateRange[0]) {
+      fromDate = this.formatDate(dateRange[0]);
+      toDate = fromDate; // default same day
+    }
+
+    if (dateRange.length > 1 && dateRange[1]) {
+      toDate = this.formatDate(dateRange[1]);
+    }
+  }
+
+  
   this.pageindex.set(0);
   const request: TableDataRequest = {
     pageIndex: this.pageindex(),
@@ -119,7 +142,9 @@ onLazyLoad(event: any) {
         supplierName: this.getFilterValue(filters, 'supplierName'),
         tranportName: this.getFilterValue(filters, 'tranportName'),
         parcelStatus: this.getFilterValue(filters, 'parcelStatus'),
-        billNumber: this.getFilterValue(filters,'billNumber')
+        billNumber: this.getFilterValue(filters,'billNumber'),
+        fromDate: fromDate,
+        toDate: toDate
      }
   };
 
@@ -290,5 +315,24 @@ onPageSizeChange(size: number) {
   this.menu.toggle(event);
   }
 
+
+  /// Date
+
+  applyDateFilter(filterCallback: any) {
+  filterCallback(this.tempDateRange); // 🔥 THIS LINE FIXES EVERYTHING
+}
+
+
+clearDateFilter(filterCallback: any) {
+  this.tempDateRange = [];
+  filterCallback(null);
+}
   
+formatDate(date: Date): string {
+  const year = date.getFullYear();
+  const month = ('0' + (date.getMonth() + 1)).slice(-2);
+  const day = ('0' + date.getDate()).slice(-2);
+
+  return `${year}-${month}-${day}`; // ✅ LOCAL yyyy-MM-dd
+}
 }
