@@ -89,7 +89,8 @@ export class ProductList {
                          { label: '10', command: () => this.onPageSizeChange(10) },
                          { label: '30', command: () => this.onPageSizeChange(30) },
                          { label: '50', command: () => this.onPageSizeChange(50) },
-                         
+                         { label: '100', command: () => this.onPageSizeChange(100) },
+                         { label: '200', command: () => this.onPageSizeChange(200) },
                         ]
             }
         ];

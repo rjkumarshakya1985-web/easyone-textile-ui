@@ -249,25 +249,20 @@
            <ng-template #shortText>{{ row.productDetails }}</ng-template>
           </td>
           <td>{{row.tranportName}}</td>
-       <td>
-  <div class="flex flex-column gap-1">
-
-    <!-- Status Badge -->
-    <p-tag 
-      size="small" icon="pi pi-check-circle" 
-      class="w-fit font-medium border-round-xl px-2 py-1"
-      [severity]="ParcelStatusHelper.getParcelStatusColor(row.parcelStatus)" 
-      [value]="ParcelStatusHelper.getParcelStatusText(row.parcelStatus)">
-    </p-tag>
-
-    <!-- Date with icon -->
-    <div class="flex align-items-center gap-1 text-xs text-500">
-      <i class="pi pi-calendar"></i>
-      <span>{{ row.statusDate | date:'dd/MM/yyyy' }}</span>
-    </div>
-
-  </div>
-</td>
+          <td>
+             <div class="flex flex-column gap-1">
+               <p-tag 
+                    size="small" icon="pi pi-check-circle" 
+                    class="w-fit font-medium border-round-xl px-2 py-1"
+                    [severity]="ParcelStatusHelper.getParcelStatusColor(row.parcelStatus)" 
+                    [value]="ParcelStatusHelper.getParcelStatusText(row.parcelStatus)">
+             </p-tag>
+             <div class="flex align-items-center gap-1 text-xs text-500">
+                 <i class="pi pi-calendar"></i>
+                 <span>{{ row.statusDate | date:'dd/MM/yyyy' }}</span>
+            </div>
+          </div>
+         </td>
           <td>
                <ng-container *ngIf="row.lrDate; else addButton">
                   <div>{{ row.lrNumber }}</div>
