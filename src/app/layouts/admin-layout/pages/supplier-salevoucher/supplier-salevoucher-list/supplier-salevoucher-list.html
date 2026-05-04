@@ -226,7 +226,14 @@
             <td>{{row.date | date:'dd, MMMM, yyyy'}}</td>
             <td style="text-align: center;">{{ row.id }}</td>
             <td>{{row.departmentName}}  </td>
-            <td>{{row.supplierName}}</td>
+            <td>
+             <div class="flex align-items-center gap-2">
+               <i class="pi pi-user text-500"></i>
+                 <span class="font-medium text-900">
+                 {{ row.supplierName }}
+                </span>
+            </div>
+           </td>
             <td style="text-align: center;">{{row.billNumber}}</td>
          <td>
             <ng-container *ngIf="row.productDetails.length > 15; else shortText">
@@ -241,31 +248,46 @@
            </ng-container>
            <ng-template #shortText>{{ row.productDetails }}</ng-template>
           </td>
-            <td>{{row.tranportName}}</td>
-            <td>
-              <p-tag [severity]="ParcelStatusHelper.getParcelStatusColor(row.parcelStatus)" [value]="ParcelStatusHelper.getParcelStatusText(row.parcelStatus)" />
-            </td>
-          <td>
-    <ng-container *ngIf="row.lrDate; else addButton">
-        <div>{{ row.lrNumber }}</div>
-        <div>{{ row.lrDate | date:'dd/MM/yyyy' }}</div>
-        <div>  <i 
-            class="pi pi-pencil text-blue-500 cursor-pointer hover:text-blue-700 text-sm"
-            (click)="showDialog(row)">
-        </i></div>
-    </ng-container>
+          <td>{{row.tranportName}}</td>
+       <td>
+  <div class="flex flex-column gap-1">
 
-    <ng-template #addButton>
-        <p-button 
-            label="Add" 
-            variant="outlined" 
-            severity="help" 
-            pTooltip="Add LR" 
-            tooltipPosition="bottom"
-            (click)="showDialog(row)">
-        </p-button>
-    </ng-template>
+    <!-- Status Badge -->
+    <p-tag 
+      size="small" icon="pi pi-check-circle" 
+      class="w-fit font-medium border-round-xl px-2 py-1"
+      [severity]="ParcelStatusHelper.getParcelStatusColor(row.parcelStatus)" 
+      [value]="ParcelStatusHelper.getParcelStatusText(row.parcelStatus)">
+    </p-tag>
+
+    <!-- Date with icon -->
+    <div class="flex align-items-center gap-1 text-xs text-500">
+      <i class="pi pi-calendar"></i>
+      <span>{{ row.statusDate | date:'dd/MM/yyyy' }}</span>
+    </div>
+
+  </div>
 </td>
+          <td>
+               <ng-container *ngIf="row.lrDate; else addButton">
+                  <div>{{ row.lrNumber }}</div>
+                  <div>{{ row.lrDate | date:'dd/MM/yyyy' }}</div>
+                  <div>
+                      <i class="pi pi-pencil text-blue-500 cursor-pointer hover:text-blue-700 text-sm"
+                      (click)="showDialog(row)"></i>
+                  </div>
+                </ng-container>
+                <ng-template #addButton>
+                   <p-button 
+                       label="Add" 
+                       variant="outlined" 
+                       severity="help" 
+                       pTooltip="Add LR" 
+                       tooltipPosition="bottom"
+                       (click)="showDialog(row)">
+                   </p-button>
+                </ng-template>
+            </td>
             <td>
               <span class="px-2 py-1 rounded bg-blue-50 text-blue-600 cursor-pointer hover:bg-blue-100"
                  (click)="openMenu($event, row)">

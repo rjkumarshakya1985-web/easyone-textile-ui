@@ -12,6 +12,7 @@ export interface SaleVoucherTableResponse {
   departmentName:string;
   isExported:boolean;
   lrNumber:string;
-  lrDate:Date
+  lrDate:Date;
+  statusDate:Date;
 }
 
