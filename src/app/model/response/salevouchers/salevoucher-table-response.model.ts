@@ -9,5 +9,9 @@ export interface SaleVoucherTableResponse {
   billNumber: string;
   parcelStatus: ParcelStatus;
   productDetails:string;
+  departmentName:string;
+  isExported:boolean;
+  lrNumber:string;
+  lrDate:Date
 }
 

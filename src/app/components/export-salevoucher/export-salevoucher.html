@@ -1,0 +1,40 @@
+<div *ngIf="dataList().length > 0; else noData">
+
+  <p-card *ngFor="let item of dataList()" class="mb-2 compact-card">
+    <div class="flex justify-between align-items-center">
+
+      <div class="text-sm line-height-2">
+        <div>
+          <b>#{{ item.id }}</b> | {{ item.supplierBillNumber }}
+        </div>
+
+        <div class="text-500">
+          {{ item.supplierName }}
+        </div>
+
+        <div class="text-xs text-600">
+          {{ item.date | date:'dd/MM/yyyy' }}
+        </div>
+      </div>
+
+    </div>
+  </p-card>
+
+</div>
+
+<ng-template #noData>
+  <div class="text-center text-500 mt-3">
+    No vouchers found
+  </div>
+</ng-template>
+
+<div class="flex justify-content-center mt-3">
+  <button 
+    pButton 
+    label="Export" 
+    icon="pi pi-download"
+    class="p-button-sm p-button-success"
+    [disabled]="!dataList().length"
+    (click)="exportAll()">
+  </button>
+</div>

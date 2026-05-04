@@ -9,16 +9,23 @@ import { DialogModule } from 'primeng/dialog';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { UserService } from '../../core/services/user.service';
+import {  EventEmitter, Output } from '@angular/core';
+import { DrawerModule } from 'primeng/drawer';
+import { CommonModule } from '@angular/common';
+import { ExportSalevoucher } from '../export-salevoucher/export-salevoucher';
 
 @Component({
   selector: 'app-header',
   standalone: true, 
-  imports: [MenubarModule, ButtonModule, BadgeModule,Menu,DialogModule,
-    ReactiveFormsModule,InputTextModule],
+  imports: [CommonModule,MenubarModule, ButtonModule, BadgeModule,Menu,DialogModule,
+    ReactiveFormsModule,InputTextModule,DrawerModule,ExportSalevoucher],
   templateUrl: './header.html',
   styleUrl: './header.css',
 })
 export class Header {
+  @Output() toggleSidebar = new EventEmitter<void>();
+  visible2: boolean = false;
+  isExportSaleVoucher:boolean = false;
   visible = false;
   items: MenuItem[] | undefined;
   roleName: string = '';
@@ -26,7 +33,8 @@ export class Header {
   credentialForm!: FormGroup;
 
   constructor(private fb: FormBuilder,private storage: LocalStorageService,
-    private userService:UserService,private messageService: MessageService,) {
+    private userService:UserService,private messageService: MessageService,
+     ) {
 
     this.credentialForm = this.fb.group({
       oldPassword: ['', Validators.required],
@@ -72,6 +80,8 @@ export class Header {
      if (user.roleName === 'Supplier') {
       this.roleName = `Welcome ${user.name}`;   
      } else {
+
+      this.isExportSaleVoucher=true;
       this.roleName = `Welcome ${user.roleName}`;
     }
 }
@@ -87,8 +97,8 @@ export class Header {
        this.credentialForm.reset();
    }
 
-   toggleSidebar() {
-    // emit an event if you want to control sidebar visibility from parent
+   onToggleClick() {
+    this.toggleSidebar.emit();
    }
 
    changePassword():void
@@ -114,5 +124,10 @@ export class Header {
 
             }
       });
+    }
+
+    openExportSaleVoucher()
+    {
+      this.visible2 = true
     }
 }

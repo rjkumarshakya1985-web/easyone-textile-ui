@@ -124,6 +124,21 @@
                     </p-columnFilter>
               </div>
              </th>
+            <th pSortableColumn="department">
+              <div class="flex align-items-center gap-2">
+              <span> Department</span>
+              <p-sortIcon field="department"></p-sortIcon>
+               <p-columnFilter 
+                        type="text"
+                        field="department"
+                        display="menu"
+                        matchMode="contains"
+                        [showMatchModes]="false"
+                        [showOperator]="false"
+                        [showAddButton]="false">
+                 </p-columnFilter>
+             </div>
+            </th>
             <th pSortableColumn="supplierName">
                <div class="flex align-items-center gap-2">
               <span>Supplier</span>
@@ -141,7 +156,7 @@
             </th>
            <th pSortableColumn="billNumber">
               <div class="flex align-items-center gap-2">
-                 <span>SupplierInvoice</span>
+                 <span>Supplier Invoice</span>
                  <p-sortIcon field="billNumber"></p-sortIcon>
                     <p-columnFilter 
                         type="numeric"
@@ -197,6 +212,7 @@
                </p-columnFilter>
             </div>
           </th>
+        <th>LR</th>
         <th>Action</th>
         </tr>
         </ng-template>
@@ -204,9 +220,12 @@
         <ng-template pTemplate="body" let-row>
           
           <tr>
-            <td></td>
+            <td>
+              <p-checkbox  [binary]="true" [(ngModel)]="row.isExported"  (onChange)="onExportChange(row)" [disabled]="row.parcelStatus!=3 && row.parcelStatus!=4" />
+            </td>
             <td>{{row.date | date:'dd, MMMM, yyyy'}}</td>
             <td style="text-align: center;">{{ row.id }}</td>
+            <td>{{row.departmentName}}  </td>
             <td>{{row.supplierName}}</td>
             <td style="text-align: center;">{{row.billNumber}}</td>
          <td>
@@ -226,6 +245,27 @@
             <td>
               <p-tag [severity]="ParcelStatusHelper.getParcelStatusColor(row.parcelStatus)" [value]="ParcelStatusHelper.getParcelStatusText(row.parcelStatus)" />
             </td>
+          <td>
+    <ng-container *ngIf="row.lrDate; else addButton">
+        <div>{{ row.lrNumber }}</div>
+        <div>{{ row.lrDate | date:'dd/MM/yyyy' }}</div>
+        <div>  <i 
+            class="pi pi-pencil text-blue-500 cursor-pointer hover:text-blue-700 text-sm"
+            (click)="showDialog(row)">
+        </i></div>
+    </ng-container>
+
+    <ng-template #addButton>
+        <p-button 
+            label="Add" 
+            variant="outlined" 
+            severity="help" 
+            pTooltip="Add LR" 
+            tooltipPosition="bottom"
+            (click)="showDialog(row)">
+        </p-button>
+    </ng-template>
+</td>
             <td>
               <span class="px-2 py-1 rounded bg-blue-50 text-blue-600 cursor-pointer hover:bg-blue-100"
                  (click)="openMenu($event, row)">
@@ -242,4 +282,32 @@
 
 <p-menu #menu [model]="items" [popup]="true"></p-menu>
 
+
+<p-dialog [(visible)]="visible" [modal]="true" [style]="{ width: '25rem' }">
+    <ng-template pTemplate="header">
+        <div class="inline-flex items-center justify-center gap-2">
+            <span class="font-bold whitespace-nowrap">{{dialogHeader}}</span>
+        </div>
+    </ng-template>
+
+    <form [formGroup]="lrForm">
+
+        <div class="flex items-center gap-4 mb-4">
+            <label for="name" class="font-semibold w-24 form-label">Number</label>
+            <input pInputText id="name"  formControlName="lrNumber" />
+
+        </div>
+
+        <div class="flex items-center gap-4 mb-2">
+            <label for="description" class="font-semibold w-24 form-label">Date</label>
+            <p-datepicker formControlName="lrDate"  appendTo="body" dateFormat="dd/mm/yy"/>
+        </div>
+
+    </form>
+
+    <ng-template pTemplate="footer">
+        <p-button label="Cancel" [raised]="true" (click)="visible = false" severity="secondary" />
+        <p-button label="Save" [raised]="true" severity="info" (click)="saveLrDetails()" />
+    </ng-template>
+</p-dialog>
 

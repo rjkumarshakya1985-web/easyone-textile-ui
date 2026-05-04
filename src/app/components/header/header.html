@@ -1,9 +1,11 @@
 <p-menubar [style]="{'background-color':'#1976d2','color':'white'}">
       <ng-template pTemplate="start">
-        <button pButton icon="pi pi-bars" class="p-button-text" (click)="toggleSidebar()"></button>
+        <button pButton icon="pi pi-bars" class="p-button-text" (click)="onToggleClick()"></button>
         <span class="app-title">{{roleName}}</span>
       </ng-template>
       <ng-template pTemplate="end">
+       
+        <button pButton icon="pi pi-box" *ngIf="isExportSaleVoucher" (click)="visible2 = true" class="p-button-rounded p-button-text" pBadge="15" badgeSeverity="danger"></button>
         <button pButton icon="pi pi-bell" class="p-button-rounded p-button-text" pBadge="15" badgeSeverity="danger"></button>
         <button pButton icon="pi pi-user" label="Profile" (click)="menu.toggle($event)" class="p-button-text"></button>
         <p-menu #menu [model]="items" [popup]="true" />
@@ -43,3 +45,9 @@
         <p-button label="Save" [raised]="true" severity="info" (click)="changePassword()" />
     </ng-template>
 </p-dialog>
+
+  <p-drawer header="Sale Voucher" [(visible)]="visible2" position="right">
+        <p>
+           <app-export-salevoucher *ngIf="visible2"></app-export-salevoucher>
+        </p>
+    </p-drawer>

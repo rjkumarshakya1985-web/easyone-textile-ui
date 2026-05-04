@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy,Input } from '@angular/core';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { MenuItem } from 'primeng/api';
@@ -14,7 +14,7 @@ import { ParcelStatus } from '../../core/enums/enum';
   styleUrls: ['./nav.css']
 })
 export class Nav implements OnInit, OnDestroy {
-
+ @Input() isOpen = true;
   items: MenuItem[] = [];
   isLogin = false;
   userRole: string | null = null;

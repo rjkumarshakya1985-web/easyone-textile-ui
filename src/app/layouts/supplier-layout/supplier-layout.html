@@ -1,9 +1,10 @@
-<div class="layout">
-      <app-header></app-header>
-      <div class="main">
-        <app-nav></app-nav>
-        <div class="content">
-          <router-outlet></router-outlet>
+
+        <div class="layout">
+        <app-header (toggleSidebar)="handleToggle()"></app-header>
+        <div class="main">
+           <app-nav [isOpen]="isSidebarOpen"></app-nav>
+            <div class="content">
+            <router-outlet></router-outlet>
+            </div>
         </div>
-      </div>
-    </div>
+        </div>

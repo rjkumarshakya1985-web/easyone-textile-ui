@@ -28,6 +28,7 @@ import { Helper } from '../../../../../core/helpers/helper';
 import { PAGE_PAGE } from '../../../../../config/api.config';
 import { LoaderService } from '../../../../../core/services/loader.service';
 import { SelectModule } from 'primeng/select';
+import { CheckboxModule } from 'primeng/checkbox';
 
 @Component({
   selector: 'app-salevoucher-list',
@@ -50,7 +51,7 @@ import { SelectModule } from 'primeng/select';
     TagModule, 
     SelectModule,
     ConfirmDialogModule,
-    MenuModule,ChipModule    
+    MenuModule,ChipModule,CheckboxModule     
   ],
  templateUrl: './salevoucher-list.html',
   styleUrl: './salevoucher-list.css',

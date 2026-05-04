@@ -8,7 +8,7 @@ import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { ToolbarModule } from 'primeng/toolbar';
 import { Router } from '@angular/router';
 import { ConfirmationService, MenuItem } from 'primeng/api';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { TableDataRequest } from '../../../../../model/request/table-datafilter-request.model';
 import { PanelModule } from 'primeng/panel';
@@ -28,6 +28,9 @@ import { PAGE_PAGE } from '../../../../../config/api.config';
 import { SelectModule } from 'primeng/select';
 import { DatePicker, DatePickerModule } from 'primeng/datepicker';
 import { LoaderService } from '../../../../../core/services/loader.service';
+import { CheckboxModule } from 'primeng/checkbox';
+import { DialogModule } from 'primeng/dialog';
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
   selector: 'app-supplier-salevoucher-list',
@@ -45,18 +48,24 @@ import { LoaderService } from '../../../../../core/services/loader.service';
     TooltipModule,
     FloatLabelModule,
     ReactiveFormsModule,
+    InputTextModule,
     MenubarModule, 
     BadgeModule,
     SelectModule,
     DatePickerModule,
     DatePicker,
     ConfirmDialogModule,
-    MenuModule,TagModule,   
+    MenuModule,TagModule,
+    CheckboxModule,
+    DialogModule    
   ],
  templateUrl: './supplier-salevoucher-list.html',
   styleUrl: './supplier-salevoucher-list.css',
 })
 export class SupplierSalevoucherList {
+  lrForm!: FormGroup;
+  dialogHeader:string="Add LR"
+  visible:boolean=false;
   tempDateRange: Date[] = [];
   pageSizeItems: MenuItem[] | undefined;
   sortField: string = '';
@@ -70,7 +79,7 @@ export class SupplierSalevoucherList {
   transportInput:string=''
   supplierNumber:string=''
   saleVoucherNumber: number | null = null;
- 
+  saleVoucherId?:number;
   // -----------------------------
   // Signals
   // -----------------------------
@@ -143,6 +152,7 @@ onLazyLoad(event: any) {
         tranportName: this.getFilterValue(filters, 'tranportName'),
         parcelStatus: this.getFilterValue(filters, 'parcelStatus'),
         billNumber: this.getFilterValue(filters,'billNumber'),
+        department: this.getFilterValue(filters,'department'),
         fromDate: fromDate,
         toDate: toDate
      }
@@ -174,7 +184,7 @@ loadTableDataFromLazy(req: TableDataRequest) {
 }
 
 
-  constructor(
+  constructor(private fb: FormBuilder,
     private router: Router,
      private loader: LoaderService,
     private saleVoucherService: SaleVoucherService,
@@ -194,6 +204,12 @@ loadTableDataFromLazy(req: TableDataRequest) {
                         ]
             }
         ];
+
+    this.lrForm = this.fb.group({
+     id:[null,Validators.required],
+     lrNumber: ['', Validators.required],
+     lrDate: [null, Validators.required]
+    });
   }
 onPageSizeChange(size: number) {
   this.pageindex.set(0);      // reset to first page
@@ -334,5 +350,44 @@ formatDate(date: Date): string {
   const day = ('0' + date.getDate()).slice(-2);
 
   return `${year}-${month}-${day}`; // ✅ LOCAL yyyy-MM-dd
+}
+ /// Export checked unchecked
+ onExportChange(row: SaleVoucherTableResponse) {
+
+ 
+  this.saleVoucherService.markAsExported(row.id).subscribe({
+    next: () => {
+      console.log('Status updated');
+    },
+    error: () => {
+     
+    }
+  });
+ }
+
+ /// LR
+ showDialog(value: SaleVoucherTableResponse) {
+
+   this.lrForm.patchValue({
+     id: value.id,
+     lrNumber: value.lrNumber,
+     lrDate: value.lrDate ? new Date(value.lrDate) : null
+   });
+   this.visible = true;
+
+}
+
+ saveLrDetails() {
+  if (this.lrForm.invalid) {
+    this.lrForm.markAllAsTouched();
+    return;
+  }
+
+  const formValue = this.lrForm.value;
+   this.saleVoucherService.saveLr(formValue).subscribe(result=>{
+    
+     this.visible=false;
+     this.loadTableData();
+   })
 }
 }

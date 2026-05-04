@@ -8,6 +8,8 @@ import { SaleVoucherTableResponse } from '../../model/response/salevouchers/sale
 import { SaleVoucherRequest } from '../../model/request/salevouchers/salevoucher-request.model';
 import { SaleVoucherResponse } from '../../model/response/salevouchers/salevoucher-response.model';
 import { SaleVoucherStatusView } from '../../model/response/salevouchers/salevoucher-status-response.model';
+import { SaleVoucherDto } from '../../model/dto/sale-voucher.model';
+import { LrRequest } from '../../model/request/salevouchers/lr-request.model';
 
 
 @Injectable({
@@ -51,4 +53,17 @@ export class SaleVoucherService {
   {
      return this.http.get<SaleVoucherStatusView[]>(`${this.apiUrl}salevoucherstatus/${saleVoucher}`);
   }
+
+ markAsExported(id: number): Observable<SaleVoucherDto> {
+  return this.http.put<SaleVoucherDto>(`${this.baseUrl}/${id}`, {});
+ }
+
+getExportedList(): Observable<SaleVoucherDto[]> {
+   return this.http.get<SaleVoucherDto[]>(`${this.baseUrl}/export`);
+}
+
+saveLr(request:LrRequest):Observable<boolean>{
+ return this.http.post<boolean>(`${this.baseUrl}/lr`, request);
+}
+
 }

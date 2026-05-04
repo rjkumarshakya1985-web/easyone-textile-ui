@@ -11,4 +11,10 @@ import { Nav } from '../../components/nav/nav';
 })
 export class SupplierLayout {
 
+  isSidebarOpen = true;
+
+  handleToggle() {
+    this.isSidebarOpen = !this.isSidebarOpen;
+ }
+ 
 }

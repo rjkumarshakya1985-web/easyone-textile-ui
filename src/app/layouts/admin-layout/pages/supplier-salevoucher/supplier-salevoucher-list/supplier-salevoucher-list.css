@@ -36,3 +36,10 @@
 .supplier-header .p-column-filter {
   margin-left: 4px;
 }
+
+
+.form-label {
+  width: 90px; /* set any width you want */
+  font-weight: 600;
+  display: inline-block;
+}

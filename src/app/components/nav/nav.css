@@ -39,3 +39,25 @@
 }
 
 
+.main {
+  display: flex;
+}
+
+.sidebar {
+  width: 250px;
+  transition: all 0.3s ease;
+}
+
+.sidebar.closed {
+  width: 0;
+  overflow: hidden;
+}
+
+.content {
+  flex: 1;
+  transition: all 0.3s ease;
+}
+
+.content.full {
+  margin-left: 0;
+}
