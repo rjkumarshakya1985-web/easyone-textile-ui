@@ -6,6 +6,7 @@
       <div class="text-sm line-height-2">
         <div>
           <b>#{{ item.id }}</b> | {{ item.supplierBillNumber }}
+           <span *ngIf="item.lrNumber"> | LR - {{item.lrNumber}}</span>
         </div>
 
         <div class="text-500">
