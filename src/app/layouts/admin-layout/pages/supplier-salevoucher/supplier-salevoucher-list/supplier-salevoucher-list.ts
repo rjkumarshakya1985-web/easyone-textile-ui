@@ -385,6 +385,19 @@ formatDate(date: Date): string {
   }
 
   const formValue = this.lrForm.value;
+
+  // ✅ Fix timezone issue
+  const localDate = formValue.lrDate;
+
+  if (localDate) {
+    formValue.lrDate = new Date(
+      localDate.getFullYear(),
+      localDate.getMonth(),
+      localDate.getDate(),
+      12, 0, 0
+    );
+  }
+  // lrDate issue I choose 8 show 7
    this.saleVoucherService.saveLr(formValue).subscribe(result=>{
     
      this.visible=false;

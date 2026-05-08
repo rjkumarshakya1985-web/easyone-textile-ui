@@ -46,7 +46,7 @@ export class ExportSalevoucher {
   if (!this.dataList().length) return;
 
   const data = this.dataList().map(item => ({
-    'Sale Voucher No': item.id,
+    'Lr No': item.lrNumber,
     'Supplier Bill No': item.supplierBillNumber || '-',
     'Supplier Name': item.supplierName || '-',
     'Date': new Date(item.date).toLocaleDateString('en-GB')
