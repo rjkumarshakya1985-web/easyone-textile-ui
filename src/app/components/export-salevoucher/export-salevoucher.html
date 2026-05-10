@@ -1,41 +1,71 @@
 <div *ngIf="dataList().length > 0; else noData">
 
-  <p-card *ngFor="let item of dataList()" class="mb-2 compact-card">
-    <div class="flex justify-between align-items-center">
+    <p-virtualScroller
+        [items]="dataList()"
+        [itemSize]="72"
+        scrollHeight="calc(100vh - 180px)"
+        styleClass="w-full">
 
-      <div class="text-sm line-height-2">
-        <div>
-          <b>#{{ item.id }}</b> | {{ item.supplierBillNumber }}
-           <span *ngIf="item.lrNumber"> | LR - {{item.lrNumber}}</span>
-        </div>
+        <ng-template pTemplate="item" let-item  let-options="options">
 
-        <div class="text-500">
-          {{ item.supplierName }}
-        </div>
+            <p-card class="mb-2 compact-card">
 
-        <div class="text-xs text-600">
-          {{ item.date | date:'dd/MM/yyyy' }}
-        </div>
-      </div>
+                <div class="grid text-sm">
 
-    </div>
-  </p-card>
+                    <!-- Left -->
+                    <div class="col-8">
+
+                        <div class="font-semibold">
+                            {{ options.index + 1 }} #{{ item.id }}
+                            <span class="mx-1">|</span>
+                            {{ item.supplierBillNumber }}
+                        </div>
+
+                        <div class="text-600 mt-1 truncate">
+                            {{ item.supplierName }}
+                        </div>
+
+                    </div>
+
+                    <!-- Right -->
+                    <div class="col-4 text-right">
+
+                        <div *ngIf="item.lrNumber"
+                             class="text-xs font-medium text-primary">
+                            LR: {{ item.lrNumber }}
+                        </div>
+
+                        <div class="text-xs text-500 mt-1">
+                            {{ item.date | date:'dd/MM/yyyy' }}
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </p-card>
+
+        </ng-template>
+
+    </p-virtualScroller>
 
 </div>
 
 <ng-template #noData>
-  <div class="text-center text-500 mt-3">
-    No vouchers found
-  </div>
+    <div class="text-center text-500 mt-3">
+        No vouchers found
+    </div>
 </ng-template>
 
 <div class="flex justify-content-center mt-3">
-  <button 
-    pButton 
-    label="Export" 
-    icon="pi pi-download"
-    class="p-button-sm p-button-success"
-    [disabled]="!dataList().length"
-    (click)="exportAll()">
-  </button>
+
+    <button
+        pButton
+        label="Export"
+        icon="pi pi-download"
+        class="p-button-sm p-button-success"
+        [disabled]="!dataList().length"
+        (click)="exportAll()">
+    </button>
+
 </div>
