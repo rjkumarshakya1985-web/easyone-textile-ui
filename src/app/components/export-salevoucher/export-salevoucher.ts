@@ -7,20 +7,24 @@ import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { CardModule } from 'primeng/card';
 import * as XLSX from 'xlsx';
-
+import { LoaderService } from '../../core/services/loader.service';
+import { MessageModule } from 'primeng/message';
+import { ScrollerModule } from 'primeng/scroller';
 
 @Component({
   selector: 'app-export-salevoucher',
-  imports: [CommonModule, DataViewModule, ButtonModule,TableModule,CardModule],
+  imports: [CommonModule, DataViewModule,ScrollerModule,
+     ButtonModule,TableModule,CardModule,MessageModule ],
    standalone: true,
   templateUrl: './export-salevoucher.html',
   styleUrl: './export-salevoucher.css',
 })
 export class ExportSalevoucher {
-
+    loading = false;
     dataList = signal<SaleVoucherDto[]>([]);
 
-   constructor(private saleVoucherService:SaleVoucherService
+   constructor(private saleVoucherService:SaleVoucherService,
+      private loader: LoaderService
      ) {
     
     }
@@ -30,10 +34,11 @@ export class ExportSalevoucher {
   }
     
   loadExportSaleVoucher() {
+    this.loader.show();
     this.saleVoucherService.getExportedList().subscribe({
       next: (result) => {
         this.dataList.set(result);
-         console.log(this.dataList());
+         this.loader.hide();
       },
       error: (err) => {
         console.error(err);
@@ -59,6 +64,12 @@ export class ExportSalevoucher {
     SheetNames: ['Vouchers']
   };
 
+   worksheet['!cols'] = [
+    { wch: 15 }, // Lr No
+    { wch: 15 }, // Supplier Bill No
+    { wch: 35 }, // Supplier Name
+    { wch: 15 }  // Date
+  ];
   const excelBuffer = XLSX.write(workbook, {
     bookType: 'xlsx',
     type: 'array'

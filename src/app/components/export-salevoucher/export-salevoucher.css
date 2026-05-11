@@ -1,0 +1,4 @@
+:host ::ng-deep .compact-card .p-card-body {
+    padding-bottom: 1px;
+    padding-top: 1px;
+}
