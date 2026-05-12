@@ -8,7 +8,6 @@ import { ButtonModule } from 'primeng/button';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { ToolbarModule } from 'primeng/toolbar';
 import { Menu, MenuModule } from 'primeng/menu';
-import { CustomerResponse } from '../../../../../model/response/customer/customer-response.model';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { TableDataRequest } from '../../../../../model/request/table-datafilter-request.model';
 import { PanelModule } from 'primeng/panel';
@@ -45,7 +44,7 @@ import { VisitorResponse } from '../../../../../model/response/visitor/visitor-r
   styleUrl: './visitor-list.css',
 })
 export class VisitorList {
- pageSizeItems: MenuItem[] | undefined;
+  pageSizeItems: MenuItem[] | undefined;
   sortField: string = '';
   sortOrder: number = 1; // 1 = ASC, -1 = DESC
   @ViewChild('menu') menu!: Menu;

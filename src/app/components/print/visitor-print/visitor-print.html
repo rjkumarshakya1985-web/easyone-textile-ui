@@ -1,1 +1,72 @@
-<p>visitor-print works!</p>
+<div class="container mt-4 no-print">
+
+  <button class="print-btn" (click)="printPage()">
+    Print Slip
+  </button>
+
+</div>
+
+<div class="print-container">
+
+  @if(visitorResponse(); as visitor){
+
+    <div id="print-section" class="thermal-print">
+
+      <div class="header">
+        <h2>VISITOR SLIP</h2>
+        <div class="line"></div>
+      </div>
+
+      <div class="row">
+      
+         <ngx-barcode6
+      [bc-value]="visitor.id.toString()"
+      [bc-format]="'CODE128'"
+      [bc-width]="3"
+      [bc-height]="30"
+      [bc-margin]="0"
+      [bc-font-size]="15"
+      [bc-display-value]="true"
+      [bc-margin-top]="2"
+      [bc-margin-bottom]="2">
+    </ngx-barcode6>
+      </div>
+
+      <div class="row">
+        <span class="label">Name</span>
+        <span>{{ visitor.name }}</span>
+      </div>
+
+      <div class="row">
+        <span class="label">Mobile</span>
+        <span>{{ visitor.mobile }}</span>
+      </div>
+
+      <div class="row">
+        <span class="label">Customer Type</span>
+        <span>{{ visitor.customerType }}</span>
+      </div>
+      <div class="row">
+        <span class="label">Visit Date</span>
+        <span>
+          {{ visitor.visitDate | date:'dd/MM/yyyy hh:mm a' }}
+        </span>
+      </div>
+
+      <div class="remarks">
+        <div class="label mb-1">Remarks</div>
+        <div>
+          {{ visitor.remarks || '-' }}
+        </div>
+      </div>
+
+      <div class="footer">
+        <div class="line"></div>
+        <div>Thank You</div>
+      </div>
+
+    </div>
+
+  }
+
+</div>
