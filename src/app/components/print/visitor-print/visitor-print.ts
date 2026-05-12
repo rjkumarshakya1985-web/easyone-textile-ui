@@ -5,11 +5,11 @@ import { VisitorResponse } from '../../../model/response/visitor/visitor-respons
 import { CommonModule } from '@angular/common';
 import printJS from 'print-js';
 import { NgxBarcode6Module } from 'ngx-barcode6';
-
+import { FormsModule } from '@angular/forms';
 @Component({
    selector: 'app-visitor-print',
   standalone: true,
-  imports: [CommonModule,NgxBarcode6Module],
+  imports: [CommonModule,NgxBarcode6Module,FormsModule],
   templateUrl: './visitor-print.html',
   styleUrl: './visitor-print.css',
 })
@@ -34,14 +34,21 @@ export class VisitorPrint {
     });
 
   }
+copyCount = 1;
+
+copiesArray(): number[] {
+  return Array(this.copyCount).fill(0);
+}
 
   printPage() {
 
    printJS({
-    printable: 'print-section',
+    printable: 'print-area',
     type: 'html',
     targetStyles: ['*'],
-    documentTitle: 'Visitor Slip'
+    documentTitle: 'Visitor Slip',
+     scanStyles: true,
+     maxWidth: 800
   });
 
   }

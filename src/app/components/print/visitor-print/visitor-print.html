@@ -1,72 +1,84 @@
-<div class="container mt-4 no-print">
+<div class="no-print action-bar">
 
+  <input
+    type="number"
+    min="1"
+    [(ngModel)]="copyCount"
+    style="width:70px;margin-right:10px;"
+  />
   <button class="print-btn" (click)="printPage()">
     Print Slip
   </button>
 
 </div>
-
 <div class="print-container">
+<div id="print-area">
 
   @if(visitorResponse(); as visitor){
-
-    <div id="print-section" class="thermal-print">
-
-      <div class="header">
-        <h2>VISITOR SLIP</h2>
-        <div class="line"></div>
-      </div>
-
-      <div class="row">
+  @for(copy of copiesArray(); track $index){
+    <div class="thermal-print">
+ <!-- Header -->
+  <div class="slip-header">
+    <h2>VISITOR PASS</h2>
+    <div class="shop-name">Shiv Sahay Bhagwan Das Agra</div>
+  </div>
       
-         <ngx-barcode6
+
+      <div class="barcode-wrapper">
+      
+         <ngx-barcode6 class="barcode-section"
       [bc-value]="visitor.id.toString()"
       [bc-format]="'CODE128'"
-      [bc-width]="3"
-      [bc-height]="30"
+      [bc-width]="2"
+      [bc-height]="45"
       [bc-margin]="0"
-      [bc-font-size]="15"
+      [bc-font-size]="14"
       [bc-display-value]="true"
       [bc-margin-top]="2"
       [bc-margin-bottom]="2">
     </ngx-barcode6>
       </div>
+ 
+      <!-- Visitor Details -->
+  <div class="info-row">
+    <span class="title">ID</span>
+    <span>{{ visitor.id }}</span>
+  </div>
+  <div class="info-row">
+    <span class="title">Name</span>
+    <span>{{ visitor.name }}</span>
+  </div>      
+ <div class="info-row">
+    <span class="title">Mobile</span>
+    <span>{{ visitor.mobile }}</span>
+  </div>
 
-      <div class="row">
-        <span class="label">Name</span>
-        <span>{{ visitor.name }}</span>
-      </div>
-
-      <div class="row">
-        <span class="label">Mobile</span>
-        <span>{{ visitor.mobile }}</span>
-      </div>
-
-      <div class="row">
-        <span class="label">Customer Type</span>
-        <span>{{ visitor.customerType }}</span>
-      </div>
-      <div class="row">
-        <span class="label">Visit Date</span>
-        <span>
-          {{ visitor.visitDate | date:'dd/MM/yyyy hh:mm a' }}
-        </span>
-      </div>
-
-      <div class="remarks">
-        <div class="label mb-1">Remarks</div>
-        <div>
-          {{ visitor.remarks || '-' }}
-        </div>
-      </div>
-
-      <div class="footer">
-        <div class="line"></div>
-        <div>Thank You</div>
-      </div>
-
+  <div class="info-row">
+    <span class="title">Type</span>
+    <span>{{ visitor.customerType }}</span>
+  </div>
+   <div class="info-row">
+    <span class="title">Date</span>
+    <span>
+      {{ visitor.visitDate | date:'dd/MM/yyyy hh:mm a' }}
+    </span>
+  </div>
+     
+     <!-- Remarks -->
+  <div class="remarks-box">
+    <div class="remarks-title">Remarks</div>
+    <div class="remarks-text">
+      {{ visitor.remarks || '-' }}
     </div>
-
+  </div>
+      
+ <!-- Footer -->
+  <div class="slip-footer">
+    Welcome To Our Showroom
+  </div>      
+  
+    </div>
   }
-
+  }
+</div>
 </div>
