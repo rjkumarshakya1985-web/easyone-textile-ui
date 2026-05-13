@@ -14,7 +14,7 @@ export class Helper {
   
 
 
-  static getParcelStatusColor(status: ParcelStatus): TagSeverity {
+  static getParcelStatusColor(status: ParcelStatus,isSupplier:boolean=false): TagSeverity {
   switch (status) {
     case ParcelStatus.Ready:
       return 'info';
@@ -32,14 +32,14 @@ export class Helper {
     case ParcelStatus.Cancelled:
       return 'danger';
     case ParcelStatus.TallySynced:
-      return 'success';
+      return isSupplier ? 'contrast':'success';
     default:
       return 'secondary';
   }
 }
 
 
-   static getParcelStatusText(status: ParcelStatus): string {
+   static getParcelStatusText(status: ParcelStatus,isSupplier:boolean=false): string {
     switch (status) {
       case ParcelStatus.Ready:
         return 'Ready';
@@ -60,7 +60,7 @@ export class Helper {
       case ParcelStatus.Other:
         return 'Other';
       case ParcelStatus.TallySynced:
-        return 'Tally Synced'
+        return  isSupplier ?'Opened':'Tally Synced'
       default:
         return 'Unknown';
     }

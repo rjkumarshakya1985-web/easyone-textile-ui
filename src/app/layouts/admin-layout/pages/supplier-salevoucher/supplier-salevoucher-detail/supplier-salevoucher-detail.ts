@@ -42,7 +42,10 @@ export class SupplierSalevoucherDetail {
       private confirmationService: ConfirmationService,
       private loader: LoaderService,
       private saleVoucherService: SaleVoucherService,
-    ) {}
+    ) {
+
+
+    }
 
     ngOnInit(): void {
       this.loadSaleVoucher();
