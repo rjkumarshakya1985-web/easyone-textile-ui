@@ -26,4 +26,17 @@
 .mr-2 {
   margin-right: 0.5rem; /* Adjust space as needed */
 }
+/* Print Optimization */
+@media print {
 
+  body {
+    margin: 0;
+    padding: 0;
+  }  
+
+  .page-header,
+  .p-toolbar,
+  button {
+    display: none !important;
+  }
+}

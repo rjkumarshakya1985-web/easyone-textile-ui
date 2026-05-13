@@ -17,3 +17,17 @@
     color: #856404;
     border-radius: 4px;
 }
+/* Print Optimization */
+@media print {
+
+  body {
+    margin: 0;
+    padding: 0;
+  }  
+
+  .page-header,
+  .p-toolbar,
+  button {
+    display: none !important;
+  }
+}
