@@ -136,6 +136,14 @@
                 <label for="city">Select City</label>
              </p-floatlabel>
           </div>
+
+          <div class="col-md-3">
+             <p-floatlabel variant="on">
+              <input pInputText class="form-control" id="on_Supplier_pinCode" formControlName="pinCode" autocomplete="off" 
+                        [ngClass]="{ 'ng-invalid ng-dirty': supplierForm.get('pinCode')?.invalid && supplierForm.get('pinCode')?.touched }" />
+              <label for="on_Supplier_pinCode">Pin Code</label>
+            </p-floatlabel>
+          </div>
           
           <div class="col-md-3">
              <p-floatlabel variant="on">
