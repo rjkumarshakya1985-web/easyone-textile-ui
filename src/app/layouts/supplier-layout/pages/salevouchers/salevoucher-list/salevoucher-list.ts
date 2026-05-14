@@ -83,8 +83,8 @@ export class SalevoucherList {
   { label: 'In Transit', value: 3 },
   { label: 'Transport', value: 4 },
   { label: 'Packed At Location', value: 5 },
-  { label: 'Opened', value: 6 },
-  { label: 'Tally Synched', value: 11 }
+  //{ label: 'Opened', value: 6 },
+  //{ label: 'Tally Synched', value: 11 }
 ];
 
   constructor(
