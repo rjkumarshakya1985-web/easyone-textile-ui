@@ -6,6 +6,8 @@ import { TableResult } from '../../model/table-result';
 import { SupplierProductDto } from '../../model/entity/products/supplier-product.model';
 import { TableDataRequest } from '../../model/request/table-datafilter-request.model';
 import { SupplierProductRequest } from '../../model/request/product/supplier-product-request.model';
+import { ApiResponse } from '../../config/api.response';
+import { SupplierProductPriceHistoryDto } from '../../model/dto/supplier-product-price-history.model';
 
 
 @Injectable({
@@ -70,5 +72,9 @@ export class SupplierProductService {
       `${this.baseUrl}/${id}/toggle-active`,
       {}
     );
+  }
+
+   getProductHistory(productId:string): Observable<ApiResponse<SupplierProductPriceHistoryDto[]>> {
+    return this.http.get<ApiResponse<SupplierProductPriceHistoryDto[]>>(`${this.baseUrl}/product-price-history/${productId}`);
   }
 }

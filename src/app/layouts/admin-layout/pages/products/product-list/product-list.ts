@@ -23,6 +23,8 @@ import { Menu, MenuModule } from 'primeng/menu';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { PAGE_PAGE } from '../../../../../config/api.config';
 import { LoaderService } from '../../../../../core/services/loader.service';
+import { Dialog } from 'primeng/dialog';
+import { SupplierProductPriceHistoryDto } from '../../../../../model/dto/supplier-product-price-history.model';
 
 @Component({
   selector: 'app-product-list',
@@ -43,7 +45,7 @@ import { LoaderService } from '../../../../../core/services/loader.service';
     MenubarModule, 
     BadgeModule,
     ConfirmDialogModule,
-    MenuModule   
+    MenuModule,Dialog   
   ],
   templateUrl: './product-list.html',
   styleUrl: './product-list.css'
@@ -55,11 +57,15 @@ export class ProductList {
   @ViewChild('menu') menu!: Menu;
   items: MenuItem[] = [];
   filters: { [key: string]: string | null } = {};
+  visible:boolean=false;
+  productName:string='Product Price History';
   // -----------------------------
   // Signals
   // -----------------------------
 
   tblResult = signal({ totalRows: 0, result: [] as SupplierProductDto[] });
+
+  priceHistory = signal<SupplierProductPriceHistoryDto[]>([]);
 
   pageSize = PAGE_PAGE;
   pageindex = signal(0);
@@ -218,6 +224,26 @@ export class ProductList {
     this.router.navigate(['admin/show-supplier-product',id])
   }
 
+ productPriceHistory(product: SupplierProductDto): void {
+  this.loader.show();
+
+  this.supplierProductService
+    .getProductHistory(product.id)
+    .subscribe({
+      next: (result) => {
+        console.log(result);
+        this.priceHistory.set(result.data);
+        this.productName = `Price History | ${product.name} - ${product.barcode}`;
+        this.visible = true;
+        this.loader.hide();
+      },
+      error: (error) => {
+        console.error(error);
+        this.loader.hide();
+      }
+    });
+}
+
   openMenu(event: Event, row: SupplierProductDto) {
      this.items = [{
       label:'Print',
@@ -242,6 +268,11 @@ export class ProductList {
         label: row.isActive ? 'Deactivate' : 'Activate',
         icon: row.isActive ? 'pi pi-times-circle' : 'pi pi-check-circle',
         command: () => this.toggleActive(row)
+      },
+      {
+        label: 'Price History',
+        icon: 'pi pi-history',
+        command: () => this.productPriceHistory(row)
       }
     ];
   
