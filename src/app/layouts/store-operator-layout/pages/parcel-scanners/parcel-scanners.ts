@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, AfterViewInit,  ViewChild,  ElementRef } from '@angular/core';
 import { MenuItem, MessageService } from 'primeng/api';
 import { ParcelService } from '../../../../core/services/parcel-service';
 import { ParcelView } from '../../../../model/views/parcel-view.model';
@@ -25,8 +25,9 @@ import { ParcelStatus } from '../../../../core/enums/enum';
   templateUrl: './parcel-scanners.html',
   styleUrl: './parcel-scanners.css',
 })
-export class ParcelScanners implements OnInit {
-
+export class ParcelScanners implements OnInit , AfterViewInit {
+@ViewChild('parcelInput')
+  parcelInput!: ElementRef<HTMLInputElement>;
   parcelEnum:ParcelStatus = ParcelStatus.InTransit;
   parcelNumber = signal<number | null>(null);
   parcels = signal<ParcelView[]>([]);
@@ -50,11 +51,19 @@ export class ParcelScanners implements OnInit {
                  this.parcelEnum = +status as ParcelStatus;
                  this.parcels.set([])
                  this.selectedParcel.set([]);
+                   this.focusParcelInput();
               }
        });
 
     }
-
+ngAfterViewInit(): void {
+  this.focusParcelInput();
+}
+private focusParcelInput(): void {
+  setTimeout(() => {
+    this.parcelInput?.nativeElement.focus();
+  }, 0);
+}
     onEnter() {
       const scannedNumber = this.parcelNumber();
       if (!scannedNumber || this.isLoading()) return;

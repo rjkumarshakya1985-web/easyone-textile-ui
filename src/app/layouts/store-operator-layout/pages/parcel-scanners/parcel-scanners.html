@@ -6,7 +6,7 @@
   tooltipPosition="right"></i>
       <label>Parcel Number</label>
 
-      <input
+      <input  #parcelInput
         pInputText
         [ngModel]="parcelNumber()"
         (ngModelChange)="parcelNumber.set($event)"
