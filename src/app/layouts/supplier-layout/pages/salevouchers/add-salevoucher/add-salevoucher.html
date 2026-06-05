@@ -155,7 +155,7 @@
                       </p-floatlabel>
                 </div>
     
-                <div class="col-md-4">
+                <div class="col-md-2">
                    <p-floatlabel variant="on">
                        <p-inputnumber
                           inputId="quantity"
@@ -173,6 +173,13 @@
                           <label for="quantity">Quantity</label>
                      </p-floatlabel>
                  </div>
+
+                 <div class="col-md-2">
+                 <div class="flex items-center">
+                          <p-checkbox inputId="ingredient1" style="margin-top: 10px;" formControlName="isSupplierDiscount" binary="true" />
+                           <label for="ingredient1" class="ml-2" style="margin-top: 7px;"> Discount </label>
+                 </div>
+                 </div>
      
                  <div class="col-md-3">
                    <p-button label="Add Item"  (click)="addProductToSaleVoucher()"/>
@@ -182,32 +189,36 @@
       </div>
 
       <div class="table-responsive">
-       <p-table [value]="saleVouherDetail()" responsiveLayout="scroll">
+       <p-table [value]="saleVouherDetail()" size="small" showGridlines responsiveLayout="scroll">
          <ng-template pTemplate="header">
            <tr>
+             <th style="width:10px;">
+                <p-checkbox [(ngModel)]="checkAll" [ngModelOptions]="{ standalone: true }" [binary]="true"
+                  inputId="size_small" size="small" (onChange)="onCheckAll()">
+</p-checkbox>
+             </th>
              <th>S.No</th>
              <th>Category</th>
              <th>Product</th>
              <th>Quantity</th>
              <th>Purchase Price</th>
-             <!-- <th>WholeSale Price</th>
-             <th>Retail Price</th>
-             <th>MRP Price</th> -->
              <th>Total</th>
              <th>Action</th>
          </tr>
         </ng-template>
 
   <ng-template pTemplate="body" let-item let-i="rowIndex">
-    <tr>
+    <tr >
+      <td >
+        <p-checkbox [(ngModel)]="item.isSupplierDiscount" [ngModelOptions]="{ standalone: true }" [binary]="true"
+           size="small">
+        </p-checkbox>
+      </td>
       <td>{{ i + 1 }}</td>
       <td>{{ item.stockGroupName }}</td>
       <td>{{ item.productName }}</td>
       <td>{{ item.qty }}</td>
       <td>{{ item.purchasePrice | number:'1.2-2' }}</td>
-      <!-- <td>{{ item.wholeSalePrice | number:'1.2-2' }}</td>
-      <td>{{ item.retailPrice | number:'1.2-2' }}</td>
-      <td>{{ item.mrpPrice | number:'1.2-2' }}</td> -->
       <td>{{ (item.purchasePrice * item.qty) | number:'1.2-2' }}</td>
       <td class="text-center">
           <p-menu #menu
@@ -215,7 +226,6 @@
              [popup]="true"
              appendTo="body">
           </p-menu>
-
           <button pButton
            icon="pi pi-ellipsis-v"
            class="p-button-text"
@@ -233,7 +243,7 @@
 
   <ng-template pTemplate="footer">
     <tr class="footer-bold">
-      <td colspan="3" class="text-right">TOTAL</td>
+      <td colspan="4" class="text-right">TOTAL</td>
       <td>{{ getTotalQty() }}</td>
       <td>SUM</td>
       <td>{{ getTotalWholeSaleAmount() | number:'1.2-2' }}</td>

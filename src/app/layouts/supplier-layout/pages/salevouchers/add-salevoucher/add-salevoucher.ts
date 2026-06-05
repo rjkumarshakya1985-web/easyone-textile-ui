@@ -29,6 +29,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { LoaderService } from '../../../../../core/services/loader.service';
 import { AddProduct } from '../../products/add-product/add-product';
 import { Menu, MenuModule } from 'primeng/menu';
+import { CheckboxModule } from 'primeng/checkbox';
 
 
 @Component({
@@ -47,7 +48,7 @@ import { Menu, MenuModule } from 'primeng/menu';
     TableModule,
     ToolbarModule,
     DialogModule,FloatLabelModule,AutoCompleteModule,ConfirmDialogModule,
-    AddProduct,MenuModule
+    AddProduct,MenuModule,CheckboxModule
   ],
   templateUrl: './add-salevoucher.html',
   styleUrl: './add-salevoucher.css',
@@ -60,6 +61,7 @@ export class AddSalevoucher {
   isEdit = false;
   saleVoucherId!:number;
   visible = false;
+  checkAll:boolean=false;
   isSaleVoucherQtyPopupVisible =false;
   voucherForm!: FormGroup;
   productForm!: FormGroup;
@@ -138,7 +140,8 @@ export class AddSalevoucher {
     this.productForm = this.fb.group({
       selectproduct: [null, Validators.required],
       quantity: [null, Validators.required],
-      productId: [null]
+      productId: [null],
+      isSupplierDiscount:[true,Validators.required]
     });
 
   // Reset selectproduct and productId when stockGroupId changes
@@ -174,7 +177,7 @@ export class AddSalevoucher {
           supplierBillNumber: salevoucher.supplierBillNumber,
           description: salevoucher.remarks
         });
-
+      
         // ✅ Map details
         const list: SaleVoucherDetail[] = salevoucher.details.map(detail => ({
           id:detail.id,
@@ -186,7 +189,8 @@ export class AddSalevoucher {
           purchasePrice: detail.purchasePrice,
           wholeSalePrice: detail.wholeSalePrice,
           retailPrice: detail.retailPrice,
-          mrpPrice: detail.mrpPrice
+          mrpPrice: detail.mrpPrice,
+          isSupplierDiscount:detail.isSupplierDiscount
         }));
         this.saleVouherDetail.set(list);
       },
@@ -198,6 +202,15 @@ export class AddSalevoucher {
  }
 
 
+  onCheckAll()
+  {
+      this.saleVouherDetail.update(items =>
+      items.map(item => ({
+      ...item,
+      isSupplierDiscount: this.checkAll
+    }))
+  );
+  }
 
   
   removeProduct(row: any) {
@@ -225,15 +238,16 @@ export class AddSalevoucher {
   }
    
  addProductToSaleVoucher() {
-
   if (this.productForm.invalid) {
     this.productForm.markAllAsTouched();
     return;
   }
 
   const quantity = this.productForm.get('quantity')?.value as number;
+  const isDiscount = this.productForm.get('isSupplierDiscount')?.value as boolean;
   const addProduct = this.productForm.get('selectproduct')?.value as SupplierProductView;
-
+  
+ 
   let isUpdated = false;
 
   this.saleVouherDetail.update(items => {
@@ -263,7 +277,8 @@ export class AddSalevoucher {
       qty: quantity,
       wholeSalePrice: addProduct.wholeSaleRate ?? 0,
       retailPrice: addProduct.retailPrice ?? 0,
-      mrpPrice: addProduct.mrpRate ?? 0
+      mrpPrice: addProduct.mrpRate ?? 0,
+      isSupplierDiscount:isDiscount
     };
 
     return [...items, detail];
@@ -365,7 +380,8 @@ const formattedDate = `${d.getFullYear()}-${(d.getMonth()+1)
     isActive: true,
     saleVoucherDetails: this.saleVouherDetail().map(item => ({
       productId: item.productId,
-      quantity: item.qty
+      quantity: item.qty,
+      IsSupplierDiscount:item.isSupplierDiscount
     }))
   };
   

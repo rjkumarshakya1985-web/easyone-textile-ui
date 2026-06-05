@@ -3,5 +3,5 @@ export interface SaleVoucherDetailRequest {
   saleVoucherId?: number;
   productId: string;
   quantity: number;
- 
+  IsSupplierDiscount:boolean;
 }

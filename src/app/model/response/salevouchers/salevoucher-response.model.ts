@@ -26,4 +26,5 @@ export interface SaleVoucherDetailResponse {
   wholeSalePrice: number;
   retailPrice: number;
   mrpPrice: number;
+  isSupplierDiscount:boolean;
 }

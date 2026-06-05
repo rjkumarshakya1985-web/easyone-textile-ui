@@ -16,7 +16,6 @@ import { Transport } from '../../../../../model/transporter.model';
 import { finalize, Observable, tap } from 'rxjs';
 import { SupplierService } from '../../../../../core/services/supplier-service';
 import { StockGroup } from '../../../../../model/stock-group.model';
-import { StockGroupService } from '../../../../../core/services/stock-group.service';;
 import { AutoCompleteService } from '../../../../../core/services/auto-complete-service';
 import { AutoCompleteCompleteEvent, AutoCompleteModule } from 'primeng/autocomplete';
 import { Supplier } from '../../../../../model/supplier.model';
@@ -31,6 +30,7 @@ import { LoaderService } from '../../../../../core/services/loader.service';
 
 import { Menu, MenuModule } from 'primeng/menu';
 import { SupplierTableResponse } from '../../../../../model/response/supplier/supplier-table-response.model';
+import { CheckboxModule } from 'primeng/checkbox';
 
 
 @Component({
@@ -40,7 +40,6 @@ import { SupplierTableResponse } from '../../../../../model/response/supplier/su
   imports: [ CommonModule,
     ReactiveFormsModule,
     FormsModule,
-    // PrimeNG modules
     InputNumberModule, 
     DatePickerModule,
     SelectModule,
@@ -49,6 +48,7 @@ import { SupplierTableResponse } from '../../../../../model/response/supplier/su
     TableModule,
     ToolbarModule,
     DialogModule,FloatLabelModule,AutoCompleteModule,ConfirmDialogModule,
+    CheckboxModule,
   MenuModule
   ],
  templateUrl: './add-supplier-salevoucher.html',
@@ -57,6 +57,7 @@ import { SupplierTableResponse } from '../../../../../model/response/supplier/su
 export class AddSupplierSalevoucher {
   @ViewChild('menu') menu!: Menu;
   items: MenuItem[] = [];
+  checkAll:boolean=false;
   editQty:number=0
   editVoucherDetail?: SaleVoucherDetail;
   isEdit = false;
@@ -126,7 +127,8 @@ export class AddSupplierSalevoucher {
     this.productForm = this.fb.group({
       selectproduct: [null, Validators.required],
       quantity: [null, Validators.required],
-      productId: [null]
+      productId: [null],
+      isSupplierDiscount:[true,Validators.required]
     });
 
   // Reset selectproduct and productId when stockGroupId changes
@@ -175,7 +177,8 @@ export class AddSupplierSalevoucher {
           purchasePrice: detail.purchasePrice,
           wholeSalePrice: detail.wholeSalePrice,
           retailPrice: detail.retailPrice,
-          mrpPrice: detail.mrpPrice
+          mrpPrice: detail.mrpPrice,
+          isSupplierDiscount:detail.isSupplierDiscount
         }));
         this.saleVouherDetail.set(list);
         this.onSupplierSelect({ value: salevoucher.supplierObj });
@@ -187,7 +190,15 @@ export class AddSupplierSalevoucher {
     });
  }
 
-
+  onCheckAll()
+  {
+      this.saleVouherDetail.update(items =>
+        items.map(item => ({
+          ...item,
+          isSupplierDiscount: this.checkAll
+        }))
+     );
+  }
 
   
   removeProduct(row: any) {
@@ -229,6 +240,7 @@ export class AddSupplierSalevoucher {
   }
 
   const quantity = this.productForm.get('quantity')?.value as number;
+  const discount = this.productForm.get('isSupplierDiscount')?.value as boolean;
   const addProduct = this.productForm.get('selectproduct')?.value as SupplierProductView;
 
   let isUpdated = false;
@@ -260,7 +272,8 @@ export class AddSupplierSalevoucher {
       qty: quantity,
       wholeSalePrice: addProduct.wholeSaleRate ?? 0,
       retailPrice: addProduct.retailPrice ?? 0,
-      mrpPrice: addProduct.mrpRate ?? 0
+      mrpPrice: addProduct.mrpRate ?? 0,
+      isSupplierDiscount: discount
     };
 
     return [...items, detail];
@@ -365,7 +378,8 @@ const formattedDate = `${d.getFullYear()}-${(d.getMonth()+1)
     isActive: true,
     saleVoucherDetails: this.saleVouherDetail().map(item => ({
       productId: item.productId,
-      quantity: item.qty
+      quantity: item.qty,
+      IsSupplierDiscount:item.isSupplierDiscount
     }))
   };
   
