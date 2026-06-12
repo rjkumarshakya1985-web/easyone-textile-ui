@@ -121,6 +121,7 @@ export class AddSupplierSalevoucher {
        numberOfPacket: [1,Validators.required],
        supplierBillNumber: ['',Validators.required],
        description: [''],
+       additionalCharges:[0,Validators.required],
        supplierObj:[null,Validators.required]
     });
     
@@ -163,6 +164,7 @@ export class AddSupplierSalevoucher {
           numberOfPacket: salevoucher.numberOfParcel,
           supplierBillNumber: salevoucher.supplierBillNumber,
           description: salevoucher.remarks,
+          additionalCharges:salevoucher.additionalCharges,
           supplierObj:salevoucher.supplierObj
         });
 
@@ -359,10 +361,10 @@ submit():void
   const formValue = this.voucherForm.value;
   const supplierSelected = this.voucherForm.value.supplierObj as SupplierTableResponse;
   
-  
+
   const d = new Date(formValue.date);
 
-const formattedDate = `${d.getFullYear()}-${(d.getMonth()+1)
+  const formattedDate = `${d.getFullYear()}-${(d.getMonth()+1)
   .toString().padStart(2,'0')}-${d.getDate()
   .toString().padStart(2,'0')}`;
 
@@ -376,6 +378,7 @@ const formattedDate = `${d.getFullYear()}-${(d.getMonth()+1)
     remarks: formValue.description,
     supplierId:supplierSelected.id,
     isActive: true,
+    additionalCharges:formValue.additionalCharges,
     saleVoucherDetails: this.saleVouherDetail().map(item => ({
       productId: item.productId,
       quantity: item.qty,

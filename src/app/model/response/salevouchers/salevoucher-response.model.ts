@@ -9,6 +9,7 @@ export interface SaleVoucherResponse {
   date: string;                // DateTime → ISO string
   numberOfParcel: number;
   supplierBillNumber: string;
+  additionalCharges:number;
   status: number;
   remarks?: string | null;
   details: SaleVoucherDetailResponse[];

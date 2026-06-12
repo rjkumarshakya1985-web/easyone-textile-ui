@@ -134,6 +134,7 @@ export class AddSalevoucher {
        status: [3,Validators.required],
        numberOfPacket: [1,Validators.required],
        supplierBillNumber: ['',Validators.required],
+       additionalCharges:[0,Validators.required],
        description: ['']
     });
     
@@ -175,6 +176,7 @@ export class AddSalevoucher {
           status: salevoucher.status,
           numberOfPacket: salevoucher.numberOfParcel,
           supplierBillNumber: salevoucher.supplierBillNumber,
+          additionalCharges:salevoucher.additionalCharges,
           description: salevoucher.remarks
         });
       
@@ -375,6 +377,7 @@ const formattedDate = `${d.getFullYear()}-${(d.getMonth()+1)
     date: formattedDate,
     numberOfParcel: formValue.numberOfPacket,
     supplierBillNumber: formValue.supplierBillNumber,
+    additionalCharges:formValue.additionalCharges,
     status: formValue.status,
     remarks: formValue.description,
     isActive: true,

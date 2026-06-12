@@ -104,6 +104,22 @@
       </div>
     
       <!-- Description -->
+
+      <div class="col-md-3">
+        <p-floatLabel variant="on" class="w-full">
+        <p-inputNumber
+            formControlName="additionalCharges"
+            inputId="on_Product_additionalCharges"
+            [min]="0"
+            mode="decimal"
+            [minFractionDigits]="2"
+            [maxFractionDigits]="2"
+            class="w-full"
+           >
+        </p-inputNumber>
+        <label for="on_Product_additionalCharges">Additional Charges</label>
+        </p-floatLabel>
+     </div>
     </div>
 </p-card>
 </form>

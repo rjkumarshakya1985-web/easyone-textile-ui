@@ -27,6 +27,10 @@
                   {{voucher.supplierBillNumber}}
               </div>
                <div class="col-md-3">
+                  <div><b>Additional Charges</b></div>
+                  {{ voucher.additionalCharges | number:'1.2-2' }}
+              </div>
+               <div class="col-md-3">
                   <div><b>Remark</b></div>
                   {{voucher.remarks}}
               </div>

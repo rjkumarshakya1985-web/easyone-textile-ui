@@ -7,6 +7,7 @@ export interface SaleVoucherRequest {
   date: string; // ISO date string
   numberOfParcel: number;
   supplierBillNumber: string;
+  additionalCharges?:number;
   status: number;
   remarks?: string;
   isActive: boolean;
