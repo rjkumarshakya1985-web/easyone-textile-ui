@@ -39,6 +39,7 @@ export interface BillingDetailPrint
     sgst:number;
     igst:number;
     payableAmount:number;
+    supplierDiscount:number
 }
 
 export interface StickerPrint {

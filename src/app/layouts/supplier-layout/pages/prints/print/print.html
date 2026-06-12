@@ -297,7 +297,7 @@
                              <td>{{p.qty}} Pcs</td>
                              <td>{{p.purchasePrice  | currency:'INR':'symbol':'1.2-2'}}</td>
                              <td>{{p.total  | currency:'INR':'symbol':'1.2-2'}}</td>
-                             <td>{{printData()?.saleVoucherPrint?.discount }}</td>                             
+                             <td>{{p.supplierDiscount }}</td>                             
                              <td>{{p.discountAmount  | currency:'INR':'symbol':'1.2-2'}}</td>
                               <td>{{(p.cgst||0)| currency:'INR':'symbol':'1.2-2'}}</td>
                                <td>{{(p.sgst||0)| currency:'INR':'symbol':'1.2-2'}}</td>
