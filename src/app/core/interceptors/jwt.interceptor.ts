@@ -17,6 +17,14 @@ export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
 
   let token = storage.getToken();
 
+const userStatus = getClaim(token, 'user_status');
+
+ if (userStatus?.toString().toLowerCase() === 'false') {
+   storage.clearAll();
+  window.location.href = '/login';
+  return throwError(() => new Error('User is inactive'));
+}
+
   function getTokenExpiry(token: string | null): number {
     if (!token) return 0;
     try {
@@ -32,6 +40,16 @@ export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
     return Date.now() + bufferSeconds * 1000 > getTokenExpiry(token);
   }
 
+  function getClaim(token: string | null, claimName: string): any {
+  if (!token) return null;
+
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload[claimName];
+  } catch {
+    return null;
+  }
+}
   const refreshIfNeeded$ =
     token && isTokenExpiringSoon(token)
       ? authService.refreshToken().pipe(
