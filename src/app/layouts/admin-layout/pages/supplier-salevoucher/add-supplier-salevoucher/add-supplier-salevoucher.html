@@ -140,7 +140,6 @@
         <p-inputNumber
             formControlName="additionalCharges"
             inputId="on_Product_additionalCharges"
-            [min]="0"
             mode="decimal"
             [minFractionDigits]="2"
             [maxFractionDigits]="2"
@@ -322,6 +321,28 @@
 
 
 <!-- Tabs -->
+
+<p-dialog  [modal]="true" position="top" [(visible)]="visible"
+  [style]="{ width: '70rem' }" [showHeader]="false">
+  @if (visible) {
+    <app-supplier-add-product
+      [supplierId]="getSupplierId()"
+      [isSaleVouhcerMode]="true" (closeDialog)="visible = false">
+    </app-supplier-add-product>
+  }
+   <ng-template pTemplate="footer">
+     <div class="flex align-items-center gap-2 text-sm text-color-secondary">
+     Add the product and then search for it to include it in the voucher.
+     </div>
+     <button
+        pButton
+        type="button"
+        label="Cancel"
+        class="p-button-text"
+        (click)="visible = false">
+      </button>
+  </ng-template>
+</p-dialog>
 
 
 <p-dialog [(visible)]="isSaleVoucherQtyPopupVisible" position="top" [modal]="true" [style]="{ width: '20rem' }">

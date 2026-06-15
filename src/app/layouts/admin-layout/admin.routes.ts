@@ -223,14 +223,14 @@ export const ADMIN_ROUTES: Routes = [
     canActivate: [roleGuard('SuperAdmin')],
     loadComponent: () =>
       import('./pages/products/add-product/add-product')
-        .then(c => c.AddProduct)
+        .then(c => c.AddSupplierProduct)
   },
   {
     path: 'supplier-product/:id',
     canActivate: [roleGuard('SuperAdmin')],
     loadComponent: () =>
       import('./pages/products/add-product/add-product')
-        .then(c => c.AddProduct)
+        .then(c => c.AddSupplierProduct)
   },
   {
     path: 'show-supplier-product/:id',

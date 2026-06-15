@@ -31,6 +31,10 @@ import { LoaderService } from '../../../../../core/services/loader.service';
 import { Menu, MenuModule } from 'primeng/menu';
 import { SupplierTableResponse } from '../../../../../model/response/supplier/supplier-table-response.model';
 import { CheckboxModule } from 'primeng/checkbox';
+import { InputTextModule } from 'primeng/inputtext';
+import { TextareaModule } from 'primeng/textarea';
+import { ToastModule } from 'primeng/toast';
+import { AddSupplierProduct } from '../../products/add-product/add-product';
 
 
 @Component({
@@ -49,7 +53,11 @@ import { CheckboxModule } from 'primeng/checkbox';
     ToolbarModule,
     DialogModule,FloatLabelModule,AutoCompleteModule,ConfirmDialogModule,
     CheckboxModule,
-  MenuModule
+    MenuModule,    
+    InputTextModule,       
+    TextareaModule,
+    ToastModule,
+    AddSupplierProduct 
   ],
  templateUrl: './add-supplier-salevoucher.html',
   styleUrl: './add-supplier-salevoucher.css',
@@ -141,6 +149,7 @@ export class AddSupplierSalevoucher {
 
   checkEditMode() {
     const idParam = this.route.snapshot.paramMap.get('id');
+     console.log(idParam);
      const parsedId = idParam ? Number(idParam) : null;
     if (parsedId !== null && !isNaN(parsedId)) {
       this.saleVoucherId = Number(idParam); // convert string → number
@@ -208,7 +217,14 @@ export class AddSupplierSalevoucher {
   }
 
    showDialog(): void {
-      alert('Under Development');
+       const supplierId = this.voucherForm.value.supplierObj?.id;
+       if(supplierId)
+      this.visible=true;
+   }
+
+   getSupplierId()
+   {
+    return this.voucherForm.value.supplierObj?.id
    }
 
   searchProduct(event: AutoCompleteCompleteEvent) {
@@ -452,7 +468,7 @@ openMenu(event: Event, row: SaleVoucherDetail, index: number) {
   onSupplierSelect(event: any) {
     if(event==null) return;
       const supplierId = event.value.id;
-    console.log(supplierId);
+   
     this.transports$ = this.supplierService.getSupplierTransport(supplierId)
     .pipe(tap(list => {
       const control = this.voucherForm.get('transportId');

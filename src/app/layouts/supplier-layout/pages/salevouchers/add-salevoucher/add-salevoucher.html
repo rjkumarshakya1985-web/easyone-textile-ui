@@ -171,7 +171,7 @@
                       </p-floatlabel>
                 </div>
     
-                <div class="col-md-2">
+                <div class="col-md-3">
                    <p-floatlabel variant="on">
                        <p-inputnumber
                           inputId="quantity"
@@ -190,12 +190,7 @@
                      </p-floatlabel>
                  </div>
 
-                 <div class="col-md-2">
-                 <div class="flex items-center">
-                          <p-checkbox inputId="ingredient1" style="margin-top: 10px;" formControlName="isSupplierDiscount" binary="true" />
-                           <label for="ingredient1" class="ml-2" style="margin-top: 7px;"> Discount </label>
-                 </div>
-                 </div>
+             
      
                  <div class="col-md-3">
                    <p-button label="Add Item"  (click)="addProductToSaleVoucher()"/>
@@ -208,11 +203,6 @@
        <p-table [value]="saleVouherDetail()" size="small" showGridlines responsiveLayout="scroll">
          <ng-template pTemplate="header">
            <tr>
-             <th style="width:10px;">
-                <p-checkbox [(ngModel)]="checkAll" [ngModelOptions]="{ standalone: true }" [binary]="true"
-                  inputId="size_small" size="small" (onChange)="onCheckAll()">
-               </p-checkbox>
-             </th>
              <th>S.No</th>
              <th>Category</th>
              <th>Product</th>
@@ -225,11 +215,7 @@
 
   <ng-template pTemplate="body" let-item let-i="rowIndex">
     <tr >
-      <td >
-        <p-checkbox [(ngModel)]="item.isSupplierDiscount" [ngModelOptions]="{ standalone: true }" [binary]="true"
-           size="small">
-        </p-checkbox>
-      </td>
+      
       <td>{{ i + 1 }}</td>
       <td>{{ item.stockGroupName }}</td>
       <td>{{ item.productName }}</td>

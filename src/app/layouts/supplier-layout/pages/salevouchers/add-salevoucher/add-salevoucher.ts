@@ -204,15 +204,7 @@ export class AddSalevoucher {
  }
 
 
-  onCheckAll()
-  {
-      this.saleVouherDetail.update(items =>
-      items.map(item => ({
-      ...item,
-      isSupplierDiscount: this.checkAll
-    }))
-  );
-  }
+ 
 
   
   removeProduct(row: any) {
@@ -246,7 +238,7 @@ export class AddSalevoucher {
   }
 
   const quantity = this.productForm.get('quantity')?.value as number;
-  const isDiscount = this.productForm.get('isSupplierDiscount')?.value as boolean;
+
   const addProduct = this.productForm.get('selectproduct')?.value as SupplierProductView;
   
  
@@ -280,7 +272,7 @@ export class AddSalevoucher {
       wholeSalePrice: addProduct.wholeSaleRate ?? 0,
       retailPrice: addProduct.retailPrice ?? 0,
       mrpPrice: addProduct.mrpRate ?? 0,
-      isSupplierDiscount:isDiscount
+      isSupplierDiscount:true
     };
 
     return [...items, detail];

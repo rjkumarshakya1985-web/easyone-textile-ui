@@ -1,5 +1,5 @@
 
-import { AfterViewInit, Component, ElementRef, OnInit, signal, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, signal, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule  } from 'primeng/select';
@@ -9,7 +9,6 @@ import { TextareaModule  } from 'primeng/textarea';
 import { CommonModule } from '@angular/common';
 import { StockGroup } from '../../../../../model/stock-group.model';
 import { finalize, Observable, tap } from 'rxjs';
-import { StockGroupService } from '../../../../../core/services/stock-group.service';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { ToastModule } from 'primeng/toast';
@@ -26,7 +25,7 @@ import { SupplierService } from '../../../../../core/services/supplier-service';
 import { SupplierTableResponse } from '../../../../../model/response/supplier/supplier-table-response.model';
 
 @Component({
-  selector: 'app-add-product',
+  selector: 'app-supplier-add-product',
   standalone: true,
   imports: [CommonModule,
             ReactiveFormsModule,
@@ -42,8 +41,11 @@ import { SupplierTableResponse } from '../../../../../model/response/supplier/su
   templateUrl: './add-product.html',
   styleUrls: ['./add-product.css']
 })
-export class AddProduct implements OnInit, AfterViewInit {
+export class AddSupplierProduct implements OnInit, AfterViewInit {
   isEdit = false;
+  @Input() supplierId!: string;
+  @Input() isSaleVouhcerMode: boolean = false;
+  @Output() closeDialog = new EventEmitter<void>();
    @ViewChild('productNameInput')
   productNameInput!: ElementRef<HTMLInputElement>;
   stockGroup$!: Observable<StockGroup[]>;
@@ -86,7 +88,8 @@ export class AddProduct implements OnInit, AfterViewInit {
     private supplierProductService: SupplierProductService,
     private loader: LoaderService,
     private autocompleteService:AutoCompleteService,
-    private masterDataService:MasterDataService) {}
+    private masterDataService:MasterDataService,
+    ) {}
 
   ngOnInit(): void {
     
@@ -142,20 +145,38 @@ export class AddProduct implements OnInit, AfterViewInit {
   }
 
   checkEditMode() {
-     let id = this.route.snapshot.paramMap.get('id')!;
-
-    if (id && isNaN(Number(id))) {
+    let id = this.route.snapshot.paramMap.get('id')!;
+    
+    if (id && isNaN(Number(id))  && !this.isSaleVouhcerMode) {
       
       this.productId= id;
       this.isEdit = true;
       this.loadProductForEdit();
+
     }
     else
       {
         this.supplierProductService.getCode().subscribe(result=>{
           this.productForm.patchValue({ barcode: result?.data });
         })
-      } 
+      }
+      
+     if(this.isSaleVouhcerMode && this.supplierId)
+      {
+         this.supplierService.getSupplier(this.supplierId).subscribe(result=>{
+
+         this.productForm.patchValue({
+         supplierObj: result
+         });
+         //this.productForm.get('supplierObj')?.disable();
+          this.onSupplierSelect({
+              value: {
+               id: result.id
+               }
+          });
+         
+         })
+      }  
   }
 
   loadProductForEdit() {
@@ -175,6 +196,7 @@ export class AddProduct implements OnInit, AfterViewInit {
   }
 
   submit() {
+   
   if (this.productForm.invalid) {
     this.productForm.markAllAsTouched();
     return;
@@ -182,7 +204,7 @@ export class AddProduct implements OnInit, AfterViewInit {
 
  
  const hsnSelected = this.productForm.value.hsnCodeObj as ProductHsnCode;
-const supplierSelected = this.productForm.value.supplierObj as SupplierTableResponse;
+ const supplierSelected = this.productForm.value.supplierObj as SupplierTableResponse;
   
   const request = {
     ...this.productForm.value,
@@ -207,7 +229,12 @@ const supplierSelected = this.productForm.value.supplierObj as SupplierTableResp
             ? 'Product updated successfully!'
             : 'Product created successfully!'
         });
-
+         
+        if(this.isSaleVouhcerMode)
+        {
+          this.closeDialog.emit();
+          return;
+        }
         if (this.productId) {
           // Navigate after update
           this.router.navigate(['admin/supplier-products']);
@@ -221,7 +248,6 @@ const supplierSelected = this.productForm.value.supplierObj as SupplierTableResp
                 this.productNameInput?.nativeElement.focus();
            }, 300);
           
-           
         }
       }
     });
