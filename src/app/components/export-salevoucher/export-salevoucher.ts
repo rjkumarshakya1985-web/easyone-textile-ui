@@ -54,7 +54,10 @@ export class ExportSalevoucher {
     'Lr No': item.lrNumber,
     'Supplier Bill No': item.supplierBillNumber || '-',
     'Supplier Name': item.supplierName || '-',
-    'Date': new Date(item.date).toLocaleDateString('en-GB')
+    'Date': new Date(item.date).toLocaleDateString('en-GB'),
+    'Department':item.department || '-',
+    'Parcel Status':item.parcelStatus || '-'
+    
   }));
 
   const worksheet = XLSX.utils.json_to_sheet(data);
