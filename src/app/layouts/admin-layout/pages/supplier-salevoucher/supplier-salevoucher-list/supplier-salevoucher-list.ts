@@ -153,6 +153,8 @@ onLazyLoad(event: any) {
         parcelStatus: this.getFilterValue(filters, 'parcelStatus'),
         billNumber: this.getFilterValue(filters,'billNumber'),
         department: this.getFilterValue(filters,'department'),
+        product: this.getFilterValue(filters,'product'),
+        export:this.getFilterValue(filters,'export'),
         fromDate: fromDate,
         toDate: toDate
      }

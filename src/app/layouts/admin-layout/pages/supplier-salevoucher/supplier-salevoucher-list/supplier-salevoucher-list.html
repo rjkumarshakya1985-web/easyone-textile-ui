@@ -10,9 +10,8 @@
 
 <p-card>
     <div class="d-flex justify-content-between mb-3">
-
-      <div class="flex-grow-1" style="max-width:300px">
-   
+    <p-button  label="Clear" [outlined]="true" icon="pi pi-filter-slash" (click)="clear(dt1)" /> 
+      <div class="flex-grow-1">
         <p-floatlabel variant="on">
           <input pInputText id="on_label" [formControl]="searchControl" autocomplete="off" />
           <label for="on_label">Search keyword</label>
@@ -55,8 +54,9 @@
       </p-button>
 
     </p-buttonGroup>
+    
     </div>
-   </ng-container>
+     </ng-container>
 
     </div>
 
@@ -71,9 +71,12 @@
         <ng-template pTemplate="header">
          
           <tr>
-              <th>
-                  <i class="pi pi-filter-slash cursor-pointer" (click)="clear(dt1)"></i>
-              </th>
+            <th>
+              <div class="flex align-items-center gap-2">
+                 <p-columnFilter field="export"
+                  type="boolean" display="menu" [showApplyButton]="false"> </p-columnFilter>
+              </div>
+             </th>
              <th pSortableColumn="date">
                  <div class="flex align-items-center gap-2">
                        <span>Date</span>
@@ -166,11 +169,24 @@
                         [showMatchModes]="false"
                         [showOperator]="false"
                        [showAddButton]="false">
-                    </p-columnFilter>
+                    </p-columnFilter> 
               </div>
            </th>
-           <th>
-             Products
+         
+           <th pSortableColumn="product">
+           <div class="flex align-items-center gap-2">
+             <span>Products</span>
+             <p-sortIcon field="product"></p-sortIcon>
+               <p-columnFilter 
+                  type="text"
+                  field="product"
+                  display="menu"
+                  matchMode="contains"
+                  [showMatchModes]="false"
+                  [showOperator]="false"
+                  [showAddButton]="false">
+                </p-columnFilter>
+            </div>
           </th>
           <th pSortableColumn="tranportName">
            <div class="flex align-items-center gap-2">
