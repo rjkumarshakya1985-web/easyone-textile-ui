@@ -1,3 +1,10 @@
+
+
+@if (loading) {
+    <p-message severity="info" text="Loading vouchers..."></p-message>
+}
+@else
+{
 <div *ngIf="dataList().length > 0; else noData">
 
     <p-virtualScroller
@@ -50,12 +57,13 @@
     </p-virtualScroller>
 
 </div>
-
 <ng-template #noData>
     <div class="text-center text-500 mt-3">
         No vouchers found
     </div>
 </ng-template>
+}
+
 
 <div class="flex justify-content-center mt-3">
 

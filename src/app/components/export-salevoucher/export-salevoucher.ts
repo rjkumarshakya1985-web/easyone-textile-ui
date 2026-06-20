@@ -34,11 +34,11 @@ export class ExportSalevoucher {
   }
     
   loadExportSaleVoucher() {
-    this.loader.show();
+      this.loading=true;
     this.saleVoucherService.getExportedList().subscribe({
       next: (result) => {
         this.dataList.set(result);
-         this.loader.hide();
+        this.loading=false;
       },
       error: (err) => {
         console.error(err);
