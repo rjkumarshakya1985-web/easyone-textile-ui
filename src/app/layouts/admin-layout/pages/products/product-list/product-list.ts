@@ -330,6 +330,39 @@ loadTableDataFromLazy(req: TableDataRequest) {
   });
 }
 
+deleteHistory(historyId: number) {
+  this.confirmationService.confirm({
+    header: 'Delete Price History',
+    message: 'Are you sure you want to delete this price history?',
+    icon: 'pi pi-trash',
+    acceptLabel: 'Yes',
+    rejectLabel: 'No',
+    acceptButtonStyleClass: 'p-button-danger',
+    rejectButtonStyleClass: 'p-button-secondary',
+    accept: () => {
+      this.supplierProductService.deleteProductPriceHistory(historyId).subscribe({
+        next: (status) => {
+          if (status) {
+            this.visible=false;
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Deleted',
+              detail: 'Price history deleted successfully.'
+            });
+          }
+        },
+        error: () => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Failed to delete price history.'
+          });
+        }
+      });
+    }
+  });
+}
+
 clear(table: any) {
   table.clear();              // ✅ PrimeNG filters clear
   this.searchControl.setValue('');  // ✅ search textbox clear

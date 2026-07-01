@@ -77,4 +77,10 @@ export class SupplierProductService {
    getProductHistory(productId:string): Observable<ApiResponse<SupplierProductPriceHistoryDto[]>> {
     return this.http.get<ApiResponse<SupplierProductPriceHistoryDto[]>>(`${this.baseUrl}/product-price-history/${productId}`);
   }
+
+  deleteProductPriceHistory(historyId: number): Observable<ApiResponse<boolean>> {
+         return this.http.delete<ApiResponse<boolean>>(
+             `${this.baseUrl}/product-price-history/${historyId}`
+         );
+   }
 }

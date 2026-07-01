@@ -157,6 +157,7 @@
             <th>Purchase Rate</th>
             <th>Wholesale Rate</th>
             <th>Retail Rate</th>
+            <th>Action</th>
         </tr>
     </ng-template>
 
@@ -166,6 +167,12 @@
             <td>{{ item.purchaseRate }}</td>
             <td>{{ item.wholesaleRate }}</td>
             <td>{{ item.retailRate }}</td>
+            <td>
+               <span class="px-2 py-1 rounded bg-red-50 text-red-600 cursor-pointer hover:bg-red-100 ml-2"
+                 pTooltip="Delete" (click)="deleteHistory(item.id)">
+                 <i class="pi pi-trash"></i>
+               </span>
+            </td>
         </tr>
     </ng-template>
 
