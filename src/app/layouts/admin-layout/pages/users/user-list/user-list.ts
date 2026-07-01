@@ -180,35 +180,43 @@ export class UserList implements OnInit {
       });
     }
 
-    editUser(user:UserResponse)
-    {
-       this.visible = true;
-       this.loader.show();
-       this.userService.getUser(user.id).subscribe(result=>{
+  editUser(user: UserResponse) {
+   this.visible = true;
+   this.loader.show();
 
-          this.userForm = this.fb.group({
-             id:user.id,
-             roleId:user.role,
-             userName: user.userName,
-             password: user.password,
-             email:user.email,
-             phone:user.phone,
-             departmentId:null,
-            isActive:user.isActive
-         });
-        
-          if (result.role == 4) {
-            
-             this.userForm.patchValue({
-            departmentId: result.userDetail?.departmentId   
-            });
-        }
-       this.loader.hide();
-       });
+   this.userForm = this.fb.group({
+    id: [user.id],
+    roleId: [user.role],
+    userName: [user.userName],
+    password: [user.password],
+    email: [user.email],
+    phone: [user.phone],
+    departmentId: [null],
+    isActive: [user.isActive]
+   });
 
-     
-    }
-    
+  this.userService.getUser(user.id).subscribe({
+    next: (result) => {
+      this.userForm.patchValue({
+        roleId: result.role,
+        userName: result.userName,
+        password: result.password,
+        email: result.email,
+        phone: result.phone,
+        isActive: result.isActive,
+        departmentId: result.role === 4 ? result.userDetail?.departmentId : null
+      });
+    },
+    error: () => {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Failed to load user detail'
+      });
+    },
+    complete: () => this.loader.hide()
+  });
+}
 
     getUserRole(role:number):string{
       
