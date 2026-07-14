@@ -7,6 +7,36 @@
   margin-bottom: 10px;
 }
 
+:host ::ng-deep .status-filter-select,
+:host ::ng-deep .status-filter-select .p-select {
+  width: 100%;
+  min-width: 220px;
+}
+
+:host ::ng-deep .p-datatable-filter-overlay .p-column-filter-element,
+:host ::ng-deep .p-datatable-filter-overlay .status-filter-select {
+  display: flex;
+  width: 100% !important;
+}
+
+:host ::ng-deep .p-datatable thead > tr > th:first-child,
+:host ::ng-deep .p-datatable tbody > tr > td:first-child {
+  width: 52px;
+  min-width: 52px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+:host ::ng-deep .p-datatable thead > tr > th:first-child > .flex,
+:host ::ng-deep .p-datatable tbody > tr > td:first-child {
+  justify-content: center !important;
+}
+
+:host ::ng-deep .p-datatable tbody > tr > td:first-child .p-checkbox {
+  display: inline-flex;
+  vertical-align: middle;
+}
+
 /* Right side action buttons container */
 .header-actions {
   display: flex;

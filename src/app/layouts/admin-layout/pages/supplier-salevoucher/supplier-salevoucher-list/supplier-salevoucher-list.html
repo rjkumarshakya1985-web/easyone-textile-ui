@@ -198,12 +198,14 @@
                   [showAddButton]="false">
 
                 <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-               <p-select 
+               <p-select
+                  class="status-filter-select"
+                  [style]="{ width: '100%' }"
                   [options]="parcelStatusList"
                   optionLabel="label"
                   optionValue="value"
                   [ngModel]="value"
-                  (onChange)="filter($event.value)">
+                  (onChange)="applyStatusFilter($event.value, filter)">
             </p-select>
       </ng-template>
 

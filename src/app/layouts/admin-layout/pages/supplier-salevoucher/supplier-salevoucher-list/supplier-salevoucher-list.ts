@@ -1,5 +1,5 @@
 
-import { Component, signal, ViewChild } from '@angular/core';
+import { Component, HostListener, signal, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Table, TableModule } from 'primeng/table';
 import { CardModule } from 'primeng/card';
@@ -80,6 +80,45 @@ export class SupplierSalevoucherList {
   supplierNumber:string=''
   saleVoucherNumber: number | null = null;
   saleVoucherId?:number;
+
+  @HostListener('document:keydown.enter', ['$event'])
+  applyColumnFilterOnEnter(event: Event): void {
+    const keyboardEvent = event as KeyboardEvent;
+    const target = keyboardEvent.target as HTMLElement | null;
+
+    if (!target?.matches('input') || target.closest('.p-datepicker')) {
+      return;
+    }
+
+    const filterOverlay = target.closest('.p-datatable-filter-overlay');
+    const applyButton = filterOverlay?.querySelector<HTMLButtonElement>('button[aria-label="Apply"]');
+
+    if (!applyButton) {
+      return;
+    }
+
+    keyboardEvent.preventDefault();
+    keyboardEvent.stopPropagation();
+    applyButton.click();
+
+    setTimeout(() => {
+      const openFilterButton = document.querySelector<HTMLButtonElement>(
+        '.p-datatable-column-filter-button[aria-expanded="true"]'
+      );
+      openFilterButton?.click();
+    });
+  }
+
+  applyStatusFilter(value: number, filterCallback: (value: number) => void): void {
+    filterCallback(value);
+
+    setTimeout(() => {
+      const openFilterButton = document.querySelector<HTMLButtonElement>(
+        '.p-datatable-column-filter-button[aria-expanded="true"]'
+      );
+      openFilterButton?.click();
+    });
+  }
   // -----------------------------
   // Signals
   // -----------------------------
