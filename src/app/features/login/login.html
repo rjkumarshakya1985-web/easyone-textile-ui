@@ -1,25 +1,35 @@
-<div class="login-container"
-             style="background-image: radial-gradient(circle at left top, var(--p-primary-50), var(--p-primary-50))">
+<div class="login-container">
   <div class="login-card p-shadow-5 p-d-flex p-flex-column">
-    <img src="/assets/ssbd-logo-new.jpeg" alt="Shiv Sahai Bhagwan Das" height="auto"/>
+    <img class="brand-logo" src="/assets/ssbd-logo-new.jpeg" alt="Shiv Sahai Bhagwan Das" />
 
     <div class="p-field inline-field">
       <label for="username">Username</label>
-      <input id="username" type="text" pInputText [(ngModel)]="username" placeholder="Enter username" />
+      <div class="input-control">
+        <i class="pi pi-user" aria-hidden="true"></i>
+        <input id="username" type="text" pInputText [(ngModel)]="username" placeholder="Enter username"
+          autocomplete="username" (keyup.enter)="login()" />
+      </div>
     </div>
 
     <div class="p-field inline-field">
       <label for="password">Password</label>
-      <input id="password" type="password" pPassword [(ngModel)]="password" feedback="false" placeholder="Enter password" />
+      <div class="input-control">
+        <i class="pi pi-lock" aria-hidden="true"></i>
+        <input id="password" type="password" pInputText [(ngModel)]="password" placeholder="Enter password"
+          autocomplete="current-password" (keyup.enter)="login()" />
+      </div>
     </div>
 
     <div class="p-field-checkbox">
       <p-checkbox [(ngModel)]="rememberMe" inputId="rememberMe"></p-checkbox>
-      <label for="rememberMe">Remember Me</label>
+      <label for="rememberMe">Remember me</label>
     </div>
 
     <div>
-      <button pButton type="button" label="Login" class="p-button-success login-button" (click)="login()"></button>
+      <button pButton type="button" class="p-button-success login-button" (click)="login()">
+        <span>Login</span>
+        <i class="pi pi-arrow-right" aria-hidden="true"></i>
+      </button>
     </div>
   </div>
 </div>

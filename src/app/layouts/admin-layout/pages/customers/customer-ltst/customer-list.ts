@@ -16,6 +16,7 @@ import { PanelModule } from 'primeng/panel';
 import { ButtonGroupModule } from 'primeng/buttongroup';
 import { TooltipModule } from 'primeng/tooltip';
 import { FloatLabelModule } from 'primeng/floatlabel';
+import { InputTextModule } from 'primeng/inputtext';
 import { MenubarModule } from 'primeng/menubar';
 import { BadgeModule } from 'primeng/badge';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -36,6 +37,7 @@ import { PAGE_PAGE } from '../../../../../config/api.config';
     ToolbarModule,
     TooltipModule,
     FloatLabelModule,
+    InputTextModule,
     ReactiveFormsModule,
     MenubarModule, 
     BadgeModule,

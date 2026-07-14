@@ -8,31 +8,38 @@
   </div>
 </p-toolbar>
 
-<p-card>
-    <div class="d-flex justify-content-between mb-3">
+<p-card class="app-list-page">
+    <div class="d-flex justify-content-between mb-3 list-controls">
 
       <div class="flex-grow-1" style="max-width:300px">
-        <p-floatlabel variant="on">
-          <input pInputText id="on_label" [formControl]="searchControl" autocomplete="off" />
-          <label for="on_label">Search keyword</label>
-        </p-floatlabel>
+        <div class="app-search-field">
+          <i class="pi pi-search" aria-hidden="true"></i>
+          <p-floatlabel variant="on">
+            <input pInputText id="on_label" class="app-search-input" [formControl]="searchControl" autocomplete="off" />
+            <label for="on_label">Search keyword</label>
+          </p-floatlabel>
+        </div>
       </div>
 
       <ng-container>
-        <p-buttonGroup>
+        <div class="pagination-panel">
           <p-menu #menuItem [model]="pageSizeItems" [popup]="true" />
-          <p-button (click)="menuItem.toggle($event)" label="{{pageSize}}" outlined severity="secondary"></p-button>
-          <p-button label="Total ({{tblResult().totalRows}})" disabled outlined></p-button>
+          <button pButton type="button" class="pagination-size-btn" icon="pi pi-list"
+            [label]="pageSize.toString()" (click)="menuItem.toggle($event)"></button>
 
-          <p-button icon="pi pi-angle-left"
-            outlined (click)="onPrevious()"></p-button>
+          <span class="pagination-total">
+            <i class="pi pi-database"></i>
+            {{ tblResult().totalRows }} records
+          </span>
 
-          <p-button label="{{ pageindex() + 1 }}/{{ numberofPage() }}"
-            disabled outlined></p-button>
-
-          <p-button icon="pi pi-angle-right"
-            outlined (click)="onNext()"></p-button>
-        </p-buttonGroup>
+          <div class="pagination-nav">
+            <button pButton type="button" icon="pi pi-angle-left" class="pagination-icon-btn"
+              [disabled]="pageindex() === 0" (click)="onPrevious()"></button>
+            <span class="pagination-page">Page {{ pageindex() + 1 }} of {{ numberofPage() || 1 }}</span>
+            <button pButton type="button" icon="pi pi-angle-right" class="pagination-icon-btn"
+              [disabled]="pageindex() >= numberofPage() - 1" (click)="onNext()"></button>
+          </div>
+        </div>
       </ng-container>
 
     </div>
@@ -51,8 +58,8 @@
           </th>
          <th pSortableColumn="barcode">
                 
-                 <div  class="flex align-items-center gap-2">
-                    <span class="header-title">Barcode</span>&nbsp;
+                 <div class="table-header-cell">
+                    <span class="header-title">Barcode</span>
                     <p-sortIcon field="barcode"></p-sortIcon>
                       <p-columnFilter 
                         type="text"
@@ -66,8 +73,8 @@
                 </div>
         </th>
         <th pSortableColumn="name">
-             <div  class="flex align-items-center gap-2">
-                    <span class="header-title">Name</span>&nbsp;
+             <div class="table-header-cell">
+                    <span class="header-title">Name</span>
                     <p-sortIcon field="name"></p-sortIcon>
                       <p-columnFilter 
                         type="text"
@@ -81,13 +88,13 @@
                 </div>
         </th>
           <th pSortableColumn="CategoryName">
-                    <div class="flex items-center gap-2">Category
+                    <div class="table-header-cell"><span class="header-title">Category</span>
                         <p-sortIcon field="CategoryName" />
                     </div>
         </th>
         <th pSortableColumn="supplierName">
-            <div  class="flex align-items-center gap-2">
-                    <span class="header-title">Supplier Name</span>&nbsp;
+            <div class="table-header-cell">
+                    <span class="header-title">Supplier Name</span>
                     <p-sortIcon field="supplierName"></p-sortIcon>
                       <p-columnFilter 
                         type="text"
@@ -102,7 +109,7 @@
        </th>
       
          <th pSortableColumn="purchaseRate">
-                    <div class="flex items-center gap-2">Purchase Rate
+                    <div class="table-header-cell"><span class="header-title">Purchase Rate</span>
                         <p-sortIcon field="purchaseRate" />
                     </div>
         </th>

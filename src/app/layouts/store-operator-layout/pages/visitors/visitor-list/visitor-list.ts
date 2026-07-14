@@ -14,6 +14,7 @@ import { PanelModule } from 'primeng/panel';
 import { ButtonGroupModule } from 'primeng/buttongroup';
 import { TooltipModule } from 'primeng/tooltip';
 import { FloatLabelModule } from 'primeng/floatlabel';
+import { InputTextModule } from 'primeng/inputtext';
 import { MenubarModule } from 'primeng/menubar';
 import { BadgeModule } from 'primeng/badge';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -35,6 +36,7 @@ import { VisitorResponse } from '../../../../../model/response/visitor/visitor-r
     ToolbarModule,
     TooltipModule,
     FloatLabelModule,
+    InputTextModule,
     ReactiveFormsModule,
     MenubarModule, 
     BadgeModule,

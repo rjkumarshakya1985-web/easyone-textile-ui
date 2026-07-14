@@ -8,6 +8,7 @@ import { API_CONFIG } from './config/api.config';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { jwtInterceptor } from './core/interceptors/jwt.interceptor';
 import { errorInterceptor } from './core/interceptors/error.interceptor';
+import { loaderInterceptor } from './core/interceptors/loader.interceptor';
 import { MessageService } from 'primeng/api';
 
 export const appConfig: ApplicationConfig = {
@@ -20,6 +21,7 @@ export const appConfig: ApplicationConfig = {
   
     provideHttpClient(
       withInterceptors([
+        loaderInterceptor,
         jwtInterceptor,
         errorInterceptor
       ])

@@ -10,10 +10,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
-
-      // Optionally hide loader if you must
-      // recommended: use LoaderInterceptor for global loader handling
-      loader.hide();  
+      loader.hide();
 
       let msg = 'Unexpected error occurred';
 

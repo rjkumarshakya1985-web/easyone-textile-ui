@@ -8,52 +8,34 @@
   </div>
 </p-toolbar>
 
-<p-card>
-    <div class="d-flex justify-content-between mb-3">
+<p-card class="app-list-page">
+    <div class="d-flex justify-content-between mb-3 list-controls">
     <p-button  label="Clear" [outlined]="true" icon="pi pi-filter-slash" (click)="clear(dt1)" /> 
       <div class="flex-grow-1">
-        <p-floatlabel variant="on">
-          <input pInputText id="on_label" [formControl]="searchControl" autocomplete="off" />
-          <label for="on_label">Search keyword</label>
-        </p-floatlabel>
+        <div class="app-search-field">
+          <i class="pi pi-search" aria-hidden="true"></i>
+          <p-floatlabel variant="on">
+            <input pInputText id="on_label" class="app-search-input" [formControl]="searchControl" autocomplete="off" />
+            <label for="on_label">Search keyword</label>
+          </p-floatlabel>
+        </div>
       </div>
 
       <ng-container>
      <div class="custom-paginator">
-      <p-buttonGroup>
+      <div class="pagination-panel">
       <p-menu #menuItem [model]="pageSizeItems" [popup]="true" />
-      <p-button  icon="pi pi-file-filter"
-        (click)="menuItem.toggle($event)" 
-        label="{{pageSize}}" 
-        outlined 
-        severity="secondary">
-      </p-button>        
-
-      <p-button 
-        label="Total ({{tblResult().totalRows}})" 
-        disabled 
-        outlined>
-      </p-button>
-
-      <p-button 
-        icon="pi pi-angle-left"
-        outlined 
-        (click)="onPrevious()">
-      </p-button>
-
-      <p-button 
-        label="{{ pageindex() + 1 }}/{{ numberofPage() }}"
-        disabled 
-        outlined>
-      </p-button>
-
-      <p-button 
-        icon="pi pi-angle-right"
-        outlined 
-        (click)="onNext()">
-      </p-button>
-
-    </p-buttonGroup>
+      <button pButton type="button" class="pagination-size-btn" icon="pi pi-list"
+        [label]="pageSize.toString()" (click)="menuItem.toggle($event)"></button>
+      <span class="pagination-total"><i class="pi pi-database"></i>{{ tblResult().totalRows }} records</span>
+      <div class="pagination-nav">
+        <button pButton type="button" icon="pi pi-angle-left" class="pagination-icon-btn"
+          [disabled]="pageindex() === 0" (click)="onPrevious()"></button>
+        <span class="pagination-page">Page {{ pageindex() + 1 }} of {{ numberofPage() || 1 }}</span>
+        <button pButton type="button" icon="pi pi-angle-right" class="pagination-icon-btn"
+          [disabled]="pageindex() >= numberofPage() - 1" (click)="onNext()"></button>
+      </div>
+    </div>
     
     </div>
      </ng-container>

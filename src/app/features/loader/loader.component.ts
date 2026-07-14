@@ -1,4 +1,4 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, Signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { LoaderService } from '../../core/services/loader.service';
@@ -17,7 +17,7 @@ import { LoaderService } from '../../core/services/loader.service';
   styleUrls: ['./loader.component.css']
 })
 export class LoaderComponent {
-  isLoading = signal(false);
+  isLoading: Signal<boolean>;
 
   constructor(private loaderService: LoaderService) {
     this.isLoading=this.loaderService.loading;

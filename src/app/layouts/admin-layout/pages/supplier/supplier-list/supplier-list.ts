@@ -15,6 +15,7 @@ import { PanelModule } from 'primeng/panel';
 import { ButtonGroupModule } from 'primeng/buttongroup';
 import { TooltipModule } from 'primeng/tooltip';
 import { FloatLabelModule } from 'primeng/floatlabel';
+import { InputTextModule } from 'primeng/inputtext';
 import { SupplierTableResponse } from '../../../../../model/response/supplier/supplier-table-response.model';
 import { MenubarModule } from 'primeng/menubar';
 import { BadgeModule } from 'primeng/badge';
@@ -38,6 +39,7 @@ import { LoaderService } from '../../../../../core/services/loader.service';
     ToolbarModule,
     TooltipModule,
     FloatLabelModule,
+    InputTextModule,
     ReactiveFormsModule,
     MenubarModule, 
     BadgeModule,

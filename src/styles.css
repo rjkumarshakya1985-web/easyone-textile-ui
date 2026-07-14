@@ -192,6 +192,184 @@
     font-size: 12px;
 }
 
+/* Shared list-page controls: applies only to existing search/pagination tables. */
+.app-list-page .d-flex.justify-content-between.mb-3 {
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: nowrap;
+}
+
+.app-list-page .d-flex.justify-content-between.mb-3 > .flex-grow-1 {
+  flex: 0 1 320px !important;
+  min-width: 240px;
+  max-width: 320px !important;
+}
+
+.app-list-page .flex-grow-1 > p-floatlabel {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+
+.app-list-page .flex-grow-1 > p-floatlabel::before {
+  content: "\e908";
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  left: 0.8rem;
+  color: #64748b;
+  font-family: "primeicons";
+  font-size: 0.9rem;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.app-list-page .flex-grow-1 > p-floatlabel input {
+  width: 100%;
+  height: 42px;
+  padding-left: 2.35rem !important;
+  border-color: #cbd5e1;
+  border-radius: 7px;
+}
+
+.app-list-page .flex-grow-1 > p-floatlabel label {
+  margin-left: 1.55rem;
+}
+
+.app-list-page .flex-grow-1 > p-floatlabel input:focus {
+  border-color: #800000 !important;
+  box-shadow: 0 0 0 2px rgba(128, 0, 0, 0.12) !important;
+}
+
+.app-list-page p-buttongroup {
+  display: inline-flex;
+  align-items: center;
+  min-height: 42px;
+  padding: 0.25rem 0.35rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.05);
+  white-space: nowrap;
+}
+
+.app-list-page p-buttongroup .p-buttongroup {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.app-list-page p-buttongroup .p-button {
+  height: 34px;
+  border: 1px solid #d7dde7 !important;
+  border-radius: 6px !important;
+  color: #334155 !important;
+  background: #fff !important;
+  font-size: 0.84rem;
+  font-weight: 600;
+}
+
+.app-list-page p-buttongroup p-button:first-of-type .p-button {
+  border-color: #800000 !important;
+  color: #fff !important;
+  background: #800000 !important;
+  font-weight: 700;
+}
+
+.app-list-page p-buttongroup p-button:first-of-type .p-button::before {
+  content: "\e967";
+  font-family: "primeicons";
+  font-size: 0.82rem;
+  font-weight: normal;
+}
+
+.app-list-page p-buttongroup p-button:nth-of-type(2) .p-button::before {
+  content: "\e9e3";
+  color: #64748b;
+  font-family: "primeicons";
+  font-size: 0.82rem;
+  font-weight: normal;
+}
+
+.app-list-page p-buttongroup .p-button:hover:not(:disabled) {
+  border-color: #800000 !important;
+  color: #800000 !important;
+  background: #f8eeee !important;
+}
+
+.app-list-page p-buttongroup p-button:first-of-type .p-button:hover:not(:disabled) {
+  color: #fff !important;
+  background: #660000 !important;
+}
+
+.app-list-page p-buttongroup .p-button:disabled {
+  opacity: 1;
+  color: #64748b !important;
+  background: #f8fafc !important;
+}
+
+.app-list-page .p-datatable thead > tr > th > .flex,
+.app-list-page .p-datatable .supplier-header {
+  width: 100%;
+  min-height: 32px;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 0.4rem !important;
+  white-space: nowrap;
+}
+
+.app-list-page .p-datatable .p-sortable-column-icon {
+  width: 14px;
+  height: 14px;
+  flex: 0 0 14px;
+  margin: 0 !important;
+  color: #64748b;
+}
+
+.app-list-page .p-datatable thead > tr > th > .flex p-columnfilter,
+.app-list-page .p-datatable thead > tr > th > .flex .p-column-filter,
+.app-list-page .p-datatable .supplier-header p-columnfilter,
+.app-list-page .p-datatable .supplier-header .p-column-filter {
+  display: inline-flex;
+  align-items: center;
+  margin-left: auto;
+}
+
+.app-list-page .p-datatable .p-column-filter-menu-button,
+.app-list-page .p-datatable .pi-filter-slash {
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  color: #64748b;
+}
+
+.app-list-page .p-datatable .p-column-filter-menu-button:hover,
+.app-list-page .p-datatable .pi-filter-slash:hover {
+  color: #800000;
+  background: #f8eeee;
+}
+
+@media (max-width: 900px) {
+  .app-list-page .d-flex.justify-content-between.mb-3 {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .app-list-page .d-flex.justify-content-between.mb-3 > .flex-grow-1 {
+    width: 100%;
+    min-width: 0;
+    max-width: none !important;
+  }
+
+  .app-list-page p-buttongroup {
+    overflow-x: auto;
+  }
+}
+
 
 
 
