@@ -5,6 +5,7 @@ export interface AdminDashboardResponse {
   customerCount: number;
   inParcel: number;
   openParcel: number;
+  transport: number;
   inTransitLatestSaleVouchers: DashboardParcel[];
   inHouseLatestSaleVouchers: DashboardParcel[];
 }

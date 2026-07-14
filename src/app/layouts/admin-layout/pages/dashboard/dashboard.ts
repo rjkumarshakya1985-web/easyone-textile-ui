@@ -28,8 +28,9 @@ export class Dashboard {
   cards = signal([
     { icon: 'pi pi-box', title: 'Active Supplier',url:'/admin/suppliers', value: 22, color: '#03A9F4' },
     { icon: 'pi pi-truck', title: 'Customer',url:'/admin/customers', value: 2, color: '#F44336' },
-    { icon: 'pi pi-pencil', title: 'InTransit Parcel',url:'/admin/customers', value: 0, color: '#FF9800' },
-    { icon: 'pi pi-pencil', title: 'Open Parcel',url:'/admin/customers', value: 0, color: '#FF9800' }
+    { icon: 'pi pi-pencil', title: 'InTransit Parcel',url:'/admin/supplier-salevoucher', value: 0, color: '#FF9800' },
+    { icon: 'pi pi-truck', title: 'Transport Parcel',url:'/admin/supplier-salevoucher', value: 0, color: '#7C3AED' },
+    { icon: 'pi pi-pencil', title: 'Open Parcel',url:'/admin/supplier-salevoucher', value: 0, color: '#FF9800' }
   ]);
   constructor(private dashboardService:DashboardService,
       private loaderService:LoaderService)
@@ -52,7 +53,8 @@ export class Dashboard {
                     { ...this.cards()[0], value: result.supplierCount },
                     { ...this.cards()[1], value: 0 },
                     { ...this.cards()[2], value: result.inParcel },
-                    { ...this.cards()[3], value: result.openParcel }
+                    { ...this.cards()[3], value: result.transport },
+                    { ...this.cards()[4], value: result.openParcel }
                 ]);
                 console.log(this.data());
               },
