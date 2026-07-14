@@ -23,7 +23,7 @@ export class Helper {
     case ParcelStatus.InTransit:
       return 'warn';   
     case ParcelStatus.Transport:
-      return 'secondary';
+      return 'info';
       case ParcelStatus.PackedAtLocation:
       return 'secondary';
     case ParcelStatus.Opened:
