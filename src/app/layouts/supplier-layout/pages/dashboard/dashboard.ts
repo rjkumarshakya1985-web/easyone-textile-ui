@@ -28,9 +28,10 @@ export class Dashboard {
   ];
 
   cards = signal([
-    { icon: 'pi pi-box', title: 'Active Product',url:'/supplier/products', value: 0, color: '#03A9F4' },
-    { icon: 'pi pi-truck', title: 'InTransit Parcel',url:'/supplier/salevouchers', value: 0, color: '#F44336' },
-    { icon: 'pi pi-pencil', title: 'Sale Voucher',url:'/supplier/salevouchers', value: 0, color: '#FF9800' }
+    { icon: 'pi pi-box', title: 'Active Product',url:'/supplier/products', queryParams: {}, value: 0, color: '#03A9F4' },
+    { icon: 'pi pi-truck', title: 'InTransit Parcel',url:'/supplier/salevouchers', queryParams: { status: 3 }, value: 0, color: '#F44336' },
+    { icon: 'pi pi-truck', title: 'Transport Parcel',url:'/supplier/salevouchers', queryParams: { status: 4 }, value: 0, color: '#7C3AED' },
+    { icon: 'pi pi-pencil', title: 'Sale Voucher',url:'/supplier/salevouchers', queryParams: {}, value: 0, color: '#FF9800' }
   ]);
 
   constructor(private dashboardService:DashboardService,
@@ -52,7 +53,8 @@ export class Dashboard {
           this.cards.set([
               { ...this.cards()[0], value: result.productCount },
               { ...this.cards()[1], value: result.inTransitParcelCount },
-              { ...this.cards()[2], value: result.saleVoucherCount }
+              { ...this.cards()[2], value: result.transportParcelCount },
+              { ...this.cards()[3], value: result.saleVoucherCount }
           ]);
           console.log(this.data());
         },

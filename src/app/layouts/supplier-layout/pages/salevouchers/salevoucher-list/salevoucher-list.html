@@ -41,7 +41,7 @@
 
     <!-- TABLE -->
     <ng-container>
-       <p-table #dt1  [value]="tblResult().result" [lazy]="true"
+       <p-table #dt1  [value]="tblResult().result" [lazy]="true" [filters]="tableFilters"
   (onLazyLoad)="onLazyLoad($event)"
   [sortField]="sortField" [lazyLoadOnInit]="false"
   [sortOrder]="sortOrder" size="small" showGridlines class="p-datatable-sm">
@@ -119,6 +119,7 @@
         </p-columnFilter>
         </div>
         </th>
+        <th>LR</th>
         <th>Action</th>
           </tr>
         </ng-template>
@@ -145,6 +146,13 @@
           </td>
             <td>
               <p-tag [severity]="ParcelStatusHelper.getParcelStatusColor(row.parcelStatus,true)" [value]="ParcelStatusHelper.getParcelStatusText(row.parcelStatus,true)" />
+            </td>
+            <td>
+              <ng-container *ngIf="row.lrDate; else noLrDetails">
+                <div>{{ row.lrNumber }}</div>
+                <div>{{ row.lrDate | date:'dd/MM/yyyy' }}</div>
+              </ng-container>
+              <ng-template #noLrDetails>-</ng-template>
             </td>
             <td>
               <span class="px-2 py-1 rounded bg-blue-50 text-blue-600 cursor-pointer hover:bg-blue-100"

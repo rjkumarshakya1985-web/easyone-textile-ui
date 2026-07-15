@@ -6,7 +6,7 @@ import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { ToolbarModule } from 'primeng/toolbar';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
@@ -53,7 +53,7 @@ import { CheckboxModule } from 'primeng/checkbox';
     TagModule, 
     SelectModule,
     ConfirmDialogModule,
-    MenuModule,ChipModule,CheckboxModule     
+    MenuModule,ChipModule,CheckboxModule
   ],
  templateUrl: './salevoucher-list.html',
   styleUrl: './salevoucher-list.css',
@@ -66,6 +66,7 @@ export class SalevoucherList {
   items: MenuItem[] = [];
   ParcelStatusHelper = Helper;
   filters: { [key: string]: string | null } = {};
+  tableFilters: { [key: string]: any } = {};
   // -----------------------------
   // Signals
   // -----------------------------
@@ -91,6 +92,7 @@ export class SalevoucherList {
 
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private saleVoucherService: SaleVoucherService,
@@ -98,6 +100,7 @@ export class SalevoucherList {
   ) {}
 
   ngOnInit() {
+    this.applyDashboardStatusFilter();
     this.setupSearch();
     this.loadTableData();
     this.pageSizeItems = [
@@ -275,8 +278,25 @@ onPageSizeChange(size: number) {
   
   //// Filters
   clear(table: any) {
-  table.clear();              // ✅ PrimeNG filters clear
-  this.searchControl.setValue('');  // ✅ search textbox clear
+  this.filters = {};
+  this.tableFilters = {};
+  this.searchControl.setValue('');
+  this.pageindex.set(0);
+  table.clear();
+}
+
+private applyDashboardStatusFilter(): void {
+  const status = Number(this.route.snapshot.queryParamMap.get('status'));
+  const isValidStatus = this.parcelStatusList.some(item => item.value === status);
+
+  if (!isValidStatus) {
+    return;
+  }
+
+  this.filters = { parcelStatus: status.toString() };
+  this.tableFilters = {
+    parcelStatus: [{ value: status, matchMode: 'equals', operator: 'and' }]
+  };
 }
 
 onLazyLoad(event: any) {
@@ -325,5 +345,5 @@ loadTableDataFromLazy(req: TableDataRequest) {
     }
   });
 }
-  
+
 }

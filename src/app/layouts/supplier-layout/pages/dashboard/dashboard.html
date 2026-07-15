@@ -9,7 +9,7 @@
   </header>
 
   <section class="metric-grid" aria-label="Supplier metrics">
-    <a class="metric-card" *ngFor="let c of cards()" [routerLink]="c.url">
+    <a class="metric-card" *ngFor="let c of cards()" [routerLink]="c.url" [queryParams]="c.queryParams">
       <div class="metric-top">
         <span class="metric-icon" [ngStyle]="{ 'background': c.color }"><i [class]="c.icon"></i></span>
         <span class="metric-trend"><i class="pi pi-arrow-up-right"></i></span>

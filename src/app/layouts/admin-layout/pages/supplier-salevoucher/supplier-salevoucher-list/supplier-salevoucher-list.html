@@ -46,6 +46,7 @@
     <ng-container>
   
      <p-table #dt1 [value]="tblResult().result" [lazy]="true"
+       [filters]="tableFilters"
        (onLazyLoad)="onLazyLoad($event)" scrollHeight="600px" scrollable="true"
        [sortField]="sortField" [lazyLoadOnInit]="false"
        [sortOrder]="sortOrder" size="small" showGridlines class="p-datatable-sm">

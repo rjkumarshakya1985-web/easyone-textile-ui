@@ -6,7 +6,7 @@ import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { ToolbarModule } from 'primeng/toolbar';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, MenuItem } from 'primeng/api';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
@@ -74,6 +74,7 @@ export class SupplierSalevoucherList {
   items: MenuItem[] = [];
   ParcelStatusHelper = Helper;
   filters: { [key: string]: string | null } = {};
+  tableFilters: { [key: string]: any } = {};
   supplierInput: string = '';
   statusInput: number | null = null;
   transportInput:string=''
@@ -146,9 +147,12 @@ export class SupplierSalevoucherList {
 
 
 clear(table: any) {
-  table.clear();              
+  this.filters = {};
+  this.tableFilters = {};
   this.tempDateRange = [];
   this.searchControl.setValue('');  
+  this.pageindex.set(0);
+  table.clear();
 }
 
 onLazyLoad(event: any) {
@@ -227,11 +231,13 @@ loadTableDataFromLazy(req: TableDataRequest) {
 
   constructor(private fb: FormBuilder,
     private router: Router,
+    private route: ActivatedRoute,
      private loader: LoaderService,
     private saleVoucherService: SaleVoucherService,
   ) {}
 
   ngOnInit() {
+    this.applyDashboardStatusFilter();
     this.setupSearch();
     this.loadTableData();
     this.pageSizeItems = [
@@ -252,6 +258,20 @@ loadTableDataFromLazy(req: TableDataRequest) {
      lrNumber: ['', Validators.required],
      lrDate: [null, Validators.required]
     });
+  }
+
+  private applyDashboardStatusFilter(): void {
+    const status = Number(this.route.snapshot.queryParamMap.get('status'));
+    const isValidStatus = this.parcelStatusList.some(item => item.value === status);
+
+    if (!isValidStatus) {
+      return;
+    }
+
+    this.filters = { parcelStatus: status.toString() };
+    this.tableFilters = {
+      parcelStatus: [{ value: status, matchMode: 'equals', operator: 'and' }]
+    };
   }
 onPageSizeChange(size: number) {
   this.pageindex.set(0);      // reset to first page
