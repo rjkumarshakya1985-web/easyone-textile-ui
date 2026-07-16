@@ -236,6 +236,51 @@
               </p-floatlabel>
           </div>
 
+          <div class="col-md-3">
+              <p-floatlabel variant="on">
+                <p-inputNumber
+                    inputId="on_Customer_mu"
+                    formControlName="mu"
+                    [min]="0"
+                    [minFractionDigits]="0"
+                    [maxFractionDigits]="2"
+                    autocomplete="off"
+                    class="w-full">
+                </p-inputNumber>
+                <label for="on_Customer_mu">MU</label>
+              </p-floatlabel>
+          </div>
+
+          <div class="col-md-3">
+            <p-floatlabel class="w-full md:w-56" variant="on">
+              <p-select
+                formControlName="paymentTerm"
+                inputId="on_Customer_paymentTerm"
+                [options]="paymentTerms"
+                optionLabel="name"
+                optionValue="value"
+                class="w-full"
+                [ngClass]="{ 'ng-invalid ng-dirty': customerForm.get('paymentTerm')?.invalid && customerForm.get('paymentTerm')?.touched }">
+              </p-select>
+              <label for="on_Customer_paymentTerm">Payment Term</label>
+            </p-floatlabel>
+          </div>
+
+          <div class="col-md-3">
+            <p-floatlabel class="w-full md:w-56" variant="on">
+              <p-select
+                formControlName="customerCategory"
+                inputId="on_Customer_customerCategory"
+                [options]="customerCategories"
+                optionLabel="name"
+                optionValue="value"
+                class="w-full"
+                [ngClass]="{ 'ng-invalid ng-dirty': customerForm.get('customerCategory')?.invalid && customerForm.get('customerCategory')?.touched }">
+              </p-select>
+              <label for="on_Customer_customerCategory">Customer Category</label>
+            </p-floatlabel>
+          </div>
+
            <div class="col-md-12">
              <p-floatlabel variant="on">
               <textarea class="form-control"  pTextarea id="on_remarks" fluid formControlName="remarks" rows="3" cols="30" style="resize: none" class="h-full"></textarea>

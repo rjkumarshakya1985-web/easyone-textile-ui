@@ -9,6 +9,9 @@ export interface CustomerResponse {
   pan?: string;
   regType?: number;
   discount?:number;
+  mu?: number;
+  paymentTerm?: number;
+  customerCategory?: number;
   billingAddress?: string;
   shippingAddress?: string;
   cityName: string;

@@ -50,6 +50,17 @@ export class AddCustomer implements OnInit {
     { name: 'MU', value: 2 }
   ];
 
+  paymentTerms = [
+    { name: 'Cash', value: 1 },
+    { name: 'Credit', value: 2 }
+  ];
+
+  customerCategories = [
+    { name: 'Silver', value: 1 },
+    { name: 'Gold', value: 2 },
+    { name: 'Diamond', value: 3 }
+  ];
+
   transactionTypes = [
     { name: 'e-Fund Transfer', value: 1 },
     { name: 'Cheque', value: 2 },
@@ -88,6 +99,9 @@ ngOnInit(): void {
        pan: ['',Validators.required],
        regType: [null,Validators.required],
        discount:[null],
+       mu: [null],
+       paymentTerm: [null, Validators.required],
+       customerCategory: [null, Validators.required],
        billingAddress: [''],
        shippingAddress: [''],
        cityId: [null,Validators.required],
