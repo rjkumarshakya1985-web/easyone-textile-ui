@@ -1,5 +1,5 @@
-import { Component ,OnInit} from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, OnInit, signal } from '@angular/core';
+import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MasterDataService } from '../../../../../core/services/master-data-service';
 import { LoaderService } from '../../../../../core/services/loader.service';
@@ -17,12 +17,16 @@ import { State } from '../../../../../model/state.model';
 import { City } from '../../../../../model/city.model';
 import {finalize, Observable } from 'rxjs';
 import { CustomerService } from '../../../../../core/services/customer-service';
+import { LookupDto } from '../../../../../model/views/lookup.model';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { AutoCompleteService } from '../../../../../core/services/auto-complete-service';
+import { AgentTableResponse } from '../../../../../model/response/agent/agent-table-response.model';
 
 @Component({
   selector: 'app-add-customer',
   imports: [CommonModule, ReactiveFormsModule, InputNumberModule,
     InputTextModule, SelectModule , ButtonModule, CardModule,
-     TextareaModule, FloatLabelModule,ToastModule],
+     TextareaModule, FloatLabelModule,ToastModule,AutoCompleteModule],
   templateUrl: './add-customer.html',
   styleUrl: './add-customer.css',
 })
@@ -31,6 +35,8 @@ export class AddCustomer implements OnInit {
   CustomerId!: string;
   states$!: Observable<State[]>;
   cities$!: Observable<City[]>; 
+  transports$!: Observable<LookupDto<number>[]>;
+  filteredCustomerAgents = signal<AgentTableResponse[]>([]);
   customerForm!: FormGroup;
 
 
@@ -61,6 +67,17 @@ export class AddCustomer implements OnInit {
     { name: 'Diamond', value: 3 }
   ];
 
+  customerStatuses = [
+    { name: 'Dormant', value: 1 },
+    { name: 'NPA', value: 2 },
+    { name: 'Potential', value: 3 }
+  ];
+
+  rateTypes = [
+    { name: 'Net', value: 1 },
+    { name: 'Dhara', value: 2 }
+  ];
+
   transactionTypes = [
     { name: 'e-Fund Transfer', value: 1 },
     { name: 'Cheque', value: 2 },
@@ -74,7 +91,8 @@ export class AddCustomer implements OnInit {
     private masterService: MasterDataService,
     private loader: LoaderService,
     private messageService: MessageService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private autocompleteService: AutoCompleteService
   ) {
       // this.loadDropdowns();
       // this.initForm();
@@ -90,6 +108,9 @@ ngOnInit(): void {
       this.customerForm = this.fb.group({
        id: [null], // instead of 0
        customerType: [null,Validators.required],
+       transportId: [null, Validators.required],
+       customerAgentId: [null],
+       customerAgentObj: [null, Validators.required],
        name: ['', Validators.required],
        alias: [''],
        ledgerName: [''],
@@ -102,6 +123,14 @@ ngOnInit(): void {
        mu: [null],
        paymentTerm: [null, Validators.required],
        customerCategory: [null, Validators.required],
+       customerStatus: [null, Validators.required],
+       rateType: [null, Validators.required],
+       alternateNo: [''],
+       creditAlertLimit: [null, Validators.min(0)],
+       incentive: [null, Validators.min(0)],
+       term: [null, Validators.min(0)],
+       reference: [''],
+       customerCode: ['', Validators.required],
        billingAddress: [''],
        shippingAddress: [''],
        cityId: [null,Validators.required],
@@ -118,7 +147,12 @@ ngOnInit(): void {
        tallyLedgerType: [null],      // changed from ''
        tallyCategory: [null], // changed from ''
        remarks: ['']
+      }, { validators: this.creditAlertBelowCreditLimit });
+
+      this.customerForm.get('rateType')?.valueChanges.subscribe(rateType => {
+        this.updateMuValidation(rateType);
       });
+      this.updateMuValidation(this.customerForm.get('rateType')?.value);
 
        this.customerForm.get('name')?.valueChanges.subscribe(value => {
            this.customerForm.get('printName')?.setValue(value, { emitEvent: false });
@@ -128,6 +162,33 @@ ngOnInit(): void {
       });
   
     }
+
+  private creditAlertBelowCreditLimit(group: AbstractControl): ValidationErrors | null {
+    const creditAlertLimit = group.get('creditAlertLimit')?.value;
+    const creditLimit = group.get('creditLimit')?.value;
+
+    if (creditAlertLimit === null || creditAlertLimit === '' ||
+        creditLimit === null || creditLimit === '') {
+      return null;
+    }
+
+    return Number(creditAlertLimit) < Number(creditLimit)
+      ? null
+      : { creditAlertLimitNotBelowCreditLimit: true };
+  }
+
+  private updateMuValidation(rateType: number | string | null): void {
+    const muControl = this.customerForm.get('mu');
+
+    if (Number(rateType) === 2) {
+      muControl?.setValidators([Validators.required, Validators.min(0)]);
+    } else {
+      muControl?.clearValidators();
+      muControl?.setValue(null, { emitEvent: false });
+    }
+
+    muControl?.updateValueAndValidity({ emitEvent: false });
+  }
  checkEditMode() {
     this.CustomerId = this.route.snapshot.paramMap.get('id')!;
     if (this.CustomerId) {
@@ -163,8 +224,9 @@ ngOnInit(): void {
 
    
 
-    loadDropdowns() {
+  loadDropdowns() {
      this.states$ = this.masterService.getStates();
+     this.transports$ = this.masterService.getTransportLookup(2);
     }
 
   onStateChange(event: any) {  
@@ -173,12 +235,16 @@ ngOnInit(): void {
     this.customerForm.patchValue({ cityId: '' });
   }
   submit(){
-   
+       this.updateMuValidation(this.customerForm.get('rateType')?.value);
        if (this.customerForm.invalid) {
           this.customerForm.markAllAsTouched();
           return;
        }
-   let request = this.customerForm.value;
+   const selectedAgent = this.customerForm.value.customerAgentObj as AgentTableResponse;
+   let request = {
+     ...this.customerForm.value,
+     customerAgentId: selectedAgent?.id
+   };
    request.id=this.CustomerId;
   this.loader.show();   
      if(!this.CustomerId)
@@ -235,4 +301,10 @@ else
   });
 }
 }
+
+  searchCustomerAgent(event: any): void {
+    this.autocompleteService.searchCustomerAgents(event.query).subscribe(result => {
+      this.filteredCustomerAgents.set(result);
+    });
+  }
 }

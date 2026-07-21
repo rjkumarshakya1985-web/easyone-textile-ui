@@ -323,6 +323,23 @@
       </div>
     </div>
 
+    <div class="card mt-3" *ngIf="isEdit">
+      <div class="card-header flex items-center">
+        <span class="text-lg font-semibold" style="margin-top: 16px;">Purchase Transport</span>
+      </div>
+      <div class="card-body">
+        <div class="row g-3">
+          <div class="col-md-4">
+            <p-multiselect [options]="(transport$ | async) ?? []"
+              formControlName="transportIds" optionLabel="name" optionValue="id"
+              placeholder="Select Purchase Transport" [maxSelectedLabels]="3"
+              display="chip" class="w-full md:w-80">
+            </p-multiselect>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="card mt-3" *ngIf="!isEdit">
        <div class="card-header flex items-center">
        <span class="text-lg font-semibold" style="margin-top: 16px;"> Supplier Master Configuration:</span>
@@ -334,7 +351,7 @@
                     formControlName="transportIds"
                     optionLabel="name"
                     optionValue="id"
-                    placeholder="Select Transport"
+                    placeholder="Select Purchase Transport"
                     [maxSelectedLabels]="3"
                     display="chip"
                     class="w-full md:w-80">

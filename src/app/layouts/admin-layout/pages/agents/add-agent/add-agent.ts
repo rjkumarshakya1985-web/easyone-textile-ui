@@ -33,6 +33,8 @@ import { LookupDto } from '../../../../../model/views/lookup.model';
 })
 export class AddAgent implements OnInit {
 
+  agentType = 1;
+  agentTitle = 'Supplier Agent';
   isEdit = false;
   agentId!: string;
   states$!: Observable<State[]>;
@@ -47,7 +49,10 @@ export class AddAgent implements OnInit {
     private messageService: MessageService,
     private route: ActivatedRoute,
 
-  ) {}
+  ) {
+    this.agentType = Number(this.route.snapshot.data['agentType'] ?? 1);
+    this.agentTitle = this.agentType === 2 ? 'Customer Agent' : 'Supplier Agent';
+  }
 
   ngOnInit(): void {
    this.initForm();
@@ -94,7 +99,7 @@ export class AddAgent implements OnInit {
 
   loadAgentForEdit() {
     this.loader.show();
-    this.agentService.getAgent(this.agentId)
+    this.agentService.getAgent(this.agentId, this.agentType)
       .pipe(finalize(() => this.loader.hide()))
       .subscribe({
         next: agent => {
@@ -126,7 +131,7 @@ submit() {
   request.id=this.agentId;
   this.loader.show();
 
-  this.agentService.createAgent(request)
+  this.agentService.createAgent(request, this.agentType)
     .pipe(finalize(() => this.loader.hide())) 
     .subscribe({
       next: () => {
@@ -138,7 +143,7 @@ submit() {
         if(this.agentId)
         {
           setTimeout(() => {
-            this.router.navigate(['admin/agents']);
+            this.router.navigate([this.agentType === 2 ? 'admin/customer-agents' : 'admin/agents']);
           }, 1000);
         }
         else

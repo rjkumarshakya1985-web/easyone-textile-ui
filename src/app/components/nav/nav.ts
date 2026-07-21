@@ -88,7 +88,8 @@ export class Nav implements OnInit, OnDestroy {
         items: [
           {label: 'Users',icon: 'pi pi-fw pi-user-plus',routerLink: ['/admin/users']},
           {label: 'Customers',icon: 'pi pi-fw pi-user',routerLink: ['/admin/customers']},
-          {label: 'Agents',icon: 'pi pi-fw pi-user',routerLink: ['/admin/agents']},
+          {label: 'Supplier Agents',icon: 'pi pi-fw pi-user',routerLink: ['/admin/agents']},
+          {label: 'Customer Agents',icon: 'pi pi-fw pi-user',routerLink: ['/admin/customer-agents']},
            {label: 'Sales Persons',icon: 'pi pi-fw pi-user',routerLink: ['/admin/sales-persons']}
         ]
       },

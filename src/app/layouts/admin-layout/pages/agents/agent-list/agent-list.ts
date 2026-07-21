@@ -1,5 +1,5 @@
 import { Component, signal, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
@@ -48,6 +48,8 @@ import { PAGE_PAGE } from '../../../../../config/api.config';
   styleUrl: './agent-list.css',
 })
 export class AgentList {
+  agentType = 1;
+  pageTitle = 'Supplier Agents';
    pageSizeItems: MenuItem[] | undefined;
   sortField: string = '';
   sortOrder: number = 1; // 1 = ASC, -1 = DESC
@@ -71,15 +73,20 @@ export class AgentList {
 
   breadcrumbItems: MenuItem[] = [
     { label: 'Dashboard', routerLink: '/admin' },
-    { label: 'Agents' }
+    { label: this.pageTitle }
   ];
 
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
     private agentService: AgentService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService
-  ) { }
+  ) {
+    this.agentType = Number(this.route.snapshot.data['agentType'] ?? 1);
+    this.pageTitle = this.agentType === 2 ? 'Customer Agents' : 'Supplier Agents';
+    this.breadcrumbItems[1].label = this.pageTitle;
+  }
 
   ngOnInit() {
     this.setupSearch();
@@ -127,7 +134,7 @@ onPageSizeChange(size: number) {
       sortOrder: this.sortOrder
     };
 
-    this.agentService.getAgentTableData(req).subscribe({
+    this.agentService.getAgentTableData(req, this.agentType).subscribe({
       next: (res) => {
         this.tblResult.set(res);
       },
@@ -162,11 +169,11 @@ onPageSizeChange(size: number) {
   // ROUTING
   // -----------------------------
   goToAddAgent() {
-    this.router.navigate(['admin/agent/add']);
+    this.router.navigate([this.agentType === 2 ? 'admin/customer-agent/add' : 'admin/agent/add']);
   }
 
   goToEditAgent(id: string) {
-    this.router.navigate(['admin/agent/edit', id]);
+    this.router.navigate([this.agentType === 2 ? 'admin/customer-agent/edit' : 'admin/agent/edit', id]);
   }
 
   deleteAgent(id: string) {
@@ -179,7 +186,7 @@ onPageSizeChange(size: number) {
     acceptButtonStyleClass: 'p-button-danger',
     rejectButtonStyleClass: 'p-button-secondary',
     accept: () => {
-      this.agentService.updateStatusAgent(id, 0).subscribe(status => {
+      this.agentService.updateStatusAgent(id, 0, this.agentType).subscribe(status => {
         if (status) {
           this.loadTableData();
 
@@ -204,7 +211,7 @@ onPageSizeChange(size: number) {
     acceptButtonStyleClass: 'p-button-warning',
     rejectButtonStyleClass: 'p-button-secondary',
     accept: () => {
-      this.agentService.updateStatusAgent(response.id, response.isActive ? 2 : 1)
+      this.agentService.updateStatusAgent(response.id, response.isActive ? 2 : 1, this.agentType)
         .subscribe(status => {
           if (status) {
             this.loadTableData();

@@ -1,0 +1,17 @@
+.form-section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 0.35rem 0 0.15rem;
+  padding: 0.65rem 0.8rem;
+  border-left: 4px solid #800000;
+  border-radius: 6px;
+  color: #641313;
+  background: #fbf3f3;
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+.form-section-title i {
+  font-size: 0.9rem;
+}

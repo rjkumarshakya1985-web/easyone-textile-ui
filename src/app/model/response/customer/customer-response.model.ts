@@ -1,3 +1,5 @@
+import { AgentTableResponse } from '../agent/agent-table-response.model';
+
 export interface CustomerResponse {
   id: string;
   name: string;
@@ -12,6 +14,14 @@ export interface CustomerResponse {
   mu?: number;
   paymentTerm?: number;
   customerCategory?: number;
+  customerStatus?: number;
+  rateType?: number;
+  alternateNo?: string;
+  creditAlertLimit?: number;
+  incentive?: number;
+  term?: number;
+  reference?: string;
+  customerCode?: string;
   billingAddress?: string;
   shippingAddress?: string;
   cityName: string;
@@ -30,6 +40,9 @@ export interface CustomerResponse {
   tallyLedgerType?: number;
   tallyCategory?: number;
   customerType: number;
+  transportId?: number;
+  customerAgentId?: string;
+  customerAgentObj?: AgentTableResponse;
   remarks?: string;
   isActive: boolean;
 }

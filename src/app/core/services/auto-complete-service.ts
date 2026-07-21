@@ -60,4 +60,10 @@ export class AutoCompleteService {
       `${this.baseUrl}agent-search/${encodeURIComponent(search)}`
     );
   }
+
+  searchCustomerAgents(search: string) {
+    return this.http.get<AgentTableResponse[]>(
+      `${this.baseUrl}customer-agent-search/${encodeURIComponent(search)}`
+    );
+  }
 }

@@ -42,4 +42,5 @@ export interface Supplier {
   wholeSalesMargin: number;
   retailMargin: number;
   mrpMargin:number;
+  transportIds?: number[];
 }

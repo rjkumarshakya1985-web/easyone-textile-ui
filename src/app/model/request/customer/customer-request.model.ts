@@ -12,6 +12,14 @@ export interface CustomerRequest {
   mu?: number;
   paymentTerm?: number;
   customerCategory?: number;
+  customerStatus?: number;
+  rateType?: number;
+  alternateNo?: string;
+  creditAlertLimit?: number;
+  incentive?: number;
+  term?: number;
+  reference?: string;
+  customerCode?: string;
   billingAddress?: string;
   shippingAddress?: string;
   cityId: number;
@@ -27,5 +35,7 @@ export interface CustomerRequest {
   tallyLedgerType?: number;
   tallyCategory?: number;
   customerType: number;
+  transportId?: number;
+  customerAgentId?: string;
   remarks?: string;
 }

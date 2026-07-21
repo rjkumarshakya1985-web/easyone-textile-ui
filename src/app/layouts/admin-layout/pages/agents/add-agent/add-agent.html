@@ -3,9 +3,9 @@
 
     <div class="card">
      <div class="card-header flex items-center">
-     <span class="text-lg font-semibold" style="margin-top: 16px;">Agent Information</span>
+     <span class="text-lg font-semibold" style="margin-top: 16px;">{{ agentTitle }} Information</span>
        <p-button type="submit"
-        label="Save Agent" 
+        [label]="'Save ' + agentTitle"
         class="p-button-sm ml-auto"  
         variant="text" 
         [raised]="true">

@@ -21,20 +21,23 @@ export class AgentService {
 
   /// Agent
 
-  getAgentTableData(request: TableDataRequest): Observable<TableResult<AgentTableResponse>> {
-    return this.http.post<TableResult<AgentTableResponse>>(`${this.apiUrl}agent/agent-table`, request);
+  getAgentTableData(request: TableDataRequest, agentType: number = 1): Observable<TableResult<AgentTableResponse>> {
+    const endpoint = agentType === 2 ? 'customeragent/customer-agent-table' : 'agent/agent-table';
+    return this.http.post<TableResult<AgentTableResponse>>(`${this.apiUrl}${endpoint}`, request);
   }
 
   getAgentCode(): Observable<any> {
       return this.http.get<any>(`${this.apiUrl}agent/agent-code`);
   }
 
-  createAgent(request:AgentRequest):Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}agent/create-agent`, request);
+  createAgent(request:AgentRequest, agentType: number = 1):Observable<any> {
+    const endpoint = agentType === 2 ? 'customeragent/create-customer-agent' : 'agent/create-agent';
+    return this.http.post<any>(`${this.apiUrl}${endpoint}`, request);
   }
 
-  getAgent(agentId: string): Observable<Agent> {
-   return this.http.get<Agent>(`${this.apiUrl}agent/agent-detail/${agentId}`);
+  getAgent(agentId: string, agentType: number = 1): Observable<Agent> {
+   const endpoint = agentType === 2 ? 'customeragent/customer-agent-detail' : 'agent/agent-detail';
+   return this.http.get<Agent>(`${this.apiUrl}${endpoint}/${agentId}`);
   }
 
   getCurrentAgent()
@@ -45,9 +48,10 @@ export class AgentService {
   
 
 
-  updateStatusAgent(agentId:string,actionType:number):Observable<boolean> {
+  updateStatusAgent(agentId:string,actionType:number,agentType:number = 1):Observable<boolean> {
+    const endpoint = agentType === 2 ? 'customeragent/update-status-customer-agent' : 'agent/update-status-agent';
     let request = {agentId:agentId,ActionType:actionType};
-    return this.http.post<boolean>(`${this.apiUrl}agent/update-status-agent`, request);
+    return this.http.post<boolean>(`${this.apiUrl}${endpoint}`, request);
   }
 
 }

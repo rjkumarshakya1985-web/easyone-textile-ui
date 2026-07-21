@@ -40,4 +40,5 @@ export interface SupplierRequest {
   billDiscount?:number,
   paymentDiscount?:number,
   annualIncentive?:number,
+  transportIds?: number[];
 }

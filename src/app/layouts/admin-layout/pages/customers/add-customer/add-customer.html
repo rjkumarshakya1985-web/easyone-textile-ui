@@ -14,6 +14,13 @@
       <div class="card-body">
 
          <div class="row g-3">
+
+          <div class="col-12">
+            <div class="form-section-title">
+              <i class="pi pi-user"></i>
+              <span>Basic Information</span>
+            </div>
+          </div>
         
          <div class="col-md-3">
              <p-floatlabel class="w-full md:w-56" variant="on">
@@ -28,6 +35,34 @@
               <label for="on_Customer_customerType">Select Customer Type</label>
             </p-floatlabel>
            </div>
+
+          <div class="col-md-3">
+            <p-floatlabel class="w-full md:w-56" variant="on">
+              <p-select formControlName="transportId" inputId="on_Customer_transportId"
+                [options]="(transports$ | async) ?? []" optionLabel="name" optionValue="id"
+                class="w-full"
+                [ngClass]="{ 'ng-invalid ng-dirty': customerForm.get('transportId')?.invalid && customerForm.get('transportId')?.touched }">
+              </p-select>
+              <label for="on_Customer_transportId">Sales Transport</label>
+            </p-floatlabel>
+          </div>
+
+          <div class="col-md-3">
+            <p-autocomplete formControlName="customerAgentObj"
+              [suggestions]="filteredCustomerAgents()"
+              (completeMethod)="searchCustomerAgent($event)"
+              optionLabel="name" placeholder="Search Customer Agent"
+              appendTo="body" [forceSelection]="true"
+              styleClass="w-full" inputStyleClass="w-full"
+              [ngClass]="{ 'ng-invalid ng-dirty': customerForm.get('customerAgentObj')?.invalid && customerForm.get('customerAgentObj')?.touched }">
+              <ng-template let-agent pTemplate="item">
+                <div class="flex flex-column">
+                  <span class="font-medium">{{ agent.name }}</span>
+                  <small *ngIf="agent.contactPersonMobile">{{ agent.contactPersonMobile }}</small>
+                </div>
+              </ng-template>
+            </p-autocomplete>
+          </div>
 
           <!-- Name -->
           <div class="col-md-3">
@@ -73,6 +108,13 @@
             </p-floatlabel>   
           </div>
 
+          <div class="col-12">
+            <div class="form-section-title">
+              <i class="pi pi-file"></i>
+              <span>Tax &amp; Registration</span>
+            </div>
+          </div>
+
            <!-- Gst -->
           <div class="col-md-3">
              <p-floatlabel variant="on">
@@ -105,6 +147,13 @@
               <label for="on_Customer_registrationTypes">Registration type</label>
            </p-floatlabel>
            </div>
+
+          <div class="col-12">
+            <div class="form-section-title">
+              <i class="pi pi-phone"></i>
+              <span>Contact Information</span>
+            </div>
+          </div>
           
             <div class="col-md-3">
              <p-floatlabel variant="on">
@@ -126,6 +175,13 @@
                               [ngClass]="{ 'ng-invalid ng-dirty': customerForm.get('mobile')?.invalid && customerForm.get('mobile')?.touched }"/>
               <label for="on_Supplier_mobile">Mobile no</label>
             </p-floatlabel>
+          </div>
+
+          <div class="col-12">
+            <div class="form-section-title">
+              <i class="pi pi-map-marker"></i>
+              <span>Address Information</span>
+            </div>
           </div>
 
             <div class="col-md-12">
@@ -150,7 +206,6 @@
                 <label for="state">Select State</label>
              </p-floatlabel>
           </div>
-
           <div class="col-md-3">
             <p-floatlabel class="w-full md:w-56" variant="on">
                 <p-select formControlName="cityId" inputId="city" [options]="(cities$ | async) ?? []" optionLabel="name" optionValue="id"  class="w-full" 
@@ -174,7 +229,13 @@
             </p-floatlabel>
           </div>
 
-          
+          <div class="col-12">
+            <div class="form-section-title">
+              <i class="pi pi-wallet"></i>
+              <span>Credit &amp; Commercial Information</span>
+            </div>
+          </div>
+
           <div class="col-md-3">
               <p-floatlabel variant="on">
                 <p-inputNumber
@@ -237,21 +298,6 @@
           </div>
 
           <div class="col-md-3">
-              <p-floatlabel variant="on">
-                <p-inputNumber
-                    inputId="on_Customer_mu"
-                    formControlName="mu"
-                    [min]="0"
-                    [minFractionDigits]="0"
-                    [maxFractionDigits]="2"
-                    autocomplete="off"
-                    class="w-full">
-                </p-inputNumber>
-                <label for="on_Customer_mu">MU</label>
-              </p-floatlabel>
-          </div>
-
-          <div class="col-md-3">
             <p-floatlabel class="w-full md:w-56" variant="on">
               <p-select
                 formControlName="paymentTerm"
@@ -279,6 +325,103 @@
               </p-select>
               <label for="on_Customer_customerCategory">Customer Category</label>
             </p-floatlabel>
+          </div>
+
+          <div class="col-md-3">
+            <p-floatlabel class="w-full md:w-56" variant="on">
+              <p-select formControlName="customerStatus" inputId="on_Customer_customerStatus"
+                [options]="customerStatuses" optionLabel="name" optionValue="value" class="w-full"
+                [ngClass]="{ 'ng-invalid ng-dirty': customerForm.get('customerStatus')?.invalid && customerForm.get('customerStatus')?.touched }">
+              </p-select>
+              <label for="on_Customer_customerStatus">Customer Status</label>
+            </p-floatlabel>
+          </div>
+
+          <div class="col-md-3">
+            <p-floatlabel class="w-full md:w-56" variant="on">
+              <p-select formControlName="rateType" inputId="on_Customer_rateType"
+                [options]="rateTypes" optionLabel="name" optionValue="value" class="w-full"
+                [ngClass]="{ 'ng-invalid ng-dirty': customerForm.get('rateType')?.invalid && customerForm.get('rateType')?.touched }">
+              </p-select>
+              <label for="on_Customer_rateType">Rate Type</label>
+            </p-floatlabel>
+          </div>
+
+          <div class="col-md-3" *ngIf="customerForm.get('rateType')?.value === 2">
+            <p-floatlabel variant="on">
+              <p-inputNumber inputId="on_Customer_mu" formControlName="mu" [min]="0"
+                [minFractionDigits]="0" [maxFractionDigits]="2" autocomplete="off" class="w-full"
+                [ngClass]="{ 'ng-invalid ng-dirty': customerForm.get('mu')?.invalid && customerForm.get('mu')?.touched }">
+              </p-inputNumber>
+              <label for="on_Customer_mu">MU *</label>
+            </p-floatlabel>
+            <small class="text-danger"
+              *ngIf="customerForm.get('mu')?.hasError('required') && customerForm.get('mu')?.touched">
+              MU is required for Dhara rate type.
+            </small>
+          </div>
+
+          <div class="col-md-3">
+            <p-floatlabel variant="on">
+              <input pInputText class="form-control" id="on_Customer_customerCode"
+                formControlName="customerCode" autocomplete="off"
+                [ngClass]="{ 'ng-invalid ng-dirty': customerForm.get('customerCode')?.invalid && customerForm.get('customerCode')?.touched }" />
+              <label for="on_Customer_customerCode">Customer Code</label>
+            </p-floatlabel>
+          </div>
+
+          <div class="col-md-3">
+            <p-floatlabel variant="on">
+              <input pInputText class="form-control" id="on_Customer_alternateNo"
+                formControlName="alternateNo" autocomplete="off" />
+              <label for="on_Customer_alternateNo">Alternate No</label>
+            </p-floatlabel>
+          </div>
+
+          <div class="col-md-3">
+            <p-floatlabel variant="on">
+              <p-inputNumber inputId="on_Customer_creditAlertLimit" formControlName="creditAlertLimit"
+                [min]="0" [minFractionDigits]="0" [maxFractionDigits]="2" class="w-full"
+                [ngClass]="{ 'ng-invalid ng-dirty': customerForm.hasError('creditAlertLimitNotBelowCreditLimit') && customerForm.get('creditAlertLimit')?.touched }">
+              </p-inputNumber>
+              <label for="on_Customer_creditAlertLimit">Credit Alert Limit</label>
+            </p-floatlabel>
+            <small class="text-danger" *ngIf="customerForm.hasError('creditAlertLimitNotBelowCreditLimit') && customerForm.get('creditAlertLimit')?.touched">
+              Credit Alert Limit must be less than Credit Limit.
+            </small>
+          </div>
+
+          <div class="col-md-3">
+            <p-floatlabel variant="on">
+              <p-inputNumber inputId="on_Customer_incentive" formControlName="incentive"
+                [min]="0" [minFractionDigits]="0" [maxFractionDigits]="2" class="w-full">
+              </p-inputNumber>
+              <label for="on_Customer_incentive">Incentive</label>
+            </p-floatlabel>
+          </div>
+
+          <div class="col-md-3">
+            <p-floatlabel variant="on">
+              <p-inputNumber inputId="on_Customer_term" formControlName="term"
+                [min]="0" [minFractionDigits]="0" [maxFractionDigits]="2" class="w-full">
+              </p-inputNumber>
+              <label for="on_Customer_term">Term</label>
+            </p-floatlabel>
+          </div>
+
+          <div class="col-md-3">
+            <p-floatlabel variant="on">
+              <input pInputText class="form-control" id="on_Customer_reference"
+                formControlName="reference" autocomplete="off" />
+              <label for="on_Customer_reference">Reference</label>
+            </p-floatlabel>
+          </div>
+
+          <div class="col-12">
+            <div class="form-section-title">
+              <i class="pi pi-info-circle"></i>
+              <span>Additional Information</span>
+            </div>
           </div>
 
            <div class="col-md-12">

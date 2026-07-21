@@ -159,6 +159,7 @@ autoFillPanFromGstin() {
   loadDropdowns() {
     this.department$ = this.masterService.getDepartments();
     this.states$ = this.masterService.getStates();
+    this.transport$ = this.masterService.getTransportLookup(1);
   }
 
   checkEditMode() {
@@ -170,7 +171,6 @@ autoFillPanFromGstin() {
     } else {
       this.loadSupplierCode(); // Add mode only
       this.stockGroup$ = this.stockGroupService.getAll();
-      this.transport$ = this.masterService.getTransportLookup();
       this.hsnCodes$ = this.masterService.getHsnCodeLookup();
       this.setDefaultStateAndCity();   // Default State & City
     }

@@ -76,7 +76,11 @@ export class MasterDataService {
       return this.http.get<Gsts[]>(`${this.apiUrl}master/gsts`);
   }
 
-  getTransportLookup(): Observable<LookupDto<number>[]> {
-  return this.http.get<LookupDto<number>[]>(`${this.apiUrl}master/transport-lookup`);
+  getTransportLookup(transportType?: number): Observable<LookupDto<number>[]> {
+    const url = transportType
+      ? `${this.apiUrl}master/transport-lookup?transportType=${transportType}`
+      : `${this.apiUrl}master/transport-lookup`;
+
+    return this.http.get<LookupDto<number>[]>(url);
   }
 }
