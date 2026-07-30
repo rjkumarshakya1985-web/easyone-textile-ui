@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "texttile-erp-app": {
+    "easyone-erp-app": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -56,10 +56,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "texttile-erp-app:build:production"
+              "buildTarget": "easyone-erp-app:build:production"
             },
             "development": {
-              "buildTarget": "texttile-erp-app:build:development"
+              "buildTarget": "easyone-erp-app:build:development"
             }
           },
           "defaultConfiguration": "development"

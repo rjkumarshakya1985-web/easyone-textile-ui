@@ -14,5 +14,5 @@ import { ToastModule } from 'primeng/toast';
   styleUrls: ['./app.css']
 })
 export class App {
-  protected readonly title = signal('texttile-erp-app');
+  protected readonly title = signal('easyone-erp-app');
 }
