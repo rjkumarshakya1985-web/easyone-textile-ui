@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, effect, computed } from '@angular/core';
+import { Component, OnInit, signal, effect, computed, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { CardModule } from 'primeng/card';
@@ -19,7 +19,7 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { Transport } from '../../../../../model/transporter.model';
-import { MenuModule } from 'primeng/menu';
+import { Menu, MenuModule } from 'primeng/menu';
 import { PAGE_PAGE } from '../../../../../config/api.config';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -52,7 +52,8 @@ export class TransportList implements OnInit {
   pageSizeItems: MenuItem[] | undefined;
   sortField: string = '';
   sortOrder: number = 1; // 1 = ASC, -1 = DESC
-   items: MenuItem[] = [];
+  items: MenuItem[] = [];
+  @ViewChild('menu') menu!: Menu;
   // -----------------------------
   // Signals
   // -----------------------------
@@ -177,6 +178,23 @@ onPageSizeChange(size: number) {
 
   goToEditTransport(id: number) {
     this.router.navigate(['admin/transport/edit', id]);
+  }
+
+  openMenu(event: Event, row: Transport) {
+    this.items = [
+      {
+        label: 'Edit',
+        icon: 'pi pi-pencil',
+        command: () => this.goToEditTransport(row.id)
+      },
+      {
+        label: 'Delete',
+        icon: 'pi pi-trash',
+        command: () => {}
+      }
+    ];
+
+    this.menu.toggle(event);
   }
 
  getRegTypeText(value: number): string {

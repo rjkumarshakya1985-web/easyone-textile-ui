@@ -68,7 +68,7 @@
         </th>
          
          
-      <th>Actions</th>
+      <th class="action-column">Actions</th>
     </tr>
   </ng-template>
 
@@ -79,10 +79,11 @@
       <td>{{row.mobile}}</td>
       <td>{{row.visitDate | date:'dd/MM/yyyy hh:mm a' }}</td>
       
-      <td>          
-        <button pButton icon="pi pi-trash" class="p-button-text p-button-sm p-button-danger" (click)="deleteVisitor(row.id)"></button>
-            <button pButton icon="pi pi-print" class="p-button-text p-button-sm" (click)="goToPrintVisitor(row.id)"></button>
-        <button *ngIf="!row.customerId" pButton icon="pi pi-pencil" class="p-button-text p-button-sm" (click)="goToEditVisitor(row.id)"></button>
+      <td class="action-column">
+        <span class="px-2 py-1 rounded bg-blue-50 text-blue-600 cursor-pointer hover:bg-blue-100"
+          (click)="openMenu($event, row)" pTooltip="Actions">
+          <i class="pi pi-ellipsis-v"></i>
+        </span>
       </td>
     </tr>
   </ng-template>

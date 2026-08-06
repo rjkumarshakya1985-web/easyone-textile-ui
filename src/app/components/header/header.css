@@ -1,20 +1,235 @@
 .app-title {
-  font-weight: bold;
-  margin-left: 10px;
-  color: white;
-  font-size: 1.2rem;
+  display: block;
+  font-weight: 800;
+  margin-left: 0;
+  color: #263548;
+  font-size: 1rem;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.app-subtitle {
+    display: block;
+    margin-top: 2px;
+    color: #0F766E;
+    font-size: 0.58rem;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: 0.35px;
+}
+
+.brand-copy {
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 8px;
 }
 
 .p-button-text {
-    color: #FFFFFF;
+    color: #263548;
+}
+
+:host ::ng-deep .p-menubar {
+    min-height: 58px;
+    padding: 0 1.15rem;
+    border: 0;
+    border-radius: 0;
+    background: #ffffff !important;
+    border-top: 1px solid #d9e1ea;
+    border-bottom: 1px solid rgba(15, 118, 110, 0.5);
+    box-shadow: 0 2px 0 rgba(15, 118, 110, 0.16);
+}
+
+:host ::ng-deep .p-menubar-start,
+:host ::ng-deep .p-menubar-end {
+    display: flex;
+    align-items: center;
+}
+
+:host ::ng-deep .p-menubar-start > .p-button:first-child {
+    width: 28px;
+    height: 36px;
+    border-radius: 999px;
+    color: #263548 !important;
+    background: transparent !important;
+}
+
+:host ::ng-deep .p-menubar-start > .p-button:first-child:hover {
+    color: #0F766E !important;
+    background: rgba(15, 118, 110, 0.1) !important;
+}
+
+:host ::ng-deep .p-menubar-end .p-button-text:not(.user-menu-button) {
+    color: #263548 !important;
+}
+
+:host ::ng-deep .p-menubar-end .p-button-text:not(.user-menu-button):hover {
+    color: #0F766E !important;
+    background: rgba(15, 118, 110, 0.1) !important;
+}
+
+:host ::ng-deep .p-menubar-end {
+    gap: 0;
+}
+
+.header-actions-pill {
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.22rem 0.4rem;
+    border: 1px solid #d8e3ee;
+    border-radius: 999px;
+    background: #ffffff;
+}
+
+:host ::ng-deep .theme-toggle-button {
+    width: 32px;
+    height: 32px;
+    margin: 0 0.15rem;
+    border: 0 !important;
+    color: #263548 !important;
+    background: transparent !important;
+}
+
+:host ::ng-deep .theme-toggle-button:hover {
+    border-color: #0F766E !important;
+    color: #0F766E !important;
+    background: rgba(15, 118, 110, 0.1) !important;
+}
+
+:host ::ng-deep .export-toggle-button {
+    width: 32px;
+    height: 32px;
+    border: 0 !important;
+    color: #263548 !important;
+    background: transparent !important;
+}
+
+:host ::ng-deep .export-toggle-button:hover {
+    color: #0F766E !important;
+    background: rgba(15, 118, 110, 0.1) !important;
+}
+
+:host ::ng-deep .user-menu-button {
+    width: 32px;
+    height: 32px;
+    padding: 0 !important;
+    margin-left: 0.15rem;
+    border: 0 !important;
+    border-radius: 999px !important;
+    color: #263548 !important;
+    background: transparent !important;
+}
+
+:host ::ng-deep .user-menu-button:hover {
+    border-color: #0F766E !important;
+    color: #0F766E !important;
+    background: rgba(15, 118, 110, 0.1) !important;
+}
+
+:host ::ng-deep .user-menu-button .p-button-label {
+    display: none;
+}
+
+:host-context(.app-dark-theme) ::ng-deep .p-menubar {
+    background: #15181b !important;
+    border-bottom: 1px solid rgba(15, 118, 110, 0.78);
+    box-shadow: 0 2px 0 rgba(15, 118, 110, 0.16);
+}
+
+:host-context(.app-dark-theme) .app-title {
+    color: #f8fafc;
+}
+
+:host-context(.app-dark-theme) .header-actions-pill {
+    border-color: #343941;
+    background: #15181b;
+}
+
+:host-context(.app-dark-theme) ::ng-deep .p-menubar-start > .p-button:first-child {
+    color: #f8fafc !important;
+    background: transparent !important;
+}
+
+:host-context(.app-dark-theme) ::ng-deep .p-menubar-start > .p-button:first-child:hover,
+:host-context(.app-dark-theme) ::ng-deep .p-menubar-end .p-button-text:not(.user-menu-button):hover {
+    color: #0F766E !important;
+    background: rgba(15, 118, 110, 0.1) !important;
+}
+
+:host-context(.app-dark-theme) ::ng-deep .theme-toggle-button {
+    border-color: transparent !important;
+    color: #f8fafc !important;
+    background: transparent !important;
+}
+
+:host-context(.app-dark-theme) ::ng-deep .export-toggle-button {
+    border-color: transparent !important;
+    color: #f8fafc !important;
+    background: transparent !important;
+}
+
+:host-context(.app-dark-theme) ::ng-deep .theme-toggle-button .p-button-icon,
+:host-context(.app-dark-theme) ::ng-deep .export-toggle-button .p-button-icon,
+:host-context(.app-dark-theme) ::ng-deep .user-menu-button .p-button-icon {
+    color: #f8fafc !important;
+    opacity: 1 !important;
+}
+
+:host-context(.app-dark-theme) ::ng-deep .theme-toggle-button:hover {
+    border-color: #0F766E !important;
+    color: #0F766E !important;
+    background: rgba(15, 118, 110, 0.16) !important;
+}
+
+:host-context(.app-dark-theme) ::ng-deep .export-toggle-button:hover {
+    border-color: #0F766E !important;
+    color: #0F766E !important;
+    background: rgba(15, 118, 110, 0.16) !important;
+}
+
+:host-context(.app-dark-theme) ::ng-deep .theme-toggle-button:hover .p-button-icon,
+:host-context(.app-dark-theme) ::ng-deep .export-toggle-button:hover .p-button-icon,
+:host-context(.app-dark-theme) ::ng-deep .user-menu-button:hover .p-button-icon {
+    color: #0F766E !important;
+}
+
+:host-context(.app-dark-theme) ::ng-deep .user-menu-button {
+    height: 32px;
+    margin-right: 0;
+    border: 0 !important;
+    border-radius: 999px !important;
+    color: #f8fafc !important;
+    background: transparent !important;
+}
+
+:host-context(.app-dark-theme) ::ng-deep .user-menu-button:hover {
+    border-color: #0F766E !important;
+    color: #0F766E !important;
+    background: rgba(15, 118, 110, 0.1) !important;
+}
+
+.header-brand {
+    width: 44px;
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px;
+    margin-left: 4px;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    box-shadow: none;
 }
 
 .header-logo{
-    width: 45px;
-    height: 45px;
+    width: 100%;
+    height: 100%;
     object-fit: contain;
-    border-radius: 50%;
+    border-radius: 0;
     padding: 0;
-     background: white;
-     margin-left: 5px;
+    background: transparent;
+    margin-left: 0;
 }

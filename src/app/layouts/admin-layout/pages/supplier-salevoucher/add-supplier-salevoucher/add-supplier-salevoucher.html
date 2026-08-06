@@ -250,7 +250,7 @@
              <th>Quantity</th>
              <th>Purchase Price</th>
              <th>Total</th>
-             <th>Action</th>
+             <th class="action-column">Action</th>
          </tr>
         </ng-template>
 
@@ -267,7 +267,7 @@
       <td>{{ item.qty }}</td>
       <td>{{ item.purchasePrice | number:'1.2-2' }}</td>
       <td>{{ (item.purchasePrice * item.qty) | number:'1.2-2' }}</td>
-      <td class="text-center">
+      <td class="text-center action-column">
           <p-menu #menu
              [model]="items"
              [popup]="true"

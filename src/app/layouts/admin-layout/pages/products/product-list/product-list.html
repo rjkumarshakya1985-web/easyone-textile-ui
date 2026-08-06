@@ -117,7 +117,7 @@
          <th  class="text-end">Retail Rate</th>
          <th  class="text-end">MRP</th>
         
-            <th>Action</th>
+            <th class="action-column">Action</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-row>
@@ -133,7 +133,7 @@
             </td>
             <td  class="text-end">{{row.retailPrice | currency:'INR':'symbol':'1.2-2'}}</td>
             <td  class="text-end">{{row.mrpRate | currency:'INR':'symbol':'1.2-2'}}</td>
-            <td>
+            <td class="action-column">
                <span class="px-2 py-1 rounded bg-blue-50 text-blue-600 cursor-pointer hover:bg-blue-100"
                  (click)="openMenu($event, row)" pTooltip="Actions">
                   <i class="pi pi-ellipsis-v"></i>
@@ -164,7 +164,7 @@
             <th>Purchase Rate</th>
             <th>Wholesale Rate</th>
             <th>Retail Rate</th>
-            <th>Action</th>
+            <th class="action-column">Action</th>
         </tr>
     </ng-template>
 

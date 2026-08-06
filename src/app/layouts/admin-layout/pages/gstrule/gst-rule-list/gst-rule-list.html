@@ -19,7 +19,7 @@
                  <th>Start</th>
                  <th>End</th>
                  <th>Order</th>
-                 <th class="text-center">Actions</th>
+                 <th class="text-center action-column">Actions</th>
               </tr>
            </ng-template>
            <ng-template pTemplate="body" let-row>
@@ -29,7 +29,7 @@
                  <td>{{ row.startRange}}</td>
                  <td>{{ row.endRange}}</td>
                  <td>{{row.applyOrder}}</td>
-                 <td class="text-center">
+                 <td class="text-center action-column">
                       <span class="px-2 py-1 rounded bg-blue-50 text-blue-600 cursor-pointer hover:bg-blue-100"
                          pTooltip="Edit"><i class="pi pi-pencil" (click)="edit(row)"></i></span>
                 </td>

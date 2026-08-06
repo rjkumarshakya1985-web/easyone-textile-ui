@@ -71,7 +71,7 @@
                         <p-sortIcon field="regType" />
                     </div>
         </th>   
-      <th>Actions</th>
+      <th class="action-column">Actions</th>
     </tr>
   </ng-template>
 
@@ -82,7 +82,7 @@
       <td>{{row.gstIn}}</td>
       <td>{{row.mobile}}</td>
       <td>{{getTransactionTypeName(row.regType)}}</td>
-      <td>
+      <td class="action-column">
         <span class="px-2 py-1 rounded bg-blue-50 text-blue-600 cursor-pointer hover:bg-blue-100"
               (click)="openMenu($event, row)" pTooltip="Actions">
                <i class="pi pi-ellipsis-v"></i>

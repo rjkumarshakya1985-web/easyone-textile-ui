@@ -1,15 +1,27 @@
-<p-menubar [style]="{'background-color':'#1976d2','color':'white'}">
+<p-menubar>
       <ng-template pTemplate="start">
         <button pButton icon="pi pi-bars" class="p-button-text" (click)="onToggleClick()"></button>
-            <img src="/assets/company-image-header.png" alt="Shiv Sahai Bhagwan Das" height="auto" class="header-logo"/>
-        <span class="app-title">{{roleName}}</span>
+        <span class="header-brand">
+            <img src="/assets/jain-sarees-login.png" alt="SC Jain Sarees Pvt Ltd" class="header-logo"/>
+        </span>
+        <span class="brand-copy">
+          <span class="app-title">SC JAIN SAREES</span>
+          <span class="app-subtitle">TEXTILE ERP SUITE</span>
+        </span>
       </ng-template>
       <ng-template pTemplate="end">
-       
-        <button pButton icon="pi pi-box" *ngIf="isExportSaleVoucher" (click)="visible2 = true" class="p-button-rounded p-button-text" pBadge="15" badgeSeverity="danger"></button>
-        <button pButton icon="pi pi-bell" class="p-button-rounded p-button-text" pBadge="15" badgeSeverity="danger"></button>
-        <button pButton icon="pi pi-user" label="Profile" (click)="menu.toggle($event)" class="p-button-text"></button>
-        <p-menu #menu [model]="items" [popup]="true" />
+        <div class="header-actions-pill">
+          <button
+            pButton
+            [icon]="isDarkTheme ? 'pi pi-sun' : 'pi pi-moon'"
+            class="p-button-rounded p-button-text theme-toggle-button"
+            [title]="isDarkTheme ? 'Light theme' : 'Dark theme'"
+            (click)="toggleTheme()">
+          </button>
+          <button pButton icon="pi pi-box" *ngIf="isExportSaleVoucher" (click)="visible2 = true" class="p-button-rounded p-button-text export-toggle-button" pBadge="15" badgeSeverity="danger"></button>
+          <button pButton icon="pi pi-user" label="Profile" (click)="menu.toggle($event)" class="p-button-text user-menu-button"></button>
+          <p-menu #menu [model]="items" [popup]="true" />
+        </div>
       </ng-template>
 </p-menubar>
 

@@ -100,7 +100,7 @@ export class SupplierSalevoucherDetail {
     getStatusBadgeClass(status: number): string {
   switch (status) {
     case 1: return 'bg-blue-100 text-blue-700';
-    case 2: return 'bg-purple-100 text-purple-700';
+    case 2: return 'bg-teal-100 text-teal-700';
     case 3: return 'bg-yellow-100 text-yellow-700';
     case 4: return 'bg-indigo-100 text-indigo-700';
     case 5: return 'bg-green-100 text-green-700';

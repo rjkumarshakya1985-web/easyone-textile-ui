@@ -37,7 +37,7 @@
         <th>Qty</th>
         <th>Products</th>
         <th>Status</th>
-        <th>Action</th>
+        <th class="action-column">Action</th>
       </tr>
     </ng-template>
 
@@ -51,7 +51,7 @@
         <td>{{p.quantity}}</td>
         <td>{{p.products}}</td>
         <td>{{p.status}}</td>
-        <td>
+        <td class="action-column">
               <span class="px-2 py-1 rounded bg-red-50 text-red-600 cursor-pointer hover:bg-red-100 ml-2"
                  pTooltip="Delete" (click)="remove(p.saleVoucherId)">
                  <i class="pi pi-trash"></i>

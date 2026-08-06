@@ -143,17 +143,39 @@ onPageSizeChange(size: number) {
     this.router.navigate(['/stock-incharge/visitor/add']);
   }
 
-  goToEditVisitor(id: string) {
+  goToEditVisitor(id: string | number) {
         this.router.navigate(['/stock-incharge/visitor/edit', id]);
   }
 
-  goToPrintVisitor(id: string) {
+  goToPrintVisitor(id: string | number) {
         this.router.navigate(['/stock-incharge/visitor/print', id]);
   }
 
-  deleteVisitor(id:string)
+  deleteVisitor(id:string | number)
   {
 
+  }
+
+  openMenu(event: Event, row: VisitorResponse) {
+    this.items = [
+      {
+        label: 'Print',
+        icon: 'pi pi-print',
+        command: () => this.goToPrintVisitor(row.id)
+      },
+      ...(!row.customerId ? [{
+        label: 'Edit',
+        icon: 'pi pi-pencil',
+        command: () => this.goToEditVisitor(row.id)
+      }] : []),
+      {
+        label: 'Delete',
+        icon: 'pi pi-trash',
+        command: () => this.deleteVisitor(row.id)
+      }
+    ];
+
+    this.menu.toggle(event);
   }
   customerType(type:number):string
   {

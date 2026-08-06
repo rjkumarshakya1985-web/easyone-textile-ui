@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, ViewChild } from '@angular/core';
 import { StockGroup } from '../../../../../model/stock-group.model';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { StockGroupService } from '../../../../../core/services/stock-group.service';
@@ -19,6 +19,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
 import { TextareaModule } from 'primeng/textarea';
+import { Menu, MenuModule } from 'primeng/menu';
 
 @Component({
   selector: 'app-item-category-list',
@@ -37,7 +38,7 @@ import { TextareaModule } from 'primeng/textarea';
     InputNumberModule,   
     InputTextModule,    
     TextareaModule,       
-    FloatLabelModule,CheckboxModule],
+    FloatLabelModule,CheckboxModule,MenuModule],
   templateUrl: './item-category-list.html',
   styleUrl: './item-category-list.css',
 })
@@ -46,6 +47,8 @@ export class ItemCategoryList {
   isLoading = signal(false);
   tableData = signal<StockGroup[]>([]);  
   stockGroupForm!: FormGroup;
+  items: MenuItem[] = [];
+  @ViewChild('menu') menu!: Menu;
   breadcrumbItems: MenuItem[] = [
     { label: 'Dashboard', routerLink: '/admin' },
     { label: 'Product Categories' }
@@ -157,5 +160,22 @@ export class ItemCategoryList {
  makeGstRule(row :StockGroup)
  {
 
+ }
+
+ openMenu(event: Event, row: StockGroup) {
+  this.items = [
+    {
+      label: 'Edit',
+      icon: 'pi pi-pencil',
+      command: () => this.editStockGroup(row)
+    },
+    {
+      label: 'GST Rule',
+      icon: 'pi pi-file',
+      command: () => this.makeGstRule(row)
+    }
+  ];
+
+  this.menu.toggle(event);
  }
 }

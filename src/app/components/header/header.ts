@@ -30,6 +30,7 @@ export class Header {
   items: MenuItem[] | undefined;
   roleName: string = '';
   isLogin: boolean = false;
+  isDarkTheme: boolean = false;
   credentialForm!: FormGroup;
 
   constructor(private fb: FormBuilder,private storage: LocalStorageService,
@@ -42,7 +43,8 @@ export class Header {
     });
 
     this.initializeMenu();
-     this.loadHeaderData();
+    this.loadHeaderData();
+    this.loadTheme();
   }
 
    private initializeMenu(): void {
@@ -129,5 +131,20 @@ export class Header {
     openExportSaleVoucher()
     {
       this.visible2 = true
+    }
+
+    toggleTheme(): void {
+      this.isDarkTheme = !this.isDarkTheme;
+      localStorage.setItem('app-theme', this.isDarkTheme ? 'dark' : 'light');
+      this.applyTheme();
+    }
+
+    private loadTheme(): void {
+      this.isDarkTheme = localStorage.getItem('app-theme') === 'dark';
+      this.applyTheme();
+    }
+
+    private applyTheme(): void {
+      document.body.classList.toggle('app-dark-theme', this.isDarkTheme);
     }
 }

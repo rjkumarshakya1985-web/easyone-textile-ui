@@ -1,6 +1,20 @@
  
 <div class="sidebar" [class.closed]="!isOpen">
- <p-panelMenu [model]="items" class="w-full md:w-80 custom-panel"></p-panelMenu>
- 
+  <div class="sidebar-surface full-menu">
+    <p-panelMenu [model]="items" class="w-full md:w-80 custom-panel"></p-panelMenu>
+  </div>
+
+  <nav class="icon-rail" aria-label="Collapsed menu">
+    <button
+      *ngFor="let item of items"
+      type="button"
+      class="rail-item"
+      [class.active]="item.styleClass === 'test-menu' || item.expanded"
+      [pTooltip]="item.label || ''"
+      tooltipPosition="right"
+      (click)="goToMenuItem(item)">
+      <i [class]="item.icon || 'pi pi-circle'"></i>
+    </button>
+  </nav>
 </div>
    

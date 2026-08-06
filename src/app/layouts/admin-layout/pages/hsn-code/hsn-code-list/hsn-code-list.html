@@ -61,7 +61,7 @@
               <p-sortIcon field="description"></p-sortIcon>
                  </div>
        </th>            
-            <th>Actions</th>
+            <th class="action-column">Actions</th>
           </tr>
         </ng-template>
 
@@ -69,7 +69,7 @@
           <tr>
             <td>{{ row.name }}</td>
             <td>{{row.description || '-'}}</td>
-            <td> 
+            <td class="action-column"> 
                <span class="px-2 py-1 rounded bg-red-50 text-red-600 cursor-pointer hover:bg-red-100 ml-2"
                  pTooltip="Delete" (click)="deleteHsnCode(row.id)">
                  <i class="pi pi-trash"></i>

@@ -18,7 +18,7 @@
           <tr>
             <th>Name</th>
             <th>Description</th>
-            <th class="text-center">Actions</th>
+            <th class="text-center action-column">Actions</th>
           </tr>
         </ng-template>
 
@@ -26,7 +26,7 @@
           <tr>
             <td>{{ row.name }}</td>
             <td>{{ row.description || '-' }}</td>
-            <td class="text-center">
+            <td class="text-center action-column">
               <span class="px-2 py-1 rounded bg-blue-50 text-blue-600 cursor-pointer hover:bg-blue-100"
                (click)="editSubDepartment(row)" pTooltip="Edit">
                <i class="pi pi-pencil"></i>

@@ -20,7 +20,7 @@
             <th>Description</th>
             <th>Gst%</th>
             <th>Gst Rule</th>
-            <th class="text-center">Actions</th>
+            <th class="text-center action-column">Actions</th>
           </tr>
         </ng-template>
 
@@ -30,16 +30,11 @@
             <td>{{row.description || '-'}}</td>
             <td>{{ row.gstValue}}</td>
             <td>{{ row.isGstRule ? 'Applicable' : 'Not Applicable' }}</td>
-            <td class="text-center">     
-              
-              <span class="px-2 py-1 rounded bg-blue-50 text-blue-600 cursor-pointer hover:bg-blue-100 me-2"
-                (click)="editStockGroup(row)" pTooltip="Edit">
-               <i class="pi pi-pencil"></i>
-             </span>
-             <span class="px-2 py-1 rounded bg-blue-50  cursor-pointer hover:bg-blue-100"
-              (click)="makeGstRule(row)" pTooltip="Gst Rule">
-              <i class="pi pi-file"></i>
-             </span>
+            <td class="text-center action-column">
+              <span class="px-2 py-1 rounded bg-blue-50 text-blue-600 cursor-pointer hover:bg-blue-100"
+                (click)="openMenu($event, row)" pTooltip="Actions">
+                <i class="pi pi-ellipsis-v"></i>
+              </span>
           </td>
           </tr>
         </ng-template>
@@ -47,6 +42,7 @@
       </p-table>
     </ng-container>
 </p-card>
+<p-menu #menu [model]="items" [popup]="true"></p-menu>
 
 
 <p-dialog

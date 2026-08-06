@@ -81,8 +81,8 @@
 }
 
 .app-search-input:focus {
-  border-color: #800000 !important;
-  box-shadow: 0 0 0 2px rgba(128, 0, 0, 0.12) !important;
+  border-color: #3b2a7a !important;
+  box-shadow: 0 0 0 2px rgba(59, 42, 122, 0.12) !important;
 }
 
 .pagination-panel {
@@ -106,11 +106,11 @@
 
 .pagination-size-btn {
   padding: 0 0.75rem;
-  border-color: #800000 !important;
-  color: #fff !important;
-  background: #800000 !important;
+  border-color: #d7dde7 !important;
+  color: #334155 !important;
+  background: #fff !important;
   font-size: 0.85rem;
-  font-weight: 700;
+  font-weight: 650;
 }
 
 .pagination-total {
@@ -142,9 +142,9 @@
 }
 
 .pagination-icon-btn:hover:not(:disabled) {
-  border-color: #800000 !important;
-  color: #800000 !important;
-  background: #f8eeee !important;
+  border-color: #3b2a7a !important;
+  color: #3b2a7a !important;
+  background: #f1eefb !important;
 }
 
 .pagination-page {
@@ -189,8 +189,8 @@
 }
 
 :host ::ng-deep .table-header-cell .p-column-filter-menu-button:hover {
-  color: #800000;
-  background: #f8eeee;
+  color: #3b2a7a;
+  background: #f1eefb;
 }
 
 @media (max-width: 900px) {

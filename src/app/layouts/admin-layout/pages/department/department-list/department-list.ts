@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, signal } from '@angular/core';
+import { Component, signal, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MenuItem, MessageService } from 'primeng/api';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
@@ -16,6 +16,7 @@ import { DepartmentResponse } from '../../../../../model/response/department/dep
 import { Router } from '@angular/router';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { LoaderService } from '../../../../../core/services/loader.service';
+import { Menu, MenuModule } from 'primeng/menu';
 
 @Component({
   selector: 'app-department-list',
@@ -32,7 +33,8 @@ import { LoaderService } from '../../../../../core/services/loader.service';
     TooltipModule,
     ReactiveFormsModule,
     DialogModule,
-    FloatLabelModule
+    FloatLabelModule,
+    MenuModule
   ],
   templateUrl: './department-list.html',
   styleUrl: './department-list.css'
@@ -43,6 +45,8 @@ export class DepartmentList {
   tableData = signal<DepartmentResponse[]>([]);   // <-- FIXED
   visible = false;
   departmentForm!: FormGroup;
+  items: MenuItem[] = [];
+  @ViewChild('menu') menu!: Menu;
 
   constructor(private fb: FormBuilder,private router: Router,
     private masterService: MasterDataService,
@@ -129,6 +133,23 @@ export class DepartmentList {
       description: value.description
     });
 
+  }
+
+  openMenu(event: Event, row: DepartmentResponse) {
+    this.items = [
+      {
+        label: 'Edit',
+        icon: 'pi pi-pencil',
+        command: () => this.editDepartment(row)
+      },
+      {
+        label: 'Sub Departments',
+        icon: 'pi pi-building',
+        command: () => this.gotoSubDepartment(row.id)
+      }
+    ];
+
+    this.menu.toggle(event);
   }
   breadcrumbItems: MenuItem[] = [
     { label: 'Dashboard', routerLink: '/admin' },

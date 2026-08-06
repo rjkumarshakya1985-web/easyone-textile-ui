@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit, OnDestroy,Input } from '@angular/core';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
@@ -5,11 +6,12 @@ import { MenuItem } from 'primeng/api';
 import { LocalStorageService } from '../../core/services/local-storage.service';
 import { filter, Subscription } from 'rxjs';
 import { ParcelStatus } from '../../core/enums/enum';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-nav',
   standalone: true,
-  imports: [PanelMenuModule, RouterModule],
+  imports: [CommonModule, PanelMenuModule, RouterModule, TooltipModule],
   templateUrl: './nav.html',
   styleUrls: ['./nav.css']
 })
@@ -228,4 +230,16 @@ export class Nav implements OnInit, OnDestroy {
 
   markActive(this.items);
 }
+
+  goToMenuItem(item: MenuItem) {
+    if (item.routerLink) {
+      this.router.navigate(item.routerLink as any[]);
+      return;
+    }
+
+    const firstChildWithRoute = item.items?.find(child => child.routerLink);
+    if (firstChildWithRoute?.routerLink) {
+      this.router.navigate(firstChildWithRoute.routerLink as any[]);
+    }
+  }
 }

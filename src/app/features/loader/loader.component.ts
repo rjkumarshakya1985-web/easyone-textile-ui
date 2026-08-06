@@ -11,7 +11,10 @@ import { LoaderService } from '../../core/services/loader.service';
   imports: [CommonModule, ProgressSpinnerModule],
   template: `
     <div class="loader-overlay" *ngIf="isLoading()">
+      <div class="loader-card" aria-label="Loading data">
         <p-progress-spinner></p-progress-spinner>
+        <span>Loading data...</span>
+      </div>
     </div>
   `,
   styleUrls: ['./loader.component.css']
