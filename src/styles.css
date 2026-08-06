@@ -1486,3 +1486,172 @@ body.app-dark-theme .p-tag-danger {
   background: #be123c !important;
   border-color: #fb7185 !important;
 }
+
+/* Dark mode form controls */
+body.app-dark-theme .form-control,
+body.app-dark-theme .p-inputtext,
+body.app-dark-theme input,
+body.app-dark-theme textarea,
+body.app-dark-theme .p-select,
+body.app-dark-theme .p-dropdown,
+body.app-dark-theme .p-multiselect,
+body.app-dark-theme .p-inputnumber,
+body.app-dark-theme .p-inputnumber-input,
+body.app-dark-theme .p-datepicker,
+body.app-dark-theme .p-datepicker-input,
+body.app-dark-theme .p-autocomplete-input {
+  color: #f8fafc !important;
+  background: #101114 !important;
+  border-color: #4b5563 !important;
+  box-shadow: none !important;
+}
+
+body.app-dark-theme .form-control:hover,
+body.app-dark-theme .p-inputtext:hover,
+body.app-dark-theme input:hover,
+body.app-dark-theme textarea:hover,
+body.app-dark-theme .p-select:hover,
+body.app-dark-theme .p-dropdown:hover,
+body.app-dark-theme .p-multiselect:hover,
+body.app-dark-theme .p-datepicker:hover {
+  border-color: #64748b !important;
+}
+
+body.app-dark-theme .form-control:focus,
+body.app-dark-theme .p-inputtext:focus,
+body.app-dark-theme input:focus,
+body.app-dark-theme textarea:focus,
+body.app-dark-theme .p-select.p-focus,
+body.app-dark-theme .p-dropdown.p-focus,
+body.app-dark-theme .p-multiselect.p-focus,
+body.app-dark-theme .p-datepicker.p-focus {
+  border-color: #0F766E !important;
+  box-shadow: 0 0 0 2px rgba(15, 118, 110, 0.28) !important;
+}
+
+body.app-dark-theme .p-floatlabel,
+body.app-dark-theme p-floatlabel {
+  color: #f8fafc !important;
+}
+
+body.app-dark-theme .p-floatlabel label,
+body.app-dark-theme p-floatlabel label {
+  padding: 0 0.25rem !important;
+  color: #cbd5e1 !important;
+  background: #15171a !important;
+  border-radius: 4px;
+  line-height: 1.15;
+  opacity: 1 !important;
+}
+
+body.app-dark-theme .p-floatlabel:has(input:focus) label,
+body.app-dark-theme .p-floatlabel:has(textarea:focus) label,
+body.app-dark-theme .p-floatlabel:has(.p-focus) label,
+body.app-dark-theme p-floatlabel:has(input:focus) label,
+body.app-dark-theme p-floatlabel:has(textarea:focus) label,
+body.app-dark-theme p-floatlabel:has(.p-focus) label {
+  color: #5eead4 !important;
+}
+
+body.app-dark-theme .p-select-label,
+body.app-dark-theme .p-dropdown-label,
+body.app-dark-theme .p-multiselect-label,
+body.app-dark-theme .p-inputnumber input,
+body.app-dark-theme .p-datepicker input,
+body.app-dark-theme .p-autocomplete input {
+  color: #f8fafc !important;
+  background: transparent !important;
+}
+
+body.app-dark-theme .p-select-dropdown,
+body.app-dark-theme .p-dropdown-trigger,
+body.app-dark-theme .p-multiselect-dropdown,
+body.app-dark-theme .p-datepicker-dropdown,
+body.app-dark-theme .p-select-dropdown-icon,
+body.app-dark-theme .p-dropdown-trigger-icon,
+body.app-dark-theme .p-multiselect-dropdown-icon,
+body.app-dark-theme .p-datepicker-dropdown-icon,
+body.app-dark-theme .p-select .p-icon,
+body.app-dark-theme .p-dropdown .p-icon,
+body.app-dark-theme .p-multiselect .p-icon {
+  color: #cbd5e1 !important;
+  opacity: 1 !important;
+}
+
+body.app-dark-theme .p-select-overlay,
+body.app-dark-theme .p-dropdown-panel,
+body.app-dark-theme .p-multiselect-panel,
+body.app-dark-theme .p-autocomplete-overlay,
+body.app-dark-theme .p-autocomplete-panel,
+body.app-dark-theme .p-datepicker-panel,
+body.app-dark-theme .p-datepicker {
+  color: #f8fafc !important;
+  background: #15171a !important;
+  border-color: #343941 !important;
+}
+
+body.app-dark-theme .p-select-option,
+body.app-dark-theme .p-dropdown-item,
+body.app-dark-theme .p-multiselect-option,
+body.app-dark-theme .p-autocomplete-option,
+body.app-dark-theme .p-autocomplete-item {
+  color: #f8fafc !important;
+  background: transparent !important;
+}
+
+body.app-dark-theme .p-select-option:hover,
+body.app-dark-theme .p-dropdown-item:hover,
+body.app-dark-theme .p-multiselect-option:hover,
+body.app-dark-theme .p-autocomplete-option:hover,
+body.app-dark-theme .p-autocomplete-item:hover,
+body.app-dark-theme .p-select-option.p-focus,
+body.app-dark-theme .p-dropdown-item.p-highlight,
+body.app-dark-theme .p-multiselect-option.p-highlight {
+  color: #ffffff !important;
+  background: rgba(15, 118, 110, 0.22) !important;
+}
+
+/* Form page toolbar/title consistency */
+body:not(.app-dark-theme) form > .p-toolbar,
+body:not(.app-dark-theme) form > p-toolbar .p-toolbar {
+  min-height: 56px;
+  margin: 0.25rem 0 0.75rem;
+  padding: 0.7rem 1rem !important;
+  border: 1px solid #eadfdd !important;
+  border-radius: 12px !important;
+  background: linear-gradient(120deg, #ffffff 0%, #fffafa 62%, #f9eeee 100%) !important;
+  box-shadow: 0 8px 24px rgba(74, 39, 31, 0.05) !important;
+}
+
+body.app-dark-theme form > .p-toolbar,
+body.app-dark-theme form > p-toolbar .p-toolbar {
+  min-height: 56px;
+  margin: 0.25rem 0 0.75rem;
+  padding: 0.7rem 1rem !important;
+  color: #f8fafc !important;
+  background: #15171a !important;
+  border: 1px solid #343941 !important;
+  border-radius: 12px !important;
+  box-shadow: none !important;
+}
+
+body.app-dark-theme .page-title,
+body.app-dark-theme form .page-title {
+  color: #f8fafc !important;
+}
+
+body.app-dark-theme form > .p-toolbar .p-button-primary,
+body.app-dark-theme form > p-toolbar .p-toolbar .p-button-primary {
+  color: #ffffff !important;
+  background: #0F766E !important;
+  border-color: #0F766E !important;
+  box-shadow: 0 8px 18px rgba(15, 118, 110, 0.18) !important;
+}
+
+body.app-dark-theme form > .p-toolbar .p-button-danger,
+body.app-dark-theme form > p-toolbar .p-toolbar .p-button-danger {
+  color: #ffffff !important;
+  background: #be123c !important;
+  border-color: #be123c !important;
+  box-shadow: none !important;
+}
