@@ -1990,3 +1990,42 @@ body.app-dark-theme .page-header .p-breadcrumb .p-menuitem-icon {
 body.app-dark-theme .page-header .p-breadcrumb .p-breadcrumb-chevron {
   background: transparent !important;
 }
+
+/* Use the supplier products table hover treatment across all tables */
+.p-datatable .p-datatable-tbody > tr,
+.p-datatable tbody > tr {
+  transition: transform 0.16s ease, background-color 0.18s ease, border-color 0.18s ease !important;
+}
+
+body:not(.app-dark-theme) .p-datatable .p-datatable-tbody > tr:hover,
+body:not(.app-dark-theme) .p-datatable tbody > tr:hover,
+body.app-dark-theme .p-datatable .p-datatable-tbody > tr:hover,
+body.app-dark-theme .p-datatable tbody > tr:hover {
+  background: transparent !important;
+  box-shadow: none !important;
+  transform: translateY(-1px);
+}
+
+body:not(.app-dark-theme) .p-datatable .p-datatable-tbody > tr:hover > td,
+body:not(.app-dark-theme) .p-datatable tbody > tr:hover > td {
+  border-color: rgba(15, 118, 110, 0.35) !important;
+  background: #f7fbfa !important;
+  box-shadow: none !important;
+}
+
+body:not(.app-dark-theme) .p-datatable .p-datatable-tbody > tr:hover > td.action-column,
+body:not(.app-dark-theme) .p-datatable tbody > tr:hover > td.action-column {
+  background: #f7fbfa !important;
+}
+
+body.app-dark-theme .p-datatable .p-datatable-tbody > tr:hover > td,
+body.app-dark-theme .p-datatable tbody > tr:hover > td {
+  border-color: rgba(94, 234, 212, 0.42) !important;
+  background: #17201f !important;
+  box-shadow: none !important;
+}
+
+body.app-dark-theme .p-datatable .p-datatable-tbody > tr:hover > td.action-column,
+body.app-dark-theme .p-datatable tbody > tr:hover > td.action-column {
+  background: #17201f !important;
+}
