@@ -76,10 +76,13 @@
   </ng-template>
 
   <!-- ✔ FOOTER TEMPLATE FOR NO RECORD FOUND -->
-  <ng-template pTemplate="footer" let-columns>
-    <tr *ngIf="!tblResult().result || tblResult().result.length === 0">
-      <td colspan="3" class="text-center">
-        <strong>No Record Found</strong>
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="4">
+        <div class="table-empty-state">
+          <i class="pi pi-inbox"></i>
+          <span>No records found</span>
+        </div>
       </td>
     </tr>
   </ng-template>

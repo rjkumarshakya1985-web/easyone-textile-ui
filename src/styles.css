@@ -1869,6 +1869,52 @@ body.app-dark-theme .p-button-text.p-button-secondary:hover {
   border-color: #64748b !important;
 }
 
+.table-empty-state {
+  min-height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  color: #64748b;
+  font-size: 0.86rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.table-empty-state .pi {
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(15, 118, 110, 0.2);
+  border-radius: 999px;
+  color: #0F766E;
+  background: rgba(15, 118, 110, 0.08);
+  font-size: 0.95rem;
+}
+
+.p-datatable .p-datatable-emptymessage > td,
+.p-datatable tbody > tr.p-datatable-emptymessage > td {
+  border-bottom: 0 !important;
+  background: #ffffff !important;
+}
+
+body.app-dark-theme .table-empty-state {
+  color: #cbd5e1;
+}
+
+body.app-dark-theme .table-empty-state .pi {
+  border-color: rgba(94, 234, 212, 0.34);
+  color: #5eead4;
+  background: rgba(15, 118, 110, 0.18);
+}
+
+body.app-dark-theme .p-datatable .p-datatable-emptymessage > td,
+body.app-dark-theme .p-datatable tbody > tr.p-datatable-emptymessage > td {
+  background: #15171a !important;
+}
+
 /* Global breadcrumb polish */
 .page-header .p-breadcrumb,
 .p-toolbar.page-header .p-breadcrumb {

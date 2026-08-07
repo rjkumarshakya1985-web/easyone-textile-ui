@@ -60,6 +60,17 @@
       </tr>
     </ng-template>
 
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="5">
+          <div class="table-empty-state">
+            <i class="pi pi-inbox"></i>
+            <span>No records found</span>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+
   </p-table>
 </p-card>
 
@@ -133,6 +144,17 @@
           {{ item.reason || '-' }}
         </td>
 
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="6">
+          <div class="table-empty-state">
+            <i class="pi pi-inbox"></i>
+            <span>No records found</span>
+          </div>
+        </td>
       </tr>
     </ng-template>
 
