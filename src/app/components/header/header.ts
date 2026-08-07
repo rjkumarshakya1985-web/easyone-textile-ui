@@ -13,6 +13,7 @@ import {  EventEmitter, Output } from '@angular/core';
 import { DrawerModule } from 'primeng/drawer';
 import { CommonModule } from '@angular/common';
 import { ExportSalevoucher } from '../export-salevoucher/export-salevoucher';
+import { LoaderService } from '../../core/services/loader.service';
 
 @Component({
   selector: 'app-header',
@@ -35,6 +36,7 @@ export class Header {
 
   constructor(private fb: FormBuilder,private storage: LocalStorageService,
     private userService:UserService,private messageService: MessageService,
+    private loader: LoaderService,
      ) {
 
     this.credentialForm = this.fb.group({
@@ -90,8 +92,11 @@ export class Header {
 
 
    logout() {
-    this.storage.clearAll();
-    window.location.reload();  
+    this.loader.show();
+    setTimeout(() => {
+      this.storage.clearAll();
+      window.location.reload();
+    }, 250);
   }
    showDailog():void
    {

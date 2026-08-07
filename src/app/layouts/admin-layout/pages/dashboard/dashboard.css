@@ -45,3 +45,71 @@
 
 @media (max-width: 1100px) { .metric-grid { grid-template-columns: repeat(2, minmax(170px, 1fr)); } }
 @media (max-width: 760px) { .dashboard-header { align-items: flex-start; flex-direction: column; } .metric-grid, .tables { grid-template-columns: 1fr; } .date-chip { width: 100%; } }
+
+:host-context(.app-dark-theme) .metric-card,
+:host-context(.app-dark-theme) .chart-panel,
+:host-context(.app-dark-theme) .table-card {
+  color: #f8fafc;
+  background: #15171a;
+  border-color: #343941;
+  box-shadow: none;
+}
+
+:host-context(.app-dark-theme) .metric-card:hover,
+:host-context(.app-dark-theme) .chart-panel:hover,
+:host-context(.app-dark-theme) .table-card:hover {
+  border-color: rgba(15, 118, 110, 0.55);
+  box-shadow: 0 0 0 1px rgba(15, 118, 110, 0.16);
+}
+
+:host-context(.app-dark-theme) .metric-label,
+:host-context(.app-dark-theme) .dashboard-header p,
+:host-context(.app-dark-theme) .panel-heading p {
+  color: #aeb8c5;
+}
+
+:host-context(.app-dark-theme) .metric-card strong,
+:host-context(.app-dark-theme) .panel-heading h2 {
+  color: #f8fafc;
+}
+
+:host-context(.app-dark-theme) .metric-trend {
+  color: #5eead4;
+  background: rgba(15, 118, 110, 0.18);
+}
+
+:host-context(.app-dark-theme) .panel-heading {
+  background: #15171a;
+}
+
+:host-context(.app-dark-theme) .panel-icon,
+:host-context(.app-dark-theme) .panel-count {
+  color: #5eead4;
+  background: rgba(15, 118, 110, 0.18);
+}
+
+:host-context(.app-dark-theme) .accent-amber .panel-count {
+  color: #fbbf24;
+  background: rgba(251, 191, 36, 0.14);
+}
+
+:host-context(.app-dark-theme) .quantity-pill {
+  color: #f8fafc;
+  background: #334155;
+}
+
+:host-context(.app-dark-theme) ::ng-deep .chart-content .card {
+  background: #15171a !important;
+}
+
+:host-context(.app-dark-theme) ::ng-deep .table-card .p-datatable thead > tr > th {
+  color: #f8fafc !important;
+  background: #17191c !important;
+  border-color: #343941 !important;
+}
+
+:host-context(.app-dark-theme) ::ng-deep .table-card .p-datatable td {
+  color: #f8fafc !important;
+  background: #15171a !important;
+  border-color: #343941 !important;
+}
