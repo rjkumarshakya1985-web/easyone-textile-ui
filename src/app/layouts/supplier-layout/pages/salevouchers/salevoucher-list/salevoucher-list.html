@@ -9,7 +9,7 @@
   </div>
 </p-toolbar>
 
-<p-card class="app-list-page">
+<p-card class="app-list-page supplier-voucher-page">
     <div class="d-flex justify-content-between mb-3">
 
       <div class="flex-grow-1" style="max-width:300px">
@@ -44,7 +44,7 @@
        <p-table #dt1  [value]="tblResult().result" [lazy]="true" [filters]="tableFilters"
   (onLazyLoad)="onLazyLoad($event)"
   [sortField]="sortField" [lazyLoadOnInit]="false"
-  [sortOrder]="sortOrder" size="small" showGridlines class="p-datatable-sm">
+  [sortOrder]="sortOrder" size="small" styleClass="supplier-voucher-table">
 
     
         <ng-template pTemplate="header">
@@ -126,37 +126,37 @@
 
         <ng-template pTemplate="body" let-row>
           <tr>
-            <td></td>
-            <td>{{ row.id }}</td>
-            <td>{{row.date | date:'dd, MMMM, yyyy'}}</td>
-            <td>{{row.tranportName}}</td>
-            <td>{{row.billNumber}}</td>
+            <td class="filter-cell"></td>
+            <td><span class="parcel-pill">#{{ row.id }}</span></td>
+            <td><span class="voucher-date">{{row.date | date:'dd, MMMM, yyyy'}}</span></td>
+            <td><span class="transport-name">{{row.tranportName}}</span></td>
+            <td><span class="bill-pill">{{row.billNumber || '-'}}</span></td>
              <td>
             <ng-container *ngIf="row.productDetails.length > 15; else shortText">
              <span *ngIf="!row.expanded">
-               {{ row.productDetails | slice:0:15 }} 
+               <span class="product-summary">{{ row.productDetails | slice:0:15 }}</span>
                 <a href="#" (click)="row.expanded = true; $event.preventDefault()">... see more</a>
              </span>
              <span *ngIf="row.expanded">
-               {{ row.productDetails }} 
+               <span class="product-summary">{{ row.productDetails }}</span>
                 <a href="#" (click)="row.expanded = false; $event.preventDefault()"> see less</a>
              </span>
            </ng-container>
-           <ng-template #shortText>{{ row.productDetails }}</ng-template>
+           <ng-template #shortText><span class="product-summary">{{ row.productDetails }}</span></ng-template>
           </td>
             <td>
               <p-tag [severity]="ParcelStatusHelper.getParcelStatusColor(row.parcelStatus,true)" [value]="ParcelStatusHelper.getParcelStatusText(row.parcelStatus,true)" />
             </td>
             <td>
               <ng-container *ngIf="row.lrDate; else noLrDetails">
-                <div>{{ row.lrNumber }}</div>
-                <div>{{ row.lrDate | date:'dd/MM/yyyy' }}</div>
+                <div class="lr-number">{{ row.lrNumber }}</div>
+                <div class="lr-date">{{ row.lrDate | date:'dd/MM/yyyy' }}</div>
               </ng-container>
-              <ng-template #noLrDetails>-</ng-template>
+              <ng-template #noLrDetails><span class="empty-value">-</span></ng-template>
             </td>
             <td class="action-column">
-              <span class="px-2 py-1 rounded bg-blue-50 text-blue-600 cursor-pointer hover:bg-blue-100"
-                 (click)="openMenu($event, row)">
+              <span class="voucher-action"
+                 (click)="openMenu($event, row)" pTooltip="Actions">
                   <i class="pi pi-ellipsis-v"></i>
                </span>
             </td>

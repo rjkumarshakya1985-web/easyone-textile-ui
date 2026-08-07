@@ -27,3 +27,191 @@
   margin-right: 0.5rem; /* Adjust space as needed */
 }
 
+:host ::ng-deep .supplier-voucher-page .p-card-body,
+:host ::ng-deep .supplier-voucher-page .p-card-content {
+  padding: 0.9rem !important;
+}
+
+:host ::ng-deep .supplier-voucher-table {
+  border: 0 !important;
+  border-radius: 12px;
+  overflow: hidden;
+  background: transparent !important;
+}
+
+:host ::ng-deep .supplier-voucher-table .p-datatable-table {
+  border-collapse: separate !important;
+  border-spacing: 0 0.28rem !important;
+}
+
+:host ::ng-deep .supplier-voucher-table .p-datatable-thead > tr > th {
+  padding: 0.48rem 0.65rem !important;
+  border: 0 !important;
+  color: #334155 !important;
+  background: #eef6f5 !important;
+  font-size: 0.72rem !important;
+  font-weight: 750 !important;
+  text-transform: uppercase;
+}
+
+:host ::ng-deep .supplier-voucher-table .p-datatable-thead > tr > th:first-child {
+  border-radius: 10px 0 0 10px;
+}
+
+:host ::ng-deep .supplier-voucher-table .p-datatable-thead > tr > th:last-child {
+  border-radius: 0 10px 10px 0;
+}
+
+:host ::ng-deep .supplier-voucher-table .p-datatable-tbody > tr {
+  transition: transform 0.16s ease, box-shadow 0.16s ease;
+}
+
+:host ::ng-deep .supplier-voucher-table .p-datatable-tbody > tr > td {
+  padding: 0.42rem 0.65rem !important;
+  border-width: 1px 0 !important;
+  border-color: #e2e8f0 !important;
+  color: #263548 !important;
+  background: #ffffff !important;
+  vertical-align: middle;
+}
+
+:host ::ng-deep .supplier-voucher-table .p-datatable-tbody > tr > td:first-child {
+  border-left-width: 1px !important;
+  border-radius: 10px 0 0 10px;
+}
+
+:host ::ng-deep .supplier-voucher-table .p-datatable-tbody > tr > td:last-child {
+  border-right-width: 1px !important;
+  border-radius: 0 10px 10px 0;
+}
+
+:host ::ng-deep .supplier-voucher-table .p-datatable-tbody > tr:hover {
+  transform: translateY(-1px);
+}
+
+:host ::ng-deep .supplier-voucher-table .p-datatable-tbody > tr:hover > td {
+  border-color: rgba(15, 118, 110, 0.35) !important;
+  background: #f7fbfa !important;
+}
+
+.parcel-pill,
+.bill-pill,
+.product-summary {
+  display: inline-flex;
+  align-items: center;
+  min-height: 21px;
+  padding: 0.1rem 0.45rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.parcel-pill {
+  color: #0F766E;
+  background: rgba(15, 118, 110, 0.1);
+  font-family: Consolas, monospace;
+}
+
+.bill-pill {
+  color: #075985;
+  background: #e0f2fe;
+  font-family: Consolas, monospace;
+}
+
+.product-summary {
+  max-width: 190px;
+  color: #334155;
+  background: #f1f5f9;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.voucher-date {
+  color: #475569;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.transport-name {
+  color: #0f172a;
+  font-weight: 750;
+}
+
+.lr-number {
+  color: #0f172a;
+  font-weight: 750;
+  line-height: 1.2;
+}
+
+.lr-date {
+  color: #64748b;
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+
+.empty-value {
+  color: #94a3b8;
+  font-weight: 800;
+}
+
+.voucher-action {
+  width: 27px;
+  height: 27px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(15, 118, 110, 0.22);
+  border-radius: 999px;
+  color: #0F766E;
+  background: rgba(15, 118, 110, 0.08);
+  cursor: pointer;
+}
+
+.voucher-action:hover {
+  color: #ffffff;
+  background: #0F766E;
+}
+
+:host-context(.app-dark-theme) ::ng-deep .supplier-voucher-table .p-datatable-thead > tr > th {
+  color: #d8eef0 !important;
+  background: #10201f !important;
+  border-color: #253231 !important;
+}
+
+:host-context(.app-dark-theme) ::ng-deep .supplier-voucher-table .p-datatable-tbody > tr > td {
+  color: #f8fafc !important;
+  background: #15171a !important;
+  border-color: #2f3a3d !important;
+}
+
+:host-context(.app-dark-theme) ::ng-deep .supplier-voucher-table .p-datatable-tbody > tr:hover > td {
+  border-color: rgba(94, 234, 212, 0.42) !important;
+  background: #17201f !important;
+}
+
+:host-context(.app-dark-theme) .transport-name,
+:host-context(.app-dark-theme) .lr-number {
+  color: #f8fafc;
+}
+
+:host-context(.app-dark-theme) .voucher-date,
+:host-context(.app-dark-theme) .lr-date {
+  color: #cbd5e1;
+}
+
+:host-context(.app-dark-theme) .parcel-pill {
+  color: #5eead4;
+  background: rgba(15, 118, 110, 0.18);
+}
+
+:host-context(.app-dark-theme) .bill-pill {
+  color: #bae6fd;
+  background: rgba(2, 132, 199, 0.22);
+}
+
+:host-context(.app-dark-theme) .product-summary {
+  color: #dbeafe;
+  background: #1e293b;
+}
+

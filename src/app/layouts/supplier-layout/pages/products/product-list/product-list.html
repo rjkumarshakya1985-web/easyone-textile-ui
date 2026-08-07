@@ -9,7 +9,7 @@
   </div>
 </p-toolbar>
 
-<p-card class="app-list-page">
+<p-card class="app-list-page supplier-product-page">
     <div class="d-flex justify-content-between mb-3">
 
       <div class="flex-grow-1" style="max-width:300px">
@@ -43,7 +43,7 @@
       <p-table #dt1 [value]="tblResult().result" [lazy]="true"
        (onLazyLoad)="onLazyLoad($event)"
        [sortField]="sortField" [lazyLoadOnInit]="false"
-       [sortOrder]="sortOrder" size="small" showGridlines class="p-datatable-sm">
+       [sortOrder]="sortOrder" size="small" styleClass="supplier-product-table">
 
         <ng-template pTemplate="header">
           <tr>
@@ -115,16 +115,16 @@
 
         <ng-template pTemplate="body" let-row>
           <tr [ngClass]="{ 'inactive-row': !row.isActive }">
-            <td></td>
-            <td>{{row.stockGroupName}}</td>
-            <td>{{ row.name }}</td>
-            <td>{{row.printName}}</td>
-            <td>{{row.barcode}}</td>
-            <td>{{row.hsnCode}}</td>
-            <td class="text-end">{{row.purchaseRate | currency:'INR':'symbol':'1.2-2'}}</td>
-            <td class="text-center">{{row.discount}}</td>
+            <td class="filter-cell"></td>
+            <td><span class="category-chip">{{row.stockGroupName || 'Unassigned'}}</span></td>
+            <td><span class="product-name">{{ row.name }}</span></td>
+            <td><span class="print-name">{{row.printName || '-'}}</span></td>
+            <td><span class="barcode-pill">{{row.barcode || '-'}}</span></td>
+            <td><span class="hsn-pill">{{row.hsnCode || '-'}}</span></td>
+            <td class="text-end"><span class="rate-value">{{row.purchaseRate | currency:'INR':'symbol':'1.2-2'}}</span></td>
+            <td class="text-center"><span class="gst-pill">{{row.discount}}%</span></td>
             <td class="action-column">
-               <span class="px-2 py-1 rounded bg-blue-50 text-blue-600 cursor-pointer hover:bg-blue-100"
+               <span class="supplier-action"
                  (click)="openMenu($event, row)" pTooltip="Actions">
                   <i class="pi pi-ellipsis-v"></i>
                </span>
