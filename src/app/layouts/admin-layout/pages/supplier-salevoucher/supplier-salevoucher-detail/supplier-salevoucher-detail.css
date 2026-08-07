@@ -1,0 +1,210 @@
+.salevoucher-detail-page {
+  max-width: 100%;
+}
+
+.detail-card {
+  border: 1px solid #dbe4ee;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.05);
+}
+
+.detail-card .card-body {
+  padding: 1rem;
+}
+
+.voucher-summary {
+  padding: 0.15rem 0.15rem 0.85rem;
+}
+
+.voucher-summary .col-md-3 {
+  color: #1f2937;
+  font-size: 0.82rem;
+  line-height: 1.35;
+}
+
+.voucher-summary b {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: #64748b;
+  font-size: 0.68rem;
+  font-weight: 750;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.detail-tabs {
+  margin-top: 0.65rem;
+}
+
+:host ::ng-deep .detail-tabs .p-tablist {
+  border-bottom: 1px solid #e2e8f0;
+}
+
+:host ::ng-deep .detail-tabs .p-tab {
+  padding: 0.72rem 0.9rem;
+  color: #52657d;
+  font-size: 0.82rem;
+  font-weight: 750;
+}
+
+:host ::ng-deep .detail-tabs .p-tab-active {
+  color: #0F766E !important;
+  border-color: #0F766E !important;
+}
+
+:host ::ng-deep .detail-tabs .p-tabpanels,
+:host ::ng-deep .detail-tabs .p-tabpanel {
+  padding: 0.85rem 0 0;
+  background: transparent;
+}
+
+:host ::ng-deep .detail-products-table {
+  border: 1px solid #dbe4ee !important;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+:host ::ng-deep .detail-products-table .p-datatable-thead > tr > th {
+  padding: 0.55rem 0.7rem !important;
+  color: #334155 !important;
+  background: #eef6f5 !important;
+  font-size: 0.72rem !important;
+  font-weight: 750 !important;
+}
+
+:host ::ng-deep .detail-products-table .p-datatable-tbody > tr > td {
+  padding: 0.48rem 0.7rem !important;
+  color: #263548 !important;
+  background: #ffffff !important;
+  font-size: 0.76rem;
+}
+
+:host ::ng-deep .detail-products-table .p-datatable-tbody > tr:hover > td {
+  border-color: rgba(15, 118, 110, 0.35) !important;
+  background: #f7fbfa !important;
+}
+
+.status-history-card {
+  padding: 0.9rem;
+  border: 1px solid #dbe4ee;
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: none;
+}
+
+:host ::ng-deep .status-history-card .p-step {
+  color: #263548;
+}
+
+:host ::ng-deep .status-history-card .p-step-title,
+:host ::ng-deep .status-history-card .text-sm {
+  color: #0f172a !important;
+  font-weight: 750;
+}
+
+:host ::ng-deep .status-history-card .text-xs {
+  color: #64748b !important;
+}
+
+:host ::ng-deep .status-history-card .p-step-number {
+  color: #0F766E !important;
+  background: rgba(15, 118, 110, 0.1) !important;
+  border-color: rgba(15, 118, 110, 0.35) !important;
+}
+
+:host ::ng-deep .status-history-card .p-stepper-separator {
+  background: #cbd5e1 !important;
+}
+
+:host-context(.app-dark-theme) .detail-card,
+:host-context(.app-dark-theme) .status-history-card {
+  color: #f8fafc;
+  background: #15171a;
+  border-color: #343941;
+  box-shadow: none;
+}
+
+:host-context(.app-dark-theme) .voucher-summary .col-md-3 {
+  color: #f8fafc;
+}
+
+:host-context(.app-dark-theme) .voucher-summary b {
+  color: #9fb0c2;
+}
+
+:host-context(.app-dark-theme) ::ng-deep .detail-tabs .p-tablist {
+  background: #15171a !important;
+  border-color: #343941 !important;
+}
+
+:host-context(.app-dark-theme) ::ng-deep .detail-tabs .p-tab {
+  color: #cbd5e1 !important;
+  background: transparent !important;
+}
+
+:host-context(.app-dark-theme) ::ng-deep .detail-tabs .p-tab-active {
+  color: #5eead4 !important;
+  border-color: #5eead4 !important;
+}
+
+:host-context(.app-dark-theme) ::ng-deep .detail-tabs .p-tabpanels,
+:host-context(.app-dark-theme) ::ng-deep .detail-tabs .p-tabpanel {
+  color: #f8fafc !important;
+  background: #15171a !important;
+}
+
+:host-context(.app-dark-theme) ::ng-deep .detail-products-table {
+  border-color: #343941 !important;
+  background: #15171a !important;
+}
+
+:host-context(.app-dark-theme) ::ng-deep .detail-products-table .p-datatable-thead > tr > th {
+  color: #d8eef0 !important;
+  background: #10201f !important;
+  border-color: #253231 !important;
+}
+
+:host-context(.app-dark-theme) ::ng-deep .detail-products-table .p-datatable-tbody > tr > td {
+  color: #f8fafc !important;
+  background: #15171a !important;
+  border-color: #2f3a3d !important;
+}
+
+:host-context(.app-dark-theme) ::ng-deep .detail-products-table .p-datatable-tbody > tr:hover > td {
+  border-color: rgba(94, 234, 212, 0.42) !important;
+  background: #17201f !important;
+}
+
+:host-context(.app-dark-theme) ::ng-deep .status-history-card .p-step,
+:host-context(.app-dark-theme) ::ng-deep .status-history-card .p-step-title,
+:host-context(.app-dark-theme) ::ng-deep .status-history-card .text-sm {
+  color: #f8fafc !important;
+}
+
+:host-context(.app-dark-theme) ::ng-deep .status-history-card .text-xs {
+  color: #cbd5e1 !important;
+}
+
+:host-context(.app-dark-theme) ::ng-deep .status-history-card .p-step-number {
+  color: #5eead4 !important;
+  background: rgba(15, 118, 110, 0.18) !important;
+  border-color: rgba(94, 234, 212, 0.42) !important;
+}
+
+:host-context(.app-dark-theme) ::ng-deep .status-history-card .p-stepper-separator {
+  background: #475569 !important;
+}
+
+:host-context(.app-dark-theme) ::ng-deep .status-history-card .bg-blue-100,
+:host-context(.app-dark-theme) ::ng-deep .status-history-card .bg-teal-100,
+:host-context(.app-dark-theme) ::ng-deep .status-history-card .bg-yellow-100,
+:host-context(.app-dark-theme) ::ng-deep .status-history-card .bg-indigo-100,
+:host-context(.app-dark-theme) ::ng-deep .status-history-card .bg-green-100,
+:host-context(.app-dark-theme) ::ng-deep .status-history-card .bg-orange-100,
+:host-context(.app-dark-theme) ::ng-deep .status-history-card .bg-red-100,
+:host-context(.app-dark-theme) ::ng-deep .status-history-card .bg-gray-100 {
+  border: 1px solid rgba(94, 234, 212, 0.28);
+  color: #f8fafc !important;
+  background: rgba(15, 118, 110, 0.18) !important;
+}

@@ -1,7 +1,7 @@
-<div class="container mt-4">
-    <div class="card">
+<div class="container mt-4 salevoucher-detail-page">
+    <div class="card detail-card">
          <div class="card-body" *ngIf="saleVoucher() as voucher">
-            <div class="row g-3">
+            <div class="row g-3 voucher-summary">
                 <div class="col-md-3">
                   <div><b>Date</b></div>
                   {{ voucher?.date | date:'dd/MM/yyyy' }} 
@@ -36,7 +36,7 @@
               </div>
             </div>
             
-             <div style="margin-top: 10px;">
+             <div class="detail-tabs">
                <p-tabs [value]="value">
                   <p-tablist>
                      <p-tab [value]="0">Sale Voucher Products</p-tab>
@@ -44,7 +44,7 @@
                   </p-tablist>
                   <p-tabpanels>
                     <p-tabpanel [value]="0">
-                        <p-table [value]="voucher.details" responsiveLayout="scroll">
+                        <p-table [value]="voucher.details" responsiveLayout="scroll" styleClass="detail-products-table">
                           <ng-template pTemplate="header">
                             <tr>
                                <th>S.No</th>
@@ -78,7 +78,7 @@
                          </p-table>
                     </p-tabpanel>
                     <p-tabpanel [value]="1">
-                       <div class="card flex justify-center">
+                       <div class="card status-history-card flex justify-center">
                            <p-stepper [(value)]="stepValue" class="basis-[12rem]">
                              <p-step-list>
                                 <p-step *ngFor="let step of saleVoucherStatus(); let i = index" [value]="i + 1">
