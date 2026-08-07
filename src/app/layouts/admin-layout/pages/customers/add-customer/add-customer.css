@@ -4,14 +4,27 @@
   gap: 0.55rem;
   margin: 0.35rem 0 0.15rem;
   padding: 0.65rem 0.8rem;
-  border-left: 4px solid #3b2a7a;
+  border: 1px solid rgba(15, 118, 110, 0.16);
+  border-left: 4px solid #0F766E;
   border-radius: 6px;
-  color: #641313;
-  background: #fbf3f3;
+  color: #0B5F59;
+  background: rgba(15, 118, 110, 0.08);
   font-size: 0.92rem;
   font-weight: 700;
 }
 
 .form-section-title i {
   font-size: 0.9rem;
+}
+
+:host-context(.app-dark-theme) .form-section-title {
+  color: #5eead4;
+  background: rgba(15, 118, 110, 0.14);
+  border-color: rgba(15, 118, 110, 0.28);
+  border-left-color: #0F766E;
+}
+
+:host-context(.app-dark-theme) .form-section-title span,
+:host-context(.app-dark-theme) .form-section-title i {
+  color: #5eead4;
 }

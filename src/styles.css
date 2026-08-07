@@ -1173,6 +1173,16 @@ body:not(.app-dark-theme) .page-header .p-toolbar-group-right .p-button.p-button
   box-shadow: 0 3px 8px rgba(15, 23, 42, 0.08) !important;
 }
 
+body:not(.app-dark-theme) .page-header .p-toolbar-group-right .p-button-secondary .p-button-label,
+body:not(.app-dark-theme) .page-header .p-toolbar-group-right .p-button-secondary .p-button-icon,
+body:not(.app-dark-theme) .page-header .p-toolbar-group-right p-button[severity="secondary"] .p-button .p-button-label,
+body:not(.app-dark-theme) .page-header .p-toolbar-group-right p-button[severity="secondary"] .p-button .p-button-icon,
+body:not(.app-dark-theme) .page-header .p-toolbar-group-right .p-button.p-button-secondary .p-button-label,
+body:not(.app-dark-theme) .page-header .p-toolbar-group-right .p-button.p-button-secondary .p-button-icon {
+  color: #263548 !important;
+  opacity: 1 !important;
+}
+
 body:not(.app-dark-theme) .page-header .p-toolbar-group-right .p-button:not(.p-button-secondary):hover {
   color: #ffffff !important;
   background: #0B5F59 !important;
@@ -1264,6 +1274,14 @@ body.app-dark-theme .page-header .p-toolbar-group-right p-button[severity="secon
   background: #15171a !important;
   border-color: #343941 !important;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.16) !important;
+}
+
+body.app-dark-theme .page-header .p-toolbar-group-right .p-button.p-button-secondary .p-button-label,
+body.app-dark-theme .page-header .p-toolbar-group-right .p-button.p-button-secondary .p-button-icon,
+body.app-dark-theme .page-header .p-toolbar-group-right p-button[severity="secondary"] .p-button .p-button-label,
+body.app-dark-theme .page-header .p-toolbar-group-right p-button[severity="secondary"] .p-button .p-button-icon {
+  color: #f8fafc !important;
+  opacity: 1 !important;
 }
 
 /* ====== FINAL UI REFINEMENTS ====== */
@@ -1611,6 +1629,38 @@ body.app-dark-theme .p-multiselect-option.p-highlight {
   background: rgba(15, 118, 110, 0.22) !important;
 }
 
+body.app-dark-theme .form-select,
+body.app-dark-theme select {
+  color: #f8fafc !important;
+  background-color: #101114 !important;
+  border-color: #4b5563 !important;
+  box-shadow: none !important;
+}
+
+body.app-dark-theme .form-select:hover,
+body.app-dark-theme select:hover {
+  border-color: #64748b !important;
+}
+
+body.app-dark-theme .form-select:focus,
+body.app-dark-theme select:focus {
+  color: #f8fafc !important;
+  background-color: #101114 !important;
+  border-color: #0F766E !important;
+  box-shadow: 0 0 0 2px rgba(15, 118, 110, 0.28) !important;
+}
+
+body.app-dark-theme .form-select option,
+body.app-dark-theme select option {
+  color: #f8fafc !important;
+  background-color: #15171a !important;
+}
+
+body.app-dark-theme .form-select option:disabled,
+body.app-dark-theme select option:disabled {
+  color: #94a3b8 !important;
+}
+
 /* Form page toolbar/title consistency */
 body:not(.app-dark-theme) form > .p-toolbar,
 body:not(.app-dark-theme) form > p-toolbar .p-toolbar {
@@ -1654,4 +1704,166 @@ body.app-dark-theme form > p-toolbar .p-toolbar .p-button-danger {
   background: #be123c !important;
   border-color: #be123c !important;
   box-shadow: none !important;
+}
+
+/* Dialog footer buttons */
+body:not(.app-dark-theme) .p-dialog .p-dialog-footer .p-button,
+body:not(.app-dark-theme) .p-dialog-footer .p-button {
+  border-radius: 7px !important;
+  font-weight: 650 !important;
+}
+
+body:not(.app-dark-theme) .p-dialog .p-dialog-footer .p-button:not(.p-button-secondary):not(.p-button-danger),
+body:not(.app-dark-theme) .p-dialog-footer .p-button:not(.p-button-secondary):not(.p-button-danger) {
+  color: #ffffff !important;
+  background: #0F766E !important;
+  border-color: #0F766E !important;
+}
+
+body.app-dark-theme .p-dialog .p-dialog-footer,
+body.app-dark-theme .p-dialog-footer {
+  background: #15171a !important;
+  border-top-color: #343941 !important;
+}
+
+body.app-dark-theme .p-dialog .p-dialog-footer .p-button,
+body.app-dark-theme .p-dialog-footer .p-button {
+  min-width: 68px;
+  border-radius: 7px !important;
+  font-weight: 650 !important;
+  box-shadow: none !important;
+}
+
+body.app-dark-theme .p-dialog .p-dialog-footer .p-button .p-button-label,
+body.app-dark-theme .p-dialog .p-dialog-footer .p-button .p-button-icon,
+body.app-dark-theme .p-dialog-footer .p-button .p-button-label,
+body.app-dark-theme .p-dialog-footer .p-button .p-button-icon {
+  color: inherit !important;
+  opacity: 1 !important;
+}
+
+body.app-dark-theme .p-dialog .p-dialog-footer .p-button-secondary,
+body.app-dark-theme .p-dialog .p-dialog-footer p-button[severity="secondary"] .p-button,
+body.app-dark-theme .p-dialog-footer .p-button-secondary,
+body.app-dark-theme .p-dialog-footer p-button[severity="secondary"] .p-button {
+  color: #f8fafc !important;
+  background: #1f242b !important;
+  border-color: #4b5563 !important;
+}
+
+body.app-dark-theme .p-dialog .p-dialog-footer .p-button-secondary:hover,
+body.app-dark-theme .p-dialog .p-dialog-footer p-button[severity="secondary"] .p-button:hover,
+body.app-dark-theme .p-dialog-footer .p-button-secondary:hover,
+body.app-dark-theme .p-dialog-footer p-button[severity="secondary"] .p-button:hover {
+  color: #ffffff !important;
+  background: #2b333d !important;
+  border-color: #64748b !important;
+}
+
+body.app-dark-theme .p-dialog .p-dialog-footer .p-button:not(.p-button-secondary):not(.p-button-danger),
+body.app-dark-theme .p-dialog .p-dialog-footer p-button:not([severity="secondary"]):not([severity="danger"]) .p-button,
+body.app-dark-theme .p-dialog-footer .p-button:not(.p-button-secondary):not(.p-button-danger),
+body.app-dark-theme .p-dialog-footer p-button:not([severity="secondary"]):not([severity="danger"]) .p-button {
+  color: #ffffff !important;
+  background: #0F766E !important;
+  border-color: #0F766E !important;
+}
+
+body.app-dark-theme .p-dialog .p-dialog-footer .p-button:not(.p-button-secondary):not(.p-button-danger):hover,
+body.app-dark-theme .p-dialog .p-dialog-footer p-button:not([severity="secondary"]):not([severity="danger"]) .p-button:hover,
+body.app-dark-theme .p-dialog-footer .p-button:not(.p-button-secondary):not(.p-button-danger):hover,
+body.app-dark-theme .p-dialog-footer p-button:not([severity="secondary"]):not([severity="danger"]) .p-button:hover {
+  background: #0B5F59 !important;
+  border-color: #0B5F59 !important;
+}
+
+body.app-dark-theme .p-dialog .p-dialog-footer .p-button-danger,
+body.app-dark-theme .p-dialog .p-dialog-footer p-button[severity="danger"] .p-button,
+body.app-dark-theme .p-dialog-footer .p-button-danger,
+body.app-dark-theme .p-dialog-footer p-button[severity="danger"] .p-button {
+  color: #ffffff !important;
+  background: #be123c !important;
+  border-color: #be123c !important;
+}
+
+/* Form header save buttons */
+body:not(.app-dark-theme) .card-header p-button[type="submit"] .p-button,
+body:not(.app-dark-theme) .card-header .p-button[type="submit"],
+body:not(.app-dark-theme) .card-header .p-button:not(.p-button-secondary):not(.p-button-danger),
+body:not(.app-dark-theme) form .card-header p-button .p-button {
+  color: #ffffff !important;
+  background: #0F766E !important;
+  border-color: #0F766E !important;
+  border-radius: 7px !important;
+  box-shadow: 0 8px 18px rgba(15, 118, 110, 0.18) !important;
+}
+
+body:not(.app-dark-theme) .card-header p-button[type="submit"] .p-button .p-button-label,
+body:not(.app-dark-theme) .card-header p-button[type="submit"] .p-button .p-button-icon,
+body:not(.app-dark-theme) form .card-header p-button .p-button .p-button-label,
+body:not(.app-dark-theme) form .card-header p-button .p-button .p-button-icon {
+  color: #ffffff !important;
+}
+
+body.app-dark-theme .card-header p-button[type="submit"] .p-button,
+body.app-dark-theme .card-header .p-button[type="submit"],
+body.app-dark-theme .card-header .p-button:not(.p-button-secondary):not(.p-button-danger),
+body.app-dark-theme form .card-header p-button .p-button {
+  color: #ffffff !important;
+  background: #0F766E !important;
+  border-color: #0F766E !important;
+  border-radius: 7px !important;
+  box-shadow: 0 8px 18px rgba(15, 118, 110, 0.18) !important;
+}
+
+body.app-dark-theme .card-header p-button[type="submit"] .p-button:hover,
+body.app-dark-theme .card-header .p-button[type="submit"]:hover,
+body.app-dark-theme .card-header .p-button:not(.p-button-secondary):not(.p-button-danger):hover,
+body.app-dark-theme form .card-header p-button .p-button:hover {
+  color: #ffffff !important;
+  background: #0B5F59 !important;
+  border-color: #0B5F59 !important;
+}
+
+body.app-dark-theme .card-header p-button[type="submit"] .p-button .p-button-label,
+body.app-dark-theme .card-header p-button[type="submit"] .p-button .p-button-icon,
+body.app-dark-theme form .card-header p-button .p-button .p-button-label,
+body.app-dark-theme form .card-header p-button .p-button .p-button-icon {
+  color: #ffffff !important;
+  opacity: 1 !important;
+}
+
+/* Keep secondary/cancel button text visible in dark mode */
+body.app-dark-theme .p-button.p-button-secondary,
+body.app-dark-theme .p-button-secondary,
+body.app-dark-theme p-button[severity="secondary"] .p-button,
+body.app-dark-theme .p-button-outlined.p-button-secondary,
+body.app-dark-theme .p-button-text.p-button-secondary {
+  color: #f8fafc !important;
+  background: #1f242b !important;
+  border-color: #4b5563 !important;
+}
+
+body.app-dark-theme .p-button.p-button-secondary .p-button-label,
+body.app-dark-theme .p-button.p-button-secondary .p-button-icon,
+body.app-dark-theme .p-button-secondary .p-button-label,
+body.app-dark-theme .p-button-secondary .p-button-icon,
+body.app-dark-theme p-button[severity="secondary"] .p-button .p-button-label,
+body.app-dark-theme p-button[severity="secondary"] .p-button .p-button-icon,
+body.app-dark-theme .p-button-outlined.p-button-secondary .p-button-label,
+body.app-dark-theme .p-button-outlined.p-button-secondary .p-button-icon,
+body.app-dark-theme .p-button-text.p-button-secondary .p-button-label,
+body.app-dark-theme .p-button-text.p-button-secondary .p-button-icon {
+  color: #f8fafc !important;
+  opacity: 1 !important;
+}
+
+body.app-dark-theme .p-button.p-button-secondary:hover,
+body.app-dark-theme .p-button-secondary:hover,
+body.app-dark-theme p-button[severity="secondary"] .p-button:hover,
+body.app-dark-theme .p-button-outlined.p-button-secondary:hover,
+body.app-dark-theme .p-button-text.p-button-secondary:hover {
+  color: #ffffff !important;
+  background: #2b333d !important;
+  border-color: #64748b !important;
 }

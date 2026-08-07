@@ -37,3 +37,67 @@
 .ui-autocomplete-panel {
     z-index: 2000 !important; /* dialog z-index is usually 1100 */
 }
+
+:host ::ng-deep .assignment-dialog .p-dialog-header {
+  padding: 1.15rem 1.2rem 0.75rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+:host ::ng-deep .assignment-dialog .p-dialog-content {
+  padding: 1rem 1.2rem 0.8rem;
+}
+
+:host ::ng-deep .assignment-dialog .p-dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.55rem;
+  padding: 0.8rem 1.2rem 1rem;
+}
+
+.assignment-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.assignment-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.42rem;
+}
+
+.assignment-field label {
+  color: #475569;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+:host ::ng-deep .assignment-field .p-autocomplete,
+:host ::ng-deep .assignment-field .p-select,
+:host ::ng-deep .assignment-field .p-inputtext {
+  width: 100% !important;
+}
+
+:host ::ng-deep .assignment-dialog .p-button {
+  min-width: 74px;
+  border-radius: 7px;
+  font-weight: 650;
+}
+
+:host ::ng-deep .assignment-dialog .p-dialog-footer .p-button:not(.p-button-secondary) {
+  color: #ffffff !important;
+  background: #0F766E !important;
+  border-color: #0F766E !important;
+}
+
+:host-context(.app-dark-theme) ::ng-deep .assignment-dialog .p-dialog-header,
+:host-context(.app-dark-theme) ::ng-deep .assignment-dialog .p-dialog-content,
+:host-context(.app-dark-theme) ::ng-deep .assignment-dialog .p-dialog-footer {
+  color: #f8fafc;
+  background: #15171a;
+  border-color: #343941;
+}
+
+:host-context(.app-dark-theme) .assignment-field label {
+  color: #cbd5e1;
+}
