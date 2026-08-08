@@ -49,6 +49,7 @@
 
             <th>Email</th>
             <th>Phone</th>
+            <th>Developer</th>
             <th class="text-center action-column">Actions</th>
           </tr>
         </ng-template>
@@ -60,6 +61,11 @@
             <td>{{row.password}}</td>
             <td>{{row.email}}</td>
             <td>{{row.phone}}</td>
+            <td>
+              <span class="developer-badge" [class.active]="row.isDeveloper">
+                {{ row.isDeveloper ? 'Yes' : 'No' }}
+              </span>
+            </td>
             <td class="text-center action-column">
               <span class="px-2 py-1 rounded bg-blue-50 text-blue-600 cursor-pointer hover:bg-blue-100"
                (click)="editUser(row)" pTooltip="Edit">
@@ -71,7 +77,7 @@
 
         <ng-template pTemplate="emptymessage">
           <tr>
-            <td colspan="6">
+            <td colspan="7">
               <div class="table-empty-state">
                 <i class="pi pi-inbox"></i>
                 <span>No records found</span>

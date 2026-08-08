@@ -1,0 +1,70 @@
+.menu-access-page {
+  display: block;
+}
+
+:host ::ng-deep .menu-access-page .p-card-body,
+:host ::ng-deep .menu-access-page .p-card-content {
+  padding: 1rem !important;
+}
+
+.menu-access-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 0.75rem;
+}
+
+.menu-access-group {
+  border: 1px solid #dbe4ee;
+  border-radius: 10px;
+  background: #ffffff;
+  overflow: hidden;
+}
+
+.group-header,
+.child-row {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.group-header {
+  min-height: 46px;
+  padding: 0.7rem 0.8rem;
+  border-bottom: 1px solid #e8eef5;
+  color: #0f172a;
+  background: #f7fbfa;
+  font-size: 0.86rem;
+  font-weight: 800;
+}
+
+.group-children {
+  display: grid;
+  gap: 0.15rem;
+  padding: 0.55rem 0.8rem 0.7rem;
+}
+
+.child-row {
+  min-height: 34px;
+  color: #334155;
+  font-size: 0.8rem;
+  font-weight: 650;
+}
+
+label {
+  cursor: pointer;
+}
+
+:host-context(.app-dark-theme) .menu-access-group {
+  border-color: #343941;
+  background: #15171a;
+}
+
+:host-context(.app-dark-theme) .group-header {
+  color: #f8fafc;
+  border-color: #2f3a3d;
+  background: #10201f;
+}
+
+:host-context(.app-dark-theme) .child-row {
+  color: #cbd5e1;
+}

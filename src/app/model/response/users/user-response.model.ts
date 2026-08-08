@@ -6,6 +6,7 @@ export interface UserResponse {
   email?: string;      // nullable → optional
   phone?: string;      // nullable → optional
   isActive: boolean;
+  isDeveloper: boolean;
   userDetail?: UserDetailResponse;
 }
 

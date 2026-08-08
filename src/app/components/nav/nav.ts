@@ -7,6 +7,9 @@ import { LocalStorageService } from '../../core/services/local-storage.service';
 import { filter, Subscription } from 'rxjs';
 import { ParcelStatus } from '../../core/enums/enum';
 import { TooltipModule } from 'primeng/tooltip';
+import { AdminMenuService } from '../../core/services/admin-menu.service';
+import { AdminMenuSetting } from '../../model/admin-menu-setting.model';
+import { UserService } from '../../core/services/user.service';
 
 @Component({
   selector: 'app-nav',
@@ -23,7 +26,12 @@ export class Nav implements OnInit, OnDestroy {
 
   private subscription!: Subscription;
 
-  constructor(private localStorage: LocalStorageService,private router: Router) {}
+  constructor(
+    private localStorage: LocalStorageService,
+    private router: Router,
+    private adminMenuService: AdminMenuService,
+    private userService: UserService
+  ) {}
 
   ngOnInit(): void {
     this.loadUserMenu();
@@ -53,9 +61,40 @@ export class Nav implements OnInit, OnDestroy {
     this.isLogin = !!token;
     this.userRole = this.isLogin && user ? user.roleName : null;
 
-    this.items = this.isLogin && this.userRole
-      ? this.menuByRole[this.userRole] ?? []
+    const roleMenu = this.isLogin && this.userRole
+      ? this.cloneMenu(this.menuByRole[this.userRole] ?? [])
       : [];
+
+    if (this.userRole !== 'SuperAdmin') {
+      this.items = this.applyMenuKeys(roleMenu);
+      return;
+    }
+
+    const applyAdminMenu = (isDeveloper: boolean, settings: AdminMenuSetting[] = []) => {
+      this.items = this.filterAdminMenu(this.applyMenuKeys(roleMenu), settings, isDeveloper);
+      this.setActiveMenu();
+    };
+
+    applyAdminMenu(!!user?.isDeveloper);
+
+    this.userService.getCurrentUser().subscribe({
+      next: (currentUser) => {
+        const syncedUser = {
+          ...user,
+          isDeveloper: currentUser.isDeveloper
+        };
+
+        this.localStorage.setUser(syncedUser);
+
+        this.adminMenuService.getSettings().subscribe({
+          next: (settings) => applyAdminMenu(currentUser.isDeveloper, settings),
+          error: () => applyAdminMenu(currentUser.isDeveloper)
+        });
+      },
+      error: () => {
+        applyAdminMenu(!!user?.isDeveloper);
+      }
+    });
   }
 
   // ---------------------------------------
@@ -152,6 +191,11 @@ export class Nav implements OnInit, OnDestroy {
           { label: 'Sales Report', icon: 'pi pi-chart-line', routerLink: ['/admin/sale-history'] },
           { label: 'Purchase Report', icon: 'pi pi-chart-pie', routerLink: ['/admin/purchase-history'] }
         ]
+      },
+      {
+        label: 'Menu Access',
+        icon: 'pi pi-fw pi-shield',
+        routerLink: ['/admin/menu-access']
       }
     ],
 
@@ -186,6 +230,109 @@ export class Nav implements OnInit, OnDestroy {
       }
     ]
   };
+
+  private cloneMenu(items: MenuItem[]): MenuItem[] {
+    return items.map(item => ({
+      ...item,
+      items: item.items ? this.cloneMenu(item.items) : undefined
+    }));
+  }
+
+  private applyMenuKeys(items: MenuItem[], parentKey?: string): MenuItem[] {
+    return items.map(item => {
+      const key = this.resolveMenuKey(item, parentKey);
+      (item as any).key = key;
+
+      if (item.items) {
+        item.items = this.applyMenuKeys(item.items, key);
+      }
+
+      return item;
+    });
+  }
+
+  private resolveMenuKey(item: MenuItem, parentKey?: string): string {
+    const route = Array.isArray(item.routerLink) ? item.routerLink[0] : item.routerLink;
+    const routeKeyMap: Record<string, string> = {
+      '/admin/dashboard': 'admin.dashboard',
+      '/admin/gstrule': 'admin.gstrule',
+      '/admin/hsncodes': 'admin.hsncodes',
+      '/admin/transports': 'admin.transports',
+      '/admin/departments': 'admin.departments',
+      '/admin/item-categories': 'admin.item-categories',
+      '/admin/users': 'admin.users',
+      '/admin/customers': 'admin.customers',
+      '/admin/customer-agents': 'admin.customer-agents',
+      '/admin/agents': 'admin.agents',
+      '/admin/sales-persons': 'admin.sales-persons',
+      '/admin/suppliers': 'admin.supplier-list',
+      '/admin/supplier-transports': 'admin.supplier-transports',
+      '/admin/supplier-stockgroups': 'admin.supplier-stockgroups',
+      '/admin/supplier-hsncode': 'admin.supplier-hsncode',
+      '/admin/supplier-products': 'admin.supplier-products',
+      '/admin/supplier-salevoucher': 'admin.supplier-salevoucher',
+      '/admin/stocks': 'admin.stocks',
+      '/admin/stock-transactions': 'admin.stock-transactions',
+      '/admin/menu-access': 'admin.menu-access'
+    };
+
+    if (typeof route === 'string' && routeKeyMap[route]) {
+      return routeKeyMap[route];
+    }
+
+    const labelKeyMap: Record<string, string> = {
+      'Masters': 'admin.masters',
+      'People': 'admin.people',
+      'Suppliers': 'admin.suppliers',
+      'Parcel Management': 'admin.parcel-management',
+      'Transit Scanning': 'admin.transit-scanning',
+      'Warehouse Scanning': 'admin.warehouse-scanning',
+      'Packed at Location': 'admin.packed-location',
+      'Stock Management': 'admin.stock-management',
+      'Reports': 'admin.reports',
+      'Sales Report': 'admin.sales-report',
+      'Purchase Report': 'admin.purchase-report'
+    };
+
+    if (item.label && labelKeyMap[item.label]) {
+      return labelKeyMap[item.label];
+    }
+
+    return `${parentKey ?? 'menu'}.${(item.label ?? '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`;
+  }
+
+  private filterAdminMenu(items: MenuItem[], settings: AdminMenuSetting[], isDeveloper: boolean): MenuItem[] {
+    if (isDeveloper) {
+      return items;
+    }
+
+    const enabledByKey = new Map(settings.map(item => [item.menuKey, item.isEnabled]));
+
+    const filterItems = (menuItems: MenuItem[]): MenuItem[] => {
+      return menuItems.reduce<MenuItem[]>((result, item) => {
+        const key = (item as any).key as string;
+        const isMenuAccess = key === 'admin.menu-access';
+        const isEnabled = key === 'admin.menu-access' && isDeveloper
+          ? true
+          : !isMenuAccess && enabledByKey.get(key) !== false;
+
+        const children = item.items ? filterItems(item.items) : undefined;
+
+        if (!isEnabled || (item.items && !children?.length)) {
+          return result;
+        }
+
+        result.push({
+          ...item,
+          items: children
+        });
+
+        return result;
+      }, []);
+    };
+
+    return filterItems(items);
+  }
 
   private setActiveMenu() {
   const currentUrl = this.router.url.split('?')[0]; // remove query params

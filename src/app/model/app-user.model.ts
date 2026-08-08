@@ -5,6 +5,7 @@ export interface AppUser
     roleName:string;
     userName:string;
     name:string;
+    isDeveloper:boolean;
     isLoginFailed:boolean;
     message:string;
 }

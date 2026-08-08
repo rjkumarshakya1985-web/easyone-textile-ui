@@ -6,4 +6,5 @@ export interface UserRequest {
   email?: string | null;
   phone?: string | null;
   isActive: boolean;
+  isDeveloper: boolean;
 }

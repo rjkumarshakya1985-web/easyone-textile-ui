@@ -28,6 +28,10 @@ export class UserService {
      return this.http.get<UserResponse>(`${this.apiUrl}users/${id}`);
   }
 
+  getCurrentUser(): Observable<UserResponse> {
+    return this.http.get<UserResponse>(`${this.apiUrl}users/current`);
+  }
+
   saveUsers(request: UserRequest): Observable<string> {
     return this.http.post<string>(`${this.apiUrl}users`, request);
   }

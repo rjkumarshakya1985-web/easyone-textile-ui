@@ -1,0 +1,37 @@
+<p-toolbar class="page-header">
+  <div class="p-toolbar-group-left">
+    <p-breadcrumb [model]="breadcrumbItems" homeIcon="pi pi-home"></p-breadcrumb>
+  </div>
+
+  <div class="p-toolbar-group-right">
+    <p-button label="Save Menu Access" icon="pi pi-save" (click)="save()" />
+  </div>
+</p-toolbar>
+
+<p-card class="menu-access-page">
+  <div class="menu-access-grid">
+    <section class="menu-access-group" *ngFor="let parent of parentItems()">
+      <div class="group-header">
+        <p-checkbox
+          binary="true"
+          [(ngModel)]="parent.isEnabled"
+          (onChange)="onParentToggle(parent)"
+          [inputId]="parent.key">
+        </p-checkbox>
+        <label [for]="parent.key">{{ parent.label }}</label>
+      </div>
+
+      <div class="group-children" *ngIf="childItems(parent.key).length">
+        <div class="child-row" *ngFor="let child of childItems(parent.key)">
+          <p-checkbox
+            binary="true"
+            [(ngModel)]="child.isEnabled"
+            (onChange)="onChildToggle(child)"
+            [inputId]="child.key">
+          </p-checkbox>
+          <label [for]="child.key">{{ child.label }}</label>
+        </div>
+      </div>
+    </section>
+  </div>
+</p-card>

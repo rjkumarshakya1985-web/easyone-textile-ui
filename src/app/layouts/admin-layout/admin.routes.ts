@@ -91,6 +91,13 @@ export const ADMIN_ROUTES: Routes = [
       import('./pages/users/user-list/user-list')
         .then(c => c.UserList)
   },
+  {
+    path: 'menu-access',
+    canActivate: [roleGuard('SuperAdmin')],
+    loadComponent: () =>
+      import('./pages/menu-access/menu-access')
+        .then(c => c.MenuAccess)
+  },
 
   // =========================
   // Suppliers
