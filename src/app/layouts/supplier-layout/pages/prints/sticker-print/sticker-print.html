@@ -19,64 +19,37 @@
   </div>
 </p-toolbar>
 
-<p-card *ngIf="printData() as sticker"> 
-
+<p-card *ngIf="printData() as sticker">
   <div id="sticker-print-section">
+    <div class="app-sticker">
+      <ng-container *ngFor="let field of fields(sticker)">
+        <div
+          *ngIf="field.fieldKey !== 'barcode'"
+          class="sticker-field"
+          [class.company-code]="field.fieldKey === 'companyShortName'"
+          [class.slot-hidden]="!field.isVisible"
+          [ngStyle]="fieldStyle(field)">
+          {{ fieldValue(sticker, field.fieldKey) }}
+        </div>
 
- 
-                <div style="width: 300px;
-                            height: auto;
-                            background: #fff;
-                            border-radius: 12px;
-                            padding: 8px 10px;
-                            font-family: inherit;
-                            color: #000;
-                            box-sizing: border-box;
-                            border: 1px solid #e0e0e0;">
-
- <!-- Header -->
-           
-             <div style="font-size:15px;margin-bottom:0px;display:flex;justify-content:space-between;width:98%;">
-                <b style="font-size: 20px">{{ sticker.supplierCode }}</b>
-                 <b style="font-size: 20px">SSBD</b>
-                  <b style="font-size: 20px">{{ sticker.wholeSaleRate }}</b>                
-             </div>
-
-    <!-- Product + Supplier -->
-            <div style="font-size: 20px; font-weight: bold; text-align:center;text-transform: uppercase;">
-              {{sticker.productName}}
-            </div> 
-
-      <!-- Barcode -->
-           <div style="text-align:center;">
-                   <div style="display:inline-block;">
-                    <!-- Top Row -->
-                     <div style="font-size:15px;margin-bottom:3px;margin-left: 9px;
-                                 display:flex;justify-content:space-between;width:90%;">
-                            <span>{{ sticker.printDateString }}</span>
-                            
-                            <span>{{ sticker.retailRate }}</span>
-                    </div>
-
-    <!-- Barcode -->
-    <ngx-barcode6
-      [bc-value]="sticker.barcode"
-      [bc-format]="'CODE128'"
-      [bc-width]="3"
-      [bc-height]="30"
-      [bc-margin]="0"
-      [bc-font-size]="14"
-      [bc-display-value]="true"
-      [bc-margin-top]="0"
-      [bc-margin-bottom]="0">
-    </ngx-barcode6>
-
+        <div
+          *ngIf="field.fieldKey === 'barcode'"
+          class="sticker-field barcode-field"
+          [class.slot-hidden]="!field.isVisible"
+          [ngStyle]="fieldStyle(field)">
+        <ngx-barcode6
+          [bc-value]="sticker.barcode"
+          [bc-format]="'CODE128'"
+          [bc-width]="3"
+          [bc-height]="30"
+          [bc-margin]="0"
+          [bc-font-size]="14"
+          [bc-display-value]="false"
+          [bc-margin-top]="0"
+          [bc-margin-bottom]="0">
+        </ngx-barcode6>
+        </div>
+      </ng-container>
+    </div>
   </div>
-
-</div>
-
-  </div>
-
-</div>
- 
 </p-card>

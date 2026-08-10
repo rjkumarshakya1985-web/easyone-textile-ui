@@ -6,7 +6,7 @@ import { CardModule } from 'primeng/card';
 import { ToolbarModule } from 'primeng/toolbar';
 import { PrintService } from '../../../../../core/services/print-service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { StickerPrint } from '../../../../../model/response/print/salevoucher-response-print';
+import { StickerPrint, StickerPrintFieldSetting } from '../../../../../model/response/print/salevoucher-response-print';
 import { NgxBarcode6Module } from 'ngx-barcode6';
 import { CommonModule } from '@angular/common';
 
@@ -61,6 +61,7 @@ export class ProductStickerPrint {
         <title>Print</title>
         <link rel="stylesheet"
          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+        <style>${this.stickerPrintStyles()}</style>
       </head>
       <body onload="window.print();window.close()">
         ${printContents}
@@ -73,5 +74,82 @@ export class ProductStickerPrint {
   back()
   {
    window.history.back();
+  }
+
+  fields(sticker: StickerPrint): StickerPrintFieldSetting[] {
+    return sticker.stickerSetting?.fieldSettings?.length
+      ? sticker.stickerSetting.fieldSettings
+      : this.defaultFields(sticker);
+  }
+
+  fieldValue(sticker: StickerPrint, key: string): string {
+    switch (key) {
+      case 'supplierCode':
+        return sticker.supplierCode;
+      case 'companyShortName':
+        return sticker.stickerSetting?.companyShortName ?? 'SSBD';
+      case 'wholeSaleRate':
+        return sticker.wholeSaleRate;
+      case 'productName':
+        return sticker.productName;
+      case 'printDate':
+        return sticker.printDateString;
+      case 'retailRate':
+        return sticker.retailRate;
+      case 'barcodeText':
+        return sticker.barcode;
+      default:
+        return '';
+    }
+  }
+
+  fieldStyle(field: StickerPrintFieldSetting): Record<string, string> {
+    const width = field.fieldKey === 'companyShortName'
+      ? Math.max(field.width, 74)
+      : field.fieldKey === 'wholeSaleRate'
+      ? Math.max(field.width, 128)
+      : field.width;
+    const x = field.fieldKey === 'wholeSaleRate'
+      ? Math.min(field.x, 300 - width - 10)
+      : field.x;
+
+    return {
+      left: `${x}px`,
+      top: `${field.y}px`,
+      width: `${width}px`,
+      height: `${field.height}px`,
+      fontSize: `${field.fontSize}px`,
+      fontWeight: field.fontWeight,
+      textAlign: field.textAlign,
+      lineHeight: `${field.height}px`
+    };
+  }
+
+  private stickerPrintStyles(): string {
+    return `
+      .app-sticker{position:relative;width:300px;height:134px;background:#fff;border:1px solid #e0e0e0;border-radius:12px;box-sizing:border-box;color:#000;font-family:Arial,sans-serif;overflow:hidden}
+      .sticker-field{position:absolute;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+      .company-code{color:#000;background:transparent;padding:0}
+      .barcode-field{display:flex;align-items:center;justify-content:center;overflow:hidden}
+      .slot-hidden{visibility:hidden}
+    `;
+  }
+
+  private defaultFields(sticker: StickerPrint): StickerPrintFieldSetting[] {
+    const visible = sticker.stickerSetting;
+    return [
+      this.createField('supplierCode', 'Supplier Code', visible?.showSupplierCode !== false, 10, 8, 82, 24, 20, '800', 'left', 1),
+      this.createField('companyShortName', 'Company Short Name', visible?.showCompanyShortName !== false, 113, 8, 74, 22, 20, '800', 'center', 2),
+      this.createField('wholeSaleRate', 'Wholesale Rate', visible?.showWholeSaleRate !== false, 162, 8, 128, 24, 20, '800', 'right', 3),
+      this.createField('productName', 'Product Name', visible?.showProductName !== false, 42, 32, 216, 24, 18, '800', 'center', 4),
+      this.createField('printDate', 'Print Date', visible?.showPrintDate !== false, 51, 59, 80, 18, 14, '400', 'left', 5),
+      this.createField('retailRate', 'Retail Rate', visible?.showRetailRate !== false, 195, 59, 62, 18, 14, '400', 'right', 6),
+      this.createField('barcode', 'Barcode', visible?.showBarcode !== false, 51, 78, 188, 34, 14, '400', 'center', 7),
+      this.createField('barcodeText', 'Barcode Text', visible?.showBarcodeText !== false, 121, 113, 58, 14, 12, '400', 'center', 8)
+    ];
+  }
+
+  private createField(fieldKey: string, label: string, isVisible: boolean, x: number, y: number, width: number, height: number, fontSize: number, fontWeight: string, textAlign: string, sortOrder: number): StickerPrintFieldSetting {
+    return { fieldKey, label, isVisible, x, y, width, height, fontSize, fontWeight, textAlign, sortOrder };
   }
 }

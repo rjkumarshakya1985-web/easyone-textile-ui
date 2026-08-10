@@ -23,6 +23,7 @@ export class Nav implements OnInit, OnDestroy {
   items: MenuItem[] = [];
   isLogin = false;
   userRole: string | null = null;
+  private readonly adminMenuSettingsCacheKey = 'easyone-admin-menu-settings';
 
   private subscription!: Subscription;
 
@@ -75,7 +76,14 @@ export class Nav implements OnInit, OnDestroy {
       this.setActiveMenu();
     };
 
-    applyAdminMenu(!!user?.isDeveloper);
+    const cachedSettings = this.getCachedAdminMenuSettings();
+    if (user?.isDeveloper) {
+      applyAdminMenu(true);
+    } else if (cachedSettings) {
+      applyAdminMenu(false, cachedSettings);
+    } else {
+      applyAdminMenu(false);
+    }
 
     this.userService.getCurrentUser().subscribe({
       next: (currentUser) => {
@@ -86,15 +94,58 @@ export class Nav implements OnInit, OnDestroy {
 
         this.localStorage.setUser(syncedUser);
 
+        if (currentUser.isDeveloper) {
+          applyAdminMenu(true);
+          return;
+        }
+
         this.adminMenuService.getSettings().subscribe({
-          next: (settings) => applyAdminMenu(currentUser.isDeveloper, settings),
-          error: () => applyAdminMenu(currentUser.isDeveloper)
+          next: (settings) => {
+            this.setCachedAdminMenuSettings(settings);
+            applyAdminMenu(false, settings);
+          },
+          error: () => applyAdminMenu(false)
         });
       },
       error: () => {
-        applyAdminMenu(!!user?.isDeveloper);
+        if (user?.isDeveloper) {
+          applyAdminMenu(true);
+          return;
+        }
+
+        this.adminMenuService.getSettings().subscribe({
+          next: (settings) => {
+            this.setCachedAdminMenuSettings(settings);
+            applyAdminMenu(false, settings);
+          },
+          error: () => applyAdminMenu(false)
+        });
       }
     });
+  }
+
+  private getCachedAdminMenuSettings(): AdminMenuSetting[] | null {
+    if (typeof window === 'undefined') {
+      return null;
+    }
+
+    const value = sessionStorage.getItem(this.adminMenuSettingsCacheKey);
+    if (!value) {
+      return null;
+    }
+
+    try {
+      return JSON.parse(value) as AdminMenuSetting[];
+    } catch {
+      sessionStorage.removeItem(this.adminMenuSettingsCacheKey);
+      return null;
+    }
+  }
+
+  private setCachedAdminMenuSettings(settings: AdminMenuSetting[]): void {
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem(this.adminMenuSettingsCacheKey, JSON.stringify(settings));
+    }
   }
 
   // ---------------------------------------
@@ -196,6 +247,11 @@ export class Nav implements OnInit, OnDestroy {
         label: 'Menu Access',
         icon: 'pi pi-fw pi-shield',
         routerLink: ['/admin/menu-access']
+      },
+      {
+        label: 'Sticker Settings',
+        icon: 'pi pi-fw pi-print',
+        routerLink: ['/admin/sticker-print-setting']
       }
     ],
 
@@ -273,7 +329,8 @@ export class Nav implements OnInit, OnDestroy {
       '/admin/supplier-salevoucher': 'admin.supplier-salevoucher',
       '/admin/stocks': 'admin.stocks',
       '/admin/stock-transactions': 'admin.stock-transactions',
-      '/admin/menu-access': 'admin.menu-access'
+      '/admin/menu-access': 'admin.menu-access',
+      '/admin/sticker-print-setting': 'admin.sticker-print-setting'
     };
 
     if (typeof route === 'string' && routeKeyMap[route]) {
@@ -311,10 +368,10 @@ export class Nav implements OnInit, OnDestroy {
     const filterItems = (menuItems: MenuItem[]): MenuItem[] => {
       return menuItems.reduce<MenuItem[]>((result, item) => {
         const key = (item as any).key as string;
-        const isMenuAccess = key === 'admin.menu-access';
-        const isEnabled = key === 'admin.menu-access' && isDeveloper
+        const isDeveloperOnly = key === 'admin.menu-access' || key === 'admin.sticker-print-setting';
+        const isEnabled = isDeveloperOnly && isDeveloper
           ? true
-          : !isMenuAccess && enabledByKey.get(key) !== false;
+          : !isDeveloperOnly && enabledByKey.get(key) !== false;
 
         const children = item.items ? filterItems(item.items) : undefined;
 
@@ -380,13 +437,21 @@ export class Nav implements OnInit, OnDestroy {
 
   goToMenuItem(item: MenuItem) {
     if (item.routerLink) {
+      this.rememberOpenSidebar();
       this.router.navigate(item.routerLink as any[]);
       return;
     }
 
     const firstChildWithRoute = item.items?.find(child => child.routerLink);
     if (firstChildWithRoute?.routerLink) {
+      this.rememberOpenSidebar();
       this.router.navigate(firstChildWithRoute.routerLink as any[]);
+    }
+  }
+
+  rememberOpenSidebar(): void {
+    if (typeof window !== 'undefined' && this.isOpen) {
+      sessionStorage.setItem('easyone-sidebar-open', 'true');
     }
   }
 }

@@ -1,6 +1,6 @@
  
 <div class="sidebar" [class.closed]="!isOpen">
-  <div class="sidebar-surface full-menu">
+  <div class="sidebar-surface full-menu" (pointerdown)="rememberOpenSidebar()">
     <p-panelMenu [model]="items" class="w-full md:w-80 custom-panel"></p-panelMenu>
   </div>
 

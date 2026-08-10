@@ -123,6 +123,10 @@ export class MenuAccess implements OnInit {
 
     this.adminMenuService.saveSettings(request).subscribe({
       next: () => {
+        if (typeof window !== 'undefined') {
+          sessionStorage.setItem('easyone-admin-menu-settings', JSON.stringify(request.items));
+        }
+
         this.messageService.add({
           severity: 'success',
           summary: 'Saved',

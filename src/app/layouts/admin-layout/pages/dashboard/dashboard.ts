@@ -11,13 +11,12 @@ import { DashboardService } from '../../../../core/services/dashboard-service';
 import { LoaderService } from '../../../../core/services/loader.service';
 import { finalize } from 'rxjs';
 import { RouterModule } from '@angular/router';
-import { TurnoverChart } from '../charts/turnover-chart/turnover-chart';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
   imports: [CommonModule, CardModule, TableModule,
-     ButtonModule, TagModule,DividerModule,RouterModule,TurnoverChart],
+     ButtonModule, TagModule,DividerModule,RouterModule],
 templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
@@ -32,6 +31,22 @@ export class Dashboard {
     { icon: 'pi pi-truck', title: 'Transport Parcel',url:'/admin/supplier-salevoucher', queryParams: { status: 4 }, value: 0, color: '#7C3AED' },
     { icon: 'pi pi-pencil', title: 'Open Parcel',url:'/admin/supplier-salevoucher', queryParams: { status: 6 }, value: 0, color: '#FF9800' }
   ]);
+
+  parcelGraphItems() {
+    const dashboard = this.data();
+    const items = [
+      { label: 'InTransit Parcel', value: dashboard?.inParcel ?? 0, color: '#f59e0b' },
+      { label: 'Transport Parcel', value: dashboard?.transport ?? 0, color: '#7c3aed' },
+      { label: 'Open Parcel', value: dashboard?.openParcel ?? 0, color: '#14b8a6' },
+    ];
+    const maxValue = Math.max(...items.map(item => item.value), 1);
+
+    return items.map(item => ({
+      ...item,
+      width: Math.max((item.value / maxValue) * 100, item.value > 0 ? 8 : 0),
+    }));
+  }
+
   constructor(private dashboardService:DashboardService,
       private loaderService:LoaderService)
     {

@@ -26,6 +26,45 @@
 .mr-2 {
   margin-right: 0.5rem; /* Adjust space as needed */
 }
+
+.app-sticker {
+  position: relative;
+  width: 300px;
+  height: 134px;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 0;
+  box-sizing: border-box;
+  color: #000;
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+}
+
+.sticker-field {
+  position: absolute;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.company-code {
+  color: #000;
+  background: transparent;
+  padding: 0;
+}
+
+.barcode-field {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.slot-hidden {
+  visibility: hidden;
+}
+
 /* Print Optimization */
 @media print {
 

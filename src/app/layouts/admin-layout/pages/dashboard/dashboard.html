@@ -25,17 +25,26 @@
     </a>
   </section>
 
-  <section class="chart-panel">
+  <section class="chart-panel parcel-graph-panel">
     <div class="panel-heading chart-heading">
       <div>
-        <span class="panel-kicker">Performance</span>
-        <h2>Turnover overview</h2>
-        <p>Business turnover summary and recent movement.</p>
+        <span class="panel-kicker">Parcel movement</span>
+        <h2>Status overview</h2>
+        <p>InTransit, transport and open parcel summary.</p>
       </div>
       <span class="panel-icon"><i class="pi pi-chart-bar"></i></span>
     </div>
-    <div class="chart-content">
-      <app-turnover-chart></app-turnover-chart>
+    <div class="parcel-graph">
+      <div class="parcel-bar-row" *ngFor="let item of parcelGraphItems()">
+        <div class="parcel-bar-meta">
+          <span class="parcel-dot" [ngStyle]="{ 'background': item.color }"></span>
+          <span>{{ item.label }}</span>
+          <strong>{{ item.value }}</strong>
+        </div>
+        <div class="parcel-bar-track">
+          <span class="parcel-bar-fill" [ngStyle]="{ 'width': item.width + '%', 'background': item.color }"></span>
+        </div>
+      </div>
     </div>
   </section>
 

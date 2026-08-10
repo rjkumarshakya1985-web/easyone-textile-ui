@@ -1,7 +1,7 @@
     <div class="layout">
-        <app-header></app-header>
+        <app-header (toggleSidebar)="handleToggle()"></app-header>
         <div class="main">
-            <app-nav></app-nav>
+            <app-nav class="layout-nav" [isOpen]="isSidebarOpen"></app-nav>
             <div class="content">
             <router-outlet></router-outlet>
             </div>

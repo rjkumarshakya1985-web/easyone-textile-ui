@@ -98,6 +98,13 @@ export const ADMIN_ROUTES: Routes = [
       import('./pages/menu-access/menu-access')
         .then(c => c.MenuAccess)
   },
+  {
+    path: 'sticker-print-setting',
+    canActivate: [roleGuard('SuperAdmin')],
+    loadComponent: () =>
+      import('./pages/sticker-print-setting/sticker-print-setting')
+        .then(c => c.StickerPrintSettingPage)
+  },
 
   // =========================
   // Suppliers

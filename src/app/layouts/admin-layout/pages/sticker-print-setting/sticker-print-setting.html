@@ -1,0 +1,169 @@
+<p-toolbar class="page-header">
+  <div class="p-toolbar-group-left">
+    <p-breadcrumb [model]="breadcrumbItems" homeIcon="pi pi-home"></p-breadcrumb>
+  </div>
+
+  <div class="p-toolbar-group-right">
+    <p-button label="Save Settings" icon="pi pi-save" (click)="save()" />
+  </div>
+</p-toolbar>
+
+<div class="setting-page" *ngIf="setting() as current">
+  <p-card class="setting-card">
+    <div class="settings-heading">
+      <div>
+        <span class="eyebrow">PRINT CONTROL</span>
+        <h2>Sticker Configuration</h2>
+        <p>Manage sticker visibility and wholesale rate formatting from one place.</p>
+      </div>
+      <div class="formula-chip">
+        <i class="pi pi-calculator"></i>
+        <span>Preview: {{ previewWholeSaleRate() }}</span>
+      </div>
+    </div>
+
+    <div class="setting-layout">
+      <section class="setting-panel field-panel">
+        <div class="section-title">
+          <i class="pi pi-eye"></i>
+          <div>
+            <span>Sticker Fields</span>
+            <small>Show or hide fields without changing the sticker size.</small>
+          </div>
+        </div>
+
+        <div class="field-grid">
+          <label class="field-toggle" *ngFor="let option of fieldOptions">
+            <p-checkbox
+              binary="true"
+              [ngModel]="fieldByKey(option.key)?.isVisible"
+              (ngModelChange)="toggleField(option.key, option.legacyKey, $event)">
+            </p-checkbox>
+            <span>{{ option.label }}</span>
+          </label>
+        </div>
+      </section>
+
+      <section class="setting-panel formula-panel">
+        <div class="section-title">
+          <i class="pi pi-sliders-h"></i>
+          <div>
+            <span>Rate Formula</span>
+            <small>Set a dynamic prefix, add amount and postfix for the wholesale rate.</small>
+          </div>
+        </div>
+
+        <label class="field-toggle formula-toggle">
+          <p-checkbox
+            binary="true"
+            [ngModel]="current.applyWholeSaleRateFormula"
+            (ngModelChange)="updateSetting({ applyWholeSaleRateFormula: $event })">
+          </p-checkbox>
+          <span>Apply wholesale rate formula</span>
+        </label>
+
+        <div class="form-grid">
+          <label>
+            <span>Company Short Name</span>
+            <input
+              pInputText
+              [ngModel]="current.companyShortName"
+              (ngModelChange)="updateSetting({ companyShortName: $event })"
+              maxlength="30" />
+          </label>
+
+          <label>
+            <span>Prefix</span>
+            <input
+              pInputText
+              [ngModel]="current.wholeSaleRatePrefix || ''"
+              (ngModelChange)="updateSetting({ wholeSaleRatePrefix: $event })"
+              maxlength="20" />
+          </label>
+
+          <label>
+            <span>Add Amount</span>
+            <input
+              pInputText
+              type="number"
+              [ngModel]="current.wholeSaleRateAddAmount"
+              (ngModelChange)="updateSetting({ wholeSaleRateAddAmount: +$event || 0 })" />
+          </label>
+
+          <label>
+            <span>Postfix</span>
+            <input
+              pInputText
+              [ngModel]="current.wholeSaleRatePostfix || ''"
+              (ngModelChange)="updateSetting({ wholeSaleRatePostfix: $event })"
+              maxlength="20" />
+          </label>
+        </div>
+      </section>
+
+      <section class="preview-panel">
+        <div class="section-title">
+          <i class="pi pi-print"></i>
+          <div>
+            <span>Live Preview</span>
+            <small>The reference sticker size will remain fixed.</small>
+          </div>
+        </div>
+
+        <div
+          class="app-sticker draggable-preview"
+          (mousemove)="onPreviewMove($event)"
+          (mouseup)="stopDrag()"
+          (mouseleave)="stopDrag()">
+          <ng-container *ngFor="let field of current.fieldSettings">
+            <div
+              *ngIf="field.fieldKey !== 'barcode'"
+              class="draggable-field"
+              [class.slot-hidden]="!field.isVisible"
+              [class.company-code]="field.fieldKey === 'companyShortName'"
+              [class.dragging]="activeDrag?.key === field.fieldKey"
+              [ngStyle]="fieldStyle(field)"
+              (mousedown)="startDrag($event, field)">
+              {{ fieldValue(field.fieldKey) }}
+            </div>
+
+            <div
+              *ngIf="field.fieldKey === 'barcode'"
+              class="draggable-field barcode-field"
+              [class.slot-hidden]="!field.isVisible"
+              [class.dragging]="activeDrag?.key === field.fieldKey"
+              [ngStyle]="fieldStyle(field)"
+              (mousedown)="startDrag($event, field)">
+              <div class="fake-barcode"></div>
+            </div>
+          </ng-container>
+        </div>
+        <div class="drag-hint">
+          <i class="pi pi-arrows-alt"></i>
+          <span>Drag any field inside the preview to adjust its position.</span>
+        </div>
+      </section>
+    </div>
+
+    <div class="field-position-panel">
+      <div class="section-title">
+          <i class="pi pi-th-large"></i>
+          <div>
+            <span>Field Position</span>
+          <small>Fine tune X, Y, width, height and font size manually.</small>
+        </div>
+      </div>
+
+      <div class="position-grid">
+        <div class="position-row" *ngFor="let field of current.fieldSettings">
+          <strong>{{ field.label }}</strong>
+          <label>X <input pInputText type="number" [ngModel]="field.x" (ngModelChange)="updateField(field.fieldKey, { x: +$event || 0 })" /></label>
+          <label>Y <input pInputText type="number" [ngModel]="field.y" (ngModelChange)="updateField(field.fieldKey, { y: +$event || 0 })" /></label>
+          <label>W <input pInputText type="number" [ngModel]="field.width" (ngModelChange)="updateField(field.fieldKey, { width: +$event || 10 })" /></label>
+          <label>H <input pInputText type="number" [ngModel]="field.height" (ngModelChange)="updateField(field.fieldKey, { height: +$event || 10 })" /></label>
+          <label>Font <input pInputText type="number" [ngModel]="field.fontSize" (ngModelChange)="updateField(field.fieldKey, { fontSize: +$event || 12 })" /></label>
+        </div>
+      </div>
+    </div>
+  </p-card>
+</div>

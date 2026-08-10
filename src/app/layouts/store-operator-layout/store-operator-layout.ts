@@ -12,4 +12,16 @@ import { Header } from '../../components/header/header';
 })
 export class StoreOperatorLayout {
 
+  isSidebarOpen = true;
+
+  handleToggle() {
+    this.isSidebarOpen = !this.isSidebarOpen;
+    this.saveSidebarState();
+  }
+
+  private saveSidebarState(): void {
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem('easyone-sidebar-open', String(this.isSidebarOpen));
+    }
+  }
 }

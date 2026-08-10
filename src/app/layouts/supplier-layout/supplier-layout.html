@@ -2,7 +2,7 @@
         <div class="layout">
         <app-header (toggleSidebar)="handleToggle()"></app-header>
         <div class="main">
-           <app-nav [isOpen]="isSidebarOpen" style="margin-top:15px;"></app-nav>
+           <app-nav class="layout-nav" [isOpen]="isSidebarOpen"></app-nav>
             <div class="content">
             <router-outlet></router-outlet>
             </div>

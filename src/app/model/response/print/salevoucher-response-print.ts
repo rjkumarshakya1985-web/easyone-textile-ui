@@ -2,7 +2,8 @@ export interface SaleVoucherPrintResponse {
   saleVoucherPrint: SaleVoucherPrint;
   supplierPrint:SupplierPrint;
   billingDetailPrints:BillingDetailPrint[];
-  stickerPrints:StickerPrint[]
+  stickerPrints:StickerPrint[];
+  stickerSetting?: StickerPrintSetting;
 }
 
 export interface SaleVoucherPrint {
@@ -52,6 +53,37 @@ export interface StickerPrint {
   name?: string | null;
   productName:string;
   printDateString:string;
+  stickerSetting?: StickerPrintSetting;
 }
 
+export interface StickerPrintSetting {
+  showSupplierCode: boolean;
+  showCompanyShortName: boolean;
+  showWholeSaleRate: boolean;
+  showProductName: boolean;
+  showPrintDate: boolean;
+  showRetailRate: boolean;
+  showBarcode: boolean;
+  showBarcodeText: boolean;
+  companyShortName: string;
+  applyWholeSaleRateFormula: boolean;
+  wholeSaleRatePrefix?: string | null;
+  wholeSaleRatePostfix?: string | null;
+  wholeSaleRateAddAmount: number;
+  fieldSettings: StickerPrintFieldSetting[];
+}
+
+export interface StickerPrintFieldSetting {
+  fieldKey: string;
+  label: string;
+  isVisible: boolean;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  fontSize: number;
+  fontWeight: string;
+  textAlign: 'left' | 'center' | 'right' | string;
+  sortOrder: number;
+}
 

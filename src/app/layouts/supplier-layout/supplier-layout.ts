@@ -15,6 +15,13 @@ export class SupplierLayout {
 
   handleToggle() {
     this.isSidebarOpen = !this.isSidebarOpen;
+    this.saveSidebarState();
  }
+
+  private saveSidebarState(): void {
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem('easyone-sidebar-open', String(this.isSidebarOpen));
+    }
+  }
  
 }
