@@ -14,6 +14,7 @@ export const routes: Routes = [
   {
     path: 'supplier',
     canActivate: [authGuard],
+    canActivateChild: [authGuard],
     loadComponent: () =>
       import('./layouts/supplier-layout/supplier-layout').then(m => m.SupplierLayout),
     loadChildren: () =>

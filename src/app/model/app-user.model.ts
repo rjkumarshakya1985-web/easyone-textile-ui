@@ -6,6 +6,7 @@ export interface AppUser
     userName:string;
     name:string;
     isDeveloper:boolean;
+    mustChangePassword:boolean;
     isLoginFailed:boolean;
     message:string;
 }

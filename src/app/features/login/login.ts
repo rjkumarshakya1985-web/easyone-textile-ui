@@ -87,6 +87,10 @@ export class Login {
        
        switch (user.roleName) {
         case 'Supplier':
+          if (user.mustChangePassword) {
+            this.router.navigate(['/supplier/change-password']);
+            break;
+          }
           this.router.navigate(['/supplier']);
           break;
         case 'SuperAdmin':

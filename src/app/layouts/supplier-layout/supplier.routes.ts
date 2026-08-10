@@ -3,6 +3,11 @@ import { authGuard } from '../../core/guards/auth.guard';
 
 export const SUPPLIER_ROUTES: Routes = [
   {
+    path: 'change-password',
+    loadComponent: () =>
+      import('./pages/force-change-password/force-change-password').then(c => c.ForceChangePassword)
+  },
+  {
     path: 'dashboard',
     loadComponent: () =>
       import('./pages/dashboard/dashboard').then(c => c.Dashboard)
