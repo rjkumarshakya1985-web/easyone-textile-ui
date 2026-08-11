@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, signal, AfterViewInit,  ViewChild,  ElementRef, OnDestroy } from '@angular/core';
-import { BrowserMultiFormatReader, IScannerControls } from '@zxing/browser';
 import { MenuItem, MessageService } from 'primeng/api';
 import { ParcelService } from '../../../../core/services/parcel-service';
 import { ParcelView } from '../../../../model/views/parcel-view.model';
@@ -41,8 +40,8 @@ export class ParcelScanners implements OnInit , AfterViewInit, OnDestroy {
   scannerVisible = signal(false);
   scannerStarting = signal(false);
   scannerError = signal('');
-  private scannerControls?: IScannerControls;
-  private scannerReader = new BrowserMultiFormatReader();
+  private scannerStream?: MediaStream;
+  private scannerFrameId?: number;
   private scannerHandled = false;
 
   breadcrumbItems: MenuItem[] = [
@@ -97,22 +96,13 @@ private focusParcelInput(): void {
           throw new Error('Camera preview is not ready.');
         }
 
-        this.scannerControls = await this.scannerReader.decodeFromVideoDevice(
-          undefined,
-          this.scannerVideo.nativeElement,
-          result => {
-            if (!result || this.scannerHandled) {
-              return;
-            }
+        if (!this.canUseNativeBarcodeDetector()) {
+          throw new Error('Barcode detector is not supported.');
+        }
 
-            this.scannerHandled = true;
-            const scannedText = result.getText();
-            this.stopScanner();
-            this.handleScannedBarcode(scannedText);
-          }
-        );
+        await this.startNativeScanner(this.scannerVideo.nativeElement);
       } catch {
-        this.scannerError.set('Camera open nahi ho pa raha hai. Permission allow karke dobara try karein.');
+        this.scannerError.set('Is browser me camera barcode scanner support nahi ho raha hai. Parcel number manually enter karein.');
         this.stopScanner(false);
       } finally {
         this.scannerStarting.set(false);
@@ -121,8 +111,13 @@ private focusParcelInput(): void {
   }
 
   stopScanner(hide = true): void {
-    this.scannerControls?.stop();
-    this.scannerControls = undefined;
+    if (this.scannerFrameId) {
+      cancelAnimationFrame(this.scannerFrameId);
+      this.scannerFrameId = undefined;
+    }
+
+    this.scannerStream?.getTracks().forEach(track => track.stop());
+    this.scannerStream = undefined;
 
     if (this.scannerVideo?.nativeElement?.srcObject) {
       const stream = this.scannerVideo.nativeElement.srcObject as MediaStream;
@@ -151,6 +146,56 @@ private focusParcelInput(): void {
 
     this.parcelNumber.set(scannedNumber);
     this.onEnter();
+  }
+
+  private canUseNativeBarcodeDetector(): boolean {
+    return typeof window !== 'undefined' && 'BarcodeDetector' in window;
+  }
+
+  private async startNativeScanner(video: HTMLVideoElement): Promise<void> {
+    const barcodeWindow = window as unknown as {
+      BarcodeDetector: new (options: { formats: string[] }) => {
+        detect(source: HTMLVideoElement): Promise<Array<{ rawValue: string }>>;
+      };
+    };
+
+    const detector = new barcodeWindow.BarcodeDetector({
+      formats: ['code_128', 'code_39', 'code_93', 'itf', 'codabar', 'ean_13', 'ean_8', 'upc_a', 'upc_e']
+    });
+
+    this.scannerStream = await navigator.mediaDevices.getUserMedia({
+      video: {
+        facingMode: { ideal: 'environment' },
+        width: { ideal: 1280 },
+        height: { ideal: 720 }
+      }
+    });
+
+    video.srcObject = this.scannerStream;
+    await video.play();
+
+    const scan = async () => {
+      if (!this.scannerVisible() || this.scannerHandled) {
+        return;
+      }
+
+      try {
+        const results = await detector.detect(video);
+        const value = results[0]?.rawValue;
+        if (value) {
+          this.scannerHandled = true;
+          this.stopScanner();
+          this.handleScannedBarcode(value);
+          return;
+        }
+      } catch {
+        // Keep scanning; camera frames can fail briefly while focusing.
+      }
+
+      this.scannerFrameId = requestAnimationFrame(scan);
+    };
+
+    this.scannerFrameId = requestAnimationFrame(scan);
   }
 
     onEnter() {
