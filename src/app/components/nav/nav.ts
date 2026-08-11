@@ -384,7 +384,6 @@ export class Nav implements OnInit, OnDestroy {
       return menuItems.reduce<MenuItem[]>((result, item) => {
         const key = (item as any).key as string;
         const isDeveloperOnly = key === 'admin.menu-access' ||
-          key === 'admin.sticker-print-setting' ||
           key === 'admin.salevoucher-print-detail-setting';
         const isEnabled = isDeveloperOnly && isDeveloper
           ? true

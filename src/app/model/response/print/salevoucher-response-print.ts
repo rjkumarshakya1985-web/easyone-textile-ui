@@ -70,6 +70,17 @@ export interface StickerPrintSetting {
   wholeSaleRatePrefix?: string | null;
   wholeSaleRatePostfix?: string | null;
   wholeSaleRateAddAmount: number;
+  applyWholeSaleRateCode: boolean;
+  wholeSaleRateCode0: string;
+  wholeSaleRateCode1: string;
+  wholeSaleRateCode2: string;
+  wholeSaleRateCode3: string;
+  wholeSaleRateCode4: string;
+  wholeSaleRateCode5: string;
+  wholeSaleRateCode6: string;
+  wholeSaleRateCode7: string;
+  wholeSaleRateCode8: string;
+  wholeSaleRateCode9: string;
   fieldSettings: StickerPrintFieldSetting[];
 }
 

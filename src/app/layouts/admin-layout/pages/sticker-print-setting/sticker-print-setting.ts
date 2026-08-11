@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
 import { MenuItem, MessageService } from 'primeng/api';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { ButtonModule } from 'primeng/button';
@@ -10,7 +9,6 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { InputTextModule } from 'primeng/inputtext';
 import { ToolbarModule } from 'primeng/toolbar';
 import { PrintService } from '../../../../core/services/print-service';
-import { LocalStorageService } from '../../../../core/services/local-storage.service';
 import { LoaderService } from '../../../../core/services/loader.service';
 import { StickerPrintFieldSetting, StickerPrintSetting } from '../../../../model/response/print/salevoucher-response-print';
 
@@ -50,22 +48,26 @@ export class StickerPrintSettingPage implements OnInit {
     { key: 'barcodeText', legacyKey: 'showBarcodeText', label: 'Barcode Text' }
   ] as const;
 
+  readonly rateCodeOptions = [
+    { digit: 0, key: 'wholeSaleRateCode0' },
+    { digit: 1, key: 'wholeSaleRateCode1' },
+    { digit: 2, key: 'wholeSaleRateCode2' },
+    { digit: 3, key: 'wholeSaleRateCode3' },
+    { digit: 4, key: 'wholeSaleRateCode4' },
+    { digit: 5, key: 'wholeSaleRateCode5' },
+    { digit: 6, key: 'wholeSaleRateCode6' },
+    { digit: 7, key: 'wholeSaleRateCode7' },
+    { digit: 8, key: 'wholeSaleRateCode8' },
+    { digit: 9, key: 'wholeSaleRateCode9' }
+  ] as const;
+
   constructor(
     private printService: PrintService,
-    private storage: LocalStorageService,
-    private router: Router,
     private loader: LoaderService,
     private messageService: MessageService
   ) {}
 
   ngOnInit(): void {
-    const user = this.storage.getUser();
-
-    if (!user?.isDeveloper || user.roleName !== 'SuperAdmin') {
-      this.router.navigate(['/admin/dashboard']);
-      return;
-    }
-
     this.load();
   }
 
@@ -89,6 +91,15 @@ export class StickerPrintSettingPage implements OnInit {
   save(): void {
     const current = this.setting();
     if (!current) {
+      return;
+    }
+
+    if (current.applyWholeSaleRateCode && !this.isRateCodeValid(current)) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Wholesale Rate Code',
+        detail: 'Please enter code for every digit from 0 to 9.'
+      });
       return;
     }
 
@@ -150,7 +161,22 @@ export class StickerPrintSettingPage implements OnInit {
       ? 5105 + Number(current.wholeSaleRateAddAmount || 0)
       : 5105;
 
-    return `${current.wholeSaleRatePrefix || ''}${baseRate}${current.wholeSaleRatePostfix || ''}`;
+    const formattedRate = `${current.wholeSaleRatePrefix || ''}${baseRate}${current.wholeSaleRatePostfix || ''}`;
+    return current.applyWholeSaleRateCode ? this.applyRateCode(formattedRate, current) : formattedRate;
+  }
+
+  rateCodeValue(key: keyof StickerPrintSetting): string {
+    const value = this.setting()?.[key];
+    return typeof value === 'string' ? value : '';
+  }
+
+  updateRateCode(key: keyof StickerPrintSetting, value: string): void {
+    this.updateSetting({ [key]: value.trim().toUpperCase() } as Partial<StickerPrintSetting>);
+  }
+
+  sampleRateCode(): string {
+    const current = this.setting();
+    return current ? this.applyRateCode('9505', current) : 'JFAF';
   }
 
   fieldByKey(key: string): StickerPrintFieldSetting | undefined {
@@ -273,6 +299,17 @@ export class StickerPrintSettingPage implements OnInit {
 
     return {
       ...setting,
+      applyWholeSaleRateCode: setting.applyWholeSaleRateCode ?? false,
+      wholeSaleRateCode0: setting.wholeSaleRateCode0 || 'A',
+      wholeSaleRateCode1: setting.wholeSaleRateCode1 || 'B',
+      wholeSaleRateCode2: setting.wholeSaleRateCode2 || 'C',
+      wholeSaleRateCode3: setting.wholeSaleRateCode3 || 'D',
+      wholeSaleRateCode4: setting.wholeSaleRateCode4 || 'E',
+      wholeSaleRateCode5: setting.wholeSaleRateCode5 || 'F',
+      wholeSaleRateCode6: setting.wholeSaleRateCode6 || 'G',
+      wholeSaleRateCode7: setting.wholeSaleRateCode7 || 'H',
+      wholeSaleRateCode8: setting.wholeSaleRateCode8 || 'I',
+      wholeSaleRateCode9: setting.wholeSaleRateCode9 || 'J',
       fieldSettings
     };
   }
@@ -292,6 +329,17 @@ export class StickerPrintSettingPage implements OnInit {
       wholeSaleRatePrefix: '5',
       wholeSaleRatePostfix: null,
       wholeSaleRateAddAmount: 500,
+      applyWholeSaleRateCode: false,
+      wholeSaleRateCode0: 'A',
+      wholeSaleRateCode1: 'B',
+      wholeSaleRateCode2: 'C',
+      wholeSaleRateCode3: 'D',
+      wholeSaleRateCode4: 'E',
+      wholeSaleRateCode5: 'F',
+      wholeSaleRateCode6: 'G',
+      wholeSaleRateCode7: 'H',
+      wholeSaleRateCode8: 'I',
+      wholeSaleRateCode9: 'J',
       fieldSettings: this.defaultFields()
     };
   }
@@ -327,5 +375,29 @@ export class StickerPrintSettingPage implements OnInit {
 
   private clamp(value: number, min: number, max: number): number {
     return Math.min(Math.max(Math.round(value), min), max);
+  }
+
+  private isRateCodeValid(setting: StickerPrintSetting): boolean {
+    return this.rateCodeOptions.every(option => {
+      const value = setting[option.key as keyof StickerPrintSetting];
+      return typeof value === 'string' && !!value.trim();
+    });
+  }
+
+  private applyRateCode(value: string, setting: StickerPrintSetting): string {
+    const map: Record<string, string> = {
+      '0': setting.wholeSaleRateCode0,
+      '1': setting.wholeSaleRateCode1,
+      '2': setting.wholeSaleRateCode2,
+      '3': setting.wholeSaleRateCode3,
+      '4': setting.wholeSaleRateCode4,
+      '5': setting.wholeSaleRateCode5,
+      '6': setting.wholeSaleRateCode6,
+      '7': setting.wholeSaleRateCode7,
+      '8': setting.wholeSaleRateCode8,
+      '9': setting.wholeSaleRateCode9
+    };
+
+    return value.replace(/\d/g, digit => map[digit] || digit);
   }
 }

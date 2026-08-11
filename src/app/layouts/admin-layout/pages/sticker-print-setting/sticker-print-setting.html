@@ -145,6 +145,46 @@
       </section>
     </div>
 
+    <section class="rate-code-panel">
+      <div class="section-title">
+        <i class="pi pi-key"></i>
+        <div>
+          <span>Wholesale Rate Code</span>
+          <small>Convert each wholesale rate digit into a configurable alphabet code.</small>
+        </div>
+      </div>
+
+      <div class="rate-code-content">
+        <label class="field-toggle rate-code-toggle">
+          <p-checkbox
+            binary="true"
+            [ngModel]="current.applyWholeSaleRateCode"
+            (ngModelChange)="updateSetting({ applyWholeSaleRateCode: $event })">
+          </p-checkbox>
+          <span>Apply wholesale rate alphabet code</span>
+        </label>
+
+        <div class="rate-code-preview">
+          <span>Example</span>
+          <strong>9505 → {{ sampleRateCode() }}</strong>
+        </div>
+      </div>
+
+      <div class="rate-code-grid">
+        <label
+          class="rate-code-input"
+          *ngFor="let option of rateCodeOptions"
+          [class.required-missing]="current.applyWholeSaleRateCode && !rateCodeValue(option.key)">
+          <span>{{ option.digit }}</span>
+          <input
+            pInputText
+            [ngModel]="rateCodeValue(option.key)"
+            (ngModelChange)="updateRateCode(option.key, $event)"
+            maxlength="10" />
+        </label>
+      </div>
+    </section>
+
     <div class="field-position-panel">
       <div class="section-title">
           <i class="pi pi-th-large"></i>
