@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, signal, AfterViewInit,  ViewChild,  ElementRef } from '@angular/core';
+import { Component, OnInit, signal, AfterViewInit,  ViewChild,  ElementRef, OnDestroy } from '@angular/core';
+import { BrowserMultiFormatReader, IScannerControls } from '@zxing/browser';
 import { MenuItem, MessageService } from 'primeng/api';
 import { ParcelService } from '../../../../core/services/parcel-service';
 import { ParcelView } from '../../../../model/views/parcel-view.model';
@@ -27,14 +28,22 @@ import { ParcelStatus } from '../../../../core/enums/enum';
   templateUrl: './parcel-scanners.html',
   styleUrl: './parcel-scanners.css',
 })
-export class ParcelScanners implements OnInit , AfterViewInit {
+export class ParcelScanners implements OnInit , AfterViewInit, OnDestroy {
 @ViewChild('parcelInput')
   parcelInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('scannerVideo')
+  scannerVideo?: ElementRef<HTMLVideoElement>;
   parcelEnum:ParcelStatus = ParcelStatus.InTransit;
   parcelNumber = signal<number | null>(null);
   parcels = signal<ParcelView[]>([]);
   selectedParcel = signal<ParcelView[]>([]);
   isLoading = signal(false);
+  scannerVisible = signal(false);
+  scannerStarting = signal(false);
+  scannerError = signal('');
+  private scannerControls?: IScannerControls;
+  private scannerReader = new BrowserMultiFormatReader();
+  private scannerHandled = false;
 
   breadcrumbItems: MenuItem[] = [
     { label: 'Dashboard', routerLink: '/supplier' },
@@ -61,11 +70,89 @@ export class ParcelScanners implements OnInit , AfterViewInit {
 ngAfterViewInit(): void {
   this.focusParcelInput();
 }
+
+ngOnDestroy(): void {
+  this.stopScanner();
+}
+
 private focusParcelInput(): void {
   setTimeout(() => {
     this.parcelInput?.nativeElement.focus();
   }, 0);
 }
+
+  async startScanner(): Promise<void> {
+    if (this.scannerStarting() || this.scannerVisible()) {
+      return;
+    }
+
+    this.scannerError.set('');
+    this.scannerHandled = false;
+    this.scannerVisible.set(true);
+    this.scannerStarting.set(true);
+
+    setTimeout(async () => {
+      try {
+        if (!this.scannerVideo?.nativeElement) {
+          throw new Error('Camera preview is not ready.');
+        }
+
+        this.scannerControls = await this.scannerReader.decodeFromVideoDevice(
+          undefined,
+          this.scannerVideo.nativeElement,
+          result => {
+            if (!result || this.scannerHandled) {
+              return;
+            }
+
+            this.scannerHandled = true;
+            const scannedText = result.getText();
+            this.stopScanner();
+            this.handleScannedBarcode(scannedText);
+          }
+        );
+      } catch {
+        this.scannerError.set('Camera open nahi ho pa raha hai. Permission allow karke dobara try karein.');
+        this.stopScanner(false);
+      } finally {
+        this.scannerStarting.set(false);
+      }
+    }, 0);
+  }
+
+  stopScanner(hide = true): void {
+    this.scannerControls?.stop();
+    this.scannerControls = undefined;
+
+    if (this.scannerVideo?.nativeElement?.srcObject) {
+      const stream = this.scannerVideo.nativeElement.srcObject as MediaStream;
+      stream.getTracks().forEach(track => track.stop());
+      this.scannerVideo.nativeElement.srcObject = null;
+    }
+
+    if (hide) {
+      this.scannerVisible.set(false);
+      this.scannerStarting.set(false);
+    }
+  }
+
+  private handleScannedBarcode(value: string): void {
+    const scannedNumber = Number(value.replace(/\D/g, ''));
+
+    if (!scannedNumber) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Invalid Barcode',
+        detail: 'Barcode me valid parcel number nahi mila.'
+      });
+      this.focusParcelInput();
+      return;
+    }
+
+    this.parcelNumber.set(scannedNumber);
+    this.onEnter();
+  }
+
     onEnter() {
       const scannedNumber = this.parcelNumber();
       if (!scannedNumber || this.isLoading()) return;

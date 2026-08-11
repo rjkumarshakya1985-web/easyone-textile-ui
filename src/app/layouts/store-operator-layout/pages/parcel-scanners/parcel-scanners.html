@@ -6,11 +6,22 @@
   tooltipPosition="right"></i>
       <label>Parcel Number</label>
 
-      <input  #parcelInput
-        pInputText
-        [ngModel]="parcelNumber()"
-        (ngModelChange)="parcelNumber.set($event)"
-        (keyup.enter)="onEnter()" />
+      <div class="scanner-input-row">
+        <input  #parcelInput
+          pInputText
+          [ngModel]="parcelNumber()"
+          (ngModelChange)="parcelNumber.set($event)"
+          (keyup.enter)="onEnter()" />
+
+        <button
+          pButton
+          type="button"
+          icon="pi pi-camera"
+          label="Scan"
+          class="barcode-scan-btn"
+          (click)="startScanner()">
+        </button>
+      </div>
 
 
     </div>
@@ -19,6 +30,27 @@
     <p-button [label]="actionButtonLabel" class="p-button-sm mr-2"  variant="text" [raised]="true" (click)="parcelReceived()"/>
   </div>
 </p-toolbar>
+
+<div class="scanner-overlay" *ngIf="scannerVisible()">
+  <div class="scanner-panel">
+    <div class="scanner-header">
+      <strong>Scan Parcel Barcode</strong>
+      <button pButton type="button" icon="pi pi-times" class="scanner-close-btn" (click)="stopScanner()"></button>
+    </div>
+
+    <div class="scanner-preview">
+      <video #scannerVideo autoplay muted playsinline></video>
+      <div class="scanner-frame"></div>
+      <div class="scanner-loading" *ngIf="scannerStarting()">
+        <i class="pi pi-spin pi-spinner"></i>
+        <span>Opening camera...</span>
+      </div>
+    </div>
+
+    <p class="scanner-error" *ngIf="scannerError()">{{ scannerError() }}</p>
+    <button pButton type="button" label="Cancel" icon="pi pi-times" class="scanner-cancel-btn" (click)="stopScanner()"></button>
+  </div>
+</div>
 
 <div class="mobile-parcel-list">
   <article class="mobile-parcel-card" *ngFor="let p of parcels(); let i = index">
