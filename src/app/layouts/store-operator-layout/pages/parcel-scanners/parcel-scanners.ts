@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit, signal, AfterViewInit,  ViewChild,  ElementRef } from '@angular/core';
 import { MenuItem, MessageService } from 'primeng/api';
 import { ParcelService } from '../../../../core/services/parcel-service';
@@ -15,6 +16,7 @@ import { ParcelStatus } from '../../../../core/enums/enum';
   selector: 'app-parcel-scanners',
   standalone: true,
   imports: [
+    CommonModule,
     FormsModule,
     TableModule,
     ToolbarModule,

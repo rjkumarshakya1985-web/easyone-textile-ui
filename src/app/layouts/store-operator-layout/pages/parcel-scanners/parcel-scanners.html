@@ -20,7 +20,59 @@
   </div>
 </p-toolbar>
 
-<div class="card">
+<div class="mobile-parcel-list">
+  <article class="mobile-parcel-card" *ngFor="let p of parcels(); let i = index">
+    <div class="mobile-card-head">
+      <div>
+        <span class="mobile-label">Parcel No.</span>
+        <strong>{{ p.saleVoucherId }}</strong>
+      </div>
+      <span class="mobile-status">{{ p.status }}</span>
+    </div>
+
+    <div class="mobile-card-grid">
+      <div>
+        <span class="mobile-label">Transport</span>
+        <strong>{{ p.transporterName || '-' }}</strong>
+      </div>
+      <div>
+        <span class="mobile-label">Supplier</span>
+        <strong>{{ p.supplierName || '-' }}</strong>
+      </div>
+      <div>
+        <span class="mobile-label">Supplier Bill No</span>
+        <strong>{{ p.supplierBillNumber || '-' }}</strong>
+      </div>
+      <div>
+        <span class="mobile-label">Qty</span>
+        <strong>{{ p.quantity }}</strong>
+      </div>
+    </div>
+
+    <div class="mobile-products">
+      <span class="mobile-label">Products</span>
+      <strong>{{ p.products || '-' }}</strong>
+    </div>
+
+    <div class="mobile-card-actions">
+      <button
+        pButton
+        type="button"
+        icon="pi pi-trash"
+        label="Remove"
+        class="mobile-remove-btn"
+        (click)="remove(p.saleVoucherId)">
+      </button>
+    </div>
+  </article>
+
+  <div class="mobile-empty-state" *ngIf="!parcels().length && !isLoading()">
+    <i class="pi pi-inbox"></i>
+    <span>No records found</span>
+  </div>
+</div>
+
+<div class="card parcel-table-card">
   <p-table
     [value]="parcels()"
     [loading]="isLoading()"
