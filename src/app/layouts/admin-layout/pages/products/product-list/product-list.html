@@ -12,12 +12,34 @@
     <div class="d-flex justify-content-between mb-3 list-controls">
 
       <div class="flex-grow-1" style="max-width:300px">
-        <div class="app-search-field">
-          <i class="pi pi-search" aria-hidden="true"></i>
-          <p-floatlabel variant="on">
-            <input pInputText id="on_label" class="app-search-input" [formControl]="searchControl" autocomplete="off" />
-            <label for="on_label">Search keyword</label>
-          </p-floatlabel>
+        <div class="mobile-search-row">
+          <div class="app-search-field">
+            <i class="pi pi-search" aria-hidden="true"></i>
+            <p-floatlabel variant="on">
+              <input pInputText id="on_label" class="app-search-input" [formControl]="searchControl" autocomplete="off" />
+              <label for="on_label">Search keyword</label>
+            </p-floatlabel>
+          </div>
+          <button pButton type="button" class="mobile-search-btn" icon="pi pi-search" label="Search" (click)="applySearch()"></button>
+        </div>
+
+        <div class="mobile-status-filters">
+          <button
+            pButton
+            type="button"
+            icon="pi pi-check-circle"
+            label="Active"
+            class="status-chip"
+            [class.selected]="statusFilter === 'active'"
+            (click)="setStatusFilter(statusFilter === 'active' ? 'all' : 'active')"></button>
+          <button
+            pButton
+            type="button"
+            icon="pi pi-ban"
+            label="Deactive"
+            class="status-chip"
+            [class.selected]="statusFilter === 'inactive'"
+            (click)="setStatusFilter(statusFilter === 'inactive' ? 'all' : 'inactive')"></button>
         </div>
       </div>
 
@@ -42,6 +64,85 @@
         </div>
       </ng-container>
 
+    </div>
+
+    <div class="mobile-product-list">
+      <article class="mobile-product-card" *ngFor="let row of tblResult().result" [class.inactive]="!row.isActive">
+        <div class="mobile-card-top">
+          <div>
+            <span class="mobile-label">Supplier Name</span>
+            <strong>{{ row.supplierName }}</strong>
+          </div>
+          <button
+            pButton
+            type="button"
+            class="mobile-expand-btn"
+            [icon]="isExpanded(row) ? 'pi pi-chevron-up' : 'pi pi-chevron-down'"
+            (click)="toggleMobileCard(row)">
+          </button>
+        </div>
+
+        <div class="mobile-card-main">
+          <div>
+            <span class="mobile-label">Category - Product Name</span>
+            <strong>{{ row.stockGroupName || '-' }} - {{ row.name }}</strong>
+          </div>
+          <div>
+            <span class="mobile-label">Wholesale Rate</span>
+            <strong [class.manual-rate-mobile]="row.manualWholeSaleRate != null">
+              {{ row.wholeSaleRate | currency:'INR':'symbol':'1.2-2' }}
+            </strong>
+          </div>
+        </div>
+
+        <ng-container *ngIf="isExpanded(row)">
+            <div class="mobile-card-grid">
+              <div>
+                <span class="mobile-label">Barcode</span>
+                <strong>{{ row.barcode || '-' }}</strong>
+              </div>
+              <div>
+                <span class="mobile-label">Status</span>
+                <span class="mobile-status inline" [class.inactive]="!row.isActive">
+                  {{ row.isActive ? 'Active' : 'Deactive' }}
+                </span>
+              </div>
+              <div>
+                <span class="mobile-label">Purchase Rate</span>
+                <strong>{{ row.purchaseRate | currency:'INR':'symbol':'1.2-2' }}</strong>
+              </div>
+              <div>
+                <span class="mobile-label">Retail Rate</span>
+                <strong>{{ row.retailPrice | currency:'INR':'symbol':'1.2-2' }}</strong>
+              </div>
+              <div>
+                <span class="mobile-label">MRP</span>
+                <strong class="mrp-value">
+                  {{ row.mrpRate | currency:'INR':'symbol':'1.2-2' }}
+                  <i class="pi pi-calculator"></i>
+                </strong>
+              </div>
+            </div>
+
+            <div class="mobile-card-actions">
+              <button pButton type="button" icon="pi pi-eye" label="View" class="card-action view" (click)="goToShowDetail(row.id)"></button>
+              <button pButton type="button" icon="pi pi-pencil" label="Edit" class="card-action edit" (click)="goToEditProduct(row.id)" *ngIf="row.isActive"></button>
+              <button
+                pButton
+                type="button"
+                [icon]="row.isActive ? 'pi pi-ban' : 'pi pi-check-circle'"
+                [label]="row.isActive ? 'Deactivate' : 'Activate'"
+                class="card-action status"
+                [class.activate]="!row.isActive"
+                (click)="toggleActive(row)"></button>
+            </div>
+        </ng-container>
+      </article>
+
+      <div class="mobile-empty-state" *ngIf="!tblResult().result.length">
+        <i class="pi pi-inbox"></i>
+        <span>No records found</span>
+      </div>
     </div>
 
     <!-- TABLE -->

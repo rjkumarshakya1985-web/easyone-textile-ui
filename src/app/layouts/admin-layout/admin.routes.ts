@@ -105,6 +105,13 @@ export const ADMIN_ROUTES: Routes = [
       import('./pages/sticker-print-setting/sticker-print-setting')
         .then(c => c.StickerPrintSettingPage)
   },
+  {
+    path: 'salevoucher-print-detail-setting',
+    canActivate: [roleGuard('SuperAdmin')],
+    loadComponent: () =>
+      import('./pages/salevoucher-print-detail-setting/salevoucher-print-detail-setting')
+        .then(c => c.SaleVoucherPrintDetailSettingPage)
+  },
 
   // =========================
   // Suppliers

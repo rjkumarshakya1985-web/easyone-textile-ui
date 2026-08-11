@@ -87,3 +87,12 @@ export interface StickerPrintFieldSetting {
   sortOrder: number;
 }
 
+export interface SaleVoucherPrintDetailSetting {
+  id: number;
+  companyName: string;
+  address1: string;
+  address2?: string | null;
+  description?: string | null;
+  gstIn?: string | null;
+}
+

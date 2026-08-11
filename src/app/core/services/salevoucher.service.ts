@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { API_CONFIG } from '../../config/api.config';
 import { TableResult } from '../../model/table-result';
 import { TableDataRequest } from '../../model/request/table-datafilter-request.model';
-import { SaleVoucherTableResponse } from '../../model/response/salevouchers/salevoucher-table-response.model';
+import { SaleVoucherMobileProductResponse, SaleVoucherMobileResponse, SaleVoucherTableResponse } from '../../model/response/salevouchers/salevoucher-table-response.model';
 import { SaleVoucherRequest } from '../../model/request/salevouchers/salevoucher-request.model';
 import { SaleVoucherResponse } from '../../model/response/salevouchers/salevoucher-response.model';
 import { SaleVoucherStatusView } from '../../model/response/salevouchers/salevoucher-status-response.model';
@@ -32,6 +32,17 @@ export class SaleVoucherService {
       `${this.baseUrl}/salevoucher-table`,
       request
     );
+  }
+
+  getMobileList(request: TableDataRequest): Observable<TableResult<SaleVoucherMobileResponse>> {
+    return this.http.post<TableResult<SaleVoucherMobileResponse>>(
+      `${this.baseUrl}/mobile/salevoucher-list`,
+      request
+    );
+  }
+
+  getMobileProducts(id: number): Observable<SaleVoucherMobileProductResponse[]> {
+    return this.http.get<SaleVoucherMobileProductResponse[]>(`${this.baseUrl}/mobile/${id}/products`);
   }
 
    get(supplierId: number): Observable<SaleVoucherResponse> {

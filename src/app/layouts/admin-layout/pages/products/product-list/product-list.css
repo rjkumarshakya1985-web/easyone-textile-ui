@@ -51,6 +51,18 @@
   width: 100%;
 }
 
+.mobile-search-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.mobile-search-btn,
+.mobile-status-filters,
+.mobile-product-list {
+  display: none;
+}
+
 .app-search-field p-floatlabel,
 .app-search-field .p-floatlabel {
   display: block;
@@ -204,6 +216,7 @@
 
   .list-controls .flex-grow-1 {
     max-width: none !important;
+    width: 100%;
   }
 
   .pagination-panel {
@@ -212,4 +225,260 @@
     flex-wrap: nowrap;
     overflow-x: auto;
   }
+}
+
+@media (max-width: 640px) {
+  .list-controls {
+    gap: 0.6rem;
+  }
+
+  .mobile-search-row {
+    width: 100%;
+  }
+
+  .mobile-search-row .app-search-field {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .mobile-search-btn {
+    display: inline-flex;
+    flex: 0 0 auto;
+    height: 38px;
+    border: 0 !important;
+    border-radius: 7px !important;
+    color: #fff !important;
+    background: var(--primary-color) !important;
+    box-shadow: 0 8px 16px color-mix(in srgb, var(--primary-color) 24%, transparent);
+  }
+
+  .app-search-input {
+    height: 38px;
+  }
+
+  .mobile-status-filters {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin-top: 0.45rem;
+  }
+
+  .status-chip {
+    height: 28px;
+    padding: 0 0.65rem !important;
+    border: 1px solid #cfe0f2 !important;
+    border-radius: 999px !important;
+    color: #48617c !important;
+    background: #fff !important;
+    font-size: 0.74rem !important;
+    font-weight: 650 !important;
+  }
+
+  .status-chip.selected {
+    border-color: color-mix(in srgb, var(--primary-color) 36%, #cfe0f2) !important;
+    color: var(--primary-color) !important;
+    background: color-mix(in srgb, var(--primary-color) 8%, #fff) !important;
+  }
+
+  :host ::ng-deep .app-list-page .p-datatable {
+    display: none;
+  }
+
+  .mobile-product-list {
+    display: grid;
+    gap: 0.7rem;
+  }
+
+  .mobile-product-card {
+    overflow: hidden;
+    border: 1px solid #cfe0f2;
+    border-left: 3px solid var(--primary-color);
+    border-radius: 9px;
+    background: #fff;
+    box-shadow: 0 10px 22px rgba(15, 23, 42, 0.06);
+  }
+
+  .mobile-product-card.inactive {
+    border-left-color: #ef4444;
+    opacity: .92;
+  }
+
+  .mobile-card-top,
+  .mobile-card-main,
+  .mobile-card-grid,
+  .mobile-card-actions {
+    padding: 0.65rem 0.75rem;
+  }
+
+  .mobile-card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  .mobile-expand-btn {
+    flex: 0 0 auto;
+    width: 32px;
+    height: 32px;
+    padding: 0 !important;
+    border: 1px solid color-mix(in srgb, var(--primary-color) 44%, #cfe0f2) !important;
+    border-radius: 999px !important;
+    color: var(--primary-color) !important;
+    background: #ecfdf7 !important;
+  }
+
+  .mobile-card-top > div,
+  .mobile-card-main > div,
+  .mobile-card-grid > div {
+    display: grid;
+    gap: 0.12rem;
+    min-width: 0;
+  }
+
+  .mobile-card-main {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(120px, .8fr);
+    gap: 0.65rem;
+    padding-top: 0;
+    padding-bottom: 0.7rem;
+  }
+
+  .mobile-card-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.6rem 0.9rem;
+    border-top: 1px dashed #cfdceb;
+    background: #f8fbff;
+  }
+
+  .mobile-label {
+    color: #64748b;
+    font-size: 0.62rem;
+    font-weight: 750;
+    letter-spacing: .035em;
+    line-height: 1.15;
+    text-transform: uppercase;
+  }
+
+  .mobile-product-card strong {
+    overflow: hidden;
+    color: #0f172a;
+    font-size: 0.76rem;
+    font-weight: 750;
+    line-height: 1.2;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .mobile-card-top strong {
+    font-size: 0.88rem;
+  }
+
+  .mobile-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 84px;
+    height: 20px;
+    padding: 0 0.6rem;
+    border-radius: 999px;
+    color: #047857;
+    background: #d7f7e6;
+    font-size: 0.68rem;
+    font-weight: 750;
+  }
+
+  .mobile-status.inline {
+    justify-content: flex-start;
+    width: fit-content;
+    min-width: 70px;
+  }
+
+  .mobile-status.inactive {
+    color: #b91c1c;
+    background: #fee2e2;
+  }
+
+  .mrp-value {
+    color: var(--primary-color) !important;
+    text-decoration: underline;
+  }
+
+  .manual-rate-mobile {
+    color: #d97706 !important;
+  }
+
+  .mrp-value i {
+    margin-left: 0.25rem;
+    font-size: 0.72rem;
+    text-decoration: none;
+  }
+
+  .mobile-card-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.45rem;
+    background: #fff;
+  }
+
+  .card-action {
+    height: 31px;
+    padding: 0 0.65rem !important;
+    border-radius: 6px !important;
+    font-size: 0.72rem !important;
+    font-weight: 750 !important;
+    background: #fff !important;
+  }
+
+  .card-action.view {
+    border-color: #cbd5e1 !important;
+    color: #1e3a8a !important;
+  }
+
+  .card-action.edit {
+    border-color: #bcd5ff !important;
+    color: #075985 !important;
+  }
+
+  .card-action.status {
+    border-color: #fecaca !important;
+    color: #dc2626 !important;
+  }
+
+  .card-action.status.activate {
+    border-color: #bbf7d0 !important;
+    color: #047857 !important;
+  }
+
+  .mobile-empty-state {
+    display: grid;
+    place-items: center;
+    gap: 0.45rem;
+    min-height: 120px;
+    border: 1px dashed #cbd5e1;
+    border-radius: 9px;
+    color: #64748b;
+    background: #fff;
+    font-weight: 700;
+  }
+}
+
+:host-context(.app-dark-theme) .mobile-product-card,
+:host-context(.app-dark-theme) .mobile-card-actions,
+:host-context(.app-dark-theme) .status-chip,
+:host-context(.app-dark-theme) .card-action,
+:host-context(.app-dark-theme) .mobile-expand-btn,
+:host-context(.app-dark-theme) .mobile-empty-state {
+  border-color: #313942 !important;
+  background: #15181c !important;
+}
+
+:host-context(.app-dark-theme) .mobile-card-grid {
+  border-color: #313942;
+  background: #111417;
+}
+
+:host-context(.app-dark-theme) .mobile-product-card strong {
+  color: #f8fafc;
 }

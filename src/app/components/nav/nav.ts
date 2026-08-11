@@ -252,6 +252,11 @@ export class Nav implements OnInit, OnDestroy {
         label: 'Sticker Settings',
         icon: 'pi pi-fw pi-print',
         routerLink: ['/admin/sticker-print-setting']
+      },
+      {
+        label: 'Sale Voucher Print Details',
+        icon: 'pi pi-fw pi-file-edit',
+        routerLink: ['/admin/salevoucher-print-detail-setting']
       }
     ],
 
@@ -330,7 +335,8 @@ export class Nav implements OnInit, OnDestroy {
       '/admin/stocks': 'admin.stocks',
       '/admin/stock-transactions': 'admin.stock-transactions',
       '/admin/menu-access': 'admin.menu-access',
-      '/admin/sticker-print-setting': 'admin.sticker-print-setting'
+      '/admin/sticker-print-setting': 'admin.sticker-print-setting',
+      '/admin/salevoucher-print-detail-setting': 'admin.salevoucher-print-detail-setting'
     };
 
     if (typeof route === 'string' && routeKeyMap[route]) {
@@ -368,7 +374,9 @@ export class Nav implements OnInit, OnDestroy {
     const filterItems = (menuItems: MenuItem[]): MenuItem[] => {
       return menuItems.reduce<MenuItem[]>((result, item) => {
         const key = (item as any).key as string;
-        const isDeveloperOnly = key === 'admin.menu-access' || key === 'admin.sticker-print-setting';
+        const isDeveloperOnly = key === 'admin.menu-access' ||
+          key === 'admin.sticker-print-setting' ||
+          key === 'admin.salevoucher-print-detail-setting';
         const isEnabled = isDeveloperOnly && isDeveloper
           ? true
           : !isDeveloperOnly && enabledByKey.get(key) !== false;

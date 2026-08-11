@@ -10,14 +10,17 @@
 
 <p-card class="app-list-page">
     <div class="d-flex justify-content-between mb-3 list-controls">
-    <p-button  label="Clear" [outlined]="true" icon="pi pi-filter-slash" (click)="clear(dt1)" /> 
+    <p-button class="d-none d-md-inline-flex" label="Clear" [outlined]="true" icon="pi pi-filter-slash" (click)="clear(dt1)" /> 
       <div class="flex-grow-1">
-        <div class="app-search-field">
-          <i class="pi pi-search" aria-hidden="true"></i>
-          <p-floatlabel variant="on">
-            <input pInputText id="on_label" class="app-search-input" [formControl]="searchControl" autocomplete="off" />
-            <label for="on_label">Search keyword</label>
-          </p-floatlabel>
+        <div class="mobile-search-row">
+          <div class="app-search-field">
+            <i class="pi pi-search" aria-hidden="true"></i>
+            <p-floatlabel variant="on">
+              <input pInputText id="on_label" class="app-search-input" [formControl]="searchControl" autocomplete="off" />
+              <label for="on_label">Search keyword</label>
+            </p-floatlabel>
+          </div>
+          <button pButton type="button" class="mobile-search-btn" icon="pi pi-search" label="Search" (click)="applySearch()"></button>
         </div>
       </div>
 
@@ -40,6 +43,97 @@
     </div>
      </ng-container>
 
+    </div>
+
+    <div class="mobile-voucher-list">
+      <article class="mobile-voucher-card" *ngFor="let row of mobileResult().result">
+        <div class="voucher-card-head">
+          <div>
+            <span class="mobile-label">Date</span>
+            <strong>{{ row.date | date:'dd-MM-yyyy' }}</strong>
+          </div>
+          <div>
+            <span class="mobile-label">Parcel No</span>
+            <strong>{{ row.id }}</strong>
+          </div>
+          <span class="voucher-status" [ngClass]="mobileStatusClass(row.parcelStatus)">
+            {{ mobileStatusText(row.parcelStatus) }}
+          </span>
+        </div>
+
+        <div class="voucher-main-grid">
+          <div>
+            <span class="mobile-label">Supplier</span>
+            <strong>{{ row.supplierName || '-' }}</strong>
+          </div>
+          <div>
+            <span class="mobile-label">Supplier Invoice</span>
+            <strong>{{ row.supplierInvoice || '-' }}</strong>
+          </div>
+        </div>
+
+        <div class="voucher-card-toggle">
+          <button
+            pButton
+            type="button"
+            class="voucher-expand-btn"
+            [icon]="isMobileExpanded(row) ? 'pi pi-chevron-up' : 'pi pi-chevron-down'"
+            (click)="toggleMobileVoucher(row)">
+          </button>
+        </div>
+
+        <ng-container *ngIf="isMobileExpanded(row)">
+          <div class="voucher-expanded">
+            <div class="voucher-info-grid">
+              <div>
+                <span class="mobile-label">Company</span>
+                <strong>{{ row.companyName || '-' }}</strong>
+              </div>
+              <div>
+                <span class="mobile-label">Floor</span>
+                <strong>{{ row.floor || '-' }}</strong>
+              </div>
+            </div>
+
+            <div class="voucher-products">
+              <span class="mobile-label">Products</span>
+              <div class="voucher-product-loading" *ngIf="isMobileProductLoading(row.id)">
+                <i class="pi pi-spin pi-spinner"></i>
+                <span>Loading products...</span>
+              </div>
+              <div class="voucher-product" *ngFor="let product of mobileProducts(row.id)">
+                <div>
+                  <strong class="product-category">{{ product.categoryName || '-' }}</strong>
+                  <span class="product-name">{{ product.productName || '-' }}</span>
+                  <span *ngIf="product.description && product.description !== product.productName">{{ product.description }}</span>
+                  <small>{{ product.barcode || '-' }}</small>
+                </div>
+                <b>Qty: {{ product.quantity }}</b>
+              </div>
+              <div class="voucher-product-empty" *ngIf="!isMobileProductLoading(row.id) && !mobileProducts(row.id).length">
+                No products found
+              </div>
+            </div>
+
+            <div class="voucher-total">
+              <span>Total Quantity</span>
+              <strong>{{ row.totalQuantity }}</strong>
+            </div>
+
+            <button pButton type="button" icon="pi pi-eye" label="View" class="voucher-view-btn" (click)="gotoEditSaleVoucher(row.id)"></button>
+          </div>
+        </ng-container>
+      </article>
+
+      <div class="mobile-empty-state" *ngIf="!mobileResult().result.length && !mobileLoading">
+        <i class="pi pi-inbox"></i>
+        <span>No records found</span>
+      </div>
+
+      <div class="mobile-loading-state" *ngIf="mobileLoading">
+        <i class="pi pi-spin pi-spinner"></i>
+        <span>Loading more...</span>
+      </div>
     </div>
 
         

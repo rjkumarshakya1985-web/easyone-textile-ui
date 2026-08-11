@@ -2,7 +2,7 @@ import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { API_CONFIG } from '../../config/api.config';
 import { Observable } from 'rxjs';
-import { SaleVoucherPrintResponse, StickerPrint, StickerPrintSetting } from '../../model/response/print/salevoucher-response-print';
+import { SaleVoucherPrintDetailSetting, SaleVoucherPrintResponse, StickerPrint, StickerPrintSetting } from '../../model/response/print/salevoucher-response-print';
 
 
 @Injectable({
@@ -39,6 +39,14 @@ export class PrintService {
 
    saveStickerSetting(request: StickerPrintSetting): Observable<boolean> {
         return this.http.post<boolean>(`${this.apiUrl}stickerprintsetting`, request);
+      }
+
+   getSaleVoucherPrintDetail(): Observable<SaleVoucherPrintDetailSetting> {
+        return this.http.get<SaleVoucherPrintDetailSetting>(`${this.apiUrl}salevoucherprintdetail`);
+      }
+
+   saveSaleVoucherPrintDetail(request: SaleVoucherPrintDetailSetting): Observable<boolean> {
+        return this.http.post<boolean>(`${this.apiUrl}salevoucherprintdetail`, request);
       }
     
 }

@@ -19,7 +19,7 @@ import { MenubarModule } from 'primeng/menubar';
 import { BadgeModule } from 'primeng/badge';
 import { Menu, MenuModule } from 'primeng/menu';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { SaleVoucherTableResponse } from '../../../../../model/response/salevouchers/salevoucher-table-response.model';
+import { SaleVoucherMobileProductResponse, SaleVoucherMobileResponse, SaleVoucherTableResponse } from '../../../../../model/response/salevouchers/salevoucher-table-response.model';
 import { SaleVoucherService } from '../../../../../core/services/salevoucher.service';
 import { ParcelStatus } from '../../../../../core/enums/enum';
 import { Helper } from '../../../../../core/helpers/helper';
@@ -110,6 +110,22 @@ export class SupplierSalevoucherList {
     });
   }
 
+  @HostListener('window:scroll')
+  onWindowScroll(): void {
+    if (!this.isMobileView() || this.mobileLoading || !this.hasMoreMobileData()) {
+      return;
+    }
+
+    const threshold = 220;
+    const position = window.innerHeight + window.scrollY;
+    const height = document.documentElement.scrollHeight;
+
+    if (position >= height - threshold) {
+      this.mobilePageIndex += 1;
+      this.loadMobileData(false);
+    }
+  }
+
   applyStatusFilter(value: number, filterCallback: (value: number) => void): void {
     filterCallback(value);
 
@@ -125,6 +141,13 @@ export class SupplierSalevoucherList {
   // -----------------------------
  
   tblResult = signal({ totalRows: 0, result: [] as SaleVoucherTableResponse[] });
+  mobileResult = signal({ totalRows: 0, result: [] as SaleVoucherMobileResponse[] });
+  expandedMobileIds = signal<Set<number>>(new Set<number>());
+  mobileProductLoadingIds = signal<Set<number>>(new Set<number>());
+  mobileProductCache = signal<Record<number, SaleVoucherMobileProductResponse[]>>({});
+  mobilePageIndex = 0;
+  mobilePageSize = 10;
+  mobileLoading = false;
 
   pageSize = PAGE_PAGE;
   pageindex = signal(0);
@@ -153,6 +176,7 @@ clear(table: any) {
   this.searchControl.setValue('');  
   this.pageindex.set(0);
   table.clear();
+  this.loadMobileData(true);
 }
 
 onLazyLoad(event: any) {
@@ -205,6 +229,7 @@ onLazyLoad(event: any) {
 
   this.filters = request.filters || {}
   this.loadTableDataFromLazy(request);
+  this.loadMobileData(true);
 }
 
 getFilterValue(filters: any, field: string): string {
@@ -217,13 +242,48 @@ getFilterValue(filters: any, field: string): string {
   return val.toString(); // 🔥 convert to string
 }
 
-loadTableDataFromLazy(req: TableDataRequest) {
+  loadTableDataFromLazy(req: TableDataRequest) {
   this.loader.show();
 
   this.saleVoucherService.getTableData(req).subscribe({
     next: res => this.tblResult.set(res),
     complete: () => {
       this.loader.hide();
+    }
+  });
+}
+
+loadMobileData(reset = true) {
+  if (reset) {
+    this.mobilePageIndex = 0;
+    this.expandedMobileIds.set(new Set<number>());
+    this.mobileProductLoadingIds.set(new Set<number>());
+    this.mobileProductCache.set({});
+  }
+
+  this.mobileLoading = true;
+
+  const req: TableDataRequest = {
+    pageIndex: this.mobilePageIndex,
+    pageSize: this.mobilePageSize,
+    search: this.searchControl.value || '',
+    sortField: '',
+    sortOrder: -1,
+    filters: Object.keys(this.filters).length ? this.filters : undefined
+  };
+
+  this.saleVoucherService.getMobileList(req).subscribe({
+    next: res => {
+      this.mobileResult.set({
+        totalRows: res.totalRows,
+        result: reset ? res.result : [...this.mobileResult().result, ...res.result]
+      });
+    },
+    complete: () => {
+      this.mobileLoading = false;
+    },
+    error: () => {
+      this.mobileLoading = false;
     }
   });
 }
@@ -240,6 +300,9 @@ loadTableDataFromLazy(req: TableDataRequest) {
     this.applyDashboardStatusFilter();
     this.setupSearch();
     this.loadTableData();
+    if (this.isMobileView()) {
+      this.loadMobileData(true);
+    }
     this.pageSizeItems = [
             {
                  items: [
@@ -314,6 +377,99 @@ onPageSizeChange(size: number) {
       this.loader.hide();
       }
     });
+
+    if (this.isMobileView()) {
+      this.loadMobileData(true);
+    }
+  }
+
+  applySearch(): void {
+    this.pageindex.set(0);
+    this.loadTableData(this.searchControl.value || '');
+  }
+
+  isMobileView(): boolean {
+    return typeof window !== 'undefined' && window.innerWidth <= 768;
+  }
+
+  hasMoreMobileData(): boolean {
+    return this.mobileResult().result.length < this.mobileResult().totalRows;
+  }
+
+  isMobileExpanded(row: SaleVoucherMobileResponse): boolean {
+    return this.expandedMobileIds().has(row.id);
+  }
+
+  toggleMobileVoucher(row: SaleVoucherMobileResponse): void {
+    const next = new Set(this.expandedMobileIds());
+
+    if (next.has(row.id)) {
+      next.delete(row.id);
+    } else {
+      next.add(row.id);
+      this.loadMobileProducts(row.id);
+    }
+
+    this.expandedMobileIds.set(next);
+  }
+
+  mobileProducts(rowId: number): SaleVoucherMobileProductResponse[] {
+    return this.mobileProductCache()[rowId] || [];
+  }
+
+  isMobileProductLoading(rowId: number): boolean {
+    return this.mobileProductLoadingIds().has(rowId);
+  }
+
+  private loadMobileProducts(rowId: number): void {
+    if (this.mobileProductCache()[rowId] || this.isMobileProductLoading(rowId)) {
+      return;
+    }
+
+    const loading = new Set(this.mobileProductLoadingIds());
+    loading.add(rowId);
+    this.mobileProductLoadingIds.set(loading);
+
+    this.saleVoucherService.getMobileProducts(rowId).subscribe({
+      next: products => {
+        this.mobileProductCache.set({
+          ...this.mobileProductCache(),
+          [rowId]: products
+        });
+      },
+      complete: () => this.clearMobileProductLoading(rowId),
+      error: () => this.clearMobileProductLoading(rowId)
+    });
+  }
+
+  private clearMobileProductLoading(rowId: number): void {
+    const loading = new Set(this.mobileProductLoadingIds());
+    loading.delete(rowId);
+    this.mobileProductLoadingIds.set(loading);
+  }
+
+  mobileStatusText(status: ParcelStatus): string {
+    return Helper.getParcelStatusText(status);
+  }
+
+  mobileStatusClass(status: ParcelStatus): string {
+    switch (status) {
+      case ParcelStatus.InTransit:
+        return 'status-in-transit';
+      case ParcelStatus.Transport:
+        return 'status-transport';
+      case ParcelStatus.PackedAtLocation:
+        return 'status-packed-location';
+      case ParcelStatus.Opened:
+        return 'status-opened';
+      case ParcelStatus.TallySynced:
+        return 'status-tally';
+      case ParcelStatus.Returned:
+      case ParcelStatus.Cancelled:
+        return 'status-danger';
+      default:
+        return 'status-default';
+    }
   }
 
   // -----------------------------

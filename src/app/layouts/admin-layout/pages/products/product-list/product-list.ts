@@ -59,6 +59,8 @@ export class ProductList {
   @ViewChild('menu') menu!: Menu;
   items: MenuItem[] = [];
   filters: { [key: string]: string | null } = {};
+  statusFilter: 'all' | 'active' | 'inactive' = 'all';
+  expandedProductIds = signal<Set<string>>(new Set<string>());
   visible:boolean=false;
   productName:string='Product Price History';
   // -----------------------------
@@ -134,9 +136,7 @@ export class ProductList {
       search,
       sortField: this.sortField,
       sortOrder: this.sortOrder,
-      filters: Object.keys(this.filters).length 
-  ? this.filters 
-  : undefined
+      filters: this.currentFilters()
     };
 
     this.loader.show();
@@ -144,6 +144,61 @@ export class ProductList {
       next: res => this.tblResult.set(res),
       complete: () => this.loader.hide()
     });
+  }
+
+  applySearch(): void {
+    this.pageindex.set(0);
+    this.loadTableData(this.searchControl.value || '');
+  }
+
+  setStatusFilter(status: 'all' | 'active' | 'inactive'): void {
+    this.statusFilter = status;
+    this.pageindex.set(0);
+    this.loadTableData(this.searchControl.value || '');
+  }
+
+  productDescription(row: SupplierProductDto): string {
+    return row.printName || row.alias || '-';
+  }
+
+  productFormula(row: SupplierProductDto): string {
+    return row.manualWholeSaleRate != null ? 'Manual' : 'MU';
+  }
+
+  isExpanded(row: SupplierProductDto): boolean {
+    return this.expandedProductIds().has(row.id);
+  }
+
+  toggleMobileCard(row: SupplierProductDto): void {
+    const next = new Set(this.expandedProductIds());
+
+    if (next.has(row.id)) {
+      next.delete(row.id);
+    } else {
+      next.add(row.id);
+    }
+
+    this.expandedProductIds.set(next);
+  }
+
+  private currentFilters(extraFilters: { [key: string]: string | null } = this.filters): { [key: string]: string | null } | undefined {
+    const filters = { ...extraFilters };
+
+    if (this.statusFilter === 'active') {
+      filters['isActive'] = 'true';
+    } else if (this.statusFilter === 'inactive') {
+      filters['isActive'] = 'false';
+    } else {
+      delete filters['isActive'];
+    }
+
+    Object.keys(filters).forEach(key => {
+      if (filters[key] === null || filters[key] === '') {
+        delete filters[key];
+      }
+    });
+
+    return Object.keys(filters).length ? filters : undefined;
   }
 
   // -----------------------------
@@ -308,6 +363,7 @@ export class ProductList {
   };
 
   this.filters = request.filters || {}
+  request.filters = this.currentFilters(request.filters);
   this.loadTableDataFromLazy(request);
   }
 

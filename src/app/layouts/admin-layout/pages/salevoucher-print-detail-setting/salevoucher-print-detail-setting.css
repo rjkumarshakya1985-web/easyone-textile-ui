@@ -1,0 +1,226 @@
+.page-header {
+  margin-bottom: 12px;
+}
+
+:host ::ng-deep .print-detail-card .p-card-body,
+:host ::ng-deep .print-detail-card .p-card-content {
+  padding: 0;
+}
+
+.settings-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--surface-border);
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--primary-color) 8%, transparent), transparent 46%),
+    var(--surface-card);
+}
+
+.eyebrow {
+  display: inline-flex;
+  margin-bottom: 5px;
+  color: var(--primary-color);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .08em;
+}
+
+.settings-heading h2 {
+  margin: 0;
+  color: var(--text-color);
+  font-size: 22px;
+  line-height: 1.2;
+}
+
+.settings-heading p {
+  margin: 5px 0 0;
+  color: var(--text-color-secondary);
+  font-size: 13px;
+}
+
+.print-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 38px;
+  padding: 0 13px;
+  border: 1px solid color-mix(in srgb, var(--primary-color) 28%, var(--surface-border));
+  border-radius: 999px;
+  color: var(--primary-color);
+  background: color-mix(in srgb, var(--primary-color) 8%, var(--surface-card));
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.print-detail-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(320px, .75fr);
+  gap: 16px;
+  align-items: stretch;
+  padding: 18px;
+}
+
+.form-panel,
+.preview-panel {
+  min-height: 360px;
+  padding: 16px;
+  border: 1px solid var(--surface-border);
+  border-top: 3px solid var(--primary-color);
+  border-radius: 12px;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--primary-color) 5%, transparent), transparent 34%),
+    var(--surface-ground);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, .05);
+}
+
+.section-title {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 18px;
+  color: var(--text-color);
+}
+
+.section-title i {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  color: var(--primary-color);
+  background: color-mix(in srgb, var(--primary-color) 10%, var(--surface-card));
+  border: 1px solid color-mix(in srgb, var(--primary-color) 18%, var(--surface-border));
+}
+
+.section-title > div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.section-title span {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.section-title small {
+  color: var(--text-color-secondary);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.form-grid label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: var(--text-color);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.form-grid input,
+.form-grid textarea {
+  width: 100%;
+  background: var(--surface-card);
+  resize: vertical;
+}
+
+.span-2 {
+  grid-column: span 2;
+}
+
+.preview-panel {
+  display: flex;
+  flex-direction: column;
+}
+
+.voucher-preview {
+  overflow: hidden;
+  margin-top: 8px;
+  border: 1px solid var(--surface-border);
+  border-radius: 12px;
+  background: var(--surface-card);
+  color: var(--text-color);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, .08);
+}
+
+.preview-topline {
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary-color), color-mix(in srgb, var(--primary-color) 45%, #ffffff));
+}
+
+.voucher-preview h3 {
+  margin: 18px 18px 6px;
+  color: var(--text-color);
+  font-size: 20px;
+  line-height: 1.25;
+}
+
+.voucher-preview p {
+  margin: 0 18px 14px;
+  color: var(--text-color-secondary);
+  font-size: 13px;
+}
+
+.address {
+  display: grid;
+  gap: 5px;
+  margin: 0 18px 16px;
+  color: var(--text-color);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.gst-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 18px;
+  border-top: 1px solid var(--surface-border);
+  background: color-mix(in srgb, var(--primary-color) 6%, var(--surface-card));
+}
+
+.gst-row span {
+  color: var(--text-color-secondary);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .05em;
+}
+
+.gst-row strong {
+  color: var(--text-color);
+}
+
+@media (max-width: 920px) {
+  .settings-heading,
+  .print-detail-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .settings-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 620px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .span-2 {
+    grid-column: span 1;
+  }
+}

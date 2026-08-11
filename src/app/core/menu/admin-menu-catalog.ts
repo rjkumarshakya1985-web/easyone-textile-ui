@@ -36,5 +36,6 @@ export const ADMIN_MENU_CATALOG: AdminMenuCatalogItem[] = [
   { key: 'admin.sales-report', label: 'Sales Report', parentKey: 'admin.reports' },
   { key: 'admin.purchase-report', label: 'Purchase Report', parentKey: 'admin.reports' },
   { key: 'admin.menu-access', label: 'Menu Access' },
-  { key: 'admin.sticker-print-setting', label: 'Sticker Settings' }
+  { key: 'admin.sticker-print-setting', label: 'Sticker Settings' },
+  { key: 'admin.salevoucher-print-detail-setting', label: 'Sale Voucher Print Details' }
 ];

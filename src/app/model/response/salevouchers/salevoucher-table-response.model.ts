@@ -16,3 +16,24 @@ export interface SaleVoucherTableResponse {
   statusDate:Date;
 }
 
+export interface SaleVoucherMobileResponse {
+  id: number;
+  supplierName?: string;
+  date: string;
+  supplierInvoice?: string;
+  companyName?: string;
+  floor?: string;
+  parcelStatus: ParcelStatus;
+  statusDate: string;
+  totalQuantity: number;
+  products: SaleVoucherMobileProductResponse[];
+}
+
+export interface SaleVoucherMobileProductResponse {
+  categoryName?: string;
+  productName?: string;
+  description?: string;
+  barcode?: string;
+  quantity: number;
+}
+

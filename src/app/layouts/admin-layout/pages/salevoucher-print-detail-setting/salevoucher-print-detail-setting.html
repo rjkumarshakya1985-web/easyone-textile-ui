@@ -1,0 +1,115 @@
+<p-toolbar class="page-header">
+  <div class="p-toolbar-group-left">
+    <p-breadcrumb [model]="breadcrumbItems" homeIcon="pi pi-home"></p-breadcrumb>
+  </div>
+
+  <div class="p-toolbar-group-right">
+    <p-button label="Save Details" icon="pi pi-save" (click)="save()" />
+  </div>
+</p-toolbar>
+
+<div class="print-detail-page" *ngIf="detail() as current">
+  <p-card class="print-detail-card">
+    <div class="settings-heading">
+      <div>
+        <span class="eyebrow">PRINT CONTROL</span>
+        <h2>Sale Voucher Print Details</h2>
+        <p>Edit the company information used on sale voucher, packing slip and delivery challan print layouts.</p>
+      </div>
+      <div class="print-chip">
+        <i class="pi pi-file-edit"></i>
+        <span>Developer Only</span>
+      </div>
+    </div>
+
+    <div class="print-detail-layout">
+      <section class="form-panel">
+        <div class="section-title">
+          <i class="pi pi-building"></i>
+          <div>
+            <span>Company Details</span>
+            <small>These values will be printed as your business identity.</small>
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <label class="span-2">
+            <span>Company Name *</span>
+            <input
+              pInputText
+              [ngModel]="current.companyName"
+              (ngModelChange)="update({ companyName: $event })"
+              maxlength="150"
+              placeholder="Enter company name" />
+          </label>
+
+          <label class="span-2">
+            <span>Address Line 1 *</span>
+            <textarea
+              pInputTextarea
+              rows="2"
+              [ngModel]="current.address1"
+              (ngModelChange)="update({ address1: $event })"
+              maxlength="250"
+              placeholder="Enter primary address"></textarea>
+          </label>
+
+          <label class="span-2">
+            <span>Address Line 2</span>
+            <textarea
+              pInputTextarea
+              rows="2"
+              [ngModel]="current.address2 || ''"
+              (ngModelChange)="update({ address2: $event })"
+              maxlength="250"
+              placeholder="Enter optional address detail"></textarea>
+          </label>
+
+          <label>
+            <span>GSTIN</span>
+            <input
+              pInputText
+              [ngModel]="current.gstIn || ''"
+              (ngModelChange)="update({ gstIn: $event })"
+              maxlength="30"
+              placeholder="Enter GSTIN" />
+          </label>
+
+          <label>
+            <span>Description</span>
+            <input
+              pInputText
+              [ngModel]="current.description || ''"
+              (ngModelChange)="update({ description: $event })"
+              maxlength="180"
+              placeholder="Enter print tagline or note" />
+          </label>
+        </div>
+      </section>
+
+      <section class="preview-panel">
+        <div class="section-title">
+          <i class="pi pi-eye"></i>
+          <div>
+            <span>Print Preview</span>
+            <small>A quick reference of how the heading block can appear.</small>
+          </div>
+        </div>
+
+        <div class="voucher-preview">
+          <div class="preview-topline"></div>
+          <h3>{{ current.companyName || 'Company Name' }}</h3>
+          <p>{{ current.description || 'Business description will appear here' }}</p>
+          <div class="address">
+            <span>{{ current.address1 || 'Address line 1' }}</span>
+            <span *ngIf="current.address2">{{ current.address2 }}</span>
+          </div>
+          <div class="gst-row">
+            <span>GSTIN</span>
+            <strong>{{ current.gstIn || '-' }}</strong>
+          </div>
+        </div>
+      </section>
+    </div>
+  </p-card>
+</div>
