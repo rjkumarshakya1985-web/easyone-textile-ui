@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, OnDestroy,Input } from '@angular/core';
+import { Component, EventEmitter, OnInit, OnDestroy, Input, Output } from '@angular/core';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { MenuItem } from 'primeng/api';
@@ -20,6 +20,7 @@ import { UserService } from '../../core/services/user.service';
 })
 export class Nav implements OnInit, OnDestroy {
  @Input() isOpen = true;
+  @Output() menuSelected = new EventEmitter<void>();
   items: MenuItem[] = [];
   isLogin = false;
   userRole: string | null = null;
@@ -304,6 +305,14 @@ export class Nav implements OnInit, OnDestroy {
       const key = this.resolveMenuKey(item, parentKey);
       (item as any).key = key;
 
+      if (item.routerLink) {
+        const existingCommand = item.command;
+        item.command = (event) => {
+          existingCommand?.(event);
+          this.menuSelected.emit();
+        };
+      }
+
       if (item.items) {
         item.items = this.applyMenuKeys(item.items, key);
       }
@@ -447,6 +456,7 @@ export class Nav implements OnInit, OnDestroy {
     if (item.routerLink) {
       this.rememberOpenSidebar();
       this.router.navigate(item.routerLink as any[]);
+      this.menuSelected.emit();
       return;
     }
 
@@ -454,6 +464,7 @@ export class Nav implements OnInit, OnDestroy {
     if (firstChildWithRoute?.routerLink) {
       this.rememberOpenSidebar();
       this.router.navigate(firstChildWithRoute.routerLink as any[]);
+      this.menuSelected.emit();
     }
   }
 

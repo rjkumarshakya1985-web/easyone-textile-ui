@@ -1,7 +1,7 @@
     <div class="layout">
         <app-header (toggleSidebar)="handleToggle()"></app-header>
         <div class="main">
-            <app-nav class="layout-nav" [isOpen]="isSidebarOpen"></app-nav>
+            <app-nav class="layout-nav" [isOpen]="isSidebarOpen" (menuSelected)="closeSidebarOnMobileMenuSelection()"></app-nav>
             <div class="content">
             <router-outlet></router-outlet>
             </div>

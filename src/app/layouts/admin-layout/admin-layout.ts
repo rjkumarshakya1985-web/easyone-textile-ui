@@ -17,6 +17,12 @@ export class AdminLayout {
     this.saveSidebarState();
   }
 
+  closeSidebarOnMobileMenuSelection(): void {
+    if (typeof window !== 'undefined' && window.innerWidth <= 768) {
+      this.isSidebarOpen = false;
+    }
+  }
+
   private saveSidebarState(): void {
     if (typeof window !== 'undefined') {
       sessionStorage.setItem('easyone-sidebar-open', String(this.isSidebarOpen));
