@@ -29,10 +29,19 @@
 }
 
 .barcode-scan-btn {
+  display: none !important;
   height: 40px;
   color: #fff !important;
   background: var(--primary-color) !important;
   border: 0 !important;
+}
+
+.manual-get-btn {
+  display: none !important;
+  height: 40px;
+  color: var(--primary-color) !important;
+  background: #fff !important;
+  border: 1px solid color-mix(in srgb, var(--primary-color) 42%, #cbd5e1) !important;
 }
 
 .scanner-overlay {
@@ -161,21 +170,35 @@
   }
 
   .scanner-input-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     width: 100%;
+    gap: .5rem;
   }
 
   .scanner-input-row input {
-    flex: 1 1 auto;
+    grid-column: 1 / -1;
+    width: 100%;
     min-width: 0;
   }
 
+  .manual-get-btn,
   .barcode-scan-btn {
-    flex: 0 0 auto;
-    width: auto !important;
+    width: 100% !important;
+    min-width: 0;
     padding: 0 .8rem !important;
+    justify-content: center;
   }
 
-  :host ::ng-deep .page-header .p-button {
+  .manual-get-btn {
+    display: inline-flex !important;
+  }
+
+  .barcode-scan-btn {
+    display: inline-flex !important;
+  }
+
+  :host ::ng-deep .page-header .p-toolbar-group-right .p-button {
     width: 100%;
     height: 40px;
     justify-content: center;

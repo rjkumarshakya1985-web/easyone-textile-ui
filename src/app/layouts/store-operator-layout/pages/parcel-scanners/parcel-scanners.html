@@ -10,8 +10,17 @@
         <input  #parcelInput
           pInputText
           [ngModel]="parcelNumber()"
-          (ngModelChange)="parcelNumber.set($event)"
+          (ngModelChange)="onParcelNumberChange($event)"
           (keyup.enter)="onEnter()" />
+
+        <button
+          pButton
+          type="button"
+          icon="pi pi-search"
+          label="Get"
+          class="manual-get-btn"
+          (click)="onEnter()">
+        </button>
 
         <button
           pButton

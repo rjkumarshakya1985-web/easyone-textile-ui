@@ -43,6 +43,7 @@ export class ParcelScanners implements OnInit , AfterViewInit, OnDestroy {
   private scannerStream?: MediaStream;
   private scannerFrameId?: number;
   private scannerHandled = false;
+  private autoScanTimer?: ReturnType<typeof setTimeout>;
 
   breadcrumbItems: MenuItem[] = [
     { label: 'Dashboard', routerLink: '/supplier' },
@@ -71,6 +72,7 @@ ngAfterViewInit(): void {
 }
 
 ngOnDestroy(): void {
+  this.clearAutoScanTimer();
   this.stopScanner();
 }
 
@@ -79,6 +81,29 @@ private focusParcelInput(): void {
     this.parcelInput?.nativeElement.focus();
   }, 0);
 }
+
+  onParcelNumberChange(value: string | number | null): void {
+    const digits = String(value ?? '').replace(/\D/g, '');
+    this.parcelNumber.set(digits ? Number(digits) : null);
+    this.clearAutoScanTimer();
+
+    if (digits.length < 4 || this.isLoading()) {
+      return;
+    }
+
+    this.autoScanTimer = setTimeout(() => {
+      if (!this.isLoading() && String(this.parcelNumber() ?? '') === digits) {
+        this.onEnter();
+      }
+    }, 350);
+  }
+
+  private clearAutoScanTimer(): void {
+    if (this.autoScanTimer) {
+      clearTimeout(this.autoScanTimer);
+      this.autoScanTimer = undefined;
+    }
+  }
 
   async startScanner(): Promise<void> {
     if (this.scannerStarting() || this.scannerVisible()) {
@@ -199,6 +224,7 @@ private focusParcelInput(): void {
   }
 
     onEnter() {
+      this.clearAutoScanTimer();
       const scannedNumber = this.parcelNumber();
       if (!scannedNumber || this.isLoading()) return;
 
