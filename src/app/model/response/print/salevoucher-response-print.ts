@@ -71,6 +71,7 @@ export interface StickerPrintSetting {
   wholeSaleRatePostfix?: string | null;
   wholeSaleRateAddAmount: number;
   applyWholeSaleRateCode: boolean;
+  wholeSaleRateCodeDigitCount: number;
   wholeSaleRateCode0: string;
   wholeSaleRateCode1: string;
   wholeSaleRateCode2: string;

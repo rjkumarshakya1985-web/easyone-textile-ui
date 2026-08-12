@@ -300,6 +300,7 @@ export class StickerPrintSettingPage implements OnInit {
     return {
       ...setting,
       applyWholeSaleRateCode: setting.applyWholeSaleRateCode ?? false,
+      wholeSaleRateCodeDigitCount: setting.wholeSaleRateCodeDigitCount || 2,
       wholeSaleRateCode0: setting.wholeSaleRateCode0 || 'A',
       wholeSaleRateCode1: setting.wholeSaleRateCode1 || 'B',
       wholeSaleRateCode2: setting.wholeSaleRateCode2 || 'C',
@@ -330,6 +331,7 @@ export class StickerPrintSettingPage implements OnInit {
       wholeSaleRatePostfix: null,
       wholeSaleRateAddAmount: 500,
       applyWholeSaleRateCode: false,
+      wholeSaleRateCodeDigitCount: 2,
       wholeSaleRateCode0: 'A',
       wholeSaleRateCode1: 'B',
       wholeSaleRateCode2: 'C',
@@ -398,6 +400,16 @@ export class StickerPrintSettingPage implements OnInit {
       '9': setting.wholeSaleRateCode9
     };
 
-    return value.replace(/\d/g, digit => map[digit] || digit);
+    let convertedDigitCount = 0;
+    const maxDigitCount = Math.min(Math.max(Number(setting.wholeSaleRateCodeDigitCount || 2), 1), 20);
+
+    return value.replace(/\d/g, digit => {
+      if (convertedDigitCount >= maxDigitCount) {
+        return digit;
+      }
+
+      convertedDigitCount++;
+      return map[digit] || digit;
+    });
   }
 }

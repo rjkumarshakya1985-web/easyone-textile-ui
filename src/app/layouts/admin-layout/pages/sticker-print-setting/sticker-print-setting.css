@@ -284,8 +284,36 @@
   gap: 12px;
 }
 
+.rate-code-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
 .rate-code-toggle {
   min-width: min(360px, 100%);
+}
+
+.digit-count-field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 8px 11px;
+  border: 1px solid var(--surface-border);
+  border-radius: 8px;
+  background: var(--surface-card);
+  color: var(--text-color);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.digit-count-field input {
+  width: 76px;
+  min-height: 32px;
+  padding: 5px 8px;
+  font-weight: 800;
 }
 
 .rate-code-preview {
@@ -427,6 +455,15 @@
   .rate-code-content {
     align-items: stretch;
     flex-direction: column;
+  }
+
+  .rate-code-controls {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .digit-count-field {
+    justify-content: space-between;
   }
 
   .rate-code-preview {
