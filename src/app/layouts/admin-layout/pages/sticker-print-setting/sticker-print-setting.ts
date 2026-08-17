@@ -261,7 +261,7 @@ export class StickerPrintSettingPage implements OnInit {
         }
 
         const maxX = 300 - field.width;
-        const maxY = 134 - field.height;
+        const maxY = 149 - field.height;
         return {
           ...field,
           x: this.clamp(event.clientX - rect.left - drag.offsetX, 0, maxX),
