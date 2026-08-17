@@ -89,7 +89,7 @@
             <div class="col-md-5 text-center">
  <ngx-barcode6
       [bc-value]="addPrefixIfThreeDigit( printData()?.saleVoucherPrint?.id)"
-      [bc-format]="'CODE128'"
+      [bc-format]="'CODE128B'"
       [bc-width]="2"
       [bc-height]="80"      
       [bc-display-value]="true"     
@@ -180,7 +180,7 @@
                         </div>
                         <div class="col-xs-4 col-sm-4 col-md-4 ">
                             <div class="text-right">
-                            <ngx-barcode6 [bc-value]="addPrefixIfThreeDigit(printData()?.saleVoucherPrint?.id)" [bc-format]="'CODE128'" [bc-display-value]="false" [bc-font-size]="15" [bc-height]="40" [bc-display-value]="true" ></ngx-barcode6>   
+                            <ngx-barcode6 [bc-value]="addPrefixIfThreeDigit(printData()?.saleVoucherPrint?.id)" [bc-format]="'CODE128B'" [bc-display-value]="false" [bc-font-size]="15" [bc-height]="40" [bc-display-value]="true" ></ngx-barcode6>   
                             </div>
                         </div>
                 </div>  
@@ -210,7 +210,7 @@
                       [ngStyle]="fieldStyle(field)">
                     <ngx-barcode6
                       [bc-value]="sticker.barcode"
-                      [bc-format]="'CODE128'"
+                      [bc-format]="'CODE128B'"
                       [bc-width]="3"
                       [bc-height]="30"
                       [bc-margin]="0"
@@ -234,6 +234,18 @@
                     <div class="row">
                             <div class="col-xs-6 col-sm-6 col-md-6">
                                     <h6><b><u>{{printData()?.saleVoucherPrint?.companyName}}</u></b></h6>
+                                    <ngx-barcode6
+      [bc-value]="addPrefixIfThreeDigit( printData()?.saleVoucherPrint?.id)"
+      [bc-format]="'CODE128B'"
+      [bc-width]="2"
+      [bc-height]="80"      
+      [bc-display-value]="true"     
+      [bc-margin]="10"     
+      [bc-display-value]="true"
+      [bc-margin-top]="2"
+      [bc-margin-bottom]="2">
+      >
+    </ngx-barcode6>
                                     <strong>DISPATCH NO :</strong>{{printData()?.saleVoucherPrint?.id}}<br>
                                     <strong>DISPATCH DATE :</strong>{{printData()?.saleVoucherPrint?.date | date}}<br>
                                     <strong>GSTIN NO :</strong> {{printData()?.saleVoucherPrint?.gstIn}}  
