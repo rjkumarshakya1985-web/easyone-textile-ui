@@ -266,7 +266,7 @@ private hasCustomStickerSize(sticker: StickerPrint): boolean {
 
 private stickerPrintStyles(): string {
   return `
-    .sticker-print-item{margin:10px 0}
+    .sticker-print-item{margin:0}
     .app-sticker{position:relative;width:300px;height:134px;background:#fff;border:1px solid #e0e0e0;border-radius:12px;box-sizing:border-box;color:#000;font-family:Arial,sans-serif;overflow:hidden}
     .sticker-field{position:absolute;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .company-code{color:#000;background:transparent;padding:0}

@@ -31,6 +31,8 @@ export class Dashboard {
     { icon: 'pi pi-box', title: 'Active Product',url:'/supplier/products', queryParams: {}, value: 0, color: '#03A9F4' },
     { icon: 'pi pi-truck', title: 'InTransit Parcel',url:'/supplier/salevouchers', queryParams: { status: 3 }, value: 0, color: '#F44336' },
     { icon: 'pi pi-truck', title: 'Transport Parcel',url:'/supplier/salevouchers', queryParams: { status: 4 }, value: 0, color: '#7C3AED' },
+    { icon: 'pi pi-map-marker', title: 'At Location Parcel',url:'/supplier/salevouchers', queryParams: { status: 5 }, value: 0, color: '#0F766E' },
+    { icon: 'pi pi-box-open', title: 'Open Parcel',url:'/supplier/salevouchers', queryParams: { status: 6 }, value: 0, color: '#22C55E' },
     { icon: 'pi pi-pencil', title: 'Sale Voucher',url:'/supplier/salevouchers', queryParams: {}, value: 0, color: '#FF9800' }
   ]);
 
@@ -54,7 +56,9 @@ export class Dashboard {
               { ...this.cards()[0], value: result.productCount },
               { ...this.cards()[1], value: result.inTransitParcelCount },
               { ...this.cards()[2], value: result.transportParcelCount },
-              { ...this.cards()[3], value: result.saleVoucherCount }
+              { ...this.cards()[3], value: result.atLocationParcelCount ?? 0 },
+              { ...this.cards()[4], value: result.openParcelCount ?? 0 },
+              { ...this.cards()[5], value: result.saleVoucherCount }
           ]);
           console.log(this.data());
         },
