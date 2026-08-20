@@ -66,18 +66,29 @@ export class StickerSizeSetting {
   }
 
   load(): void {
-    this.printService.getSupplierStickerDemoSetting().subscribe(setting => {
-      this.stickerSetting.set(setting);
-      this.demoSticker = {
-        ...this.demoSticker,
-        stickerSetting: setting
-      };
+    this.printService.getSupplierStickerDemoSetting().subscribe({
+      next: setting => {
+        const mergedSetting = this.withDefaultFields(setting);
+        this.stickerSetting.set(mergedSetting);
+        this.demoSticker = {
+          ...this.demoSticker,
+          stickerSetting: mergedSetting
+        };
+      },
+      error: () => {
+        this.demoSticker = {
+          ...this.demoSticker,
+          stickerSetting: undefined
+        };
+      }
     });
 
-    this.printService.getSupplierStickerSizeSetting().subscribe(setting => {
-      if (setting.hasCustomSize && setting.stickerWidthMm && setting.stickerHeightMm) {
-        this.widthMm.set(setting.stickerWidthMm);
-        this.heightMm.set(setting.stickerHeightMm);
+    this.printService.getSupplierStickerSizeSetting().subscribe({
+      next: setting => {
+        if (setting.hasCustomSize && setting.stickerWidthMm && setting.stickerHeightMm) {
+          this.widthMm.set(setting.stickerWidthMm);
+          this.heightMm.set(setting.stickerHeightMm);
+        }
       }
     });
   }
@@ -159,7 +170,9 @@ export class StickerSizeSetting {
 fields(sticker: StickerPrint): StickerPrintFieldSetting[] {
   const setting = sticker.stickerSetting;
  if (!setting?.fieldSettings?.length) {
-    return [];
+    return this.defaultFields(sticker)
+      .filter(field => field.isVisible)
+      .sort((a, b) => a.sortOrder - b.sortOrder);
   }
 
   // Admin fieldSettings is the source of truth.
@@ -180,9 +193,9 @@ fields(sticker: StickerPrint): StickerPrintFieldSetting[] {
       case 'supplierCode':
         return sticker.supplierCode;
       case 'companyShortName':
-        return sticker.stickerSetting?.companyShortName ?? 'DEMO';
-          case 'wholeSaleRate':
-        return sticker.wholeSaleRate;
+        return this.demoCompanyShortName(sticker.stickerSetting?.companyShortName);
+      case 'wholeSaleRate':
+        return this.previewWholeSaleRate(sticker.stickerSetting);
       case 'productName':
         return sticker.productName;
       case 'printDate':
@@ -194,6 +207,80 @@ fields(sticker: StickerPrint): StickerPrintFieldSetting[] {
       default:
         return '';
     }
+  }
+
+  private demoCompanyShortName(value?: string | null): string {
+    const cleanValue = value?.trim();
+    if (!cleanValue || cleanValue.toUpperCase() === 'SSBD') {
+      return 'DEMO';
+    }
+
+    return cleanValue;
+  }
+
+  private previewWholeSaleRate(setting?: StickerPrintSetting): string {
+    if (!setting) {
+      return this.demoSticker.wholeSaleRate;
+    }
+
+    const baseRate = setting.applyWholeSaleRateFormula
+      ? 5105 + Number(setting.wholeSaleRateAddAmount || 0)
+      : 5105;
+    const formattedRate = `${setting.wholeSaleRatePrefix || ''}${baseRate}${setting.wholeSaleRatePostfix || ''}`;
+    return setting.applyWholeSaleRateCode ? this.applyRateCode(formattedRate, setting) : formattedRate;
+  }
+
+  private withDefaultFields(setting: StickerPrintSetting): StickerPrintSetting {
+    const defaults = this.defaultFields({ ...this.demoSticker, stickerSetting: setting });
+    const existing = setting.fieldSettings?.length ? setting.fieldSettings : [];
+    const fieldSettings = defaults.map(field => ({
+      ...field,
+      ...existing.find(item => item.fieldKey === field.fieldKey)
+    }));
+
+    return {
+      ...setting,
+      applyWholeSaleRateCode: setting.applyWholeSaleRateCode ?? false,
+      wholeSaleRateCodeDigitCount: setting.wholeSaleRateCodeDigitCount || 2,
+      wholeSaleRateCode0: setting.wholeSaleRateCode0 || 'A',
+      wholeSaleRateCode1: setting.wholeSaleRateCode1 || 'B',
+      wholeSaleRateCode2: setting.wholeSaleRateCode2 || 'C',
+      wholeSaleRateCode3: setting.wholeSaleRateCode3 || 'D',
+      wholeSaleRateCode4: setting.wholeSaleRateCode4 || 'E',
+      wholeSaleRateCode5: setting.wholeSaleRateCode5 || 'F',
+      wholeSaleRateCode6: setting.wholeSaleRateCode6 || 'G',
+      wholeSaleRateCode7: setting.wholeSaleRateCode7 || 'H',
+      wholeSaleRateCode8: setting.wholeSaleRateCode8 || 'I',
+      wholeSaleRateCode9: setting.wholeSaleRateCode9 || 'J',
+      fieldSettings
+    };
+  }
+
+  private applyRateCode(value: string, setting: StickerPrintSetting): string {
+    const map: Record<string, string> = {
+      '0': setting.wholeSaleRateCode0,
+      '1': setting.wholeSaleRateCode1,
+      '2': setting.wholeSaleRateCode2,
+      '3': setting.wholeSaleRateCode3,
+      '4': setting.wholeSaleRateCode4,
+      '5': setting.wholeSaleRateCode5,
+      '6': setting.wholeSaleRateCode6,
+      '7': setting.wholeSaleRateCode7,
+      '8': setting.wholeSaleRateCode8,
+      '9': setting.wholeSaleRateCode9
+    };
+
+    let convertedDigitCount = 0;
+    const maxDigitCount = Math.min(Math.max(Number(setting.wholeSaleRateCodeDigitCount || 2), 1), 20);
+
+    return value.replace(/\d/g, digit => {
+      if (convertedDigitCount >= maxDigitCount) {
+        return digit;
+      }
+
+      convertedDigitCount++;
+      return map[digit] || digit;
+    });
   }
 
   stickerStyle(): Record<string, string> {
