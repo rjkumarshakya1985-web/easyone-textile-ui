@@ -2,7 +2,7 @@ import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { API_CONFIG } from '../../config/api.config';
 import { Observable } from 'rxjs';
-import { SaleVoucherPrintDetailSetting, SaleVoucherPrintResponse, StickerPrint, StickerPrintSetting } from '../../model/response/print/salevoucher-response-print';
+import { SaleVoucherPrintDetailSetting, SaleVoucherPrintResponse, StickerPrint, StickerPrintSetting, SupplierStickerSizeSetting } from '../../model/response/print/salevoucher-response-print';
 
 
 @Injectable({
@@ -47,6 +47,18 @@ export class PrintService {
 
    saveSaleVoucherPrintDetail(request: SaleVoucherPrintDetailSetting): Observable<boolean> {
         return this.http.post<boolean>(`${this.apiUrl}salevoucherprintdetail`, request);
+      }
+
+   getSupplierStickerSizeSetting(): Observable<SupplierStickerSizeSetting> {
+        return this.http.get<SupplierStickerSizeSetting>(`${this.apiUrl}supplierstickersetting/my`);
+      }
+
+   saveSupplierStickerSizeSetting(request: SupplierStickerSizeSetting): Observable<boolean> {
+        return this.http.post<boolean>(`${this.apiUrl}supplierstickersetting/my`, request);
+      }
+
+   getSupplierStickerDemoSetting(): Observable<StickerPrintSetting> {
+        return this.http.get<StickerPrintSetting>(`${this.apiUrl}supplierstickersetting/demo`);
       }
     
 }

@@ -264,7 +264,8 @@ export class Nav implements OnInit, OnDestroy {
     Supplier: [
       { label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/supplier/dashboard'] },
       { label: 'Product', icon: 'pi pi-fw pi-box', routerLink: ['/supplier/products'] },
-      { label: 'Sale Voucher', icon: 'pi pi-fw pi-file', routerLink: ['/supplier/salevouchers'] }
+      { label: 'Sale Voucher', icon: 'pi pi-fw pi-file', routerLink: ['/supplier/salevouchers'] },
+      { label: 'Sticker Size', icon: 'pi pi-fw pi-print', routerLink: ['/supplier/sticker-size-setting'] }
     ],
 
     StockIncharge: [

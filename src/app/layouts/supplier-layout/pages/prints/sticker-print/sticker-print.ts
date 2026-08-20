@@ -18,6 +18,10 @@ import { CommonModule } from '@angular/common';
   styleUrl: './sticker-print.css',
 })
 export class ProductStickerPrint {
+  private readonly baseWidth = 300;
+  private readonly baseHeight = 134;
+  private readonly defaultWidthMm = 70;
+  private readonly defaultHeightMm = 30;
 
   printData = signal<StickerPrint | null>(null);
   breadcrumbItems: MenuItem[] = [
@@ -103,15 +107,44 @@ export class ProductStickerPrint {
     }
   }
 
-  fieldStyle(field: StickerPrintFieldSetting): Record<string, string> {
+  stickerStyle(sticker: StickerPrint): Record<string, string> {
+    if (!this.hasCustomStickerSize(sticker)) {
+      return {};
+    }
+
+    return {
+      width: `${sticker.stickerSetting?.stickerWidthMm}mm`,
+      height: `${sticker.stickerSetting?.stickerHeightMm}mm`
+    };
+  }
+
+  fieldStyle(field: StickerPrintFieldSetting, sticker?: StickerPrint): Record<string, string> {
     const width = field.fieldKey === 'companyShortName'
       ? Math.max(field.width, 74)
       : field.fieldKey === 'wholeSaleRate'
       ? Math.max(field.width, 128)
       : field.width;
     const x = field.fieldKey === 'wholeSaleRate'
-      ? Math.min(field.x, 300 - width - 10)
+      ? Math.min(field.x, this.baseWidth - width - 10)
       : field.x;
+
+    if (sticker && this.hasCustomStickerSize(sticker)) {
+      const fontScale = Math.min(
+        Number(sticker.stickerSetting?.stickerWidthMm) / this.defaultWidthMm,
+        Number(sticker.stickerSetting?.stickerHeightMm) / this.defaultHeightMm
+      );
+
+      return {
+        left: `${(x / this.baseWidth) * 100}%`,
+        top: `${(field.y / this.baseHeight) * 100}%`,
+        width: `${(width / this.baseWidth) * 100}%`,
+        height: `${(field.height / this.baseHeight) * 100}%`,
+        fontSize: `${Math.max(7, field.fontSize * fontScale)}px`,
+        fontWeight: field.fontWeight,
+        textAlign: field.textAlign,
+        lineHeight: `${Math.max(10, field.height * fontScale)}px`
+      };
+    }
 
     return {
       left: `${x}px`,
@@ -123,6 +156,12 @@ export class ProductStickerPrint {
       textAlign: field.textAlign,
       lineHeight: `${field.height}px`
     };
+  }
+
+  private hasCustomStickerSize(sticker: StickerPrint): boolean {
+    return sticker.stickerSetting?.hasCustomSize === true &&
+      !!sticker.stickerSetting?.stickerWidthMm &&
+      !!sticker.stickerSetting?.stickerHeightMm;
   }
 
   private stickerPrintStyles(): string {

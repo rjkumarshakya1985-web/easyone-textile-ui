@@ -82,7 +82,16 @@ export interface StickerPrintSetting {
   wholeSaleRateCode7: string;
   wholeSaleRateCode8: string;
   wholeSaleRateCode9: string;
+  stickerWidthMm?: number | null;
+  stickerHeightMm?: number | null;
+  hasCustomSize?: boolean;
   fieldSettings: StickerPrintFieldSetting[];
+}
+
+export interface SupplierStickerSizeSetting {
+  stickerWidthMm?: number | null;
+  stickerHeightMm?: number | null;
+  hasCustomSize: boolean;
 }
 
 export interface StickerPrintFieldSetting {

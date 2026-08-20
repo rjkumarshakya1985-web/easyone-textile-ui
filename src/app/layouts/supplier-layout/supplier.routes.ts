@@ -62,5 +62,11 @@ export const SUPPLIER_ROUTES: Routes = [
       import('./pages/prints/sticker-print/sticker-print')
         .then(c => c.ProductStickerPrint)
   },
+  {
+    path: 'sticker-size-setting',
+    loadComponent: () =>
+      import('./pages/sticker-size-setting/sticker-size-setting')
+        .then(c => c.StickerSizeSetting)
+  },
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
 ];

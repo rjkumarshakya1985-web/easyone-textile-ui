@@ -192,14 +192,14 @@
                    <hr>
             <div id="sticker-print-section">
               <div *ngFor="let sticker of printData()?.stickerPrints" class="sticker-print-item">
-                <div class="app-sticker">
+                <div class="app-sticker" [ngStyle]="stickerStyle(sticker)">
                   <ng-container *ngFor="let field of fields(sticker)">
                     <div
                       *ngIf="field.fieldKey !== 'barcode'"
                       class="sticker-field"
                       [class.company-code]="field.fieldKey === 'companyShortName'"
                       [class.slot-hidden]="!field.isVisible"
-                      [ngStyle]="fieldStyle(field)">
+                      [ngStyle]="fieldStyle(field, sticker)">
                       {{ fieldValue(sticker, field.fieldKey) }}
                     </div>
 
@@ -207,7 +207,7 @@
                       *ngIf="field.fieldKey === 'barcode'"
                       class="sticker-field barcode-field"
                       [class.slot-hidden]="!field.isVisible"
-                      [ngStyle]="fieldStyle(field)">
+                      [ngStyle]="fieldStyle(field, sticker)">
                     <ngx-barcode6
                       [bc-value]="sticker.barcode"
                       [bc-format]="'CODE128B'"

@@ -1,0 +1,106 @@
+<p-toolbar class="page-header">
+  <div class="p-toolbar-group-left">
+    <p-breadcrumb [model]="breadcrumbItems" homeIcon="pi pi-home"></p-breadcrumb>
+  </div>
+  <div class="p-toolbar-group-right">
+    <p-button
+      label="Save Size"
+      icon="pi pi-save"
+      [loading]="isSaving()"
+      (click)="save()">
+    </p-button>
+  </div>
+</p-toolbar>
+
+<section class="sticker-size-page">
+  <p-card styleClass="setting-card">
+    <div class="setting-grid">
+      <div class="setting-panel">
+        <div class="section-title">
+          <i class="pi pi-sliders-h"></i>
+          <div>
+            <h3>Sticker Size</h3>
+            <p>Set your sticker width and height in millimeters.</p>
+          </div>
+        </div>
+
+        <div class="size-form">
+          <label>
+            Width (mm)
+            <input
+              type="number"
+              min="1"
+              step="0.5"
+              [value]="widthMm()"
+              (input)="updateWidth($any($event.target).value)">
+          </label>
+          <label>
+            Height (mm)
+            <input
+              type="number"
+              min="1"
+              step="0.5"
+              [value]="heightMm()"
+              (input)="updateHeight($any($event.target).value)">
+          </label>
+        </div>
+
+        <div class="size-help">
+          Default preview starts at 70 x 30 mm. Save only after the demo print matches your physical sticker.
+        </div>
+      </div>
+
+      <div class="preview-panel">
+        <div class="section-title">
+          <i class="pi pi-print"></i>
+          <div>
+            <h3>Demo Sticker</h3>
+            <p>Print this sample and verify the paper alignment.</p>
+          </div>
+        </div>
+
+        <div id="supplier-sticker-demo-print" class="preview-stage">
+          <div class="app-sticker" [ngStyle]="stickerStyle()">
+            <ng-container *ngFor="let field of fields(demoSticker)">
+              <div
+                *ngIf="field.fieldKey !== 'barcode'"
+                class="sticker-field"
+                [class.company-code]="field.fieldKey === 'companyShortName'"
+                [class.slot-hidden]="!field.isVisible"
+                [ngStyle]="fieldStyle(field)">
+                {{ fieldValue(demoSticker, field.fieldKey) }}
+              </div>
+
+              <div
+                *ngIf="field.fieldKey === 'barcode'"
+                class="sticker-field barcode-field"
+                [class.slot-hidden]="!field.isVisible"
+                [ngStyle]="fieldStyle(field)">
+                <ngx-barcode6
+                  [bc-value]="demoSticker.barcode"
+                  [bc-format]="'CODE128B'"
+                  [bc-width]="3"
+                  [bc-height]="30"
+                  [bc-margin]="0"
+                  [bc-font-size]="14"
+                  [bc-display-value]="false"
+                  [bc-margin-top]="0"
+                  [bc-margin-bottom]="0">
+                </ngx-barcode6>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+
+        <div class="preview-actions">
+          <p-button
+            label="Print Demo"
+            icon="pi pi-print"
+            severity="secondary"
+            (click)="printDemo()">
+          </p-button>
+        </div>
+      </div>
+    </div>
+  </p-card>
+</section>
