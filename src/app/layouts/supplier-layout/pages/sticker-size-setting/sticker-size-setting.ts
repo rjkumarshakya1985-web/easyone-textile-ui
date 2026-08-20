@@ -157,24 +157,16 @@ export class StickerSizeSetting {
   }
 
 fields(sticker: StickerPrint): StickerPrintFieldSetting[] {
-  const setting = sticker.stickerSetting;
- if (!setting?.fieldSettings?.length) {
+  const fieldSettings = sticker.stickerSetting?.fieldSettings;
+
+  if (!fieldSettings?.length) {
     return [];
   }
 
-  // Admin fieldSettings is the source of truth.
-  if (setting.fieldSettings?.length) {
-    return setting.fieldSettings
-      .filter(field => field.isVisible)
-      .sort((a, b) => a.sortOrder - b.sortOrder);
-  }
-
-  // Backward compatibility for old records
-   return setting.fieldSettings
-    .filter(field => field.isVisible)
+  return fieldSettings
+    .filter(field => field.isVisible === true)
     .sort((a, b) => a.sortOrder - b.sortOrder);
 }
-
   fieldValue(sticker: StickerPrint, key: string): string {
     switch (key) {
       case 'supplierCode':
