@@ -181,8 +181,7 @@ fields(sticker: StickerPrint): StickerPrintFieldSetting[] {
         return sticker.supplierCode;
       case 'companyShortName':
         return sticker.stickerSetting?.companyShortName ?? 'DEMO';
-        return sticker.stickerSetting?.companyShortName ?? 'DEMO';
-         case 'wholeSaleRate':
+          case 'wholeSaleRate':
         return sticker.wholeSaleRate;
       case 'productName':
         return sticker.productName;
