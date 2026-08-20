@@ -57,7 +57,7 @@ export const appConfig: ApplicationConfig = {
     // API Base URL
     {
       provide: API_CONFIG,
-      useValue: 'https://localhost:7121/api/'
+      useValue: 'https://textile-erp-a3abgpceebhbeabb.centralindia-01.azurewebsites.net/api/'
     }
   ]
 };
