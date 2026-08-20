@@ -156,18 +156,32 @@ export class StickerSizeSetting {
     this.heightMm.set(Number(value) || this.defaultHeightMm);
   }
 
-  fields(sticker: StickerPrint): StickerPrintFieldSetting[] {
-    return sticker.stickerSetting?.fieldSettings?.length
-      ? sticker.stickerSetting.fieldSettings
-      : this.defaultFields(sticker);
+fields(sticker: StickerPrint): StickerPrintFieldSetting[] {
+  const setting = sticker.stickerSetting;
+
+  if (!setting) {
+    return [];
   }
+
+  // Admin fieldSettings is the source of truth.
+  if (setting.fieldSettings?.length) {
+    return setting.fieldSettings
+      .filter(field => field.isVisible)
+      .sort((a, b) => a.sortOrder - b.sortOrder);
+  }
+
+  // Backward compatibility for old records
+  return this.defaultFields(sticker)
+    .filter(field => field.isVisible)
+    .sort((a, b) => a.sortOrder - b.sortOrder);
+}
 
   fieldValue(sticker: StickerPrint, key: string): string {
     switch (key) {
       case 'supplierCode':
         return sticker.supplierCode;
       case 'companyShortName':
-        return sticker.stickerSetting?.companyShortName ?? 'SSBD';
+        return sticker.stickerSetting?.companyShortName ?? 'DEMO';
       case 'wholeSaleRate':
         return sticker.wholeSaleRate;
       case 'productName':
