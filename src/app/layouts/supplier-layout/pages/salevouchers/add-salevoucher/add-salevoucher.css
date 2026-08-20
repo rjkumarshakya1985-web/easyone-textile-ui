@@ -36,3 +36,30 @@ p-tabview {
 .footer-bold td {
   font-weight: bold;
 }
+
+.product-option {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.product-option-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-weight: 600;
+}
+
+.product-option-title small {
+  padding: 2px 7px;
+  border-radius: 999px;
+  color: #991b1b;
+  background: #fee2e2;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.product-option-inactive {
+  opacity: .62;
+}

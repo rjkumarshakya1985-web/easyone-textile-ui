@@ -138,6 +138,7 @@
                             formControlName="selectproduct"
                             [suggestions]="filteredProducts()"
                             (completeMethod)="searchProduct($event)"
+                            (onSelect)="onProductSelected($event)"
                             optionLabel="name"
                             inputId="selectproduct"
                             placeholder=" "
@@ -151,8 +152,11 @@
                                productForm.get('selectproduct')?.touched
                               }">
                              <ng-template let-product pTemplate="item">
-                                <div style="display: flex; flex-direction: column;">
-                                  <span style="font-weight: 500;"><i>{{ product.name }}</i></span>
+                                <div class="product-option" [class.product-option-inactive]="product.isActive === false">
+                                  <span class="product-option-title">
+                                    <i>{{ product.name }}</i>
+                                    <small *ngIf="product.isActive === false">Deactive</small>
+                                  </span>
                                   <span style="font-size: 0.85rem; color: gray; display: block;">
                                     <i>{{product.stockGroupName}} - {{ product.hsnCode }}</i>
                                  </span>

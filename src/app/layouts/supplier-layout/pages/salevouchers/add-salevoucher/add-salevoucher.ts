@@ -227,9 +227,22 @@ export class AddSalevoucher {
     this.autoCompleteService
      .searchSupplierProduct(query)
      .subscribe(res => {
-      this.filteredProducts.set(res);
+      this.filteredProducts.set(res.filter(product => !product.isDeleted));
     });
   }
+
+ onProductSelected(event: { value: SupplierProductView }): void {
+  const product = event.value;
+
+  if (product?.isActive === false) {
+    this.productForm.get('selectproduct')?.setValue(null);
+    this.messageService.add({
+      severity: 'warn',
+      summary: 'Inactive Product',
+      detail: 'This product is deactive. Please choose an active product.'
+    });
+  }
+ }
    
  addProductToSaleVoucher() {
   if (this.productForm.invalid) {
@@ -240,6 +253,16 @@ export class AddSalevoucher {
   const quantity = this.productForm.get('quantity')?.value as number;
 
   const addProduct = this.productForm.get('selectproduct')?.value as SupplierProductView;
+
+  if (addProduct?.isActive === false) {
+    this.productForm.get('selectproduct')?.setValue(null);
+    this.messageService.add({
+      severity: 'warn',
+      summary: 'Inactive Product',
+      detail: 'This product is deactive. Please choose an active product.'
+    });
+    return;
+  }
   
  
   let isUpdated = false;
