@@ -198,6 +198,7 @@
            <p-inputNumber 
               formControlName="discount" 
               inputId="on_Product_discount" 
+              [readonly]="true"
               [minFractionDigits]="0" 
               [maxFractionDigits]="0" 
               class="w-full"  [ngClass]="{ 'ng-invalid ng-dirty': productForm.get('discount')?.invalid && productForm.get('discount')?.touched }"  >
