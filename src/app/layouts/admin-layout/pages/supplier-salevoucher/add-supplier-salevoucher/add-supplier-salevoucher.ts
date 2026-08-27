@@ -91,6 +91,7 @@ export class AddSupplierSalevoucher {
     { label: 'InTransit', value: 3 },
     { label: 'Transport', value: 4 },
     { label: 'Packed At Location', value: 5 },
+    { label: 'Cancelled', value: 9 },
   ];
 
   products = [

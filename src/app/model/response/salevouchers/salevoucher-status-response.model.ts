@@ -4,6 +4,7 @@ export interface SaleVoucherStatusView {
   date: string;               
   status: number;
   reason?: string;
+  reasons?: string;
   createdBy: string;          
   createdByUserName: string;
   createdOn: string;          

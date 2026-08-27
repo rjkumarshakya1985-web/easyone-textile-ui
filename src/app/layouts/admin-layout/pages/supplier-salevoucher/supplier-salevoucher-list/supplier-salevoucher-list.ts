@@ -64,8 +64,11 @@ import { InputTextModule } from 'primeng/inputtext';
 })
 export class SupplierSalevoucherList {
   lrForm!: FormGroup;
+  statusForm!: FormGroup;
   dialogHeader:string="Add LR"
   visible:boolean=false;
+  statusDialogVisible = false;
+  selectedStatusRow: SaleVoucherTableResponse | null = null;
   tempDateRange: Date[] = [];
   pageSizeItems: MenuItem[] | undefined;
   sortField: string = '';
@@ -159,8 +162,17 @@ export class SupplierSalevoucherList {
   { label: 'Transport', value: 4 },
   { label: 'Packed At Location', value: 5 },
   { label: 'Opened', value: 6 },
+  { label: 'Cancelled', value: 9 },
   { label: 'Tally Synched', value: 11 }
 ];
+
+  changeStatusOptions = [
+    { label: 'In Transit', value: ParcelStatus.InTransit },
+    { label: 'Transport', value: ParcelStatus.Transport },
+    { label: 'Packed At Location', value: ParcelStatus.PackedAtLocation },
+    { label: 'Opened', value: ParcelStatus.Opened },
+    { label: 'Cancelled', value: ParcelStatus.Cancelled }
+  ];
 
   breadcrumbItems: MenuItem[] = [
     { label: 'Dashboard', routerLink: '/supplier' },
@@ -320,6 +332,11 @@ loadMobileData(reset = true) {
      id:[null,Validators.required],
      lrNumber: ['', Validators.required],
      lrDate: [null, Validators.required]
+    });
+
+    this.statusForm = this.fb.group({
+      status: [null, Validators.required],
+      reason: ['']
     });
   }
 
@@ -529,16 +546,20 @@ onPageSizeChange(size: number) {
     }
   ];
 
-  // 👇 Only add Edit if NOT InWareHouse
-  if (row.parcelStatus < ParcelStatus.Opened) {
+  if (this.canChangeStatus(row.parcelStatus)) {
     this.items.push({
-      label: 'Edit',
-      icon: 'pi pi-pencil',
-      command: () => this.edit(row.id)
+      label: 'Change Status',
+      icon: 'pi pi-sync',
+      command: () => this.openChangeStatusDialog(row)
     });
   }
 
   this.items.push({
+    label: 'Edit',
+    icon: 'pi pi-pencil',
+    command: () => this.edit(row.id)
+  },
+  {
     label: 'Print',
     icon: 'pi pi-print',
     command: () => this.goToPrint(row.id)
@@ -547,6 +568,51 @@ onPageSizeChange(size: number) {
   
  
   this.menu.toggle(event);
+  }
+
+  canChangeStatus(status: ParcelStatus): boolean {
+    return status === ParcelStatus.InTransit ||
+      status === ParcelStatus.Transport ||
+      status === ParcelStatus.PackedAtLocation;
+  }
+
+  openChangeStatusDialog(row: SaleVoucherTableResponse): void {
+    this.selectedStatusRow = row;
+    this.statusForm.reset({
+      status: row.parcelStatus,
+      reason: ''
+    });
+    this.statusDialogVisible = true;
+  }
+
+  currentStatusText(): string {
+    return this.selectedStatusRow
+      ? Helper.getParcelStatusText(this.selectedStatusRow.parcelStatus)
+      : '';
+  }
+
+  saveStatusChange(): void {
+    if (this.statusForm.invalid || !this.selectedStatusRow) {
+      this.statusForm.markAllAsTouched();
+      return;
+    }
+
+    const value = this.statusForm.value;
+    this.loader.show();
+
+    this.saleVoucherService.changeStatus({
+      saleVoucherId: this.selectedStatusRow.id,
+      status: value.status,
+      reason: value.reason
+    }).subscribe({
+      next: () => {
+        this.statusDialogVisible = false;
+        this.selectedStatusRow = null;
+        this.loadTableData(this.searchControl.value || '');
+      },
+      complete: () => this.loader.hide(),
+      error: () => this.loader.hide()
+    });
   }
 
 

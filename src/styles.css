@@ -2469,3 +2469,11 @@ body.app-dark-theme .p-datatable tbody > tr:hover > td.action-column {
     min-width: 640px;
   }
 }
+
+.status-change-dialog .p-dialog-header{padding:1rem 1.1rem;border-bottom:1px solid #e5e7eb}
+.status-change-dialog .p-dialog-content{padding:1rem 1.1rem .5rem}.status-dialog-title{color:#243247;font-weight:800}
+.status-dialog-form{display:grid;gap:1rem}.status-voucher-summary{display:grid;gap:.25rem;padding:.85rem;border:1px solid #cfe0f6;border-radius:8px;color:#243247;background:#eef6ff}
+.status-voucher-summary span{font-weight:700}.status-voucher-summary small{color:#64748b}.status-field{display:grid;gap:.45rem;color:#334155;font-size:.86rem;font-weight:750}
+.status-field .p-select,.status-field input{width:100%;min-height:38px;border-radius:7px}
+.app-dark-theme .status-change-dialog .p-dialog-header,.app-dark-theme .status-change-dialog .p-dialog-content,.app-dark-theme .status-change-dialog .p-dialog-footer{border-color:#303841;color:#e5edf6;background:#14181d}
+.app-dark-theme .status-dialog-title,.app-dark-theme .status-field,.app-dark-theme .status-voucher-summary{color:#e5edf6}.app-dark-theme .status-voucher-summary{border-color:#263d4f;background:#162330}

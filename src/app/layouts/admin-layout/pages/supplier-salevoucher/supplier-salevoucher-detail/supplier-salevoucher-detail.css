@@ -117,6 +117,19 @@
   background: #cbd5e1 !important;
 }
 
+.status-reason {
+  max-width: 180px;
+  margin-top: 0.25rem;
+  color: #475569;
+  font-size: 0.72rem;
+  line-height: 1.25;
+}
+
+.status-reason span {
+  color: #334155;
+  font-weight: 750;
+}
+
 :host-context(.app-dark-theme) .detail-card,
 :host-context(.app-dark-theme) .status-history-card {
   color: #f8fafc;
@@ -184,6 +197,14 @@
 
 :host-context(.app-dark-theme) ::ng-deep .status-history-card .text-xs {
   color: #cbd5e1 !important;
+}
+
+:host-context(.app-dark-theme) .status-reason {
+  color: #cbd5e1;
+}
+
+:host-context(.app-dark-theme) .status-reason span {
+  color: #f8fafc;
 }
 
 :host-context(.app-dark-theme) ::ng-deep .status-history-card .p-step-number {

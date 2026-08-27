@@ -110,4 +110,8 @@ export class SupplierSalevoucherDetail {
   }
 }
 
+    getReason(step: SaleVoucherStatusView): string {
+      return (step.reasons || step.reason || '').trim();
+    }
+
 }

@@ -434,3 +434,44 @@
     </ng-template>
 </p-dialog>
 
+<p-dialog
+  [(visible)]="statusDialogVisible"
+  [modal]="true"
+  styleClass="status-change-dialog"
+  [style]="{ width: '24rem' }">
+  <ng-template pTemplate="header">
+    <div class="status-dialog-title">
+      <span>Change Sale Voucher Status</span>
+    </div>
+  </ng-template>
+
+  <form [formGroup]="statusForm" class="status-dialog-form" *ngIf="selectedStatusRow">
+    <div class="status-voucher-summary">
+      <strong>#{{ selectedStatusRow.id }}</strong>
+      <span>{{ selectedStatusRow.supplierName || '-' }}</span>
+      <small>Current: {{ currentStatusText() }}</small>
+    </div>
+
+    <label class="status-field">
+      <span>Status</span>
+      <p-select
+        formControlName="status"
+        [options]="changeStatusOptions"
+        optionLabel="label"
+        optionValue="value"
+        appendTo="body">
+      </p-select>
+    </label>
+
+    <label class="status-field">
+      <span>Reason</span>
+      <input pInputText formControlName="reason" autocomplete="off" />
+    </label>
+  </form>
+
+  <ng-template pTemplate="footer">
+    <p-button label="Cancel" [raised]="true" severity="secondary" (click)="statusDialogVisible = false" />
+    <p-button label="Update Status" [raised]="true" icon="pi pi-check" severity="info" (click)="saveStatusChange()" />
+  </ng-template>
+</p-dialog>
+

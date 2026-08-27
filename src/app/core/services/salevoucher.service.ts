@@ -10,6 +10,7 @@ import { SaleVoucherResponse } from '../../model/response/salevouchers/salevouch
 import { SaleVoucherStatusView } from '../../model/response/salevouchers/salevoucher-status-response.model';
 import { SaleVoucherDto } from '../../model/dto/sale-voucher.model';
 import { LrRequest } from '../../model/request/salevouchers/lr-request.model';
+import { ChangeSaleVoucherStatusRequest } from '../../model/request/salevouchers/change-salevoucher-status-request.model';
 
 
 @Injectable({
@@ -75,6 +76,10 @@ getExportedList(): Observable<SaleVoucherDto[]> {
 
 saveLr(request:LrRequest):Observable<boolean>{
  return this.http.post<boolean>(`${this.baseUrl}/lr`, request);
+}
+
+changeStatus(request: ChangeSaleVoucherStatusRequest): Observable<boolean> {
+ return this.http.post<boolean>(`${this.baseUrl}/change-status`, request);
 }
 
 }
