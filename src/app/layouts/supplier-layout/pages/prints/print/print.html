@@ -6,6 +6,7 @@
             <p-tab [value]="1">SaleVoucher</p-tab>
             <p-tab [value]="2">Parcel Sticker</p-tab>
             <p-tab [value]="3">Supplier Bill</p-tab>
+            <p-tab [value]="4">Dispatch Voucher</p-tab>
         </p-tablist>
         <p-tabpanels>
           <p-tabpanel [value]="2">
@@ -119,11 +120,11 @@
                 
                  <hr>
                 <div class="print-note no-print">
-    ⚠️ Note: This dispatch voucher must be attached with the packing slip.
+    ⚠️ Note: This Sale voucher must be attached with the packing slip.
 </div>   
                 <hr>
               <div id="parcel-salevoucher">
-                    <div style="text-align: center;" > <h4><b><u>DISPATCH VOUCHER</u></b></h4></div>
+                    <div style="text-align: center;" > <h4><b><u>SALE VOUCHER</u></b></h4></div>
                     <hr>
                     <div class="row">
                             <div class="col-xs-12 col-sm-12 col-md-12 text-center">
@@ -318,6 +319,230 @@
                 </div>  
               </div>
             </p-tabpanel>
+            <!-- ================= DISPATCH VOUCHER ================= -->
+<p-tabpanel [value]="4">
+
+    <!-- Buttons -->
+    <p-button 
+        label="Cancel" 
+        [raised]="true" 
+        icon="pi pi-times" 
+        severity="secondary" 
+        (click)="cancel()">
+    </p-button>
+
+    <p-button 
+        label="Print" 
+        [raised]="true" 
+        icon="pi pi-print" 
+        severity="success" 
+        class="ml-2" 
+        (click)="printPage('dispatch-voucher')">
+    </p-button>
+
+    <hr>
+
+    <div class="print-note no-print">
+        ⚠️ Note: This dispatch voucher must be attached inside the Parcel.
+    </div>
+
+    <hr>
+
+    <div id="dispatch-voucher">
+
+        <!-- Title -->
+        <div style="text-align: center;">
+            <h4>
+                <b>
+                    <u>DISPATCH VOUCHER</u>
+                </b>
+            </h4>
+        </div>
+
+        <hr>
+
+        <!-- Company Header -->
+        <div class="row">
+
+            <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+
+                <h2>
+                    {{ printData()?.saleVoucherPrint?.companyName }}
+                </h2>
+
+                <strong>
+                    {{ printData()?.saleVoucherPrint?.address }}
+                </strong>
+
+            </div>
+
+        </div>
+
+        <hr style="border: 1px solid">
+
+        <!-- Voucher Details -->
+        <div class="row">
+
+            <!-- Left -->
+            <div class="col-xs-6 col-sm-6 col-md-6">
+
+                <h6>
+                    <b>
+                        <u>
+                            {{ printData()?.saleVoucherPrint?.companyName }}
+                        </u>
+                    </b>
+                </h6>
+
+                <strong>DISPATCH NO :</strong>
+                {{ printData()?.saleVoucherPrint?.id }}
+                <br>
+
+                <strong>DISPATCH DATE :</strong>
+                {{ printData()?.saleVoucherPrint?.date | date }}
+                <br>
+
+                <strong>GSTIN NO :</strong>
+                {{ printData()?.saleVoucherPrint?.gstIn }}
+
+            </div>
+
+
+            <!-- Right -->
+            <div class="col-xs-6 col-sm-6 col-md-6 text-right">
+
+                <h6>
+                    <b>
+                        <u>Supplier Detail</u>
+                    </b>
+                </h6>
+
+                <strong>M/S :</strong>
+                {{ printData()?.supplierPrint?.name }}
+                <br>
+
+                <strong>INVOICE NO :</strong>
+                {{ printData()?.saleVoucherPrint?.inVoiceNo || '-' }}
+                <br>
+
+                <strong>GSTIN NO :</strong>
+                {{ printData()?.supplierPrint?.gstIn }}
+                <br>
+
+                <strong>TRANSPORT :</strong>
+                {{ printData()?.saleVoucherPrint?.transportName }}
+
+            </div>
+
+        </div>
+
+        <hr style="border: 1px solid">
+
+
+        <!-- Product Table -->
+        <table class="table table-bordered">
+
+            <thead>
+                <tr>
+                    <th>S.No.</th>
+                    <th>Product</th>
+                    <th>HSN Code</th>
+                    <th>Qty</th>
+                    <th>Rate</th>                    
+                </tr>
+            </thead>
+
+
+            <tbody>
+
+                <tr 
+                    *ngFor="let p of (printData()?.billingDetailPrints || []); let idx = index">
+
+                    <td>{{ idx + 1 }}</td>
+
+                    <td>
+                        {{ p.productName }}
+                    </td>
+
+                    <td>
+                        {{ p.hsnCode }}
+                    </td>
+
+                    <td>
+                        {{ p.qty }}
+                    </td>
+
+                    <!-- Wholesale Rate -->
+                    <td class="text-right">
+                        {{ (p.wholeSalePrice || 0) 
+                            | currency:'INR':'symbol':'1.2-2' }}
+                    </td>
+                   
+                </tr>
+
+            </tbody>
+
+
+            <!-- Footer -->
+            <tfoot>
+
+                <tr>
+
+                    <th colspan="3" class="text-end">
+                        Total
+                    </th>
+
+                    <th>
+                        {{ getTotalQty() }}
+                    </th>
+
+                    <th></th>
+                   
+
+                </tr>
+
+            </tfoot>
+
+        </table>
+
+
+        <!-- Footer -->
+        <div class="row">
+
+            <div class="col-xs-8 col-sm-8 col-md-8">
+
+                <br>
+
+                {{ printData()?.saleVoucherPrint?.companyName }}
+
+            </div>
+
+
+            <!-- Barcode -->
+            <div class="col-xs-4 col-sm-4 col-md-4">
+
+                <div class="text-right">
+
+                    <ngx-barcode6
+                        [bc-value]="addPrefixIfThreeDigit(
+                            printData()?.saleVoucherPrint?.id
+                        )"
+                        [bc-format]="'CODE128B'"
+                        [bc-width]="2"
+                        [bc-height]="40"
+                        [bc-display-value]="true"
+                        [bc-font-size]="15">
+                    </ngx-barcode6>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</p-tabpanel>
         </p-tabpanels>
     </p-tabs>
 </div>
