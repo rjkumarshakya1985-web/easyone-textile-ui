@@ -272,6 +272,7 @@ private stickerPrintStyles(): string {
     .company-code{color:#000;background:transparent;padding:0}
     .barcode-field{display:flex;align-items:center;justify-content:center;overflow:hidden}
     .slot-hidden{visibility:hidden}
+    .sale-voucher-table .rate-column{width:140px;min-width:140px;text-align:right;white-space:nowrap;vertical-align:middle}
   `;
 }
 
