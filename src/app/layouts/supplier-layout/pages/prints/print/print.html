@@ -3,10 +3,10 @@
     <p-tabs [value]="value">
         <p-tablist>
             <p-tab [value]="0">Product Sticker</p-tab>
-            <p-tab [value]="1">SaleVoucher</p-tab>
+            <p-tab [value]="1">Dispatch Voucher</p-tab>
             <p-tab [value]="2">Parcel Sticker</p-tab>
             <p-tab [value]="3">Supplier Bill</p-tab>
-            <p-tab [value]="4">Dispatch Voucher</p-tab>
+            <p-tab [value]="4">Sale Voucher</p-tab>
         </p-tablist>
         <p-tabpanels>
           <p-tabpanel [value]="2">
@@ -26,11 +26,23 @@
                 <hr>
                 <div class="panel-body" id="print-section">
                 <!-- Title -->
-                <div class="text-center mb-3">
-                   <h2 style="font-size:40px;">
-                     <b>{{ printData()?.saleVoucherPrint?.companyName }}</b>
-                  </h2>
-                </div>
+                 <!-- Company Header -->
+<div class="text-center mb-3 parcel-company-header">
+
+    <div class="parcel-company-name">
+        {{ printData()?.saleVoucherPrint?.companyName }}
+    </div>
+
+    <div class="parcel-company-address">
+        {{ printData()?.saleVoucherPrint?.address }}
+    </div>
+
+    <div class="parcel-company-gstin">
+        GSTIN: {{ printData()?.saleVoucherPrint?.gstIn }}
+    </div>
+
+</div>
+                
                 <div class="well">
                     <div class="row">
                         <!-- Left Section -->
@@ -124,7 +136,7 @@
 </div>   
                 <hr>
               <div id="parcel-salevoucher">
-                    <div style="text-align: center;" > <h4><b><u>SALE VOUCHER</u></b></h4></div>
+                    <div style="text-align: center;" > <h4><b><u>DISPATCH VOUCHER</u></b></h4></div>
                     <hr>
                     <div class="row">
                             <div class="col-xs-12 col-sm-12 col-md-12 text-center">
@@ -354,7 +366,7 @@
         <div style="text-align: center;">
             <h4>
                 <b>
-                    <u>DISPATCH VOUCHER</u>
+                    <u>SALE VOUCHER</u>
                 </b>
             </h4>
         </div>

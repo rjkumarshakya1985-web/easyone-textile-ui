@@ -17,7 +17,28 @@
     color: #856404;
     border-radius: 4px;
 }
+.parcel-company-header {
+    text-align: center;
+    margin-bottom: 15px;
+}
 
+.parcel-company-name {
+    font-size: 40px;
+    font-weight: bold;
+    line-height: 1.2;
+}
+
+.parcel-company-address {
+    font-size: 18px;
+    font-weight: 500;
+    margin-top: 5px;
+}
+
+.parcel-company-gstin {
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 3px;
+}
 .sticker-print-item {
   margin: 0;
 }
