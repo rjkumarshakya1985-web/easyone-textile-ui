@@ -452,7 +452,7 @@
 
 
         <!-- Product Table -->
-        <table class="table table-bordered">
+        <table class="table table-bordered sale-voucher-table">
 
             <thead>
                 <tr>
@@ -460,7 +460,7 @@
                     <th>Product</th>
                     <th>HSN Code</th>
                     <th>Qty</th>
-                    <th>Rate</th>                    
+                    <th class="rate-column">Rate</th>
                 </tr>
             </thead>
 
@@ -485,7 +485,7 @@
                     </td>
 
                     <!-- Wholesale Rate -->
-                    <td class="text-right">
+                    <td class="rate-column">
                         {{ (p.wholeSalePrice || 0) 
                             | currency:'INR':'symbol':'1.2-2' }}
                     </td>
@@ -508,7 +508,7 @@
                         {{ getTotalQty() }}
                     </th>
 
-                    <th></th>
+                    <th class="rate-column"></th>
                    
 
                 </tr>

@@ -86,6 +86,14 @@
   visibility: hidden;
 }
 
+.sale-voucher-table .rate-column {
+  width: 140px;
+  min-width: 140px;
+  text-align: right;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
 /* Print Optimization */
 @media print {
 
