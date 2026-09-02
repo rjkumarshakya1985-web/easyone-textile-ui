@@ -33,6 +33,11 @@
     font-weight: 500;
     margin-top: 5px;
 }
+.parcel-company-phone {
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 3px;
+}
 
 .parcel-company-gstin {
     font-size: 16px;
