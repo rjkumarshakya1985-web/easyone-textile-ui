@@ -16,6 +16,7 @@ export interface SaleVoucherPrint {
   discount:number;
   date: string; // ISO Date from API
   gstIn:string;
+  phone:string;
 }
 
 export interface SupplierPrint {
