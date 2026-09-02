@@ -108,3 +108,400 @@
     display: none !important;
   }
 }
+/* =========================================================
+   PARCEL / DISPATCH STICKER
+========================================================= */
+
+.parcel-print-area {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+.parcel-sticker {
+    width: 900px;
+    max-width: 100%;
+    background: #ffffff;
+    color: #111;
+    border: 3px solid #111;
+    border-radius: 8px;
+    overflow: hidden;
+    font-family: Arial, Helvetica, sans-serif;
+    box-sizing: border-box;
+
+    box-shadow:
+        0 3px 12px rgba(0, 0, 0, 0.12);
+}
+
+
+/* =============================
+   COMPANY HEADER
+============================= */
+
+.parcel-header {
+    text-align: center;
+    padding: 14px 20px 10px;
+    border-bottom: 2px solid #111;
+}
+
+.parcel-company-name {
+    font-size: 34px;
+    line-height: 1.05;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.parcel-company-address {
+    margin-top: 5px;
+    font-size: 15px;
+    line-height: 1.4;
+    font-weight: 500;
+}
+
+.parcel-contact-row {
+    margin-top: 7px;
+
+    display: flex;
+    justify-content: center;
+    gap: 28px;
+
+    flex-wrap: wrap;
+
+    font-size: 14px;
+    font-weight: 600;
+}
+
+
+/* =============================
+   TITLE
+============================= */
+
+.parcel-title-bar {
+    min-height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 6px 14px;
+
+    background: #111;
+    color: #fff;
+
+    box-sizing: border-box;
+}
+
+.parcel-title {
+    font-size: 18px;
+    font-weight: 900;
+    letter-spacing: 1px;
+}
+
+.parcel-date {
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+
+/* =============================
+   MAIN BODY
+============================= */
+
+.parcel-body {
+    display: grid;
+    grid-template-columns: 62% 38%;
+}
+
+
+/* =============================
+   LEFT DETAILS
+============================= */
+
+.parcel-details {
+    border-right: 2px solid #111;
+}
+
+.parcel-detail-row {
+    display: grid;
+
+    grid-template-columns: 165px 1fr;
+
+    min-height: 46px;
+
+    border-bottom: 1px solid #888;
+}
+
+.parcel-detail-row:last-child {
+    border-bottom: none;
+}
+
+
+/* Label */
+
+.parcel-label {
+    display: flex;
+    align-items: center;
+
+    padding: 8px 10px;
+
+    background: #f2f2f2;
+
+    border-right: 1px solid #888;
+
+    font-size: 13px;
+    font-weight: 800;
+
+    letter-spacing: 0.3px;
+
+    box-sizing: border-box;
+}
+
+
+/* Value */
+
+.parcel-value {
+    display: flex;
+    align-items: center;
+
+    padding: 7px 12px;
+
+    font-size: 18px;
+    font-weight: 800;
+
+    overflow-wrap: anywhere;
+
+    box-sizing: border-box;
+}
+
+
+/* Dispatch Highlight */
+
+.highlight-row .parcel-label {
+    background: #dedede;
+}
+
+.dispatch-number {
+    font-size: 28px;
+    font-weight: 900;
+    letter-spacing: 1px;
+}
+
+
+/* Transport */
+
+.transport-name {
+    font-size: 18px;
+    text-transform: uppercase;
+}
+
+
+/* Particulars */
+
+.particulars-row {
+    min-height: 62px;
+}
+
+.particulars-row .parcel-value {
+    align-items: flex-start;
+    padding-top: 10px;
+    line-height: 1.35;
+}
+
+
+/* =============================
+   BARCODE SECTION
+============================= */
+
+.parcel-barcode-section {
+    min-height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    padding: 12px;
+
+    text-align: center;
+
+    box-sizing: border-box;
+}
+
+.barcode-heading {
+    width: 100%;
+
+    padding-bottom: 6px;
+
+    border-bottom: 1px solid #ccc;
+
+    font-size: 12px;
+    font-weight: 800;
+
+    letter-spacing: 1px;
+}
+
+.parcel-barcode {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-top: 15px;
+
+    overflow: hidden;
+}
+
+.parcel-barcode ngx-barcode6 {
+    max-width: 100%;
+}
+
+.barcode-number {
+    margin-top: 8px;
+
+    font-size: 14px;
+    font-weight: 800;
+
+    letter-spacing: 0.5px;
+}
+
+
+/* =============================
+   FOOTER
+============================= */
+
+.parcel-footer {
+    min-height: 36px;
+
+    border-top: 2px solid #111;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 5px 12px;
+
+    font-size: 11px;
+
+    box-sizing: border-box;
+}
+
+.parcel-footer-message {
+    font-weight: 800;
+    letter-spacing: 0.3px;
+}
+
+.parcel-footer-company {
+    font-weight: 700;
+}
+
+
+/* =============================
+   SCREEN BUTTONS
+============================= */
+
+.parcel-actions {
+    margin-bottom: 10px;
+}
+
+
+/* Existing note can remain */
+
+.print-note {
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+    padding: 10px 15px;
+
+    background-color: #fff3cd;
+    border-left: 5px solid #ff9800;
+
+    font-weight: 600;
+    color: #856404;
+
+    border-radius: 4px;
+}
+
+
+/* =========================================================
+   PRINT
+========================================================= */
+
+@media print {
+
+    @page {
+        margin: 7mm;
+    }
+
+    body {
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #fff !important;
+    }
+
+    .page-header,
+    .p-toolbar,
+    button,
+    .no-print,
+    p-tablist {
+        display: none !important;
+    }
+
+    .parcel-print-area {
+        width: 100%;
+        padding: 0;
+        margin: 0;
+
+        display: block;
+    }
+
+    .parcel-sticker {
+        width: 100%;
+
+        border: 2px solid #000;
+        border-radius: 0;
+
+        box-shadow: none;
+
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
+
+    .parcel-title-bar {
+        background: #000 !important;
+        color: #fff !important;
+
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .parcel-label {
+        background: #eee !important;
+
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .highlight-row .parcel-label {
+        background: #ddd !important;
+
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .parcel-company-name {
+        font-size: 30px;
+    }
+
+    .parcel-value {
+        font-size: 16px;
+    }
+
+    .dispatch-number {
+        font-size: 25px;
+    }
+
+}

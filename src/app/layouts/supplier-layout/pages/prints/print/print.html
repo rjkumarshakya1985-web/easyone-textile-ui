@@ -9,126 +9,241 @@
             <p-tab [value]="4">Sale Voucher</p-tab>
         </p-tablist>
         <p-tabpanels>
-          <p-tabpanel [value]="2">
-          <div>
-            <div class="panel panel-default">
-                <div class="panel-heading d-flex justify-content-between align-items-center">
-                  <div>
-                   <p-button label="Cancel" [raised]="true" icon="pi pi-times" severity="secondary" (click)="cancel()"></p-button>
-                   <p-button   label="Print" [raised]="true" icon="pi pi-print" severity="success" class="ml-2" (click)="printPage('print-section')"></p-button>
-                 
-                 </div>
-                 
-<div class="print-note no-print">
-    ⚠️ Note: This sticker must be affixed to the parcel.
-</div>
+         <p-tabpanel [value]="2">
+
+    <!-- Screen Buttons -->
+    <div class="no-print parcel-actions">
+        <p-button
+            label="Cancel"
+            [raised]="true"
+            icon="pi pi-times"
+            severity="secondary"
+            (click)="cancel()">
+        </p-button>
+
+        <p-button
+            label="Print"
+            [raised]="true"
+            icon="pi pi-print"
+            severity="success"
+            class="ml-2"
+            (click)="printPage('print-section')">
+        </p-button>
+    </div>
+
+    <div class="print-note no-print">
+        ⚠️ Note: This sticker must be affixed to the parcel.
+    </div>
+
+    <!-- =========================
+         PARCEL STICKER
+    ========================== -->
+    <div id="print-section" class="parcel-print-area">
+
+        <div class="parcel-sticker">
+
+            <!-- HEADER -->
+            <div class="parcel-header">
+
+                <div class="parcel-company-name">
+                    {{ printData()?.saleVoucherPrint?.companyName }}
                 </div>
-                <hr>
-                <div class="panel-body" id="print-section">
-                <!-- Title -->
-                 <!-- Company Header -->
-<div class="text-center mb-3 parcel-company-header">
 
-    <div class="parcel-company-name">
-        {{ printData()?.saleVoucherPrint?.companyName }}
-    </div>
-
-    <div class="parcel-company-address">
-        {{ printData()?.saleVoucherPrint?.address }}
-    </div>
-<div class="parcel-company-phone">
-       PH:  {{ printData()?.saleVoucherPrint?.phone }}
-    </div>
-
-    <div class="parcel-company-gstin">
-        GSTIN: {{ printData()?.saleVoucherPrint?.gstIn }}
-    </div>
-
-</div>
-                
-                <div class="well">
-                    <div class="row">
-                        <!-- Left Section -->
-                        <div class="col-md-7">
-                           <div class="row mb-2">
-                             <div class="col-md-4">
-                                <h4 class="pull-left">Dispatch No :</h4>
-                             </div>
-                             <div class="col-md-8">
-                                <h4><b>{{ printData()?.saleVoucherPrint?.id }}</b></h4> 
-                             </div>
-                          </div>
-                          <div class="row mb-2">
-                              <div class="col-md-4">
-                               <h4 class="pull-left">Department :</h4>
-                              </div>
-                              <div class="col-md-8">
-                                <h4><b> {{ printData()?.supplierPrint?.department}}-{{ printData()?.supplierPrint?.subDepartment}}</b></h4> 
-                             </div>
-                         </div>
-                          <div class="row mb-2">
-                              <div class="col-md-4">
-                               <h4 class="pull-left">Invoice No :</h4>
-                              </div>
-                              <div class="col-md-8">
-                               <h4><b>{{ printData()?.saleVoucherPrint?.inVoiceNo }}</b></h4>
-                              </div>
-                         </div>
-                         <div class="row mb-2">
-                            <div class="col-md-4">
-                              <h4 class="pull-left">Supplier :</h4>
-                            </div>
-                           <div class="col-md-8">
-                             <h4><b>{{ printData()?.supplierPrint?.supplierCode }}</b></h4>
-                           </div>
-                         </div>
-                         <div class="row mb-2">
-                            <div class="col-md-4">
-                              <h4 class="pull-left">Transport :</h4>
-                           </div>
-                           <div class="col-md-8">
-                               <h4><b>{{ printData()?.saleVoucherPrint?.transportName }}</b></h4>
-                          </div>
-                       </div>
-                       
-                        <div class="row mb-2">
-                            <div class="col-md-4">
-                              <h4 class="pull-left">Particulars :</h4>
-                           </div>
-                           <div class="col-md-8">
-                               <h4><b>{{ getItemSummary() }}</b></h4>
-                          </div>
-                       </div>
-            </div>
-
-            <!-- Right Section - Barcode -->
-            <div class="col-md-5 text-center">
- <ngx-barcode6
-      [bc-value]="addPrefixIfThreeDigit( printData()?.saleVoucherPrint?.id)"
-      [bc-format]="'CODE128B'"
-      [bc-width]="2"
-      [bc-height]="80"      
-      [bc-display-value]="true"     
-      [bc-margin]="10"     
-      [bc-display-value]="true"
-      [bc-margin-top]="2"
-      [bc-margin-bottom]="2">
-      >
-    </ngx-barcode6>
-           
-
-
-            </div>
-
-                   </div>
+                <div class="parcel-company-address">
+                    {{ printData()?.saleVoucherPrint?.address }}
                 </div>
-             <div class="pull-right">
-              <b>Date :{{ printData()?.saleVoucherPrint?.date | date:'dd-MMM-yyyy' }}</b>
+
+                <div class="parcel-contact-row">
+
+                    <span>
+                        <b>PH:</b>
+                        {{ printData()?.saleVoucherPrint?.phone }}
+                    </span>
+
+                    <span>
+                        <b>GSTIN:</b>
+                        {{ printData()?.saleVoucherPrint?.gstIn }}
+                    </span>
+
+                </div>
+
             </div>
-               </div>
+
+
+            <!-- TITLE BAR -->
+            <div class="parcel-title-bar">
+
+                <div class="parcel-title">
+                   PARCEL STICKER
+                </div>
+
+                <div class="parcel-date">
+                    DATE:
+                    <b>
+                        {{ printData()?.saleVoucherPrint?.date
+                            | date:'dd-MMM-yyyy' }}
+                    </b>
+                </div>
+
             </div>
-         </div>
-          </p-tabpanel>
+
+
+            <!-- BODY -->
+            <div class="parcel-body">
+
+                <!-- LEFT DETAILS -->
+                <div class="parcel-details">
+
+
+                    <!-- Dispatch -->
+                    <div class="parcel-detail-row highlight-row">
+
+                        <div class="parcel-label">
+                            DISPATCH NO.
+                        </div>
+
+                        <div class="parcel-value dispatch-number">
+                            {{ printData()?.saleVoucherPrint?.id }}
+                        </div>
+
+                    </div>
+
+
+                    <!-- Department -->
+                    <div class="parcel-detail-row">
+
+                        <div class="parcel-label">
+                            DEPARTMENT
+                        </div>
+
+                        <div class="parcel-value">
+                            {{ printData()?.supplierPrint?.department }}
+                            -
+                            {{ printData()?.supplierPrint?.subDepartment }}
+                        </div>
+
+                    </div>
+
+
+                    <!-- Invoice -->
+                    <div class="parcel-detail-row">
+
+                        <div class="parcel-label">
+                            INVOICE NO.
+                        </div>
+
+                        <div class="parcel-value">
+                            {{
+                                printData()?.saleVoucherPrint?.inVoiceNo
+                                || '-'
+                            }}
+                        </div>
+
+                    </div>
+
+
+                    <!-- Supplier -->
+                    <div class="parcel-detail-row">
+
+                        <div class="parcel-label">
+                            SUPPLIER
+                        </div>
+
+                        <div class="parcel-value">
+                            {{ printData()?.supplierPrint?.supplierCode }}
+                        </div>
+
+                    </div>
+
+
+                    <!-- Transport -->
+                    <div class="parcel-detail-row">
+
+                        <div class="parcel-label">
+                            TRANSPORT
+                        </div>
+
+                        <div class="parcel-value transport-name">
+                            {{
+                                printData()?.saleVoucherPrint?.transportName
+                                || '-'
+                            }}
+                        </div>
+
+                    </div>
+
+
+                    <!-- Particulars -->
+                    <div class="parcel-detail-row particulars-row">
+
+                        <div class="parcel-label">
+                            PARTICULARS
+                        </div>
+
+                        <div class="parcel-value">
+                            {{ getItemSummary() }}
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- RIGHT BARCODE -->
+                <div class="parcel-barcode-section">
+
+                    <div class="barcode-heading">
+                        DISPATCH BARCODE
+                    </div>
+
+                    <div class="parcel-barcode">
+
+                        <ngx-barcode6
+                            [bc-value]="
+                                addPrefixIfThreeDigit(
+                                    printData()?.saleVoucherPrint?.id
+                                )
+                            "
+                            [bc-format]="'CODE128B'"
+                            [bc-width]="2"
+                            [bc-height]="90"
+                            [bc-display-value]="true"
+                            [bc-font-size]="16"
+                            [bc-margin]="5"
+                            [bc-margin-top]="2"
+                            [bc-margin-bottom]="2">
+                        </ngx-barcode6>
+
+                    </div>
+
+                    <div class="barcode-number">
+                        DISPATCH #
+                        {{ printData()?.saleVoucherPrint?.id }}
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- FOOTER -->
+            <div class="parcel-footer">
+
+                <div class="parcel-footer-message">
+                    HANDLE WITH CARE • VERIFY DISPATCH BEFORE DELIVERY
+                </div>
+
+                <div class="parcel-footer-company">
+                    {{ printData()?.saleVoucherPrint?.companyName }}
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</p-tabpanel>
             <p-tabpanel [value]="1">
                 <p-button label="Cancel" [raised]="true" icon="pi pi-times" severity="secondary" (click)="cancel()"></p-button>
                 <p-button label="Print" [raised]="true" icon="pi pi-print" severity="success" class="ml-2" (click)="printPage('parcel-salevoucher')"></p-button>
