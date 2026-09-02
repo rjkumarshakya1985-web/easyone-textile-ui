@@ -36,9 +36,7 @@
     <div class="parcel-company-address">
         {{ printData()?.saleVoucherPrint?.address }}
     </div>
-<div class="parcel-company-phone">
-        {{ printData()?.saleVoucherPrint?.phone }}
-    </div>
+
 
     <div class="parcel-company-gstin">
         GSTIN: {{ printData()?.saleVoucherPrint?.gstIn }}
@@ -153,9 +151,8 @@
                                     <h6><b><u>{{printData()?.saleVoucherPrint?.companyName}}</u></b></h6>
                                     <strong>DISPATCH NO :</strong>{{printData()?.saleVoucherPrint?.id}}<br>
                                     <strong>DISPATCH DATE :</strong>{{printData()?.saleVoucherPrint?.date | date}}<br>
-                                    <strong>GSTIN NO :</strong> {{printData()?.saleVoucherPrint?.gstIn}} <br>
-                                    <strong>PHONE :</strong> {{printData()?.saleVoucherPrint?.phone}} 
-                                 
+                                    <strong>GSTIN NO :</strong> {{printData()?.saleVoucherPrint?.gstIn}} 
+                                   
                             </div>
                             <div class="col-xs-6 col-sm-6 col-md-6 text-right">
                                     <h6><b><u>Supplier Detail</u></b></h6>
@@ -265,9 +262,8 @@
     </ngx-barcode6>
                                     <strong>DISPATCH NO :</strong>{{printData()?.saleVoucherPrint?.id}}<br>
                                     <strong>DISPATCH DATE :</strong>{{printData()?.saleVoucherPrint?.date | date}}<br>
-                                    <strong>GSTIN NO :</strong> {{printData()?.saleVoucherPrint?.gstIn}}  <br>
-                                    <strong>PHONE :</strong> {{printData()?.saleVoucherPrint?.phone}}
-                            </div>
+                                    <strong>GSTIN NO :</strong> {{printData()?.saleVoucherPrint?.gstIn}}  
+                                        </div>
                             <div class="col-xs-6 col-sm-6 col-md-6 text-right">
                                     <h6><b><u>Supplier Detail</u></b></h6>
                                     <strong>M/S :</strong>{{ printData()?.supplierPrint?.name }}<br>
@@ -421,9 +417,7 @@
 
                 <strong>GSTIN NO :</strong>
                 {{ printData()?.saleVoucherPrint?.gstIn }}
-                <br>
-                <strong>PHONE :</strong>
-                {{ printData()?.saleVoucherPrint?.phone }}
+                
 
             </div>
 
