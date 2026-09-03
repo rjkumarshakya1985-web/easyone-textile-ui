@@ -1,6 +1,4 @@
-.sticker-print-item {
-  margin: 0;
-}
+
 .app-sticker {
   position: relative;
   width: 300px;
@@ -235,10 +233,6 @@
   font-weight: 800;
   letter-spacing: .3px;
 }
-
-.parcel-footer-company {
-  font-weight: 700;
-}
 .parcel-actions{margin-bottom:10px}
 .voucher-page {
   width: 100%;
@@ -417,11 +411,6 @@
 .voucher-center {
   text-align: center;
 }
-
-.voucher-product {
-  text-align: left;
-}
-
 .col-sno {
   width: 7%;
 }
