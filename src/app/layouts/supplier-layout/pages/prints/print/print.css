@@ -1,9 +1,6 @@
-/* ================= PRODUCT STICKER ================= */
-
 .sticker-print-item {
   margin: 0;
 }
-
 .app-sticker {
   position: relative;
   width: 300px;
@@ -16,7 +13,6 @@
   font-family: Arial, sans-serif;
   overflow: hidden;
 }
-
 .sticker-field {
   position: absolute;
   white-space: nowrap;
@@ -39,10 +35,6 @@
 .slot-hidden {
   visibility: hidden;
 }
-
-
-/* ================= COMMON ================= */
-
 .print-note {
   margin: 10px 0;
   padding: 10px 15px;
@@ -52,10 +44,6 @@
   color: #856404;
   font-weight: 600;
 }
-
-
-/* ================= PARCEL STICKER ================= */
-
 .parcel-print-area {
   width: 100%;
   display: flex;
@@ -251,14 +239,7 @@
 .parcel-footer-company {
   font-weight: 700;
 }
-
-.parcel-actions {
-  margin-bottom: 10px;
-}
-
-
-/* ================= A4 VOUCHERS ================= */
-
+.parcel-actions{margin-bottom:10px}
 .voucher-page {
   width: 100%;
   max-width: 1100px;
@@ -388,10 +369,6 @@
   font-weight: 700;
   word-break: break-word;
 }
-
-
-/* ================= VOUCHER TABLE ================= */
-
 .voucher-table-wrapper {
   width: 100%;
   overflow-x: auto;
@@ -464,10 +441,6 @@
 .col-rate {
   width: 18%;
 }
-
-
-/* ================= VOUCHER FOOTER ================= */
-
 .voucher-footer {
   display: table;
   table-layout: fixed;
@@ -515,10 +488,6 @@
   max-width: 100% !important;
   height: auto !important;
 }
-
-
-/* ================= SUPPLIER BILL ================= */
-
 .supplier-table {
   font-size: 8px;
 }
@@ -540,10 +509,6 @@
 .voucher-screen-actions {
   margin: 12px 0 10px;
 }
-
-
-/* ================= RESPONSIVE ================= */
-
 @media screen and (max-width:768px) {
   .voucher-page {
     margin: 10px 0;
@@ -573,10 +538,6 @@
     font-size: 10px;
   }
 }
-
-
-/* ================= PRINT ================= */
-
 @media print {
   @page {
     margin: 7mm;
