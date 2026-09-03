@@ -70,7 +70,8 @@ export class Print {
   }
 
   printPage(id: string) {
-    const element = document.getElementById(id);
+
+  const element = document.getElementById(id);
 
   if (!element) {
     return;
@@ -81,8 +82,13 @@ export class Print {
   const width = Math.floor(window.screen.availWidth * 0.95);
   const height = Math.floor(window.screen.availHeight * 0.95);
 
-  const left = Math.floor((window.screen.availWidth - width) / 2);
-  const top = Math.floor((window.screen.availHeight - height) / 2);
+  const left = Math.floor(
+    (window.screen.availWidth - width) / 2
+  );
+
+  const top = Math.floor(
+    (window.screen.availHeight - height) / 2
+  );
 
   const popupWin = window.open(
     '',
@@ -94,25 +100,125 @@ export class Print {
     return;
   }
 
-   popupWin!.document.open();
-  popupWin!.document.write(`
+
+  // =====================================================
+  // PAGE SETTINGS
+  // IMPORTANT:
+  // Product Sticker is intentionally NOT changed here.
+  // =====================================================
+
+  let pageStyle = '';
+
+  if (id === 'supplier-bill') {
+
+    // Supplier Bill = A4 Landscape
+    pageStyle = `
+      @page {
+        size: A4 landscape;
+        margin: 8mm;
+      }
+    `;
+
+  }
+  else if (
+    id === 'sale-voucher' ||
+    id === 'parcel-salevoucher'
+  ) {
+
+    // Sale Voucher / Dispatch Voucher = A4 Portrait
+    pageStyle = `
+      @page {
+        size: A4 portrait;
+        margin: 8mm;
+      }
+    `;
+
+  }
+  else if (id === 'print-section') {
+
+    // Parcel Sticker
+    pageStyle = `
+      @page {
+        size: A4 portrait;
+        margin: 8mm;
+      }
+    `;
+
+  }
+
+  // IMPORTANT:
+  // sticker-print-section gets NO new @page setting.
+  // Therefore your old sticker print behaviour is preserved.
+
+
+  // =====================================================
+  // LOAD ONLY THE CSS REQUIRED FOR CURRENT PRINT
+  // =====================================================
+
+  let printStyles = '';
+
+  if (id === 'sticker-print-section') {
+
+    // Existing sticker CSS - completely untouched
+    printStyles = this.stickerPrintStyles();
+
+  }
+  else if (id === 'print-section') {
+
+    // Parcel Sticker
+    printStyles = this.parcelPrintStyles();
+
+  }
+  else {
+
+    // Dispatch Voucher
+    // Supplier Bill
+    // Sale Voucher
+    printStyles = this.voucherPrintStyles();
+
+  }
+
+
+  // =====================================================
+  // CREATE PRINT WINDOW
+  // =====================================================
+
+  popupWin.document.open();
+
+  popupWin.document.write(`
     <html>
+
       <head>
+
         <title>Print</title>
-        <link rel="stylesheet"
-         href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-        <style>         
-        ${this.printCommonStyles()}
 
-          ${this.stickerPrintStyles()}
+        <link
+          rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"
+        >
 
-          ${this.parcelPrintStyles()}
-           ${this.voucherPrintStyles()}</style>
+        <style>
+
+          ${pageStyle}
+
+          ${this.printCommonStyles()}
+
+          ${printStyles}
+
+        </style>
+
       </head>
+
+
       <body>
-       <div class="print-container">
+
+        <div class="print-container">
+
           ${printContents}
-        </div> 
+
+        </div>
+
+
         <script>
 
           window.onload = function () {
@@ -121,22 +227,29 @@ export class Print {
 
               window.focus();
 
-              window.print();              
+              window.print();
 
             }, 500);
 
           };
-window.onafterprint = function () {
+
+
+          window.onafterprint = function () {
 
             window.close();
 
           };
-        </script>      
+
+        </script>
+
+
       </body>
-    </html>`
-  );
-  popupWin!.document.close();
-  }
+
+    </html>
+  `);
+
+  popupWin.document.close();
+}
   private printCommonStyles(): string {
 
   return `

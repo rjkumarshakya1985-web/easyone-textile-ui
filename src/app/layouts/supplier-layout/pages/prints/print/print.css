@@ -233,6 +233,7 @@
   font-weight: 800;
   letter-spacing: .3px;
 }
+.sticker-print-item { margin:0; }
 .parcel-actions{margin-bottom:10px}
 .voucher-page {
   width: 100%;
