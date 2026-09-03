@@ -70,11 +70,31 @@ export class Print {
   }
 
   printPage(id: string) {
-  const printContents = document.getElementById(id)?.innerHTML;
-  if (!printContents) return;
+    const element = document.getElementById(id);
 
-  const popupWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto');
-  popupWin!.document.open();
+  if (!element) {
+    return;
+  }
+
+  const printContents = element.innerHTML;
+
+  const width = Math.floor(window.screen.availWidth * 0.95);
+  const height = Math.floor(window.screen.availHeight * 0.95);
+
+  const left = Math.floor((window.screen.availWidth - width) / 2);
+  const top = Math.floor((window.screen.availHeight - height) / 2);
+
+  const popupWin = window.open(
+    '',
+    '_blank',
+    `width=${width},height=${height},left=${left},top=${top},scrollbars=yes,resizable=yes`
+  );
+
+  if (!popupWin) {
+    return;
+  }
+
+   popupWin!.document.open();
   popupWin!.document.write(`
     <html>
       <head>
@@ -87,10 +107,27 @@ export class Print {
 
           ${this.parcelPrintStyles()}</style>
       </head>
-      <body onload="window.print();window.close()">
+      <body>
        <div class="print-container">
           ${printContents}
-        </div>       
+        </div> 
+        <script>
+
+          window.onload = function () {
+
+            setTimeout(function () {
+
+              window.focus();
+
+              window.print();
+
+              window.close();
+
+            }, 500);
+
+          };
+
+        </script>      
       </body>
     </html>`
   );
@@ -244,58 +281,38 @@ private parcelPrintStyles(): string {
        TITLE BAR
     ========================================== */
 
+    
+
     .parcel-title-bar {
+  background-color: #000000 !important;
+  color: #ffffff !important;
 
-      display: table;
+  -webkit-print-color-adjust: exact !important;
+  print-color-adjust: exact !important;
+  color-adjust: exact !important;
+}
 
-      table-layout: fixed;
+.parcel-title,
+.parcel-date {
+  color: #ffffff !important;
+  background-color: #000000 !important;
 
-      width: 100%;
+  -webkit-print-color-adjust: exact !important;
+  print-color-adjust: exact !important;
+  color-adjust: exact !important;
+}
 
-      background: #000000;
+.parcel-title {
+  font-size: 14px !important;
+  padding: 6px 8px !important;
+  font-weight: 900 !important;
+}
 
-      color: #ffffff;
-
-      border-collapse: collapse;
-    }
-
-
-    .parcel-title {
-
-      display: table-cell;
-
-      width: 65%;
-
-      padding: 8px 12px;
-
-      vertical-align: middle;
-
-      font-size: 17px;
-
-      font-weight: 900;
-
-      letter-spacing: 1px;
-    }
-
-
-    .parcel-date {
-
-      display: table-cell;
-
-      width: 35%;
-
-      padding: 8px 12px;
-
-      vertical-align: middle;
-
-      text-align: right;
-
-      white-space: nowrap;
-
-      font-size: 12px;
-
-      font-weight: 600;
-    }
+.parcel-date {
+  font-size: 10px !important;
+  padding: 6px 8px !important;
+  font-weight: 600 !important;
+}
 
 
     /* ==========================================
