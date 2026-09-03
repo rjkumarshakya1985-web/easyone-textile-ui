@@ -522,7 +522,10 @@
     box-sizing: border-box;
     box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
 }
-
+.voucher-page {
+    background: red !important;
+    border: 10px solid blue !important;
+}
 
 /* =========================================================
    COMPANY HEADER
