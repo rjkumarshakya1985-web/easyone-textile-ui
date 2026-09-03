@@ -93,10 +93,7 @@ export class Print {
   if (!popupWin) {
     return;
   }
-const pageOrientation =
-    id === 'supplier-bill'
-      ? 'landscape'
-      : 'portrait';
+
    popupWin!.document.open();
   popupWin!.document.write(`
     <html>
@@ -104,11 +101,7 @@ const pageOrientation =
         <title>Print</title>
         <link rel="stylesheet"
          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-        <style>
-         @page {
-              size: A4 ${pageOrientation};
-              margin: 8mm;
-          }
+        <style>         
         ${this.printCommonStyles()}
 
           ${this.stickerPrintStyles()}
