@@ -116,8 +116,18 @@ export class AddProduct implements OnInit, AfterViewInit {
     });
 
     this.productForm.get('name')?.valueChanges.subscribe(value => {
-    this.productForm.get('printName')?.setValue(value, { emitEvent: false });
-    this.productForm.get('alias')?.setValue(value, { emitEvent: false });
+    if (value == null) return;
+
+  const upperValue = value.toUpperCase();
+
+  // Update Product Name itself
+  if (value !== upperValue) {
+    this.productForm.get('name')?.setValue(upperValue, {
+      emitEvent: false
+    });
+  }
+      this.productForm.get('printName')?.setValue(upperValue, { emitEvent: false });
+    this.productForm.get('alias')?.setValue(upperValue, { emitEvent: false });
     });
 
     this.productForm.get('purchaseRate')?.valueChanges.subscribe(rate => {
@@ -207,6 +217,9 @@ export class AddProduct implements OnInit, AfterViewInit {
   
   const request = {
     ...this.productForm.value,
+    name: this.productForm.value.name?.trim().toUpperCase(),
+    printName: this.productForm.value.printName?.trim().toUpperCase(),
+    alias: this.productForm.value.alias?.trim().toUpperCase(),
     hsnCode: hsnSelected?.name,  
     id: this.productId
   };

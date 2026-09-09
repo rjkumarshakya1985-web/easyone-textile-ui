@@ -54,12 +54,43 @@ export class ProductStickerPrint {
     }
   }
   printSticker(id: string) {
-  const printContents = document.getElementById(id)?.innerHTML;
-  if (!printContents) return;
+    const element =
+    document.getElementById(id);
 
-  const popupWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto');
-  popupWin!.document.open();
-  popupWin!.document.write(`
+  if (!element) {
+    return;
+  }
+   const printContents = element.innerHTML;
+   const width =
+    Math.floor(
+      window.screen.availWidth * 0.95
+    );
+
+  const height =
+    Math.floor(
+      window.screen.availHeight * 0.95
+    );
+     const left =
+    Math.floor(
+      (window.screen.availWidth - width) / 2
+    );
+
+  const top =
+    Math.floor(
+      (window.screen.availHeight - height) / 2
+    );
+
+
+  const popupWin =
+    window.open(
+      '',
+      '_blank',
+      `width=${width},height=${height},left=${left},top=${top},scrollbars=yes,resizable=yes`
+    );
+     if (!popupWin) {
+    return;
+  }  
+  popupWin.document.write(`
     <html>
       <head>
         <title>Print</title>
@@ -69,10 +100,32 @@ export class ProductStickerPrint {
       </head>
       <body onload="window.print();window.close()">
         ${printContents}
+         <script>
+
+          window.onload = function () {
+
+            setTimeout(function () {
+
+              window.focus();
+
+              window.print();
+
+            }, 500);
+
+          };
+
+
+          window.onafterprint = function () {
+
+            window.close();
+
+          };
+
+        </script>
       </body>
     </html>`
   );
-  popupWin!.document.close();
+  popupWin.document.close();
   }
 
   back()

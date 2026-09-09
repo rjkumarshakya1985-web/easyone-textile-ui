@@ -70,27 +70,1482 @@ export class Print {
   }
 
   printPage(id: string) {
-  const printContents = document.getElementById(id)?.innerHTML;
-  if (!printContents) return;
 
-  const popupWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto');
-  popupWin!.document.open();
-  popupWin!.document.write(`
-    <html>
-      <head>
-        <title>Print</title>
-        <link rel="stylesheet"
-         href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-        <style>${this.stickerPrintStyles()}</style>
-      </head>
-      <body onload="window.print();window.close()">
-        ${printContents}
-      </body>
-    </html>`
-  );
-  popupWin!.document.close();
+  const element = document.getElementById(id);
+
+  if (!element) {
+    return;
   }
-  
+
+  const printContents = element.innerHTML;
+
+  const width = Math.floor(window.screen.availWidth * 0.95);
+  const height = Math.floor(window.screen.availHeight * 0.95);
+
+  const left = Math.floor(
+    (window.screen.availWidth - width) / 2
+  );
+
+  const top = Math.floor(
+    (window.screen.availHeight - height) / 2
+  );
+
+  const popupWin = window.open(
+    '',
+    '_blank',
+    `width=${width},height=${height},left=${left},top=${top},scrollbars=yes,resizable=yes`
+  );
+
+  if (!popupWin) {
+    return;
+  }
+
+
+  // =====================================================
+  // PAGE SETTINGS
+  // IMPORTANT:
+  // Product Sticker is intentionally NOT changed here.
+  // =====================================================
+
+  let pageStyle = '';
+
+  if (id === 'supplier-bill') {
+
+    // Supplier Bill = A4 Landscape
+    pageStyle = `
+      @page {
+        size: A4 landscape;
+        margin: 8mm;
+      }
+    `;
+
+  }
+  else if (
+    id === 'sale-voucher' ||
+    id === 'parcel-salevoucher'
+  ) {
+
+    // Sale Voucher / Dispatch Voucher = A4 Portrait
+    pageStyle = `
+      @page {
+        size: A4 portrait;
+        margin: 8mm;
+      }
+    `;
+
+  }
+  else if (id === 'print-section') {
+
+    // Parcel Sticker
+    pageStyle = `
+      @page {
+        size: A4 portrait;
+        margin: 8mm;
+      }
+    `;
+
+  }
+
+  // IMPORTANT:
+  // sticker-print-section gets NO new @page setting.
+  // Therefore your old sticker print behaviour is preserved.
+
+
+  // =====================================================
+  // LOAD ONLY THE CSS REQUIRED FOR CURRENT PRINT
+  // =====================================================
+
+  let printStyles = '';
+
+  if (id === 'sticker-print-section') {
+
+    // Existing sticker CSS - completely untouched
+    printStyles = this.stickerPrintStyles();
+
+  }
+  else if (id === 'print-section') {
+
+    // Parcel Sticker
+    printStyles = this.parcelPrintStyles();
+
+  }
+  else {
+
+    // Dispatch Voucher
+    // Supplier Bill
+    // Sale Voucher
+    printStyles = this.voucherPrintStyles();
+
+  }
+
+
+  // =====================================================
+  // CREATE PRINT WINDOW
+  // =====================================================
+
+  popupWin.document.open();
+
+  popupWin.document.write(`
+    <html>
+
+      <head>
+
+        <title>Print</title>
+
+        <link
+          rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"
+        >
+
+        <style>
+
+          ${pageStyle}
+
+          ${this.printCommonStyles()}
+
+          ${printStyles}
+
+        </style>
+
+      </head>
+
+
+      <body>
+
+        <div class="print-container">
+
+          ${printContents}
+
+        </div>
+
+
+        <script>
+
+          window.onload = function () {
+
+            setTimeout(function () {
+
+              window.focus();
+
+              window.print();
+
+            }, 500);
+
+          };
+
+
+          window.onafterprint = function () {
+
+            window.close();
+
+          };
+
+        </script>
+
+
+      </body>
+
+    </html>
+  `);
+
+  popupWin.document.close();
+}
+  private printCommonStyles(): string {
+
+  return `
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      background: #ffffff;
+      color: #000000;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .print-container {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    @media print {
+
+      html,
+      body {
+        width: 100%;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+    }
+  `;
+}
+private parcelPrintStyles(): string {
+
+  return `
+
+    /* ==========================================
+       PARCEL PRINT AREA
+    ========================================== */
+
+    .parcel-print-area {
+      display: block;
+      width: 100%;
+      margin: 0 auto;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+
+
+    /* ==========================================
+       OUTER STICKER
+    ========================================== */
+
+    .parcel-sticker {
+
+      width: 100%;
+      max-width: 900px;
+
+      margin: 0 auto;
+
+      background: #ffffff;
+      color: #000000;
+
+      border: 3px solid #000000;
+
+      font-family: Arial, Helvetica, sans-serif;
+
+      overflow: hidden;
+
+      box-sizing: border-box;
+    }
+
+
+    /* ==========================================
+       COMPANY HEADER
+    ========================================== */
+
+    .parcel-header {
+
+      width: 100%;
+
+      text-align: center;
+
+      padding: 12px 15px 10px;
+
+      border-bottom: 2px solid #000000;
+
+      box-sizing: border-box;
+    }
+
+
+    .parcel-company-name {
+
+      margin: 0;
+
+      font-size: 32px;
+
+      line-height: 1.1;
+
+      font-weight: 900;
+
+      text-transform: uppercase;
+
+      letter-spacing: 0.5px;
+    }
+
+
+    .parcel-company-address {
+
+      margin-top: 5px;
+
+      font-size: 14px;
+
+      line-height: 1.3;
+
+      font-weight: 500;
+    }
+
+
+    .parcel-contact-row {
+
+      margin-top: 6px;
+
+      font-size: 13px;
+
+      font-weight: 600;
+
+      text-align: center;
+    }
+
+
+    .parcel-contact-row span {
+
+      display: inline-block;
+
+      margin: 0 15px;
+    }
+
+
+    /* ==========================================
+       TITLE BAR
+    ========================================== */
+
+    
+
+    .parcel-title-bar {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+
+  -webkit-print-color-adjust: exact !important;
+  print-color-adjust: exact !important;
+  color-adjust: exact !important;
+}
+
+.parcel-title,
+.parcel-date, .parcel-date b {
+  color: #ffffff !important;
+  background-color: #000000 !important;
+
+  -webkit-print-color-adjust: exact !important;
+  print-color-adjust: exact !important;
+  color-adjust: exact !important;
+}
+
+.parcel-title {
+  font-size: 14px !important;
+  padding: 6px 8px !important;
+  font-weight: 900 !important;
+}
+
+.parcel-date {
+  font-size: 10px !important;
+  padding: 6px 8px !important;
+  font-weight: 600 !important;
+}
+
+    /* ==========================================
+       BODY
+    ========================================== */
+
+    .parcel-body {
+
+      display: table;
+
+      table-layout: fixed;
+
+      width: 100%;
+
+      border-collapse: collapse;
+    }
+
+
+    /* ==========================================
+       LEFT SIDE
+    ========================================== */
+
+    .parcel-details {
+
+      display: table-cell;
+
+      width: 62%;
+
+      vertical-align: top;
+
+      border-right: 2px solid #000000;
+    }
+
+
+    /* ==========================================
+       DETAIL ROW
+    ========================================== */
+
+    .parcel-detail-row {
+
+      display: table;
+
+      table-layout: fixed;
+
+      width: 100%;
+
+      border-bottom: 1px solid #777777;
+
+      border-collapse: collapse;
+    }
+
+
+    .parcel-detail-row:last-child {
+
+      border-bottom: none;
+    }
+
+
+    /* ==========================================
+       LABEL
+    ========================================== */
+
+    .parcel-label {
+
+      display: table-cell;
+
+      width: 145px;
+
+      padding: 8px 8px;
+
+      vertical-align: middle;
+
+      background: #eeeeee;
+
+      border-right: 1px solid #777777;
+
+      font-size: 11px;
+
+      font-weight: 800;
+
+      white-space: nowrap;
+    }
+
+
+    /* ==========================================
+       VALUE
+    ========================================== */
+
+    .parcel-value {
+
+      display: table-cell;
+
+      padding: 8px 10px;
+
+      vertical-align: middle;
+
+      font-size: 16px;
+
+      line-height: 1.25;
+
+      font-weight: 800;
+
+      white-space: normal;
+
+      word-break: break-word;
+
+      overflow-wrap: anywhere;
+    }
+
+
+    /* ==========================================
+       DISPATCH NUMBER
+    ========================================== */
+
+    .dispatch-number {
+
+      font-size: 25px;
+
+      font-weight: 900;
+
+      letter-spacing: 1px;
+    }
+
+
+    .highlight-row .parcel-label {
+
+      background: #dddddd;
+    }
+
+
+    /* ==========================================
+       TRANSPORT
+    ========================================== */
+
+    .transport-name {
+
+      font-size: 16px;
+
+      text-transform: uppercase;
+    }
+
+
+    /* ==========================================
+       PARTICULARS
+    ========================================== */
+
+    .particulars-row .parcel-value {
+
+      font-size: 14px;
+
+      line-height: 1.3;
+    }
+
+
+    /* ==========================================
+       BARCODE SECTION
+    ========================================== */
+
+    .parcel-barcode-section {
+
+      display: table-cell;
+
+      width: 38%;
+
+      vertical-align: middle;
+
+      text-align: center;
+
+      padding: 12px;
+
+      box-sizing: border-box;
+    }
+
+
+    .barcode-heading {
+
+      padding-bottom: 5px;
+
+      margin-bottom: 8px;
+
+      border-bottom: 1px solid #bbbbbb;
+
+      font-size: 11px;
+
+      font-weight: 800;
+
+      letter-spacing: 1px;
+    }
+
+
+    .parcel-barcode {
+
+      width: 100%;
+
+      margin: 5px auto;
+
+      text-align: center;
+
+      overflow: hidden;
+    }
+
+
+    /*
+       ngx-barcode6 normally generates SVG.
+       This prevents it from overflowing.
+    */
+
+    .parcel-barcode svg {
+
+      display: block;
+
+      max-width: 100% !important;
+
+      height: auto !important;
+
+      margin: 0 auto;
+    }
+
+
+    .parcel-barcode canvas {
+
+      max-width: 100% !important;
+
+      height: auto !important;
+    }
+
+
+    .barcode-number {
+
+      margin-top: 5px;
+
+      font-size: 12px;
+
+      font-weight: 800;
+    }
+
+
+    /* ==========================================
+       FOOTER
+    ========================================== */
+
+    .parcel-footer {
+
+      display: table;
+
+      table-layout: fixed;
+
+      width: 100%;
+
+      border-top: 2px solid #000000;
+    }
+
+
+    .parcel-footer-message {
+
+      display: table-cell;
+
+      width: 70%;
+
+      padding: 7px 10px;
+
+      vertical-align: middle;
+
+      font-size: 10px;
+
+      font-weight: 800;
+    }
+
+
+    .parcel-footer-company {
+
+      display: table-cell;
+
+      width: 30%;
+
+      padding: 7px 10px;
+
+      vertical-align: middle;
+
+      text-align: right;
+
+      font-size: 10px;
+
+      font-weight: 700;
+    }
+
+
+    /* ==========================================
+       PRINT
+    ========================================== */
+
+    @media print {
+
+      @page {
+
+        size: A4 portrait;
+
+        margin: 8mm;
+      }
+
+
+      html,
+      body {
+
+        margin: 0 !important;
+
+        padding: 0 !important;
+
+        width: 100% !important;
+
+        background: #ffffff !important;
+      }
+
+
+      .print-container {
+
+        margin: 0 !important;
+
+        padding: 0 !important;
+
+        width: 100% !important;
+      }
+
+
+      .parcel-print-area {
+
+        margin: 0 !important;
+
+        padding: 0 !important;
+
+        width: 100% !important;
+      }
+
+
+      .parcel-sticker {
+
+        width: 100% !important;
+
+        max-width: none !important;
+
+        margin: 0 !important;
+
+        border: 2px solid #000000 !important;
+
+        border-radius: 0 !important;
+
+        box-shadow: none !important;
+
+        page-break-inside: avoid !important;
+
+        break-inside: avoid !important;
+
+        overflow: hidden !important;
+      }
+
+
+      .parcel-header {
+
+        padding: 8px 10px !important;
+      }
+
+
+      .parcel-company-name {
+
+        font-size: 26px !important;
+      }
+
+
+      .parcel-company-address {
+
+        font-size: 11px !important;
+      }
+
+
+      .parcel-contact-row {
+
+        font-size: 11px !important;
+      }
+
+
+      .parcel-title-bar {
+
+        background: #000000 !important;
+
+        color: #ffffff !important;
+
+        -webkit-print-color-adjust: exact !important;
+
+        print-color-adjust: exact !important;
+      }
+
+
+      .parcel-title {
+
+        font-size: 14px !important;
+
+        padding: 6px 8px !important;
+      }
+
+
+      .parcel-date {
+
+        font-size: 10px !important;
+
+        padding: 6px 8px !important;
+      }
+
+
+      .parcel-label {
+
+        width: 125px !important;
+
+        padding: 6px !important;
+
+        font-size: 9px !important;
+
+        background: #eeeeee !important;
+
+        -webkit-print-color-adjust: exact !important;
+
+        print-color-adjust: exact !important;
+      }
+
+
+      .highlight-row .parcel-label {
+
+        background: #dddddd !important;
+
+        -webkit-print-color-adjust: exact !important;
+
+        print-color-adjust: exact !important;
+      }
+
+
+      .parcel-value {
+
+        padding: 6px 8px !important;
+
+        font-size: 13px !important;
+      }
+
+
+      .dispatch-number {
+
+        font-size: 21px !important;
+      }
+
+
+      .particulars-row .parcel-value {
+
+        font-size: 12px !important;
+      }
+
+
+      .parcel-barcode-section {
+
+        padding: 8px !important;
+      }
+
+
+      .barcode-heading {
+
+        font-size: 9px !important;
+      }
+
+
+      .barcode-number {
+
+        font-size: 10px !important;
+      }
+
+
+      .parcel-footer-message,
+      .parcel-footer-company {
+
+        padding: 5px 7px !important;
+
+        font-size: 8px !important;
+      }
+    }
+  `;
+}
+private voucherPrintStyles(): string {
+
+  return `
+
+  /* =====================================================
+     A4 PROFESSIONAL VOUCHERS
+  ===================================================== */
+
+  .voucher-page {
+
+      width: 100%;
+
+      max-width: 1100px;
+
+      margin: 10px auto;
+
+      background: #ffffff;
+
+      color: #111111;
+
+      border: 1px solid #222222;
+
+      font-family: Arial, Helvetica, sans-serif;
+
+      box-sizing: border-box;
+  }
+
+
+  /* =====================================================
+     HEADER
+  ===================================================== */
+
+  .voucher-company-header {
+
+      text-align: center;
+
+      padding: 16px 20px 12px;
+
+      border-bottom: 2px solid #111111;
+  }
+
+
+  .voucher-company-name {
+
+      margin: 0;
+
+      font-size: 28px;
+
+      line-height: 1.1;
+
+      font-weight: 900;
+
+      letter-spacing: 0.5px;
+
+      text-transform: uppercase;
+  }
+
+
+  .voucher-company-address {
+
+      margin-top: 5px;
+
+      font-size: 12px;
+
+      line-height: 1.4;
+  }
+
+
+  .voucher-company-contact {
+
+      margin-top: 6px;
+
+      font-size: 11px;
+
+      font-weight: 700;
+  }
+
+
+  .voucher-company-contact span {
+
+      display: inline-block;
+
+      margin: 0 12px;
+  }
+
+
+  /* =====================================================
+     DOCUMENT TITLE
+  ===================================================== */
+
+  .voucher-title-bar {
+
+      display: table;
+
+      table-layout: fixed;
+
+      width: 100%;
+
+      background: #111111 !important;
+
+      color: #ffffff !important;
+
+      -webkit-print-color-adjust: exact !important;
+
+      print-color-adjust: exact !important;
+  }
+
+
+  .voucher-title {
+
+      display: table-cell;
+
+      width: 65%;
+
+      padding: 9px 12px;
+
+      vertical-align: middle;
+
+      font-size: 16px;
+
+      font-weight: 900;
+
+      letter-spacing: 1px;
+
+      color: #ffffff !important;
+
+      -webkit-text-fill-color: #ffffff !important;
+  }
+
+
+  .voucher-title-meta {
+
+      display: table-cell;
+
+      width: 35%;
+
+      padding: 9px 12px;
+
+      vertical-align: middle;
+
+      text-align: right;
+
+      font-size: 11px;
+
+      font-weight: 700;
+
+      color: #ffffff !important;
+
+      -webkit-text-fill-color: #ffffff !important;
+  }
+
+
+  /* =====================================================
+     DETAILS AREA
+  ===================================================== */
+
+  .voucher-info-grid {
+
+      display: table;
+
+      table-layout: fixed;
+
+      width: 100%;
+
+      border-bottom: 2px solid #111111;
+  }
+
+
+  .voucher-info-panel {
+
+      display: table-cell;
+
+      width: 50%;
+
+      vertical-align: top;
+
+      padding: 10px 12px;
+
+      box-sizing: border-box;
+  }
+
+
+  .voucher-info-panel:first-child {
+
+      border-right: 1px solid #999999;
+  }
+
+
+  .voucher-info-heading {
+
+      margin-bottom: 7px;
+
+      padding-bottom: 4px;
+
+      border-bottom: 1px solid #999999;
+
+      font-size: 11px;
+
+      font-weight: 900;
+
+      text-transform: uppercase;
+
+      letter-spacing: 0.5px;
+  }
+
+
+  .voucher-info-row {
+
+      display: table;
+
+      table-layout: fixed;
+
+      width: 100%;
+
+      margin-bottom: 4px;
+
+      font-size: 11px;
+  }
+
+
+  .voucher-info-label {
+
+      display: table-cell;
+
+      width: 120px;
+
+      font-weight: 800;
+
+      vertical-align: top;
+
+      color: #444444;
+  }
+
+
+  .voucher-info-value {
+
+      display: table-cell;
+
+      font-weight: 700;
+
+      vertical-align: top;
+
+      word-break: break-word;
+  }
+
+
+  /* =====================================================
+     TABLE
+  ===================================================== */
+
+  .voucher-table-wrapper {
+
+      width: 100%;
+
+      overflow: visible;
+  }
+
+
+  .voucher-table {
+
+      width: 100%;
+
+      margin: 0;
+
+      border-collapse: collapse;
+
+      table-layout: fixed;
+
+      font-size: 10px;
+  }
+
+
+  .voucher-table thead {
+
+      display: table-header-group;
+  }
+
+
+  .voucher-table tfoot {
+
+      display: table-footer-group;
+  }
+
+
+  .voucher-table th {
+
+      padding: 7px 5px;
+
+      border: 1px solid #777777;
+
+      background: #e8e8e8 !important;
+
+      color: #000000;
+
+      font-size: 9px;
+
+      font-weight: 900;
+
+      text-transform: uppercase;
+
+      vertical-align: middle;
+
+      -webkit-print-color-adjust: exact !important;
+
+      print-color-adjust: exact !important;
+  }
+
+
+  .voucher-table td {
+
+      padding: 6px 5px;
+
+      border: 1px solid #999999;
+
+      vertical-align: middle;
+
+      word-break: break-word;
+  }
+
+
+  .voucher-table tbody tr {
+
+      page-break-inside: avoid;
+
+      break-inside: avoid;
+  }
+
+
+  .voucher-table tfoot th,
+  .voucher-table tfoot td {
+
+      background: #eeeeee !important;
+
+      font-weight: 900;
+
+      -webkit-print-color-adjust: exact !important;
+
+      print-color-adjust: exact !important;
+  }
+
+
+  .voucher-number {
+
+      text-align: right;
+
+      white-space: nowrap;
+  }
+
+
+  .voucher-center {
+
+      text-align: center;
+  }
+
+
+  .voucher-product {
+
+      text-align: left;
+  }
+
+
+  /* =====================================================
+     FOOTER
+  ===================================================== */
+
+  .voucher-footer {
+
+      display: table;
+
+      table-layout: fixed;
+
+      width: 100%;
+
+      min-height: 90px;
+
+      border-top: 2px solid #111111;
+  }
+
+
+  .voucher-footer-left {
+
+      display: table-cell;
+
+      width: 55%;
+
+      padding: 12px;
+
+      vertical-align: bottom;
+
+      font-size: 10px;
+  }
+
+
+  .voucher-footer-right {
+
+      display: table-cell;
+
+      width: 45%;
+
+      padding: 10px 12px;
+
+      vertical-align: middle;
+
+      text-align: right;
+  }
+
+
+  .voucher-barcode {
+
+      text-align: right;
+
+      overflow: hidden;
+  }
+
+
+  .voucher-barcode svg {
+
+      display: inline-block;
+
+      max-width: 100% !important;
+
+      height: auto !important;
+  }
+
+
+  .voucher-signature {
+
+      margin-top: 20px;
+
+      padding-top: 4px;
+
+      font-size: 10px;
+
+      font-weight: 700;
+  }
+
+
+  .voucher-footer-note {
+
+      font-size: 9px;
+
+      color: #555555;
+  }
+
+
+  /* =====================================================
+     DISPATCH / SALE TABLE WIDTHS
+  ===================================================== */
+
+  .col-sno {
+
+      width: 7%;
+  }
+
+
+  .col-product {
+
+      width: 48%;
+  }
+
+
+  .col-hsn {
+
+      width: 15%;
+  }
+
+
+  .col-qty {
+
+      width: 12%;
+  }
+
+
+  .col-rate {
+
+      width: 18%;
+  }
+
+
+  /* =====================================================
+     SUPPLIER BILL
+  ===================================================== */
+
+  .supplier-table {
+
+      font-size: 8px;
+  }
+
+
+  .supplier-table th {
+
+      padding: 5px 3px;
+
+      font-size: 7px;
+  }
+
+
+  .supplier-table td {
+
+      padding: 5px 3px;
+
+      font-size: 8px;
+  }
+
+
+  .supplier-table .supplier-product {
+
+      width: 16%;
+  }
+
+
+  /* =====================================================
+     SCREEN
+  ===================================================== */
+
+  .voucher-screen-actions {
+
+      margin-bottom: 10px;
+  }
+
+
+  /* =====================================================
+     PRINT
+  ===================================================== */
+
+  @media print {
+
+      html,
+      body {
+
+          margin: 0 !important;
+
+          padding: 0 !important;
+
+          background: #ffffff !important;
+
+          color: #000000 !important;
+      }
+
+
+      .print-container {
+
+          width: 100% !important;
+
+          margin: 0 !important;
+
+          padding: 0 !important;
+      }
+
+
+      .voucher-page {
+
+          width: 100% !important;
+
+          max-width: none !important;
+
+          margin: 0 !important;
+
+          border: 1px solid #000000 !important;
+
+          box-shadow: none !important;
+
+          page-break-inside: auto;
+
+          break-inside: auto;
+      }
+
+
+      .voucher-company-name {
+
+          font-size: 24px !important;
+      }
+
+
+      .voucher-title-bar,
+      .voucher-title,
+      .voucher-title-meta {
+
+          background: #111111 !important;
+
+          color: #ffffff !important;
+
+          -webkit-text-fill-color: #ffffff !important;
+
+          -webkit-print-color-adjust: exact !important;
+
+          print-color-adjust: exact !important;
+      }
+
+
+      .voucher-table {
+
+          width: 100% !important;
+      }
+
+
+      .voucher-table thead {
+
+          display: table-header-group !important;
+      }
+
+
+      .voucher-table tfoot {
+
+          display: table-footer-group !important;
+      }
+
+
+      .voucher-table tr {
+
+          page-break-inside: avoid !important;
+
+          break-inside: avoid !important;
+      }
+
+
+      .voucher-table th {
+
+          background: #e8e8e8 !important;
+
+          -webkit-print-color-adjust: exact !important;
+
+          print-color-adjust: exact !important;
+      }
+
+
+      .no-print {
+
+          display: none !important;
+      }
+
+  }
+
+  `;
+}
   cancel()
   {
     this.router.navigate(['supplier/salevouchers']);

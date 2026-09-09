@@ -1,47 +1,3 @@
-.innerbox
-{
-   width:180px; /* or whatever width you want. */
-   max-width:180px; /* or whatever width you want. */
-   display: inline-block;
-   height:100px;
-   margin-left: 10px;
-   margin-top:5px;
-   background-color: white;
-}
-.print-note {
-    margin-top: 10px;
-    padding: 10px 15px;
-    background-color: #fff3cd;
-    border-left: 5px solid #ff9800;
-    font-weight: 600;
-    color: #856404;
-    border-radius: 4px;
-}
-.parcel-company-header {
-    text-align: center;
-    margin-bottom: 15px;
-}
-
-.parcel-company-name {
-    font-size: 40px;
-    font-weight: bold;
-    line-height: 1.2;
-}
-
-.parcel-company-address {
-    font-size: 18px;
-    font-weight: 500;
-    margin-top: 5px;
-}
-
-.parcel-company-gstin {
-    font-size: 16px;
-    font-weight: 600;
-    margin-top: 3px;
-}
-.sticker-print-item {
-  margin: 0;
-}
 
 .app-sticker {
   position: relative;
@@ -50,13 +6,11 @@
   background: #fff;
   border: 1px solid #e0e0e0;
   border-radius: 12px;
-  padding: 0;
   box-sizing: border-box;
   color: #000;
   font-family: Arial, sans-serif;
   overflow: hidden;
 }
-
 .sticker-field {
   position: absolute;
   white-space: nowrap;
@@ -67,7 +21,6 @@
 .company-code {
   color: #000;
   background: transparent;
-  padding: 0;
 }
 
 .barcode-field {
@@ -80,26 +33,591 @@
 .slot-hidden {
   visibility: hidden;
 }
+.print-note {
+  margin: 10px 0;
+  padding: 10px 15px;
+  background: #fff3cd;
+  border-left: 5px solid #ff9800;
+  border-radius: 4px;
+  color: #856404;
+  font-weight: 600;
+}
+.parcel-print-area {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 15px;
+  box-sizing: border-box;
+}
 
-.sale-voucher-table .rate-column {
-  width: 140px;
-  min-width: 140px;
-  text-align: right;
+.parcel-sticker {
+  width: 900px;
+  max-width: 100%;
+  background: #fff;
+  color: #111;
+  border: 3px solid #111;
+  border-radius: 8px;
+  overflow: hidden;
+  font-family: Arial, Helvetica, sans-serif;
+  box-sizing: border-box;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, .12);
+}
+
+.parcel-header {
+  text-align: center;
+  padding: 14px 20px 10px;
+  border-bottom: 2px solid #111;
+}
+
+.parcel-company-name {
+  font-size: 34px;
+  line-height: 1.05;
+  font-weight: 900;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+}
+
+.parcel-company-address {
+  margin-top: 5px;
+  font-size: 15px;
+  line-height: 1.4;
+  font-weight: 500;
+}
+
+.parcel-contact-row {
+  margin-top: 7px;
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+  flex-wrap: wrap;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.parcel-title-bar {
+  min-height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 14px;
+  background: #111;
+  color: #fff;
+}
+
+.parcel-title {
+  font-size: 18px;
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+.parcel-date {
+  font-size: 13px;
   white-space: nowrap;
+}
+
+.parcel-body {
+  display: grid;
+  grid-template-columns: 62% 38%;
+}
+
+.parcel-details {
+  border-right: 2px solid #111;
+}
+
+.parcel-detail-row {
+  display: grid;
+  grid-template-columns: 165px 1fr;
+  min-height: 46px;
+  border-bottom: 1px solid #888;
+}
+
+.parcel-detail-row:last-child {
+  border-bottom: 0;
+}
+
+.parcel-label {
+  display: flex;
+  align-items: center;
+  padding: 8px 10px;
+  background: #f2f2f2;
+  border-right: 1px solid #888;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: .3px;
+}
+
+.parcel-value {
+  display: flex;
+  align-items: center;
+  padding: 7px 12px;
+  font-size: 18px;
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+
+.highlight-row .parcel-label {
+  background: #dedede;
+}
+
+.dispatch-number {
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+.transport-name {
+  font-size: 18px;
+  text-transform: uppercase;
+}
+
+.particulars-row {
+  min-height: 62px;
+}
+
+.particulars-row .parcel-value {
+  align-items: flex-start;
+  padding-top: 10px;
+  line-height: 1.35;
+}
+
+.parcel-barcode-section {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  text-align: center;
+}
+
+.barcode-heading {
+  width: 100%;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #ccc;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.parcel-barcode {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 15px;
+  overflow: hidden;
+}
+
+.parcel-barcode ngx-barcode6 {
+  max-width: 100%;
+}
+
+.barcode-number {
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: .5px;
+}
+
+.parcel-footer {
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 12px;
+  border-top: 2px solid #111;
+  font-size: 11px;
+}
+
+.parcel-footer-message {
+  font-weight: 800;
+  letter-spacing: .3px;
+}
+.sticker-print-item { margin:0; }
+.parcel-actions{margin-bottom:10px}
+.voucher-page {
+  width: 100%;
+  max-width: 1100px;
+  margin: 15px auto;
+  background: #fff;
+  color: #111;
+  border: 1px solid #222;
+  border-radius: 8px;
+  overflow: hidden;
+  font-family: Arial, Helvetica, sans-serif;
+  box-sizing: border-box;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, .08);
+}
+
+.voucher-company-header {
+  text-align: center;
+  padding: 16px 20px 12px;
+  border-bottom: 2px solid #111;
+}
+
+.voucher-company-name {
+  margin: 0;
+  font-size: 28px;
+  line-height: 1.1;
+  font-weight: 900;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+}
+
+.voucher-company-address {
+  margin-top: 5px;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.voucher-company-contact {
+  margin-top: 6px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.voucher-company-contact span {
+  display: inline-block;
+  margin: 0 12px;
+}
+
+.voucher-title-bar {
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+  background: #111 !important;
+  color: #fff !important;
+}
+
+.voucher-title,
+.voucher-title-meta {
+  display: table-cell;
+  padding: 9px 12px;
+  vertical-align: middle;
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
+}
+
+.voucher-title {
+  width: 65%;
+  font-size: 16px;
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+.voucher-title-meta {
+  width: 35%;
+  text-align: right;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.voucher-info-grid {
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+  border-bottom: 2px solid #111;
+}
+
+.voucher-info-panel {
+  display: table-cell;
+  width: 50%;
+  padding: 10px 12px;
+  vertical-align: top;
+}
+
+.voucher-info-panel:first-child {
+  border-right: 1px solid #999;
+}
+
+.voucher-info-heading {
+  margin-bottom: 7px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #999;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+
+.voucher-info-row {
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+  margin-bottom: 4px;
+  font-size: 11px;
+}
+
+.voucher-info-label,
+.voucher-info-value {
+  display: table-cell;
+  vertical-align: top;
+}
+
+.voucher-info-label {
+  width: 120px;
+  color: #444;
+  font-weight: 800;
+}
+
+.voucher-info-value {
+  font-weight: 700;
+  word-break: break-word;
+}
+.voucher-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.voucher-table {
+  width: 100%;
+  margin: 0;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 10px;
+}
+
+.voucher-table th,
+.voucher-table td {
+  border: 1px solid #999;
   vertical-align: middle;
 }
 
-/* Print Optimization */
+.voucher-table th {
+  padding: 7px 5px;
+  background: #e8e8e8 !important;
+  color: #000;
+  border-color: #777;
+  font-size: 9px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.voucher-table td {
+  padding: 6px 5px;
+  word-break: break-word;
+}
+
+.voucher-table tfoot th,
+.voucher-table tfoot td {
+  background: #eee !important;
+  font-weight: 900;
+}
+
+.voucher-number {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.voucher-center {
+  text-align: center;
+}
+.col-sno {
+  width: 7%;
+}
+
+.col-product {
+  width: 48%;
+}
+
+.col-hsn {
+  width: 15%;
+}
+
+.col-qty {
+  width: 12%;
+}
+
+.col-rate {
+  width: 18%;
+}
+.voucher-footer {
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+  min-height: 90px;
+  border-top: 2px solid #111;
+}
+
+.voucher-footer-left,
+.voucher-footer-right {
+  display: table-cell;
+  padding: 12px;
+  vertical-align: middle;
+}
+
+.voucher-footer-left {
+  width: 55%;
+  vertical-align: bottom;
+  font-size: 10px;
+}
+
+.voucher-footer-right {
+  width: 45%;
+  text-align: right;
+}
+
+.voucher-footer-note {
+  font-size: 9px;
+  color: #555;
+}
+
+.voucher-signature {
+  margin-top: 20px;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.voucher-barcode {
+  text-align: right;
+  overflow: hidden;
+}
+
+.voucher-barcode svg,
+.parcel-barcode svg {
+  max-width: 100% !important;
+  height: auto !important;
+}
+.supplier-table {
+  font-size: 8px;
+}
+
+.supplier-table th {
+  padding: 5px 3px;
+  font-size: 7px;
+}
+
+.supplier-table td {
+  padding: 5px 3px;
+  font-size: 8px;
+}
+
+.supplier-table .supplier-product {
+  width: 16%;
+}
+
+.voucher-screen-actions {
+  margin: 12px 0 10px;
+}
+@media screen and (max-width:768px) {
+  .voucher-page {
+    margin: 10px 0;
+    border-radius: 0;
+  }
+
+  .voucher-company-name {
+    font-size: 22px;
+  }
+
+  .voucher-info-grid,
+  .voucher-info-panel {
+    display: block;
+    width: 100%;
+  }
+
+  .voucher-info-panel {
+    border-right: 0 !important;
+    border-bottom: 1px solid #999;
+  }
+
+  .voucher-title {
+    font-size: 14px;
+  }
+
+  .voucher-title-meta {
+    font-size: 10px;
+  }
+}
 @media print {
+  @page {
+    margin: 7mm;
+  }
 
   body {
-    margin: 0;
-    padding: 0;
-  }  
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #fff !important;
+  }
 
   .page-header,
   .p-toolbar,
-  button {
+  button,
+  .no-print,
+  p-tablist {
     display: none !important;
+  }
+
+  .parcel-print-area {
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  .parcel-sticker,
+  .voucher-page {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .parcel-sticker {
+    border: 2px solid #000;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .parcel-title-bar,
+  .voucher-title-bar,
+  .voucher-title,
+  .voucher-title-meta {
+    background: #000 !important;
+    color: #fff !important;
+    -webkit-text-fill-color: #fff !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .parcel-label,
+  .voucher-table th,
+  .voucher-table tfoot th,
+  .voucher-table tfoot td {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .parcel-label {
+    background: #eee !important;
+  }
+
+  .highlight-row .parcel-label {
+    background: #ddd !important;
+  }
+
+  .parcel-company-name {
+    font-size: 30px;
+  }
+
+  .parcel-value {
+    font-size: 16px;
+  }
+
+  .dispatch-number {
+    font-size: 25px;
+  }
+
+  .voucher-table thead {
+    display: table-header-group;
+  }
+
+  .voucher-table tfoot {
+    display: table-footer-group;
+  }
+
+  .voucher-table tr {
+    page-break-inside: avoid;
+    break-inside: avoid;
   }
 }
