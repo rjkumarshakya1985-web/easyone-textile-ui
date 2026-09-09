@@ -8,4 +8,5 @@ export interface AdminDashboardResponse {
   transport: number;
   inTransitLatestSaleVouchers: DashboardParcel[];
   inHouseLatestSaleVouchers: DashboardParcel[];
+  openLatestSaleVouchers: DashboardParcel[];
 }
