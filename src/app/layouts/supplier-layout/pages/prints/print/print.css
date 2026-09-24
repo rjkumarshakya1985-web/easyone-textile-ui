@@ -18,9 +18,7 @@
   text-overflow: ellipsis;
 }
 
-.company-code {
-  color: #000;
-  background: transparent;
+.company-code {background: transparent;
 }
 
 .barcode-field {
@@ -31,16 +29,9 @@
 }
 .barcode-field ngx-barcode6 {
   display: block;
-  width: 100%;
-  height: 100%;
+  max-width: 100%;
 }
-.barcode-field svg {
-  display: block;
-  max-width: 100% !important;
-  max-height: 100% !important;
-  width: 100% !important;
-  height: 100% !important;
-}
+.barcode-field svg,
 .barcode-field canvas {
   display: block;
   max-width: 100% !important;
@@ -55,8 +46,7 @@
   background: #fff3cd;
   border-left: 5px solid #ff9800;
   border-radius: 4px;
-  color: #856404;
-  font-weight: 600;
+  color: #856404; 
 }
 .parcel-print-area {
   width: 100%;
@@ -136,9 +126,7 @@
   grid-template-columns: 62% 38%;
 }
 
-.parcel-details {
-  border-right: 2px solid #111;
-}
+.parcel-details {border-right: 2px solid #111;}
 
 .parcel-detail-row {
   display: grid;
@@ -218,16 +206,10 @@
 .parcel-barcode {
   width: 100%;
   display: flex;
-  align-items: center;
   justify-content: center;
   margin-top: 15px;
   overflow: hidden;
 }
-
-.parcel-barcode ngx-barcode6 {
-  max-width: 100%;
-}
-
 .barcode-number {
   margin-top: 8px;
   font-size: 14px;
@@ -245,18 +227,9 @@
   font-size: 11px;
 }
 
-.parcel-footer-message {
-  font-weight: 800;
-  letter-spacing: .3px;
-}
-.sticker-print-item { margin:0; }
+.parcel-footer-message {font-weight: 800;letter-spacing: .3px;}
 .parcel-actions{margin-bottom:10px}
-.voucher-page {
-  width: 100%;
-  max-width: 1100px;
-  margin: 15px auto;
-  background: #fff;
-  color: #111;
+.voucher-page {width: 100%;max-width: 1100px;margin: 15px auto;background: #fff;color: #111;
   border: 1px solid #222;
   border-radius: 8px;
   overflow: hidden;
@@ -271,31 +244,13 @@
   border-bottom: 2px solid #111;
 }
 
-.voucher-company-name {
-  margin: 0;
-  font-size: 28px;
-  line-height: 1.1;
-  font-weight: 900;
-  letter-spacing: .5px;
-  text-transform: uppercase;
-}
+.voucher-company-name {margin: 0;font-size: 28px; line-height: 1.1; font-weight: 900; letter-spacing: .5px; text-transform: uppercase;}
 
-.voucher-company-address {
-  margin-top: 5px;
-  font-size: 12px;
-  line-height: 1.4;
-}
+.voucher-company-address {margin-top: 5px;font-size: 12px;line-height: 1.4;}
 
-.voucher-company-contact {
-  margin-top: 6px;
-  font-size: 11px;
-  font-weight: 700;
-}
+.voucher-company-contact {margin-top: 6px;font-size: 11px;font-weight: 700;}
 
-.voucher-company-contact span {
-  display: inline-block;
-  margin: 0 12px;
-}
+.voucher-company-contact span {display: inline-block; margin: 0 12px;}
 
 .voucher-title-bar {
   display: table;
