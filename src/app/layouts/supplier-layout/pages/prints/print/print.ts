@@ -12,7 +12,7 @@ import { PrintService } from '../../../../../core/services/print-service';
 import { SaleVoucherPrintResponse, StickerPrint, StickerPrintFieldSetting } from '../../../../../model/response/print/salevoucher-response-print';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-
+import { LocalStorageService } from '../../../../../core/services/local-storage.service';
 @Component({
   selector: 'app-print',
   standalone: true,
@@ -50,7 +50,8 @@ export class Print {
   constructor(
       private printService: PrintService,
       private route: ActivatedRoute,
-      private router: Router
+      private router: Router,
+      private storage: LocalStorageService
   ) {
     this.loadPrint();
   }
@@ -68,7 +69,11 @@ export class Print {
         });
     }
   }
+private isAdminPrint(): boolean {
+  const user = this.storage.getUser();
 
+  return (user?.roleName ?? '').toLowerCase() === 'superadmin';
+}
   printPage(id: string) {
 
   const element = document.getElementById(id);
@@ -110,20 +115,15 @@ export class Print {
   let pageStyle = '';
 if (id === 'sticker-print-section') {
 
-  const firstSticker =
-    this.printData()?.stickerPrints?.[0];
+  const firstSticker = this.printData()?.stickerPrints?.[0];
 
-  const stickerWidthMm =
-    firstSticker?.stickerSetting?.hasCustomSize &&
-    firstSticker?.stickerSetting?.stickerWidthMm
-      ? Number(firstSticker.stickerSetting.stickerWidthMm)
-      : this.defaultWidthMm;
+  const stickerWidthMm = firstSticker
+  ? this.getStickerWidthMm(firstSticker)
+  : this.defaultWidthMm;
 
-  const stickerHeightMm =
-    firstSticker?.stickerSetting?.hasCustomSize &&
-    firstSticker?.stickerSetting?.stickerHeightMm
-      ? Number(firstSticker.stickerSetting.stickerHeightMm)
-      : this.defaultHeightMm;
+const stickerHeightMm = firstSticker
+  ? this.getStickerHeightMm(firstSticker)
+  : this.defaultHeightMm;
 
 
   pageStyle = `
@@ -1702,27 +1702,36 @@ fieldValue(sticker: StickerPrint, key: string): string {
 }
 
 stickerStyle(sticker: StickerPrint): Record<string, string> {
-  if (!this.hasCustomStickerSize(sticker)) {
+  if (!this.isAdminPrint() && !this.hasCustomStickerSize(sticker)) {
     return {};
   }
 
   return {
-    width: `${sticker.stickerSetting?.stickerWidthMm}mm`,
-    height: `${sticker.stickerSetting?.stickerHeightMm}mm`
+    width: `${this.getStickerWidthMm(sticker)}mm`,
+    height: `${this.getStickerHeightMm(sticker)}mm`
   };
 }
 private getStickerWidthMm(sticker: StickerPrint): number {
+// SuperAdmin always uses fixed 70mm sticker width
+  if (this.isAdminPrint()) {
+    return this.defaultWidthMm; // 70
+  }
+  // Supplier uses their configured width
   if (
     sticker.stickerSetting?.hasCustomSize === true &&
     sticker.stickerSetting?.stickerWidthMm
   ) {
     return Number(sticker.stickerSetting.stickerWidthMm);
-  }
+  } 
 
   return this.defaultWidthMm;
 }
 
 private getStickerHeightMm(sticker: StickerPrint): number {
+  // SuperAdmin always uses fixed 30mm sticker height
+  if (this.isAdminPrint()) {
+    return this.defaultHeightMm; // 30
+  }
   if (
     sticker.stickerSetting?.hasCustomSize === true &&
     sticker.stickerSetting?.stickerHeightMm
@@ -1743,11 +1752,14 @@ fieldStyle(field: StickerPrintFieldSetting, sticker?: StickerPrint): Record<stri
     ? Math.min(field.x, this.baseWidth - width - 10)
     : field.x;
 
-  if (sticker && this.hasCustomStickerSize(sticker)) {
-    const fontScale = Math.min(
-      Number(sticker.stickerSetting?.stickerWidthMm) / this.defaultWidthMm,
-      Number(sticker.stickerSetting?.stickerHeightMm) / this.defaultHeightMm
-    );
+  if (sticker && (this.isAdminPrint() || this.hasCustomStickerSize(sticker))) {
+     const widthMm = this.getStickerWidthMm(sticker);
+  const heightMm = this.getStickerHeightMm(sticker);
+
+  const fontScale = Math.min(
+    widthMm / this.defaultWidthMm,
+    heightMm / this.defaultHeightMm
+  );   
 
     return {
       left: `${(x / this.baseWidth) * 100}%`,
