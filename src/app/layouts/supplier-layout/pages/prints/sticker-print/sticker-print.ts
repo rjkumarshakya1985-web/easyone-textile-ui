@@ -54,13 +54,30 @@ export class ProductStickerPrint {
     }
   }
   printSticker(id: string) {
-    const element =
-    document.getElementById(id);
+   // Get the sticker HTML
+  const element = document.getElementById(id);
 
   if (!element) {
     return;
   }
-   const printContents = element.innerHTML;
+    // Get current sticker data
+  const sticker = this.printData();
+
+  if (!sticker) {
+    return;
+  }
+   // -------------------------------------------------------
+  // GET PHYSICAL STICKER SIZE
+  // -------------------------------------------------------
+
+  const stickerWidthMm =
+    this.getStickerWidthMm(sticker);
+
+  const stickerHeightMm =
+    this.getStickerHeightMm(sticker);
+     // Get sticker HTML
+  const printContents = element.innerHTML;
+   
    const width =
     Math.floor(
       window.screen.availWidth * 0.95
@@ -89,16 +106,53 @@ export class ProductStickerPrint {
     );
      if (!popupWin) {
     return;
-  }  
+  } 
+  popupWin.document.open(); 
   popupWin.document.write(`
     <html>
       <head>
-        <title>Print</title>
+        <title>Print Sticker</title>
         <link rel="stylesheet"
          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-        <style>${this.stickerPrintStyles()}</style>
+        <style>
+         @page {
+            size: ${stickerWidthMm}mm ${stickerHeightMm}mm;
+            margin: 0;
+          }
+            html,
+          body {
+            margin: 0 !important;
+            padding: 0 !important;
+
+            width: ${stickerWidthMm}mm;
+            height: ${stickerHeightMm}mm;
+
+            background: #ffffff;
+          }
+            ${this.stickerPrintStyles()}
+            @media print {
+
+            html,
+            body {
+              margin: 0 !important;
+              padding: 0 !important;
+
+              width: ${stickerWidthMm}mm !important;
+              height: ${stickerHeightMm}mm !important;
+            }
+
+            .app-sticker {
+              width: ${stickerWidthMm}mm !important;
+              height: ${stickerHeightMm}mm !important;
+
+              margin: 0 !important;
+              padding: 0 !important;
+            }
+
+          }
+        </style>
       </head>
-      <body onload="window.print();window.close()">
+      <body>
         ${printContents}
          <script>
 
@@ -159,19 +213,36 @@ export class ProductStickerPrint {
         return '';
     }
   }
-
-  stickerStyle(sticker: StickerPrint): Record<string, string> {
-    if (!this.hasCustomStickerSize(sticker)) {
-      return {};
-    }
-
-    return {
-      width: `${sticker.stickerSetting?.stickerWidthMm}mm`,
-      height: `${sticker.stickerSetting?.stickerHeightMm}mm`
-    };
+stickerStyle(sticker: StickerPrint): Record<string, string> {
+  return {
+    width: `${this.getStickerWidthMm(sticker)}mm`,
+    height: `${this.getStickerHeightMm(sticker)}mm`
+  };
+}
+private getStickerWidthMm(sticker: StickerPrint): number {
+  if (
+    sticker.stickerSetting?.hasCustomSize === true &&
+    sticker.stickerSetting?.stickerWidthMm
+  ) {
+    return Number(sticker.stickerSetting.stickerWidthMm);
   }
 
-  fieldStyle(field: StickerPrintFieldSetting, sticker?: StickerPrint): Record<string, string> {
+  return this.defaultWidthMm;
+}
+
+private getStickerHeightMm(sticker: StickerPrint): number {
+  if (
+    sticker.stickerSetting?.hasCustomSize === true &&
+    sticker.stickerSetting?.stickerHeightMm
+  ) {
+    return Number(sticker.stickerSetting.stickerHeightMm);
+  }
+
+  return this.defaultHeightMm;
+}
+
+
+  fieldStyle(field: StickerPrintFieldSetting, sticker: StickerPrint): Record<string, string> {
     const width = field.fieldKey === 'companyShortName'
       ? Math.max(field.width, 74)
       : field.fieldKey === 'wholeSaleRate'
@@ -180,37 +251,30 @@ export class ProductStickerPrint {
     const x = field.fieldKey === 'wholeSaleRate'
       ? Math.min(field.x, this.baseWidth - width - 10)
       : field.x;
+const stickerWidthMm = this.getStickerWidthMm(sticker);
+  const stickerHeightMm = this.getStickerHeightMm(sticker);
 
-    if (sticker && this.hasCustomStickerSize(sticker)) {
-      const fontScale = Math.min(
-        Number(sticker.stickerSetting?.stickerWidthMm) / this.defaultWidthMm,
-        Number(sticker.stickerSetting?.stickerHeightMm) / this.defaultHeightMm
-      );
-
-      return {
-        left: `${(x / this.baseWidth) * 100}%`,
-        top: `${(field.y / this.baseHeight) * 100}%`,
-        width: `${(width / this.baseWidth) * 100}%`,
-        height: `${(field.height / this.baseHeight) * 100}%`,
-        fontSize: `${Math.max(7, field.fontSize * fontScale)}px`,
-        fontWeight: field.fontWeight,
-        textAlign: field.textAlign,
-        lineHeight: `${Math.max(10, field.height * fontScale)}px`
-      };
-    }
-
+  const fontScale = Math.min(
+    stickerWidthMm / this.defaultWidthMm,
+    stickerHeightMm / this.defaultHeightMm
+  );
     return {
-      left: `${x}px`,
-      top: `${field.y}px`,
-      width: `${width}px`,
-      height: `${field.height}px`,
-      fontSize: `${field.fontSize}px`,
-      fontWeight: field.fontWeight,
-      textAlign: field.textAlign,
-      lineHeight: `${field.height}px`
-    };
-  }
+    left: `${(x / this.baseWidth) * 100}%`,
+    top: `${(field.y / this.baseHeight) * 100}%`,
+    width: `${(width / this.baseWidth) * 100}%`,
+    height: `${(field.height / this.baseHeight) * 100}%`,
 
+    fontSize: `${Math.max(7, field.fontSize * fontScale)}px`,
+    fontWeight: field.fontWeight,
+    textAlign: field.textAlign,
+
+    lineHeight: `${Math.max(
+      10,
+      field.height * fontScale
+    )}px`
+  };
+}
+  
   private hasCustomStickerSize(sticker: StickerPrint): boolean {
     return sticker.stickerSetting?.hasCustomSize === true &&
       !!sticker.stickerSetting?.stickerWidthMm &&
@@ -219,7 +283,7 @@ export class ProductStickerPrint {
 
   private stickerPrintStyles(): string {
     return `
-      .app-sticker{position:relative;width:300px;height:134px;background:#fff;border:1px solid #e0e0e0;border-radius:12px;box-sizing:border-box;color:#000;font-family:Arial,sans-serif;overflow:hidden}
+      .app-sticker{position:relative;background:#fff;border:1px solid #e0e0e0;border-radius:12px;box-sizing:border-box;color:#000;font-family:Arial,sans-serif;overflow:hidden}
       .sticker-field{position:absolute;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
       .company-code{color:#000;background:transparent;padding:0}
       .barcode-field{display:flex;align-items:center;justify-content:center;overflow:hidden}

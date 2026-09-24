@@ -108,8 +108,47 @@ export class Print {
   // =====================================================
 
   let pageStyle = '';
+if (id === 'sticker-print-section') {
 
-  if (id === 'supplier-bill') {
+  const firstSticker =
+    this.printData()?.stickerPrints?.[0];
+
+  const stickerWidthMm =
+    firstSticker?.stickerSetting?.hasCustomSize &&
+    firstSticker?.stickerSetting?.stickerWidthMm
+      ? Number(firstSticker.stickerSetting.stickerWidthMm)
+      : this.defaultWidthMm;
+
+  const stickerHeightMm =
+    firstSticker?.stickerSetting?.hasCustomSize &&
+    firstSticker?.stickerSetting?.stickerHeightMm
+      ? Number(firstSticker.stickerSetting.stickerHeightMm)
+      : this.defaultHeightMm;
+
+
+  pageStyle = `
+    @page {
+      size: ${stickerWidthMm}mm ${stickerHeightMm}mm;
+      margin: 0;
+    }
+
+    @media print {
+
+      html,
+      body {
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
+      .app-sticker {
+        width: ${stickerWidthMm}mm !important;
+        height: ${stickerHeightMm}mm !important;
+      }
+
+    }
+  `;
+}
+ else if (id === 'supplier-bill') {
 
     // Supplier Bill = A4 Landscape
     pageStyle = `
@@ -1672,6 +1711,27 @@ stickerStyle(sticker: StickerPrint): Record<string, string> {
     height: `${sticker.stickerSetting?.stickerHeightMm}mm`
   };
 }
+private getStickerWidthMm(sticker: StickerPrint): number {
+  if (
+    sticker.stickerSetting?.hasCustomSize === true &&
+    sticker.stickerSetting?.stickerWidthMm
+  ) {
+    return Number(sticker.stickerSetting.stickerWidthMm);
+  }
+
+  return this.defaultWidthMm;
+}
+
+private getStickerHeightMm(sticker: StickerPrint): number {
+  if (
+    sticker.stickerSetting?.hasCustomSize === true &&
+    sticker.stickerSetting?.stickerHeightMm
+  ) {
+    return Number(sticker.stickerSetting.stickerHeightMm);
+  }
+
+  return this.defaultHeightMm;
+}
 
 fieldStyle(field: StickerPrintFieldSetting, sticker?: StickerPrint): Record<string, string> {
   const width = field.fieldKey === 'companyShortName'
@@ -1722,7 +1782,7 @@ private hasCustomStickerSize(sticker: StickerPrint): boolean {
 private stickerPrintStyles(): string {
   return `
     .sticker-print-item{margin:0}
-    .app-sticker{position:relative;width:300px;height:134px;background:#fff;border:1px solid #e0e0e0;border-radius:12px;box-sizing:border-box;color:#000;font-family:Arial,sans-serif;overflow:hidden}
+    .app-sticker{position:relative;background:#fff;border:1px solid #e0e0e0;border-radius:12px;box-sizing:border-box;color:#000;font-family:Arial,sans-serif;overflow:hidden}
     .sticker-field{position:absolute;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .company-code{color:#000;background:transparent;padding:0}
     .barcode-field{display:flex;align-items:center;justify-content:center;overflow:hidden}
