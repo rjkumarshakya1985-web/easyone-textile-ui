@@ -68,7 +68,7 @@
 .barcode-field svg {
   display: block;
   max-width: 100% !important;
-  max-height: 100% !important;
+  max-height: 30px !important;
   width: 100% !important;
   height: 100% !important;
 }
